@@ -14,6 +14,15 @@ const CardImage = styled('div', {
       3: {
         backgroundImage: 'url("../assets/images/adventure.png")',
       },
+      4: {
+        backgroundImage: 'url("../assets/images/sci-fi.png")',
+      },
+      5: {
+        backgroundImage: 'url("../assets/images/world_building.png")',
+      },
+      6: {
+        backgroundImage: 'url("../assets/images/open_source.png")',
+      },
     }
   }
 });
@@ -74,8 +83,8 @@ const Card = styled('div', {
 });
 
 
-interface HomepageCardProps {
-  image: "1" | "2" | "3";
+export interface HomepageCardProps {
+  image: "1" | "2" | "3" | "4" | "5" | "6";
   cardType: 'left' | 'right';
   heading: string;
   text: string;

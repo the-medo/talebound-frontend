@@ -48,12 +48,12 @@ const HomepageContent: React.FC<HomepageContentProps> = () => {
                 environment crafted by the world's creator." />
         </CardColumn>
         <CardColumn>
-          <HomepageCard image="1" cardType="right" heading="Fantasy, sci-fi, real world?" text="We've got you covered! Talebound is not limited to specific genre, you
+          <HomepageCard image="4" cardType="right" heading="Fantasy, sci-fi, real world?" text="We've got you covered! Talebound is not limited to specific genre, you
                 can create or join whatever you want." />
-          <HomepageCard image="2" cardType="right" heading="AI-based world building tools" text="Let AI help you with creating illustrations or descriptions for your
+          <HomepageCard image="5" cardType="right" heading="AI-based world building tools" text="Let AI help you with creating illustrations or descriptions for your
                 world. Pictures of items, locations, character avatars,... Do you see this homepage? Every picture was
                 created with Midjourney." />
-          <HomepageCard image="3" cardType="right" heading="Open source" text="Probably not useful for most of the people, but... in case you are a
+          <HomepageCard image="6" cardType="right" heading="Open source" text="Probably not useful for most of the people, but... in case you are a
                 developer and you are missing something, feel free to contribute! Talebound is open source. You can find
                 links to github in the footer." />
         </CardColumn>
