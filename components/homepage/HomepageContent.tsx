@@ -1,6 +1,6 @@
 import React from "react";
 import {MainContent} from "../global/MainContent";
-import {styled} from "../../stitches.config";
+import {styled} from "@nextui-org/react";
 import {Column} from "../global/Column";
 import HomepageCard from "./HomepageCard";
 

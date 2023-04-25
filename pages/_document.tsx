@@ -1,7 +1,6 @@
 import Document, {DocumentContext, Head, Html, Main, NextScript } from 'next/document'
-import { getCssText } from '../stitches.config'
+import { CssBaseline } from '@nextui-org/react'
 import globalStyles from "../styles/globalStyles";
-import { CssBaseline } from '@nextui-org/react';
 import React from "react";
 
 globalStyles();
@@ -21,10 +20,6 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {CssBaseline.flush()}
-          <style
-            id="stitches"
-            dangerouslySetInnerHTML={{__html: getCssText()}}
-          />
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={undefined}/>
           <link

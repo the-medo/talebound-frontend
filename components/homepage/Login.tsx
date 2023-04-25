@@ -1,5 +1,5 @@
 import React from "react";
-import {styled} from "../../stitches.config";
+import {styled} from "@nextui-org/react";
 import {VerticalSemitransparent} from "../global/VerticalSemitransparent";
 import {InputTransparent} from "../global/InputTransparent";
 import {Button} from "../global/Button";

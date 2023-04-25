@@ -1,4 +1,4 @@
-import {styled} from "../../stitches.config";
+import {styled} from "@nextui-org/react";
 
 export const Button = styled('button', {
   fontFamily: 'Gudea, sans-serif',

@@ -1,4 +1,4 @@
-import {styled} from "../../stitches.config";
+import {styled} from "@nextui-org/react";
 import Link from "next/link";
 
 export const NavigationItem = styled(Link, {

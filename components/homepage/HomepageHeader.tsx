@@ -1,8 +1,6 @@
 import React from "react";
-import {styled} from "../../stitches.config";
-import Link from "next/link";
+import {styled} from "@nextui-org/react";
 import Login from "./Login";
-import {HeaderNavigation} from "../global/HeaderNavigation";
 import HomepageNavigation from "./HomepageNavigation";
 
 const Header = styled('div', {
