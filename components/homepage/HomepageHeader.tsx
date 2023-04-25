@@ -26,9 +26,10 @@ const HeaderHeading = styled('h1', {
   backgroundClip: 'text',
   color: 'transparent',
   display: 'inline',
+  padding: '$0 $8',
 
   '&:hover': {
-    textShadow: '1px 1px 1px rgba(0, 0, 0, 0.2)',
+    textShadow: '1px 1px 4px rgba(0, 0, 0, 0.2)',
   }
 });
 
@@ -40,10 +41,9 @@ const HeaderSubheading = styled('h2', {
   bottom: '$8',
   transform: 'translate(-50%, 0%)',
   textShadow: '1px 1px 4px rgba(255, 255, 255, 0.2)',
-  transition: 'text-shadow 0.3s ease-in-out',
   textTransform: 'uppercase',
   color: '$primary700',
-  fontSize: '1.2rem',
+  fontSize: '$xl',
   backgroundImage: '$gradientDark',
   backgroundClip: 'text',
   display: 'inline',

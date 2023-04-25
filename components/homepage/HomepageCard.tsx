@@ -28,10 +28,10 @@ const CardImage = styled('div', {
 });
 
 const CardContent = styled('div', {
-  padding: '20px',
+  padding: '$lg',
   display: 'flex',
   flexDirection: 'column',
-  gap: '1rem',
+  gap: '$md',
   width: '500px',
 });
 
@@ -44,10 +44,10 @@ const CardHeader = styled('h3', {
 
 const Card = styled('div', {
   display: 'flex',
-  gap: '1rem',
+  gap: '$md',
   height: '200px',
   flexGrow: '1',
-  padding: '0',
+  padding: '$0',
   boxSizing: 'border-box',
   transition: 'all 0.4s',
   backgroundColor: '$white100',

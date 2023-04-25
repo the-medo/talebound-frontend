@@ -2,7 +2,7 @@ import {styled} from "@nextui-org/react";
 
 export const HeaderNavigation = styled('nav', {
   position: 'absolute',
-  width: '960px',
+  width: '$fit',
   bottom: '$0',
   left: '$50',
   transform: 'translate(-50%, 0%)',
@@ -15,9 +15,9 @@ export const HeaderNavigation = styled('nav', {
       display: 'inline-block',
       '& a': {
         display: 'block',
-        padding: '18px',
+        padding: '$md',
         '&:hover': {
-          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6)',
+          boxShadow: '$focus',
           background: 'rgba(255, 255, 255, 0.1)',
           color: '$primary700'
         }

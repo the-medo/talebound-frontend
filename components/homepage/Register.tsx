@@ -7,7 +7,7 @@ import {InputTransparent} from "../global/InputTransparent";
 
 const RegisterBackground = styled('div', {
     position: 'relative',
-    width: '100%',
+    width: '$full',
     height: '600px',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -17,18 +17,17 @@ const RegisterBackground = styled('div', {
 });
 
 const RegisterBox = styled(VerticalSemitransparent, {
-  gap: '.25rem',
+  gap: '$xs',
   position: 'absolute',
-  top: '0',
-  bottom: '0',
+  top: '$0',
+  bottom: '$0',
   left: '50%',
   transform: 'translate(-50%, 0%)',
-  padding: '75px 30px 75px 30px',
-  fontWeight: 'bold',
-  fontSize: '75%',
-  color: '$primary800',
+  padding: '$2xl $xl',
+  fontWeight: '$bold',
+  fontSize: '$xs',
+  color: '$white600',
   textDecoration: 'none',
-
 });
 
 const RegisterHeader = styled('h2', {
@@ -39,7 +38,7 @@ const RegisterLabel = styled('label', {
   color: '$primary800',
   fontFamily: '$heading',
   width: '100%',
-  fontSize: '125%',
+  fontSize: '$md',
   textTransform: 'uppercase',
 });
 
@@ -49,7 +48,7 @@ interface HomepageRegisterProps {
 
 const Register: React.FC<HomepageRegisterProps> = ({background = false}) => {
   return (
-    <RegisterBackground css={{ $$backgroundImage: background ? 'url("../assets/header/header-v8.png")' : '' }}>
+    <RegisterBackground id="register" css={{ $$backgroundImage: background ? 'url("../assets/header/header-v8.png")' : '' }}>
       <RegisterBox>
         <RegisterHeader>Sign up</RegisterHeader>
 

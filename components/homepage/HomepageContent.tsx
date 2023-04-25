@@ -5,16 +5,16 @@ import {Column} from "../global/Column";
 import HomepageCard from "./HomepageCard";
 
 const ContentQuote = styled(Column, {
-  gap: '20px',
+  gap: '$lg',
   textAlign: 'center',
   maxWidth: '960px',
-  padding: '20px',
-  fontSize: '20px',
+  padding: '$lg',
+  fontSize: '$xl',
   fontStyle: 'italic',
 });
 
 const CardWrapper = styled('div', {
-  width: '100%',
+  width: '$full',
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
@@ -22,7 +22,7 @@ const CardWrapper = styled('div', {
 });
 
 const CardColumn = styled(Column, {
-  gap: '1rem',
+  gap: '$md',
 });
 
 interface HomepageContentProps {
