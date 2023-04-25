@@ -5,7 +5,7 @@ export const MainContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   flex: '1',
-  gap: '1rem',
+  gap: '$md',
   alignItems: 'center',
   justifyContent: 'center',
 });

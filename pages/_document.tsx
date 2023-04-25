@@ -1,9 +1,7 @@
 import Document, {DocumentContext, Head, Html, Main, NextScript } from 'next/document'
 import { CssBaseline } from '@nextui-org/react'
-import globalStyles from "../styles/globalStyles";
 import React from "react";
 
-globalStyles();
 
 class MyDocument extends Document {
 

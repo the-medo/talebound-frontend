@@ -1,20 +1,20 @@
 import {styled} from "@nextui-org/react";
 
 export const Button = styled('button', {
-  fontFamily: 'Gudea, sans-serif',
+  fontFamily: '$heading',
   padding: '5px 25px',
-  border: 'none',
-  borderRadius: '5px',
-  background: 'rgba(20, 52, 47, 0.8)',
-  color: 'rgba(255, 255, 255, 0.4)',
-  fontSize: '1rem',
+  border: '$warningBorder',
+  borderRadius: '$md',
+  background: '$primary700',
+  color: '$white',
+  fontSize: '$md',
   fontWeight: 'bold',
   textDecoration: 'none',
   cursor: 'pointer',
   transition: 'all 0.3s ease-in-out',
   '&:hover': {
-    background: 'rgba(20, 52, 47, 0.9)',
-    color: 'rgba(255, 255, 255, 0.8)',
+    background: '$primary900',
+    color: '$white300',
   },
   '&:focus': {
     outline: 'none',

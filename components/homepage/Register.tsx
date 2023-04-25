@@ -3,7 +3,6 @@ import {styled} from "@nextui-org/react";
 import {VerticalSemitransparent} from "../global/VerticalSemitransparent";
 import {Button} from "../global/Button";
 import {InputTransparent} from "../global/InputTransparent";
-import {Column} from "../global/Column";
 
 
 const RegisterBackground = styled('div', {
@@ -27,18 +26,18 @@ const RegisterBox = styled(VerticalSemitransparent, {
   padding: '75px 30px 75px 30px',
   fontWeight: 'bold',
   fontSize: '75%',
-  color: 'rgba(20, 52, 47, 0.8)',
+  color: '$primary800',
   textDecoration: 'none',
 
 });
 
 const RegisterHeader = styled('h2', {
-  color: 'white',
+  color: '$white',
 });
 
 const RegisterLabel = styled('label', {
-  color: 'rgba(20, 52, 47, 0.8)',
-  fontFamily: 'Gudea, sans-serif',
+  color: '$primary800',
+  fontFamily: '$heading',
   width: '100%',
   fontSize: '125%',
   textTransform: 'uppercase',

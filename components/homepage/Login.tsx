@@ -13,7 +13,7 @@ const LoginBox = styled(VerticalSemitransparent, {
   padding: '75px 10px 75px 10px',
   fontWeight: 'bold',
   fontSize: '1.2rem',
-  color: 'rgba(20, 52, 47, 0.8)',
+  color: '$primary800',
   textDecoration: 'none',
 });
 
@@ -23,9 +23,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = () => {
   return (
     <LoginBox>
-      <div className="login-header menu-item">
-        Login
-      </div>
+      <h3>Login</h3>
       <InputTransparent type="text" placeholder="Username"/>
       <InputTransparent type="password" placeholder="Password"/>
       <Button>Login</Button>

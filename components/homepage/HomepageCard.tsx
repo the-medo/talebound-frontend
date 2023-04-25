@@ -35,10 +35,10 @@ const CardContent = styled('div', {
   width: '500px',
 });
 
-const CardHeader = styled('h2', {
-  fontFamily: 'Gudea,sans-serif',
-  color: 'rgba(51, 129, 112, 0.8)',
-  textDecoration: 'underline rgba(51, 129, 112, 0.8)',
+const CardHeader = styled('h3', {
+  fontFamily: '$heading',
+  color: '$primary',
+  textDecoration: 'underline',
 });
 
 
@@ -50,7 +50,7 @@ const Card = styled('div', {
   padding: '0',
   boxSizing: 'border-box',
   transition: 'all 0.4s',
-  backgroundColor: 'white',
+  backgroundColor: '$white100',
 
   [`& ${CardImage}`]: {
     height: '200px',

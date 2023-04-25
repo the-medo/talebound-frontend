@@ -7,7 +7,7 @@ export const VerticalSemitransparent = styled('div', {
   gap: '1rem',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
+  background: '$gradientVerticalSemitransparent',
 });
 
 /*

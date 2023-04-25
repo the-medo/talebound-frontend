@@ -1,7 +1,6 @@
 import React from "react";
 import {styled} from "@nextui-org/react";
 import Login from "./Login";
-import HomepageNavigation from "./HomepageNavigation";
 
 const Header = styled('div', {
   width: '100%',
@@ -18,12 +17,12 @@ const HeaderHeading = styled('h1', {
   position: 'absolute',
   fontSize: '10rem',
   left: '50%',
-  bottom: '80px',
+  bottom: '$0',
   transform: 'translate(-50%, 0%)',
-  fontFamily: 'Astloch,serif',
+  fontFamily: '$decorative',
   textShadow: '1px 1px 4px rgba(255, 255, 255, 0.2)',
   transition: 'text-shadow 0.3s ease-in-out',
-  backgroundImage: 'linear-gradient(301deg, rgb(21 64 57) 0%, rgb(20 52 47) 100%)',
+  backgroundImage: '$gradientDark',
   backgroundClip: 'text',
   color: 'transparent',
   display: 'inline',
@@ -34,18 +33,18 @@ const HeaderHeading = styled('h1', {
 });
 
 const HeaderSubheading = styled('h2', {
-  fontFamily: 'Gudea,sans-serif',
+  fontFamily: '$heading',
   margin: '0',
   position: 'absolute',
   left: '50%',
-  bottom: '75px',
+  bottom: '$8',
   transform: 'translate(-50%, 0%)',
   textShadow: '1px 1px 4px rgba(255, 255, 255, 0.2)',
   transition: 'text-shadow 0.3s ease-in-out',
   textTransform: 'uppercase',
-  color: '#2c554e',
+  color: '$primary700',
   fontSize: '1.2rem',
-  backgroundImage: 'linear-gradient(301deg, rgb(21 64 57) 0%, rgb(20 52 47) 100%)',
+  backgroundImage: '$gradientDark',
   backgroundClip: 'text',
   display: 'inline',
 });
@@ -56,11 +55,9 @@ interface HomepageHeaderProps {
 
 const HomepageHeader: React.FC<HomepageHeaderProps> = () => {
   return (
-
     <Header>
       <HeaderHeading>Talebound</HeaderHeading>
       <HeaderSubheading>the ultimate text-based adventure platform</HeaderSubheading>
-      <HomepageNavigation />
       <Login />
     </Header>
   );
