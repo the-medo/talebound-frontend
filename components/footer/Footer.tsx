@@ -29,6 +29,7 @@ const LogoWrapper = styled('div', {
   display: 'flex',
   padding: '$sm',
   minWidth: '500px',
+  color: "red",
 });
 
 const LinkColumnWrapper = styled('div', {
@@ -81,7 +82,7 @@ const Footer: React.FC = () => {
     <FooterDiv>
       <FooterContent>
         <LogoWrapper>
-          <Image width={24} height={24} src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4" />
+          <Image width="7rem" height="7rem" src="/assets/images/logo.svg" />
         </LogoWrapper>
         <LinkColumnWrapper>
           <LinkColumn>

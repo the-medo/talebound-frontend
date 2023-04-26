@@ -18,6 +18,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {CssBaseline.flush()}
+          <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml" />
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={undefined}/>
           <link
