@@ -63,6 +63,10 @@ const Card = styled('div', {
     },
   },
 
+  [`&:hover`]: {
+    transform: 'scale(1.05)',
+  },
+
   [`&:hover ${CardImage}`]: {
     backgroundSize: '175%',
   },

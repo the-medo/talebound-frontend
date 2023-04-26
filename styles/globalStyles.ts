@@ -15,6 +15,13 @@ const globalStyles = globalCss({
   'body': {
     fontFamily: '$text',
   },
+  'h1,h2,h3,h4,h5,h6': {
+    fontFamily: '$heading',
+  },
+  'a': {
+    textDecoration: 'none',
+    color: '$primary',
+  }
 });
 
 export const baseTheme = createTheme({
@@ -139,7 +146,8 @@ export const baseTheme = createTheme({
       gradientVerticalSemitransparent: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
 
 
-      link: '#5E1DAD',
+      link: '$secondary700',
+      link2: '$secondary300',
       // background: '#f6fcfa',
       background: 'transparent',
       foreground: '$black',
@@ -284,6 +292,7 @@ export const baseTheme = createTheme({
       96: '24rem'
     },
     breakpoints: {
+      '2xs': '550px',
       xs: '650px',
       sm: '960px',
       md: '1280px',
