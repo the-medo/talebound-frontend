@@ -48,7 +48,7 @@ interface HomepageRegisterProps {
 
 const Register: React.FC<HomepageRegisterProps> = ({background = false}) => {
   return (
-    <RegisterBackground id="register" css={{ $$backgroundImage: background ? 'url("../assets/header/header-v8.png")' : '' }}>
+    <RegisterBackground id="register" css={{ $$backgroundImage: background ? 'url("../assets/images/register-bg.png")' : '' }}>
       <RegisterBox>
         <RegisterHeader>Sign up</RegisterHeader>
 

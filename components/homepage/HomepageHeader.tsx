@@ -5,7 +5,7 @@ import Login from "./Login";
 const Header = styled('div', {
   width: '100%',
   height: '430px',
-  backgroundImage: 'url("../assets/header/header-v1.png")',
+  backgroundImage: 'url("../assets/images/header.png")',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
