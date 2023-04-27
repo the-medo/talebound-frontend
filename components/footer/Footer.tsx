@@ -20,7 +20,7 @@ const FooterContent = styled('div', {
   gap: '1rem',
   alignItems: 'center',
 
-  '@sm': {
+  '@lg': {
     flexDirection: 'row',
   }
 });
@@ -28,7 +28,7 @@ const FooterContent = styled('div', {
 const LogoWrapper = styled('div', {
   display: 'flex',
   padding: '$sm',
-  minWidth: '500px',
+  minWidth: '390px',
   color: "red",
 });
 
@@ -58,7 +58,7 @@ const FooterAvatar = styled('div', {
   alignItems: 'center',
   gap: '.5rem',
   padding: '$sm',
-  minWidth: '500px',
+  minWidth: '390px',
 
   '@sm': {
     justifyContent: 'flex-end',
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
     <FooterDiv>
       <FooterContent>
         <LogoWrapper>
-          <Image width="7rem" height="7rem" src="/assets/images/logo.svg" />
+          <Image width="7rem" height="7rem" src="/assets/logo/logo-v1.png" />
         </LogoWrapper>
         <LinkColumnWrapper>
           <LinkColumn>
