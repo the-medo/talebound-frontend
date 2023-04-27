@@ -96,7 +96,8 @@ const Footer: React.FC = () => {
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">Terms</Text>
-            <FooterLink href="/terms-of-service">Privacy & ToS</FooterLink>
+            <FooterLink href="/privacy-policy">Privacy policy</FooterLink>
+            <FooterLink href="/terms-of-service">Terms of Service</FooterLink>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">How to play</Text>
