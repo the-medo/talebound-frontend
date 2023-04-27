@@ -71,6 +71,10 @@ const FooterAvatar = styled('div', {
   }
 });
 
+const FooterLink = styled(Link, {
+  color: '$link2',
+});
+
 const FooterIcons = styled('div', {
   display: 'flex',
   gap: '$md',
@@ -87,25 +91,25 @@ const Footer: React.FC = () => {
         <LinkColumnWrapper>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">Talebound</Text>
-            <Link css={{color: "$link2"}} href="/">Home</Link>
-            <Link css={{color: "$link2"}} href="/about">About</Link>
+            <FooterLink href="/">Home</FooterLink>
+            <FooterLink href="/about">About</FooterLink>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">Terms</Text>
-            <Link css={{color: "$link2"}} href="/terms-of-service">Privacy & ToS</Link>
+            <FooterLink href="/terms-of-service">Privacy & ToS</FooterLink>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">How to play</Text>
-            <Link css={{color: "$link2"}} href="/how-to/basics">Basics</Link>
-            <Link css={{color: "$link2"}} href="/how-to/world-differences">World differences</Link>
+            <FooterLink href="/how-to/basics">Basics</FooterLink>
+            <FooterLink href="/how-to/world-differences">World differences</FooterLink>
           </LinkColumn>
         </LinkColumnWrapper>
         <FooterAvatar>
           <FooterIcons>
-            <SiDiscord />
-            <SiYoutube />
-            <SiGithub />
-            <SiKofi />
+            <FooterLink href="https://discord.gg/wWsXB5gVmY" target="_blank"><SiDiscord /></FooterLink>
+            <FooterLink href="https://www.youtube.com/@Talebound" target="_blank"><SiYoutube /></FooterLink>
+            <FooterLink href="https://github.com/the-medo/talebound-frontend" target="_blank"><SiGithub /></FooterLink>
+            <FooterLink href="https://ko-fi.com/talebound" target="_blank"><SiKofi /></FooterLink>
           </FooterIcons>
           <Text color={'white'}>by Medo</Text>
           <img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4"  />
