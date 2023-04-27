@@ -1,5 +1,6 @@
 import React from "react";
-import {Image, styled, Text, Link} from "@nextui-org/react";
+import Link from "next/link";
+import {Image, styled, Text} from "@nextui-org/react";
 import {SiDiscord, SiGithub, SiKofi, SiYoutube} from "react-icons/si";
 
 
@@ -19,6 +20,14 @@ const FooterContent = styled('div', {
   flexDirection: 'column',
   gap: '1rem',
   alignItems: 'center',
+
+  [`& a`]: {
+    color: '$link2',
+    transition: 'opacity 0.2s ease-in-out',
+  },
+  [`& a:hover`]: {
+    opacity: '0.7',
+  },
 
   '@lg': {
     flexDirection: 'row',
@@ -49,7 +58,7 @@ const LinkColumn = styled('div', {
   flexDirection: 'column',
   alignItems: 'center',
   gap: '$4',
-  minWidth: '10rem'
+  minWidth: '10rem',
 });
 
 const FooterAvatar = styled('div', {
@@ -71,10 +80,6 @@ const FooterAvatar = styled('div', {
   }
 });
 
-const FooterLink = styled(Link, {
-  color: '$link2',
-});
-
 const FooterIcons = styled('div', {
   display: 'flex',
   gap: '$md',
@@ -91,29 +96,29 @@ const Footer: React.FC = () => {
         <LinkColumnWrapper>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">Talebound</Text>
-            <FooterLink href="/">Home</FooterLink>
-            <FooterLink href="/about">About</FooterLink>
+            <Link href="/">Home</Link>
+            <Link href="/about">About</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">Terms</Text>
-            <FooterLink href="/privacy-policy">Privacy policy</FooterLink>
-            <FooterLink href="/terms-of-service">Terms of Service</FooterLink>
+            <Link href="/privacy-policy">Privacy policy</Link>
+            <Link href="/terms-of-service">Terms of Service</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">How to play</Text>
-            <FooterLink href="/how-to/basics">Basics</FooterLink>
-            <FooterLink href="/how-to/world-differences">World differences</FooterLink>
+            <Link href="/how-to/basics">Basics</Link>
+            <Link href="/how-to/world-differences">World differences</Link>
           </LinkColumn>
         </LinkColumnWrapper>
         <FooterAvatar>
           <FooterIcons>
-            <FooterLink href="https://discord.gg/wWsXB5gVmY" target="_blank"><SiDiscord /></FooterLink>
-            <FooterLink href="https://www.youtube.com/@Talebound" target="_blank"><SiYoutube /></FooterLink>
-            <FooterLink href="https://github.com/the-medo/talebound-frontend" target="_blank"><SiGithub /></FooterLink>
-            <FooterLink href="https://ko-fi.com/talebound" target="_blank"><SiKofi /></FooterLink>
+            <Link href="https://discord.gg/wWsXB5gVmY" target="_blank"><SiDiscord /></Link>
+            <Link href="https://www.youtube.com/@Talebound" target="_blank"><SiYoutube /></Link>
+            <Link href="https://github.com/Talebound" target="_blank"><SiGithub /></Link>
+            <Link href="https://ko-fi.com/talebound" target="_blank"><SiKofi /></Link>
           </FooterIcons>
-          <Text color={'white'}>by Medo</Text>
-          <img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4"  />
+          <Link href="https://github.com/the-medo" target="_blank"><Text color={'white'}>by Medo</Text></Link>
+          <Link href="https://github.com/the-medo" target="_blank"><img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4" alt="the-medo" /></Link>
           <Text color={'white'}>| © {new Date().getFullYear()} Talebound</Text>
         </FooterAvatar>
       </FooterContent>
