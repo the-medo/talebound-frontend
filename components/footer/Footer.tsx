@@ -39,6 +39,10 @@ const LogoWrapper = styled('div', {
   padding: '$sm',
   minWidth: '390px',
   color: "red",
+
+  '@smMax': {
+    minWidth: '0px',
+  },
 });
 
 const LinkColumnWrapper = styled('div', {
@@ -50,7 +54,14 @@ const LinkColumnWrapper = styled('div', {
 
   '@xs': {
     flexDirection: 'row',
-  }
+  },
+
+  '@xsMax': {
+    borderTop: '1px solid $white',
+    borderBottom: '1px solid $white',
+    paddingTop: '$md',
+    paddingBottom: '$md',
+  },
 });
 
 const LinkColumn = styled('div', {
@@ -63,12 +74,19 @@ const LinkColumn = styled('div', {
 
 const FooterAvatar = styled('div', {
   display: 'flex',
+  flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
   gap: '.5rem',
   padding: '$sm',
   minWidth: '390px',
 
+  '@xsMax': {
+    flexDirection: 'column',
+  },
+  '@smMax': {
+    minWidth: '0px',
+  },
   '@sm': {
     justifyContent: 'flex-end',
   },
@@ -118,8 +136,8 @@ const Footer: React.FC = () => {
             <Link href="https://ko-fi.com/talebound" target="_blank"><SiKofi /></Link>
           </FooterIcons>
           <Link href="https://github.com/the-medo" target="_blank"><Text color={'white'}>by Medo</Text></Link>
-          <Link href="https://github.com/the-medo" target="_blank"><img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4" alt="the-medo" /></Link>
-          <Text color={'white'}>| © {new Date().getFullYear()} Talebound</Text>
+            <Link href="https://github.com/the-medo" target="_blank"><img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4" alt="the-medo" /></Link>
+          <Text color={'white'} css={{height: '20px'}}>© {new Date().getFullYear()} Talebound</Text>
         </FooterAvatar>
       </FooterContent>
     </FooterDiv>

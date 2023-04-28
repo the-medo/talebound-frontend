@@ -28,6 +28,23 @@ const HeaderHeading = styled('h1', {
   display: 'inline',
   padding: '$0 $8',
 
+
+  '@smMax': {
+    fontSize: 'max(115px,calc(100vw / 8))',
+    bottom: '$10',
+    left: 'calc((100vw - 200px) / 2)',
+  },
+
+  '@media (max-width: 600px)': {
+    top: '$17',
+    left: '50%',
+  },
+
+  '@media (max-width: 400px)': {
+    fontSize: '96px',
+    top: '$20',
+  },
+
   '&:hover': {
     textShadow: '1px 1px 4px rgba(0, 0, 0, 0.2)',
   }
@@ -47,6 +64,25 @@ const HeaderSubheading = styled('h2', {
   backgroundImage: '$gradientDark',
   backgroundClip: 'text',
   display: 'inline',
+
+  '@smMax': {
+    fontSize: 'max(15px, calc(100vw / 45))', //15
+    bottom: '$12',
+    left: 'calc((100vw - 200px) / 2)',
+  },
+
+  '@media (max-width: 600px)': {
+    top: '$48',
+    left: '0',
+    right: '0',
+    textAlign: 'center',
+    transform: 'translate(0%, 0%)',
+  },
+
+  '@media (max-width: 400px)': {
+    fontSize: '14px',
+    top: '$48',
+  },
 });
 
 

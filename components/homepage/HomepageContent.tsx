@@ -11,6 +11,14 @@ const ContentQuote = styled(Column, {
   padding: '$lg',
   fontSize: '$xl',
   fontStyle: 'italic',
+
+  '@smMax': {
+    fontSize: '$lg',
+  },
+  '@xsMax': {
+    fontSize: '$md',
+  },
+
 });
 
 const CardWrapper = styled('div', {

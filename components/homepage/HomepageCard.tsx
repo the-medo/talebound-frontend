@@ -110,8 +110,10 @@ const Card = styled('div', {
 
   },
 
-  [`&:hover`]: {
-    transform: 'scale(1.05)',
+  '@media (hover: hover)': {
+    [`&:hover`]: {
+      transform: 'scale(1.05)',
+    },
   },
 
   [`&:hover ${CardImage}`]: {

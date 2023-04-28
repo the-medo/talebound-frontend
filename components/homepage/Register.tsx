@@ -28,6 +28,14 @@ const RegisterBox = styled(VerticalSemitransparent, {
   fontSize: '$xs',
   color: '$white600',
   textDecoration: 'none',
+  minWidth: '33%',
+
+
+  '@xsMax': {
+    left: '$0',
+    right: '$0',
+    transform: 'translate(0%, 0%)',
+  },
 });
 
 const RegisterHeader = styled('h2', {
