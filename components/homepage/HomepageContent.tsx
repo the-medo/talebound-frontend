@@ -19,6 +19,7 @@ const CardWrapper = styled('div', {
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'space-evenly',
+  gap: '$md',
 });
 
 const CardColumn = styled(Column, {
