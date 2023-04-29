@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import {Image, styled, Text} from "@nextui-org/react";
+import {styled, Text} from "@nextui-org/react";
 import {SiDiscord, SiGithub, SiKofi, SiYoutube} from "react-icons/si";
+import Logo from "../global/Logo";
 
 
 const FooterDiv = styled('div', {
@@ -109,7 +110,7 @@ const Footer: React.FC = () => {
     <FooterDiv>
       <FooterContent>
         <LogoWrapper>
-          <Image width="7rem" height="7rem" src="/assets/logo/logo-v1.png" />
+          <Logo size="7rem" />
         </LogoWrapper>
         <LinkColumnWrapper>
           <LinkColumn>

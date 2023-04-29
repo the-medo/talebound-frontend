@@ -1,6 +1,6 @@
 import React from "react";
 import {styled} from "@nextui-org/react";
-import Login from "./Login";
+import Login from "../homepage/Login";
 
 const Header = styled('div', {
   width: '100%',

@@ -1,4 +1,4 @@
-import HomepageHeader from "../components/homepage/HomepageHeader";
+import HomepageHeader from "../components/header/HomepageHeader";
 import Head from "next/head";
 import PagePrivacyPolicy from "../screens/privacy-policy/PagePrivacyPolicy";
 import Footer from "../components/footer/Footer";

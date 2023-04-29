@@ -1,8 +1,11 @@
-import HomepageHeader from "../components/header/HomepageHeader";
 import HomepageContent from "../components/homepage/HomepageContent";
 import Register from "../components/homepage/Register";
 import Head from "next/head";
 import Footer from "../components/footer/Footer";
+import Header from "../components/header/Header";
+import Menu from "../components/global/Menu";
+import {Navbar} from "@nextui-org/react";
+import React from "react";
 
 export default function Home() {
   return (
@@ -10,7 +13,8 @@ export default function Home() {
       <Head>
         <title>Talebound</title>
       </Head>
-      <HomepageHeader />
+      <Menu />
+      <Header />
       <HomepageContent />
       <Register background />
       <Footer />

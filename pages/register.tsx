@@ -1,4 +1,4 @@
-import HomepageHeader from "../components/homepage/HomepageHeader";
+import HomepageHeader from "../components/header/HomepageHeader";
 import Register from "../components/homepage/Register";
 import Head from "next/head";
 

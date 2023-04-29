@@ -46,6 +46,9 @@ export const baseTheme = createTheme({
       secondary500: '#78959a',
       tertiary500: '#5b6b82',
 
+      secondary: '#78959a',
+      tertiary: '#5b6b82',
+
       success500: '#45a359',
       danger500: '#f44336',
       info500: '#028FCC',
@@ -63,10 +66,10 @@ export const baseTheme = createTheme({
       transparent90: 'rgba(255, 255, 255, 0.9)',
       transparent100: 'rgba(255, 255, 255, 1)',
 
-      primary100: '#DBF8E4',
-      primary200: '#B8F2D1',
-      primary300: '#8CDAB4',
-      primary400: '#64B696',
+      primary100: '#e7f6ec',
+      primary200: '#c5d2ce',
+      primary300: '#89ab9a',
+      primary400: '#87bda8',
       primary600: '#277364',
       primary700: '#1B605A',
       primary800: '#114D4D',
