@@ -70,9 +70,17 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = () => {
   return (
     <LoginBox>
-      <h3>Login</h3>
-      <InputTransparent type="text" placeholder="Username"/>
-      <InputTransparent type="password" placeholder="Password"/>
+      <h3 id="login">Login</h3>
+      <InputTransparent
+        aria-labelledby="login"
+        type="text"
+        placeholder="Username"
+      />
+      <InputTransparent
+        aria-labelledby="login"
+        type="password"
+        placeholder="Password"
+      />
       <LoginButtonWrapper>
         <Button>Login</Button>
         <Text size="$sm">or</Text>

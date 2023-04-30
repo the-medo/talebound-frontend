@@ -1,13 +1,15 @@
 import React from "react";
 import {Col, Container, Row, Text} from "@nextui-org/react";
 
+interface PagePrivacyPolicyProps {
+  offset?: number;
+}
 
-
-const PagePrivacyPolicy: React.FC = () => {
+const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = ({offset = 3}) => {
   return (
     <Container css={{padding: '$10'}}>
       <Row>
-        <Col offset={3} span={6}>
+        <Col offset={offset} span={12-(2*offset)}>
           <Text h2>Privacy policy</Text>
 
             <Text>At Talebound, we take your privacy seriously. This Privacy Policy outlines how we collect, use, and protect your personal information when you use our website and services.</Text>

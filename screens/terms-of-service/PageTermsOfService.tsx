@@ -1,11 +1,15 @@
 import React from "react";
 import {Col, Container, Row, Text} from "@nextui-org/react";
 
-const PageTermsOfService: React.FC = () => {
+interface PageTermsOfServiceProps {
+  offset?: number;
+}
+
+const PageTermsOfService: React.FC<PageTermsOfServiceProps> = ({offset = 3}) => {
   return (
     <Container css={{padding: '$10'}}>
       <Row>
-        <Col offset={3} span={6}>
+        <Col offset={offset} span={12-(2*offset)}>
           <Text h2>Terms of service</Text>
 
           <Text>By using the Talebound website and services, you agree to be bound by the following Terms of Service:</Text>
