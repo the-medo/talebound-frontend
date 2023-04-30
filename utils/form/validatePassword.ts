@@ -1,11 +1,11 @@
-import {helperOK, HelperType} from "./nextUiTypes";
+import { helperOK, HelperType } from './nextUiTypes';
 
 const passwordHelperOK: HelperType = {
   ...helperOK,
-  text: "(6 - 100 characters)"
-}
+  text: '(6 - 100 characters)',
+};
 
-const passwordAgainHelperOK: HelperType = helperOK
+const passwordAgainHelperOK: HelperType = helperOK;
 
 export const validatePassword = (password: string): HelperType => {
   if (!password) return passwordHelperOK;
@@ -13,13 +13,13 @@ export const validatePassword = (password: string): HelperType => {
   const isValidLength = password.length >= 6 && password.length <= 100;
   if (!isValidLength) {
     return {
-      text: "Needs to be between 6 and 100 characters",
-      color: "error",
+      text: 'Needs to be between 6 and 100 characters',
+      color: 'error',
     };
   }
 
-  return passwordHelperOK
-}
+  return passwordHelperOK;
+};
 
 export const validatePasswordAgain = (password1: string, password2: string): HelperType => {
   if (!password1) return passwordAgainHelperOK;
@@ -28,9 +28,9 @@ export const validatePasswordAgain = (password1: string, password2: string): Hel
   if (password1 !== password2) {
     return {
       text: "Passwords don't match",
-      color: "error",
+      color: 'error',
     };
   }
 
   return passwordAgainHelperOK;
-}
+};

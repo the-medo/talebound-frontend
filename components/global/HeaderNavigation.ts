@@ -1,4 +1,4 @@
-import {styled} from "@nextui-org/react";
+import { styled } from '@nextui-org/react';
 
 export const HeaderNavigation = styled('nav', {
   position: 'absolute',
@@ -7,10 +7,12 @@ export const HeaderNavigation = styled('nav', {
   left: '$50',
   transform: 'translate(-50%, 0%)',
   padding: '$0',
-  maskImage: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
+  maskImage:
+    'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
   '& ul': {
     textAlign: 'center',
-    background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 25%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
+    background:
+      'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 25%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
     '& li': {
       display: 'inline-block',
       '& a': {
@@ -19,9 +21,9 @@ export const HeaderNavigation = styled('nav', {
         '&:hover': {
           boxShadow: '$focus',
           background: 'rgba(255, 255, 255, 0.1)',
-          color: '$primary700'
-        }
-      }
-    }
-  }
+          color: '$primary700',
+        },
+      },
+    },
+  },
 });

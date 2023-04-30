@@ -1,8 +1,7 @@
-import React from "react";
-import {styled} from "@nextui-org/react";
+import React from 'react';
+import { styled } from '@nextui-org/react';
 
 const CardImage = styled('div', {
-
   variants: {
     image: {
       1: {
@@ -23,8 +22,8 @@ const CardImage = styled('div', {
       6: {
         backgroundImage: 'url("../assets/images/open_source.png")',
       },
-    }
-  }
+    },
+  },
 });
 
 const CardContent = styled('div', {
@@ -55,7 +54,6 @@ const CardHeader = styled('h3', {
   },
 });
 
-
 const Card = styled('div', {
   display: 'flex',
   flexDirection: 'row',
@@ -66,7 +64,6 @@ const Card = styled('div', {
   boxSizing: 'border-box',
   transition: 'all 0.4s',
   backgroundColor: '$white100',
-
 
   '@xsMax': {
     flexDirection: 'column',
@@ -107,7 +104,6 @@ const Card = styled('div', {
       width: '200px',
       backgroundSize: '100%',
     },
-
   },
 
   '@media (hover: hover)': {
@@ -139,7 +135,8 @@ const Card = styled('div', {
   variants: {
     cardType: {
       left: {
-        maskImage: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
+        maskImage:
+          'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
         paddingRight: '70px',
 
         '@xsMax': {
@@ -148,13 +145,15 @@ const Card = styled('div', {
         },
       },
       right: {
-        maskImage: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 1) 100%)',
+        maskImage:
+          'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 1) 100%)',
         textAlign: 'right',
         paddingLeft: '70px',
 
         '@mdMax': {
           flexDirection: 'row-reverse',
-          maskImage: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
+          maskImage:
+            'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%)',
           textAlign: 'left',
           paddingLeft: '$0',
           paddingRight: '70px',
@@ -166,35 +165,29 @@ const Card = styled('div', {
           maskImage: 'none',
           justifyContent: 'flex-end',
         },
-      }
+      },
     },
-  }
+  },
 });
 
-
 export interface HomepageCardProps {
-  image: "1" | "2" | "3" | "4" | "5" | "6";
+  image: '1' | '2' | '3' | '4' | '5' | '6';
   cardType: 'left' | 'right';
   heading: string;
   text: string;
 }
 
-const HomepageCard: React.FC<HomepageCardProps> = ({
-  image,
-  cardType,
-  heading,
-  text,
-}) => {
+const HomepageCard: React.FC<HomepageCardProps> = ({ image, cardType, heading, text }) => {
   return (
     <Card cardType={cardType}>
-      {cardType === "left" && <CardImage image={image} />}
+      {cardType === 'left' && <CardImage image={image} />}
       <CardContent>
         <CardHeader>{heading}</CardHeader>
         {text}
       </CardContent>
-      {cardType === "right" && <CardImage image={image} />}
+      {cardType === 'right' && <CardImage image={image} />}
     </Card>
   );
-}
+};
 
 export default HomepageCard;

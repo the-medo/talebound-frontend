@@ -1,11 +1,9 @@
-import React from "react";
-import {styled, Text} from "@nextui-org/react";
-import {VerticalSemitransparent} from "../global/VerticalSemitransparent";
-import {InputTransparent} from "../global/InputTransparent";
-import {Button} from "../global/Button";
-import Link from "next/link";
-
-
+import React from 'react';
+import { styled, Text } from '@nextui-org/react';
+import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
+import { InputTransparent } from '../global/InputTransparent';
+import { Button } from '../global/Button';
+import Link from 'next/link';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
@@ -18,7 +16,6 @@ const LoginBox = styled(VerticalSemitransparent, {
   color: '$primary800',
   textDecoration: 'none',
   width: '200px',
-
 
   '@media (max-width: 600px)': {
     bottom: '0',
@@ -37,11 +34,9 @@ const LoginBox = styled(VerticalSemitransparent, {
     [`& ${InputTransparent}`]: {
       maxWidth: '400px',
       width: '75%',
-    }
+    },
   },
-
 });
-
 
 const LoginButtonWrapper = styled('div', {
   display: 'flex',
@@ -68,23 +63,15 @@ const Login: React.FC = () => {
   return (
     <LoginBox>
       <h3 id="login">Login</h3>
-      <InputTransparent
-        aria-labelledby="login"
-        type="text"
-        placeholder="Username"
-      />
-      <InputTransparent
-        aria-labelledby="login"
-        type="password"
-        placeholder="Password"
-      />
+      <InputTransparent aria-labelledby="login" type="text" placeholder="Username" />
+      <InputTransparent aria-labelledby="login" type="password" placeholder="Password" />
       <LoginButtonWrapper>
         <Button>Login</Button>
         <Text size="$sm">or</Text>
         <Link href="/#register">Sign up</Link>
       </LoginButtonWrapper>
     </LoginBox>
-  )
-}
+  );
+};
 
 export default Login;

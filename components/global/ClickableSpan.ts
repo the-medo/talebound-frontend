@@ -1,5 +1,4 @@
-import {styled} from "@nextui-org/react";
-
+import { styled } from '@nextui-org/react';
 
 export const ClickableSpan = styled('span', {
   color: '$primary200 !important',
@@ -8,5 +7,5 @@ export const ClickableSpan = styled('span', {
 
   '&:hover': {
     color: '$primary300 !important',
-  }
+  },
 });

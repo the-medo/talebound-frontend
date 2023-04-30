@@ -1,7 +1,6 @@
-import React from "react";
-import {Avatar, Dropdown, Link, Navbar, styled, Text} from "@nextui-org/react";
-import Logo from "./Logo";
-
+import React from 'react';
+import { Avatar, Dropdown, Link, Navbar, styled, Text } from '@nextui-org/react';
+import Logo from './Logo';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -16,32 +15,34 @@ const HeaderHeading = styled('h1', {
 });
 
 const Menu: React.FC = () => {
-  const collapseItems = [
-    "Home",
-    "Worlds",
-    "Articles",
-    "Create",
-  ];
+  const collapseItems = ['Home', 'Worlds', 'Articles', 'Create'];
 
   return (
-
-    <Navbar css={{backdropFilter: 'saturate(180%) blur(var(--nextui--navbarBlur)) opacity(0)'}} isBordered isCompact variant="sticky" maxWidth="fluid" >
+    <Navbar
+      css={{ backdropFilter: 'saturate(180%) blur(var(--nextui--navbarBlur)) opacity(0)' }}
+      isBordered
+      isCompact
+      variant="sticky"
+      maxWidth="fluid"
+    >
       <Navbar.Brand>
-        <Navbar.Toggle aria-label="toggle navigation" showIn="xs"  />
+        <Navbar.Toggle aria-label="toggle navigation" showIn="xs" />
         <Logo size="3rem" />
         <HeaderHeading>Talebound</HeaderHeading>
       </Navbar.Brand>
       <Navbar.Content enableCursorHighlight hideIn="xs" variant="highlight-solid">
         <Navbar.Link href="#">Home</Navbar.Link>
-        <Navbar.Link isActive href="#">Worlds</Navbar.Link>
+        <Navbar.Link isActive href="#">
+          Worlds
+        </Navbar.Link>
         <Navbar.Link href="#">Articles</Navbar.Link>
         <Navbar.Link href="#">Create</Navbar.Link>
       </Navbar.Content>
       <Navbar.Content
         css={{
-          "@xs": {
-            w: "12%",
-            jc: "flex-end",
+          '@xs': {
+            w: '12%',
+            jc: 'flex-end',
           },
         }}
       >
@@ -62,20 +63,18 @@ const Menu: React.FC = () => {
             color="primary"
             onAction={(actionKey) => console.log({ actionKey })}
           >
-            <Dropdown.Item key="profile" css={{ height: "$18" }}>
-              <Text b color="inherit" css={{ d: "flex" }}>
+            <Dropdown.Item key="profile" css={{ height: '$18' }}>
+              <Text b color="inherit" css={{ d: 'flex' }}>
                 Signed in as
               </Text>
-              <Text b color="inherit" css={{ d: "flex" }}>
+              <Text b color="inherit" css={{ d: 'flex' }}>
                 zoey@example.com
               </Text>
             </Dropdown.Item>
             <Dropdown.Item key="settings" withDivider>
               Settings
             </Dropdown.Item>
-            <Dropdown.Item key="help_and_feedback" >
-              Help & Feedback
-            </Dropdown.Item>
+            <Dropdown.Item key="help_and_feedback">Help & Feedback</Dropdown.Item>
             <Dropdown.Item key="logout" withDivider color="error">
               Log Out
             </Dropdown.Item>
@@ -88,7 +87,7 @@ const Menu: React.FC = () => {
             <Link
               color="inherit"
               css={{
-                minWidth: "100%",
+                minWidth: '100%',
               }}
               href="#"
             >
@@ -99,6 +98,6 @@ const Menu: React.FC = () => {
       </Navbar.Collapse>
     </Navbar>
   );
-}
+};
 
 export default Menu;

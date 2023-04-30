@@ -1,5 +1,5 @@
-import {styled} from "@nextui-org/react";
-import React from "react";
+import { styled } from '@nextui-org/react';
+import React from 'react';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -13,11 +13,7 @@ const BaseHeader = styled('div', {
 });
 
 const Header: React.FC = () => {
-  return (
-    <BaseHeader>
-
-    </BaseHeader>
-  );
-}
+  return <BaseHeader></BaseHeader>;
+};
 
 export default Header;

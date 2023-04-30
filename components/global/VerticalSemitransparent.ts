@@ -1,4 +1,4 @@
-import {styled} from "@nextui-org/react";
+import { styled } from '@nextui-org/react';
 
 export const VerticalSemitransparent = styled('div', {
   display: 'flex',

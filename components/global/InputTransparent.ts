@@ -1,4 +1,4 @@
-import {CSS, Input, styled} from "@nextui-org/react";
+import { CSS, Input, styled } from '@nextui-org/react';
 
 // export const InputTransparent = styled('input', {
 //   fontFamily: '$heading',
@@ -24,7 +24,6 @@ import {CSS, Input, styled} from "@nextui-org/react";
 //     boxShadow: '$focus',
 //   }
 // });
-
 
 const InputProps: CSS = {
   background: '$transparent40',

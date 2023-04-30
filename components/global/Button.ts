@@ -1,4 +1,4 @@
-import {styled} from "@nextui-org/react";
+import { styled } from '@nextui-org/react';
 
 export const Button = styled('button', {
   fontFamily: '$heading',
@@ -21,5 +21,5 @@ export const Button = styled('button', {
     background: '$primary900',
     color: '$transparent80',
     boxShadow: '$focus',
-  }
+  },
 });

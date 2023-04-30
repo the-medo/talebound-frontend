@@ -1,6 +1,6 @@
-import React from "react";
-import {styled} from "@nextui-org/react";
-import Login from "../homepage/Login";
+import React from 'react';
+import { styled } from '@nextui-org/react';
+import Login from '../homepage/Login';
 
 const Header = styled('div', {
   width: '100%',
@@ -28,7 +28,6 @@ const HeaderHeading = styled('h1', {
   display: 'inline',
   padding: '$0 $8',
 
-
   '@smMax': {
     fontSize: 'max(115px,calc(100vw / 8))',
     bottom: '$10',
@@ -47,7 +46,7 @@ const HeaderHeading = styled('h1', {
 
   '&:hover': {
     textShadow: '1px 1px 4px rgba(0, 0, 0, 0.2)',
-  }
+  },
 });
 
 const HeaderSubheading = styled('h2', {
@@ -93,6 +92,6 @@ const HomepageHeader: React.FC = () => {
       <Login />
     </Header>
   );
-}
+};
 
 export default HomepageHeader;

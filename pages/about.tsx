@@ -1,7 +1,7 @@
-import HomepageHeader from "../components/header/HomepageHeader";
-import Head from "next/head";
-import Footer from "../components/footer/Footer";
-import PageAbout from "../screens/about/PageAbout";
+import HomepageHeader from '../components/header/HomepageHeader';
+import Head from 'next/head';
+import Footer from '../components/footer/Footer';
+import PageAbout from '../screens/about/PageAbout';
 
 export default function PrivacyPolicy() {
   return (
@@ -13,5 +13,5 @@ export default function PrivacyPolicy() {
       <PageAbout />
       <Footer />
     </>
-  )
+  );
 }

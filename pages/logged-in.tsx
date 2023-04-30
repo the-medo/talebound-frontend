@@ -1,10 +1,10 @@
-import HomepageContent from "../components/homepage/HomepageContent";
-import Register from "../components/homepage/Register";
-import Head from "next/head";
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
-import Menu from "../components/global/Menu";
-import React from "react";
+import HomepageContent from '../components/homepage/HomepageContent';
+import Register from '../components/homepage/Register';
+import Head from 'next/head';
+import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
+import Menu from '../components/global/Menu';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -18,5 +18,5 @@ export default function Home() {
       <Register background />
       <Footer />
     </>
-  )
+  );
 }

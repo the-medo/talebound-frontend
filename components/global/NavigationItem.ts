@@ -1,5 +1,5 @@
-import {styled} from "@nextui-org/react";
-import Link from "next/link";
+import { styled } from '@nextui-org/react';
+import Link from 'next/link';
 
 export const NavigationItem = styled(Link, {
   fontFamily: '$heading',
