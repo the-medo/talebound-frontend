@@ -64,10 +64,7 @@ const LoginButtonWrapper = styled('div', {
   },
 });
 
-interface LoginProps {
-}
-
-const Login: React.FC<LoginProps> = () => {
+const Login: React.FC = () => {
   return (
     <LoginBox>
       <h3 id="login">Login</h3>

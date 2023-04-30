@@ -1,10 +1,7 @@
 import React from "react";
 import {Col, Container, Row, Text} from "@nextui-org/react";
 
-interface PageAboutProps {
-}
-
-const PageAbout: React.FC<PageAboutProps> = () => {
+const PageAbout: React.FC = () => {
   return (
     <Container css={{padding: '$10'}}>
       <Row>
@@ -16,9 +13,9 @@ const PageAbout: React.FC<PageAboutProps> = () => {
           <Text>Talebound was started in 2023. We believe that stories have the power to connect people, inspire new ideas, and transport us to realms of endless possibilities. Talebound is the culmination of our dedication to providing an accessible, engaging, and supportive space for individuals to unleash their creativity and embark on unforgettable adventures.</Text><br/><br/>
 
           <Text h3>Our Platform</Text>
-          <Text>Talebound offers a wide array of features and tools to enhance your text-based role-playing experience. From customizable world-building tools and diverse character creation options to intuitive text editors and real-time in-game chat, we've designed our platform to cater to users of all experience levels and interests.</Text><br/>
+          <Text>Talebound offers a wide array of features and tools to enhance your text-based role-playing experience. From customizable world-building tools and diverse character creation options to intuitive text editors and real-time in-game chat, we&apos;ve designed our platform to cater to users of all experience levels and interests.</Text><br/>
 
-          <Text>Whether you're a seasoned role-player, a first-time dungeon master, or a casual storyteller, our user-friendly interface and extensive tutorial resources ensure that you have everything you need to dive into the world of text-based adventures.</Text><br/>
+          <Text>Whether you&apos;re a seasoned role-player, a first-time dungeon master, or a casual storyteller, our user-friendly interface and extensive tutorial resources ensure that you have everything you need to dive into the world of text-based adventures.</Text><br/>
 
           <Text h3>Our Community</Text>
           <Text>At the heart of Talebound is our vibrant and diverse community of dreamers, creators, and adventurers. We are proud to foster an inclusive and supportive environment where users can connect, collaborate, and learn from one another. Our community forums offer a space for users to discuss their experiences, share tips and tricks, and work together on new ideas and custom worlds.</Text><br/>

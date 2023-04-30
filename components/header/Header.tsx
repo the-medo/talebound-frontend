@@ -1,4 +1,4 @@
-import {Navbar, styled} from "@nextui-org/react";
+import {styled} from "@nextui-org/react";
 import React from "react";
 
 const BaseHeader = styled('div', {
@@ -12,15 +12,7 @@ const BaseHeader = styled('div', {
   position: 'relative',
 });
 
-
-const StyledNavbar = styled(Navbar, {
-
-});
-
-interface HeaderProps {
-}
-
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC = () => {
   return (
     <BaseHeader>
 

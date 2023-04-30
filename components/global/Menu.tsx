@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, Button, Dropdown, Link, Navbar, styled, Text} from "@nextui-org/react";
+import {Avatar, Dropdown, Link, Navbar, styled, Text} from "@nextui-org/react";
 import Logo from "./Logo";
 
 
@@ -83,7 +83,7 @@ const Menu: React.FC = () => {
         </Dropdown>
       </Navbar.Content>
       <Navbar.Collapse>
-        {collapseItems.map((item, index) => (
+        {collapseItems.map((item) => (
           <Navbar.CollapseItem key={item}>
             <Link
               color="inherit"

@@ -34,10 +34,7 @@ const CardColumn = styled(Column, {
   gap: '$md',
 });
 
-interface HomepageContentProps {
-}
-
-const HomepageContent: React.FC<HomepageContentProps> = () => {
+const HomepageContent: React.FC = () => {
   return (
     <MainContent>
       <ContentQuote>

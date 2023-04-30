@@ -2,10 +2,7 @@ import React from "react";
 import {HeaderNavigation} from "../global/HeaderNavigation";
 import {NavigationItem} from "../global/NavigationItem";
 
-interface HomepageNavigationProps {
-}
-
-const HomepageNavigation: React.FC<HomepageNavigationProps> = () => {
+const HomepageNavigation: React.FC = () => {
   return (
     <HeaderNavigation>
       <ul>

@@ -99,12 +99,12 @@ const Register: React.FC<HomepageRegisterProps> = ({background = false}) => {
   const handleTOS = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setVisibleTos(true);
-  }, []);
+  }, [setVisibleTos]);
 
   const handlePrivacy = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setVisiblePrivacy(true);
-  }, []);
+  }, [setVisiblePrivacy]);
 
   const handleCheckbox = useCallback((v: boolean) => {
     setChecked(v)

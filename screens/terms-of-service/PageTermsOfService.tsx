@@ -27,7 +27,7 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = ({offset = 3}) => 
             <Text>You are responsible for maintaining the confidentiality of your account and password. You agree to notify us immediately of any unauthorized access or use of your account.</Text><br/>
 
             <li><Text b>Limitation of Liability</Text></li>
-            <Text>Talebound is provided "as is" and without warranties of any kind. We shall not be liable for any damages, including direct, indirect, incidental, or consequential damages, arising out of the use or inability to use our website or services.</Text><br/>
+            <Text>Talebound is provided &quot;as is&quot; and without warranties of any kind. We shall not be liable for any damages, including direct, indirect, incidental, or consequential damages, arising out of the use or inability to use our website or services.</Text><br/>
 
             <li><Text b>Changes to the Terms of Service</Text></li>
             <Text>We may update these Terms of Service from time to time. Any changes will be posted on this page, and your continued use of Talebound constitutes your acceptance of any changes to the Terms of Service.</Text><br/>

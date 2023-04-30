@@ -85,11 +85,7 @@ const HeaderSubheading = styled('h2', {
   },
 });
 
-
-interface HomepageHeaderProps {
-}
-
-const HomepageHeader: React.FC<HomepageHeaderProps> = () => {
+const HomepageHeader: React.FC = () => {
   return (
     <Header>
       <HeaderHeading>Talebound</HeaderHeading>
