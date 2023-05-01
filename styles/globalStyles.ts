@@ -11,11 +11,13 @@ const globalStyles = globalCss({
   },
   html: {
     backgroundImage: 'linear-gradient(to right top, #eafff9 0%, #fff2e8 100%)',
+    height: '100%',
   },
   body: {
     fontFamily: '$text',
     scrollbarWidth: 'thin' /* Adjust the width of the scrollbar */,
     scrollbarColor: '#888 #f5f5f5' /* Format: scrollbar-color: thumb track */,
+    height: '100%',
   },
   'h1,h2,h3,h4,h5,h6': {
     fontFamily: '$heading',

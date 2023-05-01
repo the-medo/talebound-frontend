@@ -13,6 +13,7 @@ const FooterDiv = styled('div', {
   padding: '$md',
   display: 'flex',
   flexDirection: 'column',
+  float: 'bottom',
 });
 
 const FooterContent = styled('div', {

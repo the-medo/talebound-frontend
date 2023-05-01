@@ -5,6 +5,5 @@ export const VerticalSemitransparent = styled('div', {
   flexDirection: 'column',
   gap: '$md',
   alignItems: 'center',
-  justifyContent: 'center',
   background: '$gradientVerticalSemitransparent',
 });
