@@ -218,9 +218,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                   Password
                   <PasswordTransparent
                     onChange={onChangePassword1}
-                    type="password"
                     fullWidth
-                    clearable
                     required
                     shadow={false}
                     animated={false}
@@ -236,11 +234,9 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                   Password again
                   <PasswordTransparent
                     onChange={onChangePassword2}
-                    type="password"
                     name="reg-pass2"
                     id="reg-pass2"
                     fullWidth
-                    clearable
                     required
                     shadow={false}
                     animated={false}

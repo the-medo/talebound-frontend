@@ -127,6 +127,7 @@ export class HttpClient<SecurityDataType = unknown> {
     body,
     ...params
   }: FullRequestParams): Promise<AxiosResponse<T>> => {
+    console.log({ secure, path, type, query, format, body, ...params });
     const secureParams =
       ((typeof secure === 'boolean' ? secure : this.secure) &&
         this.securityWorker &&
