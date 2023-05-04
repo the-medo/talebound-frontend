@@ -36,7 +36,6 @@ export class Login<SecurityDataType = unknown> {
       body: body,
       type: ContentType.Json,
       format: 'json',
-      withCredentials: true,
       ...params,
     });
 }

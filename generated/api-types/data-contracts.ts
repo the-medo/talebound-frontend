@@ -75,8 +75,6 @@ export interface PbLoginUserRequest {
 export interface PbLoginUserResponse {
   user?: PbUser;
   sessionId?: string;
-  accessToken?: string;
-  refreshToken?: string;
   /** @format date-time */
   accessTokenExpiresAt?: string;
   /** @format date-time */
