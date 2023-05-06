@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, Dropdown, Link, Navbar, styled, Text } from '@nextui-org/react';
 import Logo from './Logo';
+import { Client } from 'react-hydration-provider';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -31,12 +32,16 @@ const Menu: React.FC = () => {
         <HeaderHeading>Talebound</HeaderHeading>
       </Navbar.Brand>
       <Navbar.Content enableCursorHighlight hideIn="xs" variant="highlight-solid">
-        <Navbar.Link href="#">Home</Navbar.Link>
-        <Navbar.Link isActive href="#">
-          Worlds
-        </Navbar.Link>
-        <Navbar.Link href="#">Articles</Navbar.Link>
-        <Navbar.Link href="#">Create</Navbar.Link>
+        <Client>
+          <Navbar.Link id="link-1" href="#">
+            Home
+          </Navbar.Link>
+          <Navbar.Link isActive href="#">
+            Worlds
+          </Navbar.Link>
+          <Navbar.Link href="#">Articles</Navbar.Link>
+          <Navbar.Link href="#">Create</Navbar.Link>
+        </Client>
       </Navbar.Content>
       <Navbar.Content
         css={{
@@ -46,40 +51,42 @@ const Menu: React.FC = () => {
           },
         }}
       >
-        <Dropdown placement="bottom-right">
-          <Navbar.Item>
-            <Dropdown.Trigger>
-              <Avatar
-                bordered
-                as="button"
-                color="primary"
-                size="md"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-              />
-            </Dropdown.Trigger>
-          </Navbar.Item>
-          <Dropdown.Menu
-            aria-label="User menu actions"
-            color="primary"
-            onAction={(actionKey) => console.log({ actionKey })}
-          >
-            <Dropdown.Item key="profile" css={{ height: '$18' }}>
-              <Text b color="inherit" css={{ d: 'flex' }}>
-                Signed in as
-              </Text>
-              <Text b color="inherit" css={{ d: 'flex' }}>
-                zoey@example.com
-              </Text>
-            </Dropdown.Item>
-            <Dropdown.Item key="settings" withDivider>
-              Settings
-            </Dropdown.Item>
-            <Dropdown.Item key="help_and_feedback">Help & Feedback</Dropdown.Item>
-            <Dropdown.Item key="logout" withDivider color="error">
-              Log Out
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Client>
+          <Dropdown placement="bottom-right">
+            <Navbar.Item id="navbar-item-1">
+              <Dropdown.Trigger>
+                <Avatar
+                  bordered
+                  as="button"
+                  color="primary"
+                  size="md"
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                />
+              </Dropdown.Trigger>
+            </Navbar.Item>
+            <Dropdown.Menu
+              aria-label="User menu actions"
+              color="primary"
+              onAction={(actionKey) => console.log({ actionKey })}
+            >
+              <Dropdown.Item key="profile" css={{ height: '$18' }}>
+                <Text b color="inherit" css={{ d: 'flex' }}>
+                  Signed in as
+                </Text>
+                <Text b color="inherit" css={{ d: 'flex' }}>
+                  zoey@example.com
+                </Text>
+              </Dropdown.Item>
+              <Dropdown.Item key="settings" withDivider>
+                Settings
+              </Dropdown.Item>
+              <Dropdown.Item key="help_and_feedback">Help & Feedback</Dropdown.Item>
+              <Dropdown.Item key="logout" withDivider color="error">
+                Log Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Client>
       </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item) => (

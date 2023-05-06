@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Modal, styled, Text, useInput, useModal, Button } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
@@ -10,6 +12,7 @@ import PageTermsOfService from '../../screens/terms-of-service/PageTermsOfServic
 import PagePrivacyPolicy from '../../screens/privacy-policy/PagePrivacyPolicy';
 import { ClickableSpan } from '../global/ClickableSpan';
 import { useCreateUser } from '../../api/useCreateUser';
+import { Client } from 'react-hydration-provider';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -157,7 +160,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
   }, [buttonDisabled, usernameValue, emailValue, password1Value, password2Value]);
 
   return (
-    <>
+    <Client>
       <RegisterBackground
         id="register"
         css={{ $$backgroundImage: background ? 'url("../assets/images/register-bg.png")' : '' }}
@@ -305,7 +308,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
           <PagePrivacyPolicy offset={0} />
         </Modal.Body>
       </Modal>
-    </>
+    </Client>
   );
 };
 

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
 import { StoreProvider } from '../store';
+import { CookiesProvider } from 'react-cookie';
+import { HydrationProvider } from 'react-hydration-provider';
 
 const queryClient = new QueryClient();
 axios.defaults.withCredentials = true;
@@ -13,13 +15,17 @@ function MyApp({ Component, pageProps }: AppProps) {
   globalStyles();
 
   return (
-    <StoreProvider>
-      <QueryClientProvider client={queryClient}>
-        <NextUIProvider theme={baseTheme}>
-          <Component {...pageProps} />
-        </NextUIProvider>
-      </QueryClientProvider>
-    </StoreProvider>
+    <HydrationProvider>
+      <NextUIProvider theme={baseTheme}>
+        <CookiesProvider>
+          <StoreProvider>
+            <QueryClientProvider client={queryClient}>
+              <Component {...pageProps} />
+            </QueryClientProvider>
+          </StoreProvider>
+        </CookiesProvider>
+      </NextUIProvider>
+    </HydrationProvider>
   );
 }
 

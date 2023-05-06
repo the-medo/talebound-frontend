@@ -15,10 +15,11 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.5",
     "axios": "^1.4.0",
-    "cookies": "^0.8.0",
     "next": "13.3.0",
     "react": "18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
+    "react-hydration-provider": "^1.0.2",
     "react-icons": "^4.8.0",
     "react-query-kit": "^1.4.4",
     "react-redux": "^8.0.5"

@@ -1,9 +1,15 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 import { styled, Text, useInput, Button } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
 import { InputTransparent, PasswordTransparent } from '../global/InputTransparent';
 import Link from 'next/link';
 import { useLogin } from '../../api/useLogin';
+import { useRouter } from 'next/router';
+import { setUser } from '../../utils/auth/userSlice';
+import { useDispatch } from 'react-redux';
+import { Client } from 'react-hydration-provider';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
@@ -60,7 +66,15 @@ const LoginButtonWrapper = styled('div', {
 });
 
 const Login: React.FC = () => {
-  const login = useLogin();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const login = useLogin({
+    onSuccess: (data) => {
+      dispatch(setUser(data.data.user));
+      void router.push('/logged-in');
+    },
+  });
 
   const {
     value: usernameValue,
@@ -87,50 +101,52 @@ const Login: React.FC = () => {
   }, [usernameValue, passwordValue]);
 
   return (
-    <LoginBox>
-      <h3 id="login">Login</h3>
-      <InputTransparent
-        onChange={onChangeUsername}
-        aria-labelledby="login"
-        placeholder="Username"
-        fullWidth
-        clearable
-        required
-        shadow={false}
-        animated={false}
-      />
-      <PasswordTransparent
-        onChange={onChangePassword}
-        aria-labelledby="login"
-        placeholder="Password"
-        fullWidth
-        required
-        shadow={false}
-        animated={false}
-      />
-      <LoginButtonWrapper>
-        <Button
-          color="primary"
-          auto
-          size="md"
-          onPress={submitLogin}
-          css={{
-            opacity: !buttonDisabled ? '1' : '0.5',
-            '&:hover': {
-              opacity: !buttonDisabled ? '0.8' : '0.5',
-            },
-          }}
-        >
-          <Text b size="$lg" color="$white">
-            {login.isLoading ? 'Signing in...' : 'Sign in'}
-          </Text>
-        </Button>
-        <Text size="$sm">or</Text>
-        <Link href="/#register">Sign up</Link>
+    <Client>
+      <LoginBox>
+        <h3 id="login">Login</h3>
+        <InputTransparent
+          onChange={onChangeUsername}
+          aria-labelledby="login"
+          placeholder="Username"
+          fullWidth
+          clearable
+          required
+          shadow={false}
+          animated={false}
+        />
+        <PasswordTransparent
+          onChange={onChangePassword}
+          aria-labelledby="login"
+          placeholder="Password"
+          fullWidth
+          required
+          shadow={false}
+          animated={false}
+        />
+        <LoginButtonWrapper>
+          <Button
+            color="primary"
+            auto
+            size="md"
+            onPress={submitLogin}
+            css={{
+              opacity: !buttonDisabled ? '1' : '0.5',
+              '&:hover': {
+                opacity: !buttonDisabled ? '0.8' : '0.5',
+              },
+            }}
+          >
+            <Text b size="$lg" color="$white">
+              {login.isLoading ? 'Signing in...' : 'Sign in'}
+            </Text>
+          </Button>
+          <Text size="$sm">or</Text>
+          <Link href="/#register">Sign up</Link>
 
-        {login.isError && !login.isLoading && <Text color="error">Something went wrong.</Text>}
-      </LoginButtonWrapper>
-    </LoginBox>
+          {login.isError && !login.isLoading && <Text color="error">Something went wrong.</Text>}
+        </LoginButtonWrapper>
+      </LoginBox>
+    </Client>
   );
 };
 

@@ -1,12 +1,14 @@
-import HomepageContent from '../components/homepage/HomepageContent';
-import Register from '../components/homepage/Register';
 import Head from 'next/head';
 import Footer from '../components/footer/Footer';
 import Header from '../components/header/Header';
 import Menu from '../components/global/Menu';
 import React from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { Client } from 'react-hydration-provider';
 
 export default function Home() {
+  const { user, isLoggedIn } = useAuth();
+
   return (
     <>
       <Head>
@@ -14,8 +16,8 @@ export default function Home() {
       </Head>
       <Menu />
       <Header />
-      <HomepageContent />
-      <Register background />
+      <Client>{user?.email}</Client>
+      Logged in = {isLoggedIn ? 'true' : 'false'}
       <Footer />
     </>
   );
