@@ -16,6 +16,8 @@ import {
   PbCreateUserResponse,
   PbGetUserRolesResponse,
   PbGetUsersResponse,
+  PbLoginUserRequest,
+  PbLoginUserResponse,
   PbRemoveRoleFromUserResponse,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
@@ -89,6 +91,44 @@ export class Users<SecurityDataType = unknown> {
     this.http.request<PbUpdateUserResponse, RpcStatus>({
       path: `/users`,
       method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Login user - get user object and set HttpOnly cookies
+   *
+   * @tags Talebound
+   * @name TaleboundLoginUser
+   * @summary Login user
+   * @request POST:/users/login
+   * @response `200` `PbLoginUserResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundLoginUser = (body: PbLoginUserRequest, params: RequestParams = {}) =>
+    this.http.request<PbLoginUserResponse, RpcStatus>({
+      path: `/users/login`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Logout user - it clears HttpOnly cookies - no request data required
+   *
+   * @tags Talebound
+   * @name TaleboundLogoutUser
+   * @summary Logout user
+   * @request POST:/users/logout
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundLogoutUser = (body: object, params: RequestParams = {}) =>
+    this.http.request<object, RpcStatus>({
+      path: `/users/logout`,
+      method: 'POST',
       body: body,
       type: ContentType.Json,
       format: 'json',

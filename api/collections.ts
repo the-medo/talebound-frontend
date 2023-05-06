@@ -3,7 +3,6 @@
 import { getApiUrl } from '../utils/functions/getApiUrl';
 import { HttpClient } from '../generated/api-types/http-client';
 import { Chat } from '../generated/api-types/Chat';
-import { Login } from '../generated/api-types/Login';
 import { Users } from '../generated/api-types/Users';
 import { Verify } from '../generated/api-types/Verify';
 
@@ -23,6 +22,5 @@ API.instance.interceptors.request.use(
 console.log(API.instance.defaults.withCredentials, 'API.instance.defaults.withCredentials');
 
 export const ChatCollection = new Chat(API);
-export const LoginCollection = new Login(API);
 export const UsersCollection = new Users(API);
 export const VerifyCollection = new Verify(API);
