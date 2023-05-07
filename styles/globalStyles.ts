@@ -11,7 +11,6 @@ const globalStyles = globalCss({
   },
   html: {
     backgroundImage: 'linear-gradient(to right top, #eafff9 0%, #fff2e8 100%)',
-    height: '100%',
   },
   body: {
     fontFamily: '$text',

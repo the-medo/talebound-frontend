@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Key, useCallback } from 'react';
 import { Avatar, Dropdown, Link, Navbar, styled, Text } from '@nextui-org/react';
 import Logo from './Logo';
 import { Client } from 'react-hydration-provider';
+import { useAuth } from '../../hooks/useAuth';
+import { setUser } from '../../utils/auth/userSlice';
+import { useLogout } from '../../api/useLogout';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -16,7 +21,25 @@ const HeaderHeading = styled('h1', {
 });
 
 const Menu: React.FC = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { user } = useAuth();
   const collapseItems = ['Home', 'Worlds', 'Articles', 'Create'];
+
+  const logout = useLogout({
+    onSuccess: () => {
+      console.log('Logging out...');
+      dispatch(setUser(undefined));
+      void router.push('/');
+    },
+  });
+
+  const handleUserDropdown = useCallback((key: Key) => {
+    console.log('handleUserDropdown called', key);
+    if (key === 'logout') {
+      logout.mutate();
+    }
+  }, []);
 
   return (
     <Navbar
@@ -67,21 +90,23 @@ const Menu: React.FC = () => {
             <Dropdown.Menu
               aria-label="User menu actions"
               color="primary"
-              onAction={(actionKey) => console.log({ actionKey })}
+              onAction={handleUserDropdown}
             >
-              <Dropdown.Item key="profile" css={{ height: '$18' }}>
+              <Dropdown.Item key="profile" textValue="asdf" css={{ height: '$18' }}>
                 <Text b color="inherit" css={{ d: 'flex' }}>
                   Signed in as
                 </Text>
                 <Text b color="inherit" css={{ d: 'flex' }}>
-                  zoey@example.com
+                  {user?.email}
                 </Text>
               </Dropdown.Item>
-              <Dropdown.Item key="settings" withDivider>
+              <Dropdown.Item key="settings" textValue="Settings" withDivider>
                 Settings
               </Dropdown.Item>
-              <Dropdown.Item key="help_and_feedback">Help & Feedback</Dropdown.Item>
-              <Dropdown.Item key="logout" withDivider color="error">
+              <Dropdown.Item key="help_and_feedback" textValue="Help & Feedback">
+                Help & Feedback
+              </Dropdown.Item>
+              <Dropdown.Item key="logout" textValue="Logout" withDivider color="error">
                 Log Out
               </Dropdown.Item>
             </Dropdown.Menu>
