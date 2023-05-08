@@ -4,6 +4,7 @@ TODO.
 
 ```
 NEXT_PUBLIC_API_URL=http://dev.talebound.net:8080
+RECAPTCHA_SITE_KEY=6LeiWPElAAAAABi2SZ106XytyrE8oo3caX8HPwOh
 ```
 
 ### hosts file

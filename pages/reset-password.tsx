@@ -1,9 +1,12 @@
 import Head from 'next/head';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Layout from '../components/layout/Layout';
-import { Input, styled, useInput } from '@nextui-org/react';
+import { Button, Input, styled, Text, useInput } from '@nextui-org/react';
 import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
+import ReCaptcha from 'react-google-recaptcha';
+import { getRecaptchaSiteKey } from '../utils/functions/config';
+import { useResetPasswordSendCode } from '../api/useResetPasswordSendCode';
 
 const Header = styled('h3', {
   fontFamily: '$heading',
@@ -27,12 +30,12 @@ const MiddleContainer = styled('div', {
   alignSelf: 'center',
   flexDirection: 'column',
   alignItems: 'center',
-  // justifyContent: 'center',
   flexGrow: 1,
   backgroundColor: 'white',
   borderRadius: '$md',
   margin: '1rem',
   padding: '1rem',
+  gap: '1rem',
 });
 
 export default function ResetPassword() {
@@ -41,6 +44,21 @@ export default function ResetPassword() {
     bindings: { onChange: onChangeEmail },
   } = useInput('');
   const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
+
+  const resetPasswordSendCode = useResetPasswordSendCode();
+
+  console.log('process.env.RECAPTCHA_SITE_KEY', process.env.RECAPTCHA_SITE_KEY);
+
+  const buttonDisabled = false;
+
+  const submitResetPassword = useCallback(() => {
+    if (buttonDisabled) return;
+    if (emailValue === '') return;
+
+    resetPasswordSendCode.mutate({
+      email: emailValue,
+    });
+  }, [buttonDisabled, emailValue]);
 
   return (
     <>
@@ -51,23 +69,57 @@ export default function ResetPassword() {
         <MiddleContainer>
           <Header>Recover password</Header>
 
-          <RegisterLabel id="reg-email">
-            Email
-            <Input
-              onChange={onChangeEmail}
-              type="text"
-              name="reg-email"
-              id="reg-email"
-              fullWidth
-              clearable
-              required
-              shadow={false}
-              animated={false}
-              helperColor={helperEmail.color}
-              helperText={helperEmail.text}
-              aria-labelledby="reg-email"
-            />
-          </RegisterLabel>
+          {resetPasswordSendCode.isSuccess && (
+            <>
+              <h5>Success!</h5>
+              <h5> Email should arrive shortly.</h5>
+            </>
+          )}
+          {!resetPasswordSendCode.isSuccess && (
+            <>
+              <RegisterLabel id="reg-email">
+                Email
+                <Input
+                  onChange={onChangeEmail}
+                  type="text"
+                  name="reg-email"
+                  id="reg-email"
+                  fullWidth
+                  clearable
+                  required
+                  shadow={false}
+                  animated={false}
+                  helperColor={helperEmail.color}
+                  helperText={helperEmail.text}
+                  aria-labelledby="reg-email"
+                />
+              </RegisterLabel>
+              <ReCaptcha sitekey={getRecaptchaSiteKey()} />
+              <Button
+                color="primary"
+                auto
+                size="md"
+                onPress={submitResetPassword}
+                css={{
+                  opacity: !buttonDisabled ? '1' : '0.5',
+                  '&:hover': {
+                    opacity: !buttonDisabled ? '0.8' : '0.5',
+                  },
+                }}
+              >
+                <Text b size="$lg" color="$white">
+                  {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}
+                </Text>
+              </Button>
+
+              {resetPasswordSendCode.isError && (
+                <Text color="error">
+                  Error when recovering password. Please refresh and try again. If the problem
+                  persists, please contact support at support@talebound.net
+                </Text>
+              )}
+            </>
+          )}
         </MiddleContainer>
       </Layout>
     </>

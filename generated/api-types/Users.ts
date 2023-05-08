@@ -19,6 +19,10 @@ import {
   PbLoginUserRequest,
   PbLoginUserResponse,
   PbRemoveRoleFromUserResponse,
+  PbResetPasswordSendCodeRequest,
+  PbResetPasswordSendCodeResponse,
+  PbResetPasswordVerifyCodeRequest,
+  PbResetPasswordVerifyCodeResponse,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
   RpcStatus,
@@ -128,6 +132,50 @@ export class Users<SecurityDataType = unknown> {
   taleboundLogoutUser = (body: object, params: RequestParams = {}) =>
     this.http.request<object, RpcStatus>({
       path: `/users/logout`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description In case a user forgot their password, they can request a password reset using this endpoint
+   *
+   * @tags Talebound
+   * @name TaleboundResetPasswordSendCode
+   * @summary Request password reset
+   * @request POST:/users/reset/send-code
+   * @response `200` `PbResetPasswordSendCodeResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundResetPasswordSendCode = (
+    body: PbResetPasswordSendCodeRequest,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbResetPasswordSendCodeResponse, RpcStatus>({
+      path: `/users/reset/send-code`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description In case a user forgot their password, they can confirm the password reset using this endpoint
+   *
+   * @tags Talebound
+   * @name TaleboundResetPasswordVerifyCode
+   * @summary Confirm password reset
+   * @request POST:/users/reset/verify-code
+   * @response `200` `PbResetPasswordVerifyCodeResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundResetPasswordVerifyCode = (
+    body: PbResetPasswordVerifyCodeRequest,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbResetPasswordVerifyCodeResponse, RpcStatus>({
+      path: `/users/reset/verify-code`,
       method: 'POST',
       body: body,
       type: ContentType.Json,

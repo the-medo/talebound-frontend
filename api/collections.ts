@@ -1,10 +1,10 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { getApiUrl } from '../utils/functions/getApiUrl';
 import { HttpClient } from '../generated/api-types/http-client';
 import { Chat } from '../generated/api-types/Chat';
 import { Users } from '../generated/api-types/Users';
 import { Verify } from '../generated/api-types/Verify';
+import { getApiUrl } from '../utils/functions/config';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),

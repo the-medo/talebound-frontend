@@ -86,6 +86,27 @@ export interface PbRemoveRoleFromUserResponse {
   message?: string;
 }
 
+export interface PbResetPasswordSendCodeRequest {
+  email?: string;
+}
+
+export interface PbResetPasswordSendCodeResponse {
+  success?: boolean;
+  message?: string;
+}
+
+export interface PbResetPasswordVerifyCodeRequest {
+  /** @format int32 */
+  userId?: number;
+  secretCode?: string;
+  newPassword?: string;
+}
+
+export interface PbResetPasswordVerifyCodeResponse {
+  success?: boolean;
+  message?: string;
+}
+
 export interface PbRole {
   /** @format int32 */
   id?: number;
