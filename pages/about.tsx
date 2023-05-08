@@ -1,7 +1,6 @@
-import HomepageHeader from '../components/header/HomepageHeader';
 import Head from 'next/head';
-import Footer from '../components/footer/Footer';
 import PageAbout from '../screens/about/PageAbout';
+import Layout from '../components/layout/Layout';
 
 export default function PrivacyPolicy() {
   return (
@@ -9,9 +8,9 @@ export default function PrivacyPolicy() {
       <Head>
         <title>Talebound - About</title>
       </Head>
-      <HomepageHeader />
-      <PageAbout />
-      <Footer />
+      <Layout>
+        <PageAbout />
+      </Layout>
     </>
   );
 }

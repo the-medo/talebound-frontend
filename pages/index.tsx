@@ -1,8 +1,9 @@
-import HomepageHeader from '../components/header/HomepageHeader';
 import HomepageContent from '../components/homepage/HomepageContent';
 import Register from '../components/homepage/Register';
 import Head from 'next/head';
-import Footer from '../components/footer/Footer';
+import Layout from '../components/layout/Layout';
+import { Client } from 'react-hydration-provider';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -10,10 +11,12 @@ export default function Home() {
       <Head>
         <title>Talebound</title>
       </Head>
-      <HomepageHeader />
-      <HomepageContent />
-      <Register background />
-      <Footer />
+      <Layout>
+        <HomepageContent />
+        <Client>
+          <Register background />
+        </Client>
+      </Layout>
     </>
   );
 }

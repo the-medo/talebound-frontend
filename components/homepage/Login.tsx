@@ -13,9 +13,8 @@ import { Client } from 'react-hydration-provider';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
-  top: '50%',
+  top: '0',
   right: '0',
-  transform: 'translate(0, -50%)',
   padding: '$2xl $md',
   fontWeight: '$bold',
   fontSize: '$xl',
@@ -62,6 +61,15 @@ const LoginButtonWrapper = styled('div', {
       fontSize: '$sm',
       lineHeight: '$fontSize$sm',
     },
+  },
+});
+
+const ForgotPassword = styled(Link, {
+  fontSize: '$xs',
+  color: '$white',
+  opacity: 0.8,
+  '&:hover': {
+    opacity: 1,
   },
 });
 
@@ -142,6 +150,7 @@ const Login: React.FC = () => {
           </Button>
           <Text size="$sm">or</Text>
           <Link href="/#register">Sign up</Link>
+          <ForgotPassword href="/reset-password">Forgot password?</ForgotPassword>
 
           {login.isError && !login.isLoading && <Text color="error">Something went wrong.</Text>}
         </LoginButtonWrapper>

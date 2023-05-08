@@ -26,29 +26,22 @@ interface LayoutProps extends PropsWithChildren {}
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isLoggedIn } = useAuth();
 
-  if (isLoggedIn) {
-    return (
-      <PageWrapper>
-        <Client>
-          <Menu />
-          <Header />
-        </Client>
-        <Content>{children}</Content>
-        <Footer />
-      </PageWrapper>
-    );
-  }
-
   return (
     <PageWrapper>
       <Client>
-        <HomepageHeader />
-        <HomepageContent />
+        {isLoggedIn && (
+          <>
+            <Menu />
+            <Header />
+          </>
+        )}
+        {!isLoggedIn && (
+          <>
+            <HomepageHeader />
+          </>
+        )}
       </Client>
       <Content>{children}</Content>
-      <Client>
-        <Register background />
-      </Client>
       <Footer />
     </PageWrapper>
   );
