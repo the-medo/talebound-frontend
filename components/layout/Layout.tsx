@@ -4,8 +4,6 @@ import Menu from '../global/Menu';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import HomepageHeader from '../header/HomepageHeader';
-import HomepageContent from '../homepage/HomepageContent';
-import Register from '../homepage/Register';
 import { styled } from '@nextui-org/react';
 import { Client } from 'react-hydration-provider';
 
@@ -21,10 +19,34 @@ const Content = styled('div', {
   flexGrow: 1,
 });
 
-interface LayoutProps extends PropsWithChildren {}
+interface LayoutProps extends PropsWithChildren {
+  mandatoryLogin?: boolean;
+  mandatoryLoggedOut?: boolean;
+}
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ mandatoryLogin, mandatoryLoggedOut, children }) => {
   const { isLoggedIn } = useAuth();
+
+  if (mandatoryLogin && !isLoggedIn) {
+    return (
+      <PageWrapper>
+        <HomepageHeader />
+        <Content>Please log in to view this page.</Content>
+        <Footer />
+      </PageWrapper>
+    );
+  }
+
+  if (mandatoryLoggedOut && isLoggedIn) {
+    return (
+      <PageWrapper>
+        <Menu />
+        <Header />
+        <Content>Page not available for logged in users.</Content>
+        <Footer />
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>

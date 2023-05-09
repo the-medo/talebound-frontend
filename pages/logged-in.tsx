@@ -15,7 +15,7 @@ export default function Home() {
       <Head>
         <title>Talebound</title>
       </Head>
-      <Layout>
+      <Layout mandatoryLogin={true}>
         <Client>{user?.email}</Client>
         <Client>Logged in = {isLoggedIn ? 'true' : 'false'}</Client>
       </Layout>

@@ -6,7 +6,7 @@ import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
-import { useResetPasswordSendCode } from '../api/useResetPasswordSendCode';
+import { useResetPassword } from '../api/useResetPassword';
 
 const Header = styled('h3', {
   fontFamily: '$heading',
@@ -45,7 +45,7 @@ export default function ResetPassword() {
   } = useInput('');
   const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
 
-  const resetPasswordSendCode = useResetPasswordSendCode();
+  const resetPasswordSendCode = useResetPassword();
 
   console.log('process.env.RECAPTCHA_SITE_KEY', process.env.RECAPTCHA_SITE_KEY);
 
@@ -65,7 +65,7 @@ export default function ResetPassword() {
       <Head>
         <title>Talebound - reset password</title>
       </Head>
-      <Layout>
+      <Layout mandatoryLoggedOut={true}>
         <MiddleContainer>
           <Header>Recover password</Header>
 

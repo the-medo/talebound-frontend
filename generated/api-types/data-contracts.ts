@@ -96,13 +96,16 @@ export interface PbResetPasswordSendCodeResponse {
 }
 
 export interface PbResetPasswordVerifyCodeRequest {
-  /** @format int32 */
-  userId?: number;
   secretCode?: string;
   newPassword?: string;
 }
 
 export interface PbResetPasswordVerifyCodeResponse {
+  success?: boolean;
+  message?: string;
+}
+
+export interface PbResetPasswordVerifyCodeValidityResponse {
   success?: boolean;
   message?: string;
 }

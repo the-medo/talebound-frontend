@@ -23,6 +23,7 @@ import {
   PbResetPasswordSendCodeResponse,
   PbResetPasswordVerifyCodeRequest,
   PbResetPasswordVerifyCodeResponse,
+  PbResetPasswordVerifyCodeValidityResponse,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
   RpcStatus,
@@ -179,6 +180,29 @@ export class Users<SecurityDataType = unknown> {
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Validate reset password secret code
+   *
+   * @tags Talebound
+   * @name TaleboundResetPasswordVerifyCodeValidity
+   * @summary Validate reset password secret code
+   * @request GET:/users/reset/verify-code-validity
+   * @response `200` `PbResetPasswordVerifyCodeValidityResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundResetPasswordVerifyCodeValidity = (
+    query?: {
+      secretCode?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbResetPasswordVerifyCodeValidityResponse, RpcStatus>({
+      path: `/users/reset/verify-code-validity`,
+      method: 'GET',
+      query: query,
       format: 'json',
       ...params,
     });
