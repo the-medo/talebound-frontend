@@ -110,11 +110,19 @@ export default function ResetPasswordVerify() {
     });
   }, [buttonDisabled, secretCode, password1Value]);
 
-  const verifying = resetPasswordVerifyCodeValidity.isLoading;
-  const error = useMemo(
-    () => resetPasswordVerifyCodeValidity.isError || wrongCodeParam || !codeValid,
-    [resetPasswordVerifyCodeValidity.isError, wrongCodeParam],
-  );
+  const display = useMemo(() => {
+    if (resetPassword.isSuccess) return 'password-success';
+    if (resetPasswordVerifyCodeValidity.isLoading) return 'code-verify';
+    if (resetPasswordVerifyCodeValidity.isError || wrongCodeParam || !codeValid)
+      return 'code-invalid';
+    return 'password-form';
+  }, [
+    resetPassword.isSuccess,
+    resetPasswordVerifyCodeValidity.isLoading,
+    resetPasswordVerifyCodeValidity.isError,
+    wrongCodeParam,
+    codeValid,
+  ]);
 
   return (
     <>
@@ -124,9 +132,10 @@ export default function ResetPasswordVerify() {
       <Layout mandatoryLoggedOut={true}>
         <MiddleContainer>
           <Header>Reset password</Header>
-          {verifying && <Loading color="secondary">Verifying code...</Loading>}
-          {!verifying && error && <h5>Code is invalid or expired. Please try again</h5>}
-          {!verifying && !error && (
+          {display === 'password-success' && <h5>Success! You can now sign in.</h5>}
+          {display === 'code-verify' && <Loading color="secondary">Verifying code...</Loading>}
+          {display === 'code-invalid' && <h5>Code is invalid or expired. Please try again</h5>}
+          {display === 'password-form' && (
             <>
               <RegisterLabel id="reg-pass1">
                 Password
