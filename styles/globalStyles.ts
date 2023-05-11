@@ -181,7 +181,7 @@ export const baseTheme = createTheme({
     fonts: {
       decorative: 'Astloch, serif',
       heading: 'Gudea, sans-serif',
-      text: 'Cambay, Arial, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+      text: 'Gudea, Arial, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
       sans: '$text',
     },
     fontSizes: {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import { styled, Text, useInput, Button } from '@nextui-org/react';
+import { styled, Text, useInput, Button, Loading } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
 import { InputTransparent, PasswordTransparent } from '../global/InputTransparent';
 import Link from 'next/link';
@@ -144,9 +144,13 @@ const Login: React.FC = () => {
               },
             }}
           >
-            <Text b size="$lg" color="$white">
-              {login.isLoading ? 'Signing in...' : 'Sign in'}
-            </Text>
+            {login.isLoading || login.isSuccess ? (
+              <Loading color="currentColor" size="xs" />
+            ) : (
+              <Text b size="$lg" color="$white">
+                Sign in
+              </Text>
+            )}
           </Button>
           <Text size="$sm">or</Text>
           <Link href="/#register">Sign up</Link>

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import Menu from '../global/Menu';
 import Header from '../header/Header';
@@ -27,26 +27,14 @@ interface LayoutProps extends PropsWithChildren {
 const Layout: React.FC<LayoutProps> = ({ mandatoryLogin, mandatoryLoggedOut, children }) => {
   const { isLoggedIn } = useAuth();
 
-  if (mandatoryLogin && !isLoggedIn) {
-    return (
-      <PageWrapper>
-        <HomepageHeader />
-        <Content>Please log in to view this page.</Content>
-        <Footer />
-      </PageWrapper>
-    );
-  }
-
-  if (mandatoryLoggedOut && isLoggedIn) {
-    return (
-      <PageWrapper>
-        <Menu />
-        <Header />
-        <Content>Page not available for logged in users.</Content>
-        <Footer />
-      </PageWrapper>
-    );
-  }
+  const unauthorizedMessage = useMemo(() => {
+    if (mandatoryLogin && !isLoggedIn) {
+      return 'Please log in to view this page.';
+    } else if (mandatoryLoggedOut && isLoggedIn) {
+      return 'Page not available for logged in users.';
+    }
+    return undefined;
+  }, [mandatoryLogin, mandatoryLoggedOut, isLoggedIn]);
 
   return (
     <PageWrapper>
@@ -57,13 +45,12 @@ const Layout: React.FC<LayoutProps> = ({ mandatoryLogin, mandatoryLoggedOut, chi
             <Header />
           </>
         )}
-        {!isLoggedIn && (
-          <>
-            <HomepageHeader />
-          </>
-        )}
+        {!isLoggedIn && <HomepageHeader />}
       </Client>
-      <Content>{children}</Content>
+
+      <Content>
+        <Client>{unauthorizedMessage ?? children}</Client>
+      </Content>
       <Footer />
     </PageWrapper>
   );
