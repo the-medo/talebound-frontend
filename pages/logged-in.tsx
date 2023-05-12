@@ -6,6 +6,7 @@ import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';
 import Layout from '../components/layout/Layout';
+import LeftNavbar from '../components/navbar/LeftNavbar';
 
 export default function Home() {
   const { user, isLoggedIn } = useAuth();
@@ -16,6 +17,7 @@ export default function Home() {
         <title>Talebound</title>
       </Head>
       <Layout mandatoryLogin={true}>
+        <LeftNavbar />
         <Client>{user?.email}</Client>
         <Client>Logged in = {isLoggedIn ? 'true' : 'false'}</Client>
       </Layout>

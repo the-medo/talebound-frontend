@@ -15,7 +15,7 @@ const PageWrapper = styled('div', {
 
 const Content = styled('div', {
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   flexGrow: 1,
 });
 
