@@ -13,7 +13,7 @@ const BaseHeader = styled('div', {
 });
 
 const Header: React.FC = () => {
-  return <BaseHeader></BaseHeader>;
+  return <BaseHeader />;
 };
 
 export default Header;

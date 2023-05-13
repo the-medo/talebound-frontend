@@ -11,7 +11,7 @@ export default function Home() {
       <Head>
         <title>Talebound</title>
       </Head>
-      <Layout>
+      <Layout vertical>
         <HomepageContent />
         <Client>
           <Register background />

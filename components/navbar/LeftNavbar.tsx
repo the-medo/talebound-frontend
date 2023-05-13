@@ -6,41 +6,95 @@ import { AiFillAccountBook, AiFillAndroid, AiFillHome } from 'react-icons/ai';
 const Navbar = styled('nav', {
   display: 'flex',
   flexDirection: 'column',
-  width: '200px',
+  width: '250px',
+  minWidth: '250px',
   flexGrow: 0,
   backgroundColor: '#2f3738',
   gap: '$sm',
-  padding: '$sm',
   opacity: 1,
+});
+
+const NavbarItemImg = styled('img', {
+  width: '2.25rem',
+  height: '2.25rem',
+  borderRadius: '50%',
+  transition: 'all 0.3s ease-in-out',
 });
 
 const NavbarItem = styled(NextLink, {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'flex-start',
+  justifyContent: 'space-between',
   gap: '$md',
-  padding: '$sm',
+  padding: '$xs',
+  marginLeft: '$sm',
+  marginRight: '$sm',
   color: '$primary200',
   borderRadius: '$md',
-  transition: 'all 0.5s ease-in-out',
+  transition: 'all 0.3s ease-in-out',
   textDecoration: 'none',
+  opacity: 0.7,
+
   '&:hover': {
-    backgroundColor: '$primary200',
-    color: '#2f3738',
+    backgroundColor: '#3e4747',
+    opacity: 1,
+    paddingLeft: '$md',
   },
-  '&:active': {
-    backgroundColor: '$primary200',
-    color: '$primary',
-  },
+
   variants: {
     active: {
       true: {
-        backgroundColor: '$primary200',
-        color: '#2f3738',
+        backgroundColor: '#3e4747',
         fontWeight: '$bold',
+        opacity: 0.9,
+        paddingLeft: '$lg',
+        [`& ${NavbarItemImg}`]: {
+          border: '2px solid currentColor',
+        },
       },
     },
+  },
+});
+
+const NavbarHeader = styled('div', {
+  position: 'relative',
+  width: '100%',
+  height: '50px',
+  color: '$primary100',
+
+  ['& .bg']: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: 'url("../../assets/menu/menu-bg-3.png")',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    opacity: 0.25,
+    zIndex: 1,
+  },
+  ['& .content']: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+    fontSize: '$4xl',
+    fontFamily: '$decorative',
+    backgroundImage: 'url("../../assets/menu/menu-bg-3.png")',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundClip: 'text',
+    color: 'transparent',
   },
 });
 
@@ -52,17 +106,17 @@ export type NItem = {
 
 const testItems: NItem[] = [
   {
-    label: 'Home',
+    label: 'Overview',
     icon: <AiFillHome />,
     href: '/',
   },
   {
-    label: 'About',
+    label: 'News',
     icon: <AiFillAccountBook />,
     href: '/about',
   },
   {
-    label: 'Contact',
+    label: 'Quests',
     icon: <AiFillAndroid />,
     href: '/contact',
   },
@@ -75,11 +129,41 @@ const LeftNavbar: React.FC<NavbarProps> = () => {
 
   return (
     <Navbar>
-      {testItems.map((item, i) => (
-        <NavbarItem active={i === 0} href={item.href}>
-          {item.icon} {item.label}
-        </NavbarItem>
-      ))}
+      <NavbarHeader>
+        <div className="bg" />
+        <div className="content">explore</div>
+      </NavbarHeader>
+      <NavbarItem href="/">
+        News <NavbarItemImg src="../../assets/images/img12.png" />
+      </NavbarItem>
+      <NavbarItem href="/">
+        Worlds <NavbarItemImg src="../../assets/images/img24.png" />
+      </NavbarItem>
+      <NavbarItem href="/">
+        Quests <NavbarItemImg src="../../assets/images/img28.png" />
+      </NavbarItem>
+
+      <NavbarHeader>
+        <div className="bg" />
+        <div className="content">content</div>
+      </NavbarHeader>
+      <NavbarItem href="/">
+        Images <NavbarItemImg src="../../assets/images/img35.png" />
+      </NavbarItem>
+      <NavbarItem href="/">
+        Posts <NavbarItemImg src="../../assets/images/img14.png" />
+      </NavbarItem>
+
+      <NavbarHeader>
+        <div className="bg" />
+        <div className="content">guides</div>
+      </NavbarHeader>
+      <NavbarItem href="/">
+        Playing <NavbarItemImg src="../../assets/images/img33.png" />
+      </NavbarItem>
+      <NavbarItem href="/">
+        World creation <NavbarItemImg src="../../assets/images/img19.png" />
+      </NavbarItem>
     </Navbar>
   );
 };

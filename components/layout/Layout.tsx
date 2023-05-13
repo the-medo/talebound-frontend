@@ -17,14 +17,28 @@ const Content = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   flexGrow: 1,
+
+  variants: {
+    vertical: {
+      true: {
+        flexDirection: 'column',
+      },
+    },
+  },
 });
 
 interface LayoutProps extends PropsWithChildren {
   mandatoryLogin?: boolean;
   mandatoryLoggedOut?: boolean;
+  vertical?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ mandatoryLogin, mandatoryLoggedOut, children }) => {
+const Layout: React.FC<LayoutProps> = ({
+  mandatoryLogin,
+  mandatoryLoggedOut,
+  vertical,
+  children,
+}) => {
   const { isLoggedIn } = useAuth();
 
   const unauthorizedMessage = useMemo(() => {
@@ -48,7 +62,7 @@ const Layout: React.FC<LayoutProps> = ({ mandatoryLogin, mandatoryLoggedOut, chi
         {!isLoggedIn && <HomepageHeader />}
       </Client>
 
-      <Content>
+      <Content vertical={vertical}>
         <Client>{unauthorizedMessage ?? children}</Client>
       </Content>
       <Footer />
