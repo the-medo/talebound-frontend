@@ -133,13 +133,13 @@ const LeftNavbar: React.FC<NavbarProps> = () => {
         <div className="bg" />
         <div className="content">explore</div>
       </NavbarHeader>
-      <NavbarItem href="/">
+      <NavbarItem href="/explore/news">
         News <NavbarItemImg src="../../assets/images/img12.png" />
       </NavbarItem>
-      <NavbarItem href="/">
+      <NavbarItem href="/explore/worlds">
         Worlds <NavbarItemImg src="../../assets/images/img24.png" />
       </NavbarItem>
-      <NavbarItem href="/">
+      <NavbarItem href="/explore/quests">
         Quests <NavbarItemImg src="../../assets/images/img28.png" />
       </NavbarItem>
 
@@ -147,10 +147,10 @@ const LeftNavbar: React.FC<NavbarProps> = () => {
         <div className="bg" />
         <div className="content">content</div>
       </NavbarHeader>
-      <NavbarItem href="/">
+      <NavbarItem href="/content/images">
         Images <NavbarItemImg src="../../assets/images/img35.png" />
       </NavbarItem>
-      <NavbarItem href="/">
+      <NavbarItem href="/content/posts">
         Posts <NavbarItemImg src="../../assets/images/img14.png" />
       </NavbarItem>
 
@@ -158,10 +158,10 @@ const LeftNavbar: React.FC<NavbarProps> = () => {
         <div className="bg" />
         <div className="content">guides</div>
       </NavbarHeader>
-      <NavbarItem href="/">
+      <NavbarItem href="/guides/playing">
         Playing <NavbarItemImg src="../../assets/images/img33.png" />
       </NavbarItem>
-      <NavbarItem href="/">
+      <NavbarItem href="/guides/world-creation">
         World creation <NavbarItemImg src="../../assets/images/img19.png" />
       </NavbarItem>
     </Navbar>

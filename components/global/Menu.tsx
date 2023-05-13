@@ -54,18 +54,6 @@ const Menu: React.FC = () => {
         <Logo size="3rem" />
         <HeaderHeading>Talebound</HeaderHeading>
       </Navbar.Brand>
-      <Navbar.Content enableCursorHighlight hideIn="xs" variant="highlight-solid">
-        <Client>
-          <Navbar.Link id="link-1" href="#">
-            Home
-          </Navbar.Link>
-          <Navbar.Link isActive href="#">
-            Worlds
-          </Navbar.Link>
-          <Navbar.Link href="#">Articles</Navbar.Link>
-          <Navbar.Link href="#">Create</Navbar.Link>
-        </Client>
-      </Navbar.Content>
       <Navbar.Content
         css={{
           '@xs': {
@@ -83,7 +71,7 @@ const Menu: React.FC = () => {
                   as="button"
                   color="primary"
                   size="md"
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  src="/assets/images/avatar.png"
                 />
               </Dropdown.Trigger>
             </Navbar.Item>
