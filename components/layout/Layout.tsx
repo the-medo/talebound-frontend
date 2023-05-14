@@ -13,10 +13,17 @@ const PageWrapper = styled('div', {
   minHeight: '100vh',
 });
 
+const ContentWrapper = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  flexGrow: 1,
+});
+
 const Content = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   flexGrow: 1,
+  padding: '$sm',
 
   variants: {
     vertical: {
@@ -31,12 +38,14 @@ interface LayoutProps extends PropsWithChildren {
   mandatoryLogin?: boolean;
   mandatoryLoggedOut?: boolean;
   vertical?: boolean;
+  navbar?: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   mandatoryLogin,
   mandatoryLoggedOut,
   vertical,
+  navbar,
   children,
 }) => {
   const { isLoggedIn } = useAuth();
@@ -56,10 +65,12 @@ const Layout: React.FC<LayoutProps> = ({
         {isLoggedIn && <Header />}
         {!isLoggedIn && <HomepageHeader />}
       </Client>
-
-      <Content vertical={vertical}>
-        <Client>{unauthorizedMessage ?? children}</Client>
-      </Content>
+      <ContentWrapper>
+        {navbar && <Client>{navbar}</Client>}
+        <Content vertical={vertical}>
+          <Client>{unauthorizedMessage ?? children}</Client>
+        </Content>
+      </ContentWrapper>
       <Footer />
     </PageWrapper>
   );

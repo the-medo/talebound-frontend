@@ -34,12 +34,17 @@ const Menu: React.FC = () => {
     },
   });
 
-  const handleUserDropdown = useCallback((key: Key) => {
-    console.log('handleUserDropdown called', key);
-    if (key === 'logout') {
-      logout.mutate();
-    }
-  }, []);
+  const handleUserDropdown = useCallback(
+    (key: Key) => {
+      console.log('handleUserDropdown called', key);
+      if (key === 'logout') {
+        logout.mutate();
+      } else if (key === 'settings') {
+        void router.push('/user/settings');
+      }
+    },
+    [logout, router],
+  );
 
   return (
     <Navbar

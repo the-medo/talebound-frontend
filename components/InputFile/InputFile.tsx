@@ -39,9 +39,9 @@ const InputFileLabel = styled('label', {
   display: 'flex',
   gap: '$sm',
   flexDirection: 'column',
+  width: '20rem',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: '$sm',
   borderRadius: '$md',
   color: '$text',
   cursor: 'pointer',
@@ -56,6 +56,14 @@ const InputFileLabel = styled('label', {
       false: {
         border: 'none',
         background: 'transparent',
+      },
+    },
+    showTitle: {
+      true: {
+        padding: '$sm',
+      },
+      false: {
+        padding: '0',
       },
     },
   },
@@ -82,7 +90,7 @@ const InputFile: React.FC<InputFileProps> = ({
   showTitle = true,
 }) => {
   return (
-    <InputFileLabel showBorder={showBorder} htmlFor="images">
+    <InputFileLabel showBorder={showBorder} showTitle={showTitle} htmlFor="images">
       {showTitle && (
         <>
           <InputFileDropTitle>Drop file{multiple && 's'} here</InputFileDropTitle>

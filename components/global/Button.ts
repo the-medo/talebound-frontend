@@ -1,6 +1,7 @@
 import { styled } from '@nextui-org/react';
 
 export const Button = styled('button', {
+  width: 'fit-content',
   fontFamily: '$heading',
   padding: '$xs $md',
   border: '$warningBorder',
