@@ -1,9 +1,9 @@
 import React, { PropsWithChildren, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import Menu from '../global/Menu';
+import Menu from '../header/Menu';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
-import HomepageHeader from '../header/HomepageHeader';
+import HomepageHeader from '../homepage/HomepageHeader';
 import { styled } from '@nextui-org/react';
 import { Client } from 'react-hydration-provider';
 
@@ -53,12 +53,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <PageWrapper>
       <Client>
-        {isLoggedIn && (
-          <>
-            <Menu />
-            <Header />
-          </>
-        )}
+        {isLoggedIn && <Header />}
         {!isLoggedIn && <HomepageHeader />}
       </Client>
 

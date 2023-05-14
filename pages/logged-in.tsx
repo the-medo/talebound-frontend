@@ -1,7 +1,4 @@
 import Head from 'next/head';
-import Footer from '../components/footer/Footer';
-import Header from '../components/header/Header';
-import Menu from '../components/global/Menu';
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';

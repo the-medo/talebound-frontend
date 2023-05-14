@@ -1,6 +1,6 @@
 import React, { Key, useCallback } from 'react';
 import { Avatar, Dropdown, Link, Navbar, styled, Text } from '@nextui-org/react';
-import Logo from './Logo';
+import Logo from '../global/Logo';
 import { Client } from 'react-hydration-provider';
 import { useAuth } from '../../hooks/useAuth';
 import { setUser } from '../../utils/auth/userSlice';
