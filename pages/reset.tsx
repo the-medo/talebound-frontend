@@ -1,14 +1,15 @@
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import Layout from '../components/layout/Layout';
-import { Button, Input, Loading, styled, Text, useInput } from '@nextui-org/react';
+import { Button, Loading, styled, Text } from '@nextui-org/react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
 } from '../api/useResetPassword';
 import { useRouter } from 'next/router';
-import { HelperType } from '../utils/form/nextUiTypes';
-import { validatePassword, validatePasswordAgain } from '../utils/form/validatePassword';
+import PasswordChangeInputs, {
+  PasswordChangeStatus,
+} from '../components/PasswordChangeInputs/PasswordChangeInputs';
 
 const Header = styled('h3', {
   fontFamily: '$heading',
@@ -19,22 +20,13 @@ const Header = styled('h3', {
   },
 });
 
-const RegisterLabel = styled('label', {
-  color: '$primary800',
-  fontFamily: '$heading',
-  fontSize: '$md',
-  textTransform: 'uppercase',
-  width: '75%',
-  marginBottom: '$md',
-});
-
 const MiddleContainer = styled('div', {
   width: 'min(600px, 80%)',
   display: 'flex',
   alignSelf: 'center',
   flexDirection: 'column',
   alignItems: 'center',
-  flexGrow: 1,
+  // flexGrow: 1,
   backgroundColor: 'white',
   borderRadius: '$md',
   margin: '1rem',
@@ -49,24 +41,8 @@ export default function ResetPasswordVerify() {
   const [codeValid, setCodeValid] = React.useState<boolean>();
   const [wrongCodeParam, setWrongCodeParam] = React.useState<boolean>(false);
 
-  const {
-    value: password1Value,
-    bindings: { onChange: onChangePassword1 },
-  } = useInput('');
-
-  const {
-    value: password2Value,
-    bindings: { onChange: onChangePassword2 },
-  } = useInput('');
-
-  const helperPassword1: HelperType = useMemo(
-    () => validatePassword(password1Value),
-    [password1Value],
-  );
-  const helperPassword2: HelperType = useMemo(
-    () => validatePasswordAgain(password1Value, password2Value),
-    [password1Value, password2Value],
-  );
+  const [passwordValue, setPasswordValue] = React.useState<string>('');
+  const [externalButtonDisabled, setExternalButtonDisabled] = React.useState<boolean>(true);
 
   const resetPassword = useResetPasswordVerifyCode();
   const resetPasswordVerifyCodeValidity = useResetPasswordVerifyCodeValidity({
@@ -91,13 +67,8 @@ export default function ResetPasswordVerify() {
   }, [secretCode]);
 
   const buttonDisabled = useMemo(
-    () =>
-      resetPassword.isLoading ||
-      password1Value === '' ||
-      password2Value === '' ||
-      password1Value !== password2Value ||
-      password1Value.length < 6,
-    [resetPassword.isLoading, password1Value, password2Value],
+    () => resetPassword.isLoading || externalButtonDisabled,
+    [resetPassword.isLoading, externalButtonDisabled],
   );
 
   const submitResetPassword = useCallback(() => {
@@ -106,16 +77,16 @@ export default function ResetPasswordVerify() {
 
     resetPassword.mutate({
       secretCode,
-      newPassword: password1Value,
+      newPassword: passwordValue,
     });
-  }, [buttonDisabled, secretCode, password1Value]);
+  }, [buttonDisabled, resetPassword, secretCode, passwordValue]);
 
-  const display = useMemo(() => {
-    if (resetPassword.isSuccess) return 'password-success';
-    if (resetPasswordVerifyCodeValidity.isLoading) return 'code-verify';
+  const display: PasswordChangeStatus = useMemo(() => {
+    if (resetPassword.isSuccess) return PasswordChangeStatus.PasswordSuccess;
+    if (resetPasswordVerifyCodeValidity.isLoading) return PasswordChangeStatus.CodeVerify;
     if (resetPasswordVerifyCodeValidity.isError || wrongCodeParam || !codeValid)
-      return 'code-invalid';
-    return 'password-form';
+      return PasswordChangeStatus.CodeInvalid;
+    return PasswordChangeStatus.PasswordForm;
   }, [
     resetPassword.isSuccess,
     resetPasswordVerifyCodeValidity.isLoading,
@@ -129,44 +100,25 @@ export default function ResetPasswordVerify() {
       <Head>
         <title>Talebound - reset password</title>
       </Head>
-      <Layout mandatoryLoggedOut={true}>
+      <Layout mandatoryLoggedOut={true} centered>
         <MiddleContainer>
           <Header>Reset password</Header>
-          {display === 'password-success' && <h5>Success! You can now sign in.</h5>}
-          {display === 'code-verify' && <Loading color="secondary">Verifying code...</Loading>}
-          {display === 'code-invalid' && <h5>Code is invalid or expired. Please try again</h5>}
-          {display === 'password-form' && (
+          {display === PasswordChangeStatus.PasswordSuccess && (
+            <h5>Success! You can now sign in.</h5>
+          )}
+          {display === PasswordChangeStatus.CodeVerify && (
+            <Loading color="secondary">Verifying code...</Loading>
+          )}
+          {display === PasswordChangeStatus.CodeInvalid && (
+            <h5>Code is invalid or expired. Please try again</h5>
+          )}
+          {display === PasswordChangeStatus.PasswordForm && (
             <>
-              <RegisterLabel id="reg-pass1">
-                Password
-                <Input.Password
-                  onChange={onChangePassword1}
-                  name="reg-pass1"
-                  id="reg-pass1"
-                  fullWidth
-                  required
-                  shadow={false}
-                  animated={false}
-                  helperColor={helperPassword1.color}
-                  helperText={helperPassword1.text}
-                  aria-labelledby="reg-pass1"
-                />
-              </RegisterLabel>
-              <RegisterLabel id="reg-pass2">
-                Password again
-                <Input.Password
-                  onChange={onChangePassword2}
-                  name="reg-pass2"
-                  id="reg-pass2"
-                  fullWidth
-                  required
-                  shadow={false}
-                  animated={false}
-                  helperColor={helperPassword2.color}
-                  helperText={helperPassword2.text}
-                  aria-labelledby="reg-pass2"
-                />
-              </RegisterLabel>
+              <PasswordChangeInputs
+                display={display}
+                setPasswordValue={setPasswordValue}
+                setButtonDisabled={setExternalButtonDisabled}
+              />
               <Button
                 color="primary"
                 auto

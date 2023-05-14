@@ -31,6 +31,11 @@ const Content = styled('div', {
         flexDirection: 'column',
       },
     },
+    centered: {
+      true: {
+        justifyContent: 'center',
+      },
+    },
   },
 });
 
@@ -38,6 +43,7 @@ interface LayoutProps extends PropsWithChildren {
   mandatoryLogin?: boolean;
   mandatoryLoggedOut?: boolean;
   vertical?: boolean;
+  centered?: boolean;
   navbar?: React.ReactNode;
 }
 
@@ -45,6 +51,7 @@ const Layout: React.FC<LayoutProps> = ({
   mandatoryLogin,
   mandatoryLoggedOut,
   vertical,
+  centered,
   navbar,
   children,
 }) => {
@@ -67,7 +74,7 @@ const Layout: React.FC<LayoutProps> = ({
       </Client>
       <ContentWrapper>
         {navbar && <Client>{navbar}</Client>}
-        <Content vertical={vertical}>
+        <Content vertical={vertical} centered={centered}>
           <Client>{unauthorizedMessage ?? children}</Client>
         </Content>
       </ContentWrapper>

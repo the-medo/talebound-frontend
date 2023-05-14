@@ -14,6 +14,7 @@
     "@nextui-org/react": "^1.0.0-beta.12",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.5",
+    "antd": "^5.4.7",
     "axios": "^1.4.0",
     "next": "13.3.0",
     "react": "18.2.0",

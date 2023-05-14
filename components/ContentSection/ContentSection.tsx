@@ -5,7 +5,7 @@ import { CSSProperties } from '@stitches/react';
 const StyledSection = styled('section', {
   display: 'flex',
   flexDirection: 'column',
-  boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
+  boxShadow: '$sm',
   backgroundColor: 'white',
   padding: '$md',
   margin: '$sm',

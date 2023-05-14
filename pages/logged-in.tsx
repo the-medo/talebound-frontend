@@ -14,8 +14,7 @@ export default function Home() {
       <Head>
         <title>Talebound</title>
       </Head>
-      <Layout mandatoryLogin={true}>
-        <LeftNavbar />
+      <Layout mandatoryLogin={true} navbar={<LeftNavbar />}>
         <Column css={{ padding: '2rem', gap: '2rem' }}>
           <Client>{user?.email}</Client>
           <Client>Logged in = {isLoggedIn ? 'true' : 'false'}</Client>
