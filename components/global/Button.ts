@@ -8,14 +8,15 @@ export const Button = styled('button', {
   background: '$primary700',
   color: '$white',
   fontSize: '$md',
-  fontWeight: '$bold',
   textDecoration: 'none',
   cursor: 'pointer',
   transition: 'all 0.3s ease-in-out',
+
   '&:hover': {
     background: '$primary900',
     color: '$white300',
   },
+
   '&:focus': {
     outline: 'none',
     background: '$primary900',
