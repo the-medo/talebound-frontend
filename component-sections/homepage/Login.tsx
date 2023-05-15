@@ -2,8 +2,11 @@
 
 import React, { KeyboardEvent, useCallback, useMemo } from 'react';
 import { styled, Text, useInput, Button, Loading, FormElement } from '@nextui-org/react';
-import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
-import { InputTransparent, PasswordTransparent } from '../global/InputTransparent';
+import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
+import {
+  InputTransparent,
+  PasswordTransparent,
+} from '../../components/InputTransparent/InputTransparent';
 import Link from 'next/link';
 import { useLogin } from '../../api/useLogin';
 import { useRouter } from 'next/router';

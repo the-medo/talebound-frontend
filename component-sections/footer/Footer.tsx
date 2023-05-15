@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { styled, Text } from '@nextui-org/react';
 import { SiDiscord, SiGithub, SiKofi, SiYoutube } from 'react-icons/si';
-import Logo from '../global/Logo';
+import Logo from '../../components/Logo/Logo';
 
 const FooterDiv = styled('div', {
   width: '100%',
@@ -118,14 +118,14 @@ const Footer: React.FC = () => {
               Talebound
             </Text>
             <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
+            <Link href="/pages/about">About</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">
               Terms
             </Text>
-            <Link href="/privacy-policy">Privacy policy</Link>
-            <Link href="/terms-of-service">Terms of Service</Link>
+            <Link href="/pages/privacy-policy">Privacy policy</Link>
+            <Link href="/pages/terms-of-service">Terms of Service</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">

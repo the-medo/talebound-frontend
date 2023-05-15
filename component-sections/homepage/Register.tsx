@@ -2,15 +2,18 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Modal, styled, Text, useInput, useModal, Button } from '@nextui-org/react';
-import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
-import { InputTransparent, PasswordTransparent } from '../global/InputTransparent';
+import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
+import {
+  InputTransparent,
+  PasswordTransparent,
+} from '../../components/InputTransparent/InputTransparent';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validateEmail } from '../../utils/form/validateEmail';
 import { validateUsername } from '../../utils/form/validateUsername';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
 import PageTermsOfService from '../../screens/terms-of-service/PageTermsOfService';
 import PagePrivacyPolicy from '../../screens/privacy-policy/PagePrivacyPolicy';
-import { ClickableSpan } from '../global/ClickableSpan';
+import { ClickableSpan } from '../../components/ClickableSpan/ClickableSpan';
 import { useCreateUser } from '../../api/useCreateUser';
 import { Client } from 'react-hydration-provider';
 

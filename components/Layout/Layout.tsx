@@ -1,9 +1,9 @@
 import React, { PropsWithChildren, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import Menu from '../header/Menu';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
-import HomepageHeader from '../homepage/HomepageHeader';
+import Menu from '../../component-sections/header/Menu';
+import Header from '../../component-sections/header/Header';
+import Footer from '../../component-sections/footer/Footer';
+import HomepageHeader from '../../component-sections/homepage/HomepageHeader';
 import { styled } from '@nextui-org/react';
 import { Client } from 'react-hydration-provider';
 

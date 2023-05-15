@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';
 import Layout from '../components/layout/Layout';
 import LeftNavbar from '../components/navbar/LeftNavbar';
-import { Column } from '../components/global/Column';
+import { Column } from '../components/Column/Column';
 
 export default function Home() {
   const { user, isLoggedIn } = useAuth();

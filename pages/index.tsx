@@ -1,5 +1,5 @@
-import HomepageContent from '../components/homepage/HomepageContent';
-import Register from '../components/homepage/Register';
+import HomepageContent from '../component-sections/homepage/HomepageContent';
+import Register from '../component-sections/homepage/Register';
 import Head from 'next/head';
 import Layout from '../components/layout/Layout';
 import { Client } from 'react-hydration-provider';

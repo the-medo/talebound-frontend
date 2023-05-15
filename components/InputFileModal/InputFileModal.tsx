@@ -1,6 +1,6 @@
 import { Modal } from '@nextui-org/react';
 import React from 'react';
-import { Button } from '../global/Button';
+import { Button } from '../Button/Button';
 import InputFile from '../InputFile/InputFile';
 
 interface InputFileModalProps {}

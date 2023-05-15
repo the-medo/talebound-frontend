@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Layout from '../../components/layout/Layout';
 import LeftNavbar from '../../components/navbar/LeftNavbar';
-import { Column } from '../../components/global/Column';
+import { Column } from '../../components/Column/Column';
 import InputFileModal from '../../components/InputFileModal/InputFileModal';
 
 interface newsProps {}

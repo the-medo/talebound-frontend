@@ -1,6 +1,6 @@
 import React from 'react';
-import { HeaderNavigation } from '../global/HeaderNavigation';
-import { NavigationItem } from '../global/NavigationItem';
+import { HeaderNavigation } from '../../components/HeaderNavigation/HeaderNavigation';
+import { NavigationItem } from '../../components/NavigationItem/NavigationItem';
 
 const HomepageNavigation: React.FC = () => {
   return (
