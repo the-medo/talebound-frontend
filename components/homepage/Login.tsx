@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
-import { styled, Text, useInput, Button, Loading } from '@nextui-org/react';
+import React, { KeyboardEvent, useCallback, useMemo } from 'react';
+import { styled, Text, useInput, Button, Loading, FormElement } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../global/VerticalSemitransparent';
 import { InputTransparent, PasswordTransparent } from '../global/InputTransparent';
 import Link from 'next/link';
@@ -96,7 +96,7 @@ const Login: React.FC = () => {
 
   const buttonDisabled = useMemo(
     () => !passwordValue || !usernameValue || login.isLoading,
-    [login, passwordValue, usernameValue],
+    [passwordValue, usernameValue, login.isLoading],
   );
 
   const submitLogin = useCallback(() => {
@@ -106,7 +106,14 @@ const Login: React.FC = () => {
       username: usernameValue,
       password: passwordValue,
     });
-  }, [usernameValue, passwordValue]);
+  }, [usernameValue, passwordValue, login]);
+
+  const submitOnEnter = useCallback(
+    (event: KeyboardEvent<FormElement>) => {
+      if (event.code === 'Enter') submitLogin();
+    },
+    [submitLogin],
+  );
 
   return (
     <Client>
@@ -117,10 +124,10 @@ const Login: React.FC = () => {
           aria-labelledby="login"
           placeholder="Username"
           fullWidth
-          clearable
           required
           shadow={false}
           animated={false}
+          onKeyDown={submitOnEnter}
         />
         <PasswordTransparent
           onChange={onChangePassword}
@@ -130,6 +137,7 @@ const Login: React.FC = () => {
           required
           shadow={false}
           animated={false}
+          onKeyDown={submitOnEnter}
         />
         <LoginButtonWrapper>
           <Button
