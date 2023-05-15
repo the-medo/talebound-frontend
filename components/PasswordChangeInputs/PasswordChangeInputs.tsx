@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Button, Input, Loading, styled, Text, useInput } from '@nextui-org/react';
+import { Input, Loading, styled, useInput } from '@nextui-org/react';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
 
@@ -23,12 +23,14 @@ interface PasswordChangeInputsProps {
   display: PasswordChangeStatus;
   setPasswordValue?: React.Dispatch<React.SetStateAction<string>>;
   setButtonDisabled?: React.Dispatch<React.SetStateAction<boolean>>;
+  successMessage?: React.ReactNode;
 }
 
 const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
   display,
   setPasswordValue,
   setButtonDisabled,
+  successMessage,
 }) => {
   const {
     value: password1Value,
@@ -68,7 +70,7 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
 
   return (
     <>
-      {display === PasswordChangeStatus.PasswordSuccess && <h5>Success! You can now sign in.</h5>}
+      {display === PasswordChangeStatus.PasswordSuccess && <h5>{successMessage}</h5>}
       {display === PasswordChangeStatus.CodeVerify && (
         <Loading color="secondary">Verifying code...</Loading>
       )}

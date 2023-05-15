@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import Layout from '../components/layout/Layout';
 import { Button, Loading, styled, Text } from '@nextui-org/react';
 import {
   useResetPasswordVerifyCode,
@@ -10,6 +9,7 @@ import { useRouter } from 'next/router';
 import PasswordChangeInputs, {
   PasswordChangeStatus,
 } from '../components/PasswordChangeInputs/PasswordChangeInputs';
+import Layout from '../components/Layout/Layout';
 
 const Header = styled('h3', {
   fontFamily: '$heading',
@@ -118,6 +118,7 @@ export default function ResetPasswordVerify() {
                 display={display}
                 setPasswordValue={setPasswordValue}
                 setButtonDisabled={setExternalButtonDisabled}
+                successMessage="Success! You can now sign in."
               />
               <Button
                 color="primary"

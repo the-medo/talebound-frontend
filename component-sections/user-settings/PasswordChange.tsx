@@ -1,0 +1,50 @@
+import React, { useCallback, useMemo } from 'react';
+import PasswordChangeInputs, {
+  PasswordChangeStatus,
+} from '../../components/PasswordChangeInputs/PasswordChangeInputs';
+import { Button } from '../../components/Button/Button';
+import ContentSection from '../../components/ContentSection/ContentSection';
+import { useUpdateUser } from '../../api/useUpdateUser';
+
+interface PasswordChangeProps {}
+
+const PasswordChange: React.FC<PasswordChangeProps> = () => {
+  const [passwordValue, setPasswordValue] = React.useState<string>('');
+  const [externalButtonDisabled, setExternalButtonDisabled] = React.useState<boolean>(true);
+
+  const changePassword = useUpdateUser();
+
+  const buttonDisabled = useMemo(
+    () => changePassword.isLoading || externalButtonDisabled,
+    [changePassword.isLoading, externalButtonDisabled],
+  );
+
+  const submitChangePassword = useCallback(() => {
+    if (buttonDisabled) return;
+
+    changePassword.mutate({
+      password: passwordValue,
+    });
+  }, [buttonDisabled, changePassword, passwordValue]);
+
+  const display: PasswordChangeStatus = useMemo(() => {
+    if (changePassword.isSuccess) return PasswordChangeStatus.PasswordSuccess;
+    return PasswordChangeStatus.PasswordForm;
+  }, [changePassword.isSuccess]);
+
+  return (
+    <ContentSection header="Change password">
+      <PasswordChangeInputs
+        display={display}
+        setPasswordValue={setPasswordValue}
+        setButtonDisabled={setExternalButtonDisabled}
+        successMessage="Password changed successfully."
+      />
+      {display === PasswordChangeStatus.PasswordForm && (
+        <Button onClick={submitChangePassword}>Change</Button>
+      )}
+    </ContentSection>
+  );
+};
+
+export default PasswordChange;
