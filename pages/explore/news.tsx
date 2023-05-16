@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '../../components/layout/Layout';
-import LeftNavbar from '../../components/navbar/LeftNavbar';
+import Layout from '../../components/Layout/Layout';
+import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
 import { Column } from '../../components/Column/Column';
 import InputFileModal from '../../components/InputFileModal/InputFileModal';
 

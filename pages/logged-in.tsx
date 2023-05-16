@@ -2,9 +2,9 @@ import Head from 'next/head';
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';
-import Layout from '../components/layout/Layout';
-import LeftNavbar from '../components/navbar/LeftNavbar';
 import { Column } from '../components/Column/Column';
+import Layout from '../components/Layout/Layout';
+import LeftNavbar from '../components/LeftNavbar/LeftNavbar';
 
 export default function Home() {
   const { user, isLoggedIn } = useAuth();

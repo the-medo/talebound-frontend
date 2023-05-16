@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import PageTermsOfService from '../screens/terms-of-service/PageTermsOfService';
-import Layout from '../components/layout/Layout';
+import Layout from '../components/Layout/Layout';
 
 export default function PrivacyPolicy() {
   return (

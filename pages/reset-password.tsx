@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React, { useCallback, useMemo } from 'react';
-import Layout from '../components/layout/Layout';
+import Layout from '../components/Layout/Layout';
 import { Button, Input, styled, Text, useInput } from '@nextui-org/react';
 import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
