@@ -36,7 +36,7 @@ export interface PbAverageEvaluationVote {
   userId?: number;
   name?: string;
   description?: string;
-  type?: PbEvaluationType;
+  type?: string;
   /** @format float */
   average?: number;
 }

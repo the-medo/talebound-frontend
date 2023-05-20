@@ -313,7 +313,7 @@ export class Users<SecurityDataType = unknown> {
    */
   taleboundGetAverageUserEvaluationsByType = (
     userId: number,
-    type: 'self' | 'dm',
+    type: string,
     params: RequestParams = {},
   ) =>
     this.http.request<PbGetAverageUserEvaluationsByTypeResponse, RpcStatus>({
