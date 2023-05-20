@@ -29,6 +29,18 @@ export interface PbAddRoleToUserResponse {
   message?: string;
 }
 
+export interface PbAverageEvaluationVote {
+  /** @format int32 */
+  evaluationId?: number;
+  /** @format int32 */
+  userId?: number;
+  name?: string;
+  description?: string;
+  type?: PbEvaluationType;
+  /** @format float */
+  average?: number;
+}
+
 export interface PbChatMessage {
   /** @format int64 */
   id?: string;
@@ -38,6 +50,10 @@ export interface PbChatMessage {
   text?: string;
   /** @format date-time */
   createdAt?: string;
+}
+
+export interface PbCreateOrUpdateEvaluationVoteResponse {
+  evaluationVote?: PbEvaluationVote;
 }
 
 export interface PbCreateUserRequest {
@@ -55,8 +71,60 @@ export interface PbDeleteChatMessageResponse {
   message?: string;
 }
 
+export interface PbDeleteEvaluationVoteResponse {
+  success?: boolean;
+  message?: string;
+}
+
+export interface PbEvaluation {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  description?: string;
+  type?: PbEvaluationType;
+}
+
+/** @default "self" */
+export enum PbEvaluationType {
+  Self = 'self',
+  Dm = 'dm',
+}
+
+export interface PbEvaluationVote {
+  /** @format int32 */
+  evaluationId?: number;
+  /** @format int32 */
+  userId?: number;
+  /** @format int32 */
+  userIdVoter?: number;
+  /** @format int32 */
+  value?: number;
+  /** @format date-time */
+  createdAt?: string;
+}
+
+export interface PbGetAverageUserEvaluationsByTypeResponse {
+  averageEvaluationVote?: PbAverageEvaluationVote[];
+}
+
 export interface PbGetChatMessagesResponse {
   messages?: PbChatMessage[];
+}
+
+export interface PbGetEvaluationByIdResponse {
+  evaluation?: PbEvaluation;
+}
+
+export interface PbGetEvaluationVotesByUserIdAndVoterResponse {
+  evaluationVote?: PbEvaluationVote[];
+}
+
+export interface PbGetEvaluationVotesByUserIdResponse {
+  evaluationVote?: PbEvaluationVote[];
+}
+
+export interface PbGetEvaluationsByTypeResponse {
+  evaluation?: PbEvaluation[];
 }
 
 export interface PbGetUserRolesResponse {

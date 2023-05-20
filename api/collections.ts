@@ -5,6 +5,7 @@ import { Chat } from '../generated/api-types/Chat';
 import { Users } from '../generated/api-types/Users';
 import { Verify } from '../generated/api-types/Verify';
 import { getApiUrl } from '../utils/functions/config';
+import { Evaluations } from '../generated/api-types/Evaluations';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -24,3 +25,4 @@ console.log(API.instance.defaults.withCredentials, 'API.instance.defaults.withCr
 export const ChatCollection = new Chat(API);
 export const UsersCollection = new Users(API);
 export const VerifyCollection = new Verify(API);
+export const EvaluationsCollection = new Evaluations(API);

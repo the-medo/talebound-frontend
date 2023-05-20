@@ -12,8 +12,13 @@
 import {
   PbAddRoleToUserRequest,
   PbAddRoleToUserResponse,
+  PbCreateOrUpdateEvaluationVoteResponse,
   PbCreateUserRequest,
   PbCreateUserResponse,
+  PbDeleteEvaluationVoteResponse,
+  PbGetAverageUserEvaluationsByTypeResponse,
+  PbGetEvaluationVotesByUserIdAndVoterResponse,
+  PbGetEvaluationVotesByUserIdResponse,
   PbGetUserRolesResponse,
   PbGetUsersResponse,
   PbLoginUserRequest,
@@ -246,6 +251,117 @@ export class Users<SecurityDataType = unknown> {
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get evaluation votes by user id
+   *
+   * @tags Talebound
+   * @name TaleboundGetEvaluationVotesByUserId
+   * @summary Get evaluation votes by user id
+   * @request GET:/users/{userId}/evaluation-vote
+   * @response `200` `PbGetEvaluationVotesByUserIdResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetEvaluationVotesByUserId = (userId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetEvaluationVotesByUserIdResponse, RpcStatus>({
+      path: `/users/${userId}/evaluation-vote`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Create or update evaluation vote
+   *
+   * @tags Talebound
+   * @name TaleboundCreateOrUpdateEvaluationVote
+   * @summary Create or update evaluation vote
+   * @request POST:/users/{userId}/evaluation-vote
+   * @response `200` `PbCreateOrUpdateEvaluationVoteResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundCreateOrUpdateEvaluationVote = (
+    userId: number,
+    body: {
+      /** @format int32 */
+      evaluationId?: number;
+      /** @format int32 */
+      userIdVoter?: number;
+      /** @format int32 */
+      value?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbCreateOrUpdateEvaluationVoteResponse, RpcStatus>({
+      path: `/users/${userId}/evaluation-vote`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get average user evaluation by type
+   *
+   * @tags Talebound
+   * @name TaleboundGetAverageUserEvaluationsByType
+   * @summary Get average user evaluation
+   * @request GET:/users/{userId}/evaluation-vote/type/{type}/average
+   * @response `200` `PbGetAverageUserEvaluationsByTypeResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetAverageUserEvaluationsByType = (
+    userId: number,
+    type: 'self' | 'dm',
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetAverageUserEvaluationsByTypeResponse, RpcStatus>({
+      path: `/users/${userId}/evaluation-vote/type/${type}/average`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get evaluation votes by user id and voter
+   *
+   * @tags Talebound
+   * @name TaleboundGetEvaluationVotesByUserIdAndVoter
+   * @summary Get evaluation votes by user id and voter
+   * @request GET:/users/{userId}/evaluation-vote/voter/{userIdVoter}
+   * @response `200` `PbGetEvaluationVotesByUserIdAndVoterResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetEvaluationVotesByUserIdAndVoter = (
+    userId: number,
+    userIdVoter: number,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetEvaluationVotesByUserIdAndVoterResponse, RpcStatus>({
+      path: `/users/${userId}/evaluation-vote/voter/${userIdVoter}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Delete evaluation vote
+   *
+   * @tags Talebound
+   * @name TaleboundDeleteEvaluationVote
+   * @summary Delete evaluation vote
+   * @request DELETE:/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}
+   * @response `200` `PbDeleteEvaluationVoteResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundDeleteEvaluationVote = (
+    userId: number,
+    evaluationId: number,
+    userIdVoter: number,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbDeleteEvaluationVoteResponse, RpcStatus>({
+      path: `/users/${userId}/evaluation-vote/${evaluationId}/voter/${userIdVoter}`,
+      method: 'DELETE',
       format: 'json',
       ...params,
     });
