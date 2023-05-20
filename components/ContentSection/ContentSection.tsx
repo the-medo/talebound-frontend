@@ -22,6 +22,7 @@ const StyledSectionContent = styled('div', {
   display: 'flex',
   alignItems: '$$alignItems',
   justifyContent: '$$justifyContent',
+  flexBasis: '$$flexBasis',
   gap: '$sm',
 
   variants: {
@@ -41,6 +42,7 @@ interface ContentSectionProps extends PropsWithChildren {
   header?: string;
   alignItems?: CSSProperties['alignItems'];
   justifyContent?: CSSProperties['justifyContent'];
+  flexBasis?: CSSProperties['flexBasis'];
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
@@ -49,13 +51,14 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
   children,
+  flexBasis,
 }) => {
   return (
     <StyledSection>
       {header && <StyledSectionHeader>{header}</StyledSectionHeader>}
       <StyledSectionContent
         direction={direction}
-        css={{ $$alignItems: alignItems, $$justifyContent: justifyContent }}
+        css={{ $$alignItems: alignItems, $$justifyContent: justifyContent, $$flexBasis: flexBasis }}
       >
         {children}
       </StyledSectionContent>

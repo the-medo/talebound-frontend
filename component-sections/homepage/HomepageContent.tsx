@@ -1,7 +1,7 @@
 import React from 'react';
 import { MainContent } from '../../components/MainContent/MainContent';
 import { styled } from '@nextui-org/react';
-import { Column } from '../../components/Column/Column';
+import { Column } from '../../components/Flex/Flex';
 import HomepageCard from './HomepageCard';
 
 const ContentQuote = styled(Column, {

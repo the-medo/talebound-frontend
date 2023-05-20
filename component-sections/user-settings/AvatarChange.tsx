@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column } from '../../components/Column/Column';
+import { Column } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
 import { Avatar } from '@nextui-org/react';

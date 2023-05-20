@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';
-import { Column } from '../components/Column/Column';
+import { Column } from '../components/Flex/Flex';
 import Layout from '../components/Layout/Layout';
 import LeftNavbar from '../components/LeftNavbar/LeftNavbar';
 
