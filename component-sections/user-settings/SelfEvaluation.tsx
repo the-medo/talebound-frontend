@@ -33,11 +33,7 @@ const SelfEvaluation: React.FC<SelfEvaluationProps> = () => {
         </Flex>
       )}
       {data?.averageEvaluationVote?.map((evaluation) => (
-        <Evaluation
-          title={evaluation.name!}
-          description={evaluation.description!}
-          value={evaluation.average}
-        />
+        <Evaluation data={evaluation} />
       ))}
     </ContentSection>
   );

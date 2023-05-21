@@ -12,10 +12,21 @@ const StyledRating = styled(Rate, {
 
 interface RatingProps {
   defaultValue?: number;
+  disabled?: boolean;
+  onChange?: (value: number) => void;
 }
 
-const Rating: React.FC<RatingProps> = ({ defaultValue }) => {
-  return <StyledRating allowHalf character={<MdRectangle />} defaultValue={defaultValue} />;
+const Rating: React.FC<RatingProps> = ({ defaultValue, onChange, disabled }) => {
+  return (
+    <StyledRating
+      allowHalf
+      allowClear
+      disabled={disabled}
+      onChange={onChange}
+      character={<MdRectangle />}
+      defaultValue={defaultValue}
+    />
+  );
 };
 
 export default Rating;
