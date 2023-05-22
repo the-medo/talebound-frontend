@@ -1,5 +1,5 @@
 import { styled } from '@nextui-org/react';
-import React from 'react';
+import React, { MutableRefObject, useCallback } from 'react';
 
 const InputFileStyled = styled('input', {
   width: '350px',
@@ -82,12 +82,16 @@ interface InputFileProps {
   multiple?: boolean;
   showBorder?: boolean;
   showTitle?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  ref?: MutableRefObject<HTMLInputElement | null>;
 }
 
 const InputFile: React.FC<InputFileProps> = ({
   multiple = false,
   showBorder = true,
   showTitle = true,
+  onChange,
+  ref,
 }) => {
   return (
     <InputFileLabel showBorder={showBorder} showTitle={showTitle} htmlFor="images">
@@ -97,7 +101,14 @@ const InputFile: React.FC<InputFileProps> = ({
           or
         </>
       )}
-      <InputFileStyled type="file" id="images" accept="image/*" required />
+      <InputFileStyled
+        ref={ref}
+        onChange={onChange}
+        type="file"
+        id="images"
+        accept="image/*"
+        required
+      />
     </InputFileLabel>
   );
 };

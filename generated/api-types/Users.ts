@@ -288,7 +288,7 @@ export class Users<SecurityDataType = unknown> {
       evaluationId?: number;
       /** @format int32 */
       userIdVoter?: number;
-      /** @format int32 */
+      /** @format double */
       value?: number;
     },
     params: RequestParams = {},

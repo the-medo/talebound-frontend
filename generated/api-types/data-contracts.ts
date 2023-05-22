@@ -37,7 +37,7 @@ export interface PbAverageEvaluationVote {
   name?: string;
   description?: string;
   type?: string;
-  /** @format float */
+  /** @format double */
   average?: number;
 }
 
@@ -97,7 +97,7 @@ export interface PbEvaluationVote {
   userId?: number;
   /** @format int32 */
   userIdVoter?: number;
-  /** @format int32 */
+  /** @format double */
   value?: number;
   /** @format date-time */
   createdAt?: string;
@@ -197,6 +197,20 @@ export interface PbUpdateUserRequest {
 
 export interface PbUpdateUserResponse {
   user?: PbUser;
+}
+
+export interface PbUploadImageRequest {
+  filename?: string;
+  /** @format byte */
+  data?: string;
+}
+
+export interface PbUploadImageResponse {
+  id?: string;
+  filename?: string;
+  variants?: string[];
+  /** @format date-time */
+  uploadedAt?: string;
 }
 
 export interface PbUser {
