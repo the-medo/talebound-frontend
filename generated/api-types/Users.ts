@@ -31,6 +31,7 @@ import {
   PbResetPasswordVerifyCodeValidityResponse,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
+  PbUploadUserAvatarResponse,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -248,6 +249,32 @@ export class Users<SecurityDataType = unknown> {
   taleboundAddRoleToUser = (body: PbAddRoleToUserRequest, params: RequestParams = {}) =>
     this.http.request<PbAddRoleToUserResponse, RpcStatus>({
       path: `/users/roles`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description uploads an user avatar
+   *
+   * @tags Talebound
+   * @name TaleboundUploadUserAvatar
+   * @summary Upload user avatar
+   * @request POST:/users/{userId}/avatar
+   * @response `200` `PbUploadUserAvatarResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundUploadUserAvatar = (
+    userId: number,
+    body: {
+      /** @format byte */
+      data?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbUploadUserAvatarResponse, RpcStatus>({
+      path: `/users/${userId}/avatar`,
       method: 'POST',
       body: body,
       type: ContentType.Json,

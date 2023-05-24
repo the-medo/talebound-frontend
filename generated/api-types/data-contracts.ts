@@ -135,6 +135,19 @@ export interface PbGetUsersResponse {
   users?: PbUser[];
 }
 
+export interface PbImage {
+  /** @format int32 */
+  id?: number;
+  imgGuid?: string;
+  /** @format int32 */
+  imageTypeId?: number;
+  name?: string;
+  url?: string;
+  baseUrl?: string;
+  /** @format date-time */
+  createdAt?: string;
+}
+
 export interface PbLoginUserRequest {
   username?: string;
   password?: string;
@@ -211,6 +224,12 @@ export interface PbUploadImageResponse {
   variants?: string[];
   /** @format date-time */
   uploadedAt?: string;
+}
+
+export interface PbUploadUserAvatarResponse {
+  /** @format int32 */
+  userId?: number;
+  image?: PbImage;
 }
 
 export interface PbUser {
