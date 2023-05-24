@@ -6,43 +6,63 @@ import { Avatar } from '@nextui-org/react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { useUploadFile } from '../../api/useUploadFile';
 import { PbUploadImageRequest } from '../../generated/api-types/data-contracts';
+import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
+import { useAuth } from '../../hooks/useAuth';
+import { setUser, updateUser } from '../../utils/auth/userSlice';
+import { useDispatch } from 'react-redux';
+import { router } from 'next/client';
 
 const AvatarChange: React.FC = () => {
-  const [uploadArgs, setUploadArgs] = useState<PbUploadImageRequest>();
-  const doUploadFile = useUploadFile();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  const doUploadAvatar = useUploadUserAvatar({
+    onSuccess: (data) => {
+      dispatch(
+        updateUser({
+          imgId: data.data.image?.id,
+        }),
+      );
+    },
+  });
+
+  const [uploadArgs, setUploadArgs] = useState<UploadUserAvatarRequest>();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      if (file) {
-        const arrayBuffer = await file.arrayBuffer();
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+    async (event) => {
+      if (event.target.files) {
+        const file = event.target.files[0];
+        if (file) {
+          const arrayBuffer = await file.arrayBuffer();
 
-        // Convert data to base64
-        let binary = '';
-        const bytes = new Uint8Array(arrayBuffer);
-        const len = bytes.byteLength;
-        for (let i = 0; i < len; i++) {
-          binary += String.fromCharCode(bytes[i]);
+          // Convert data to base64
+          let binary = '';
+          const bytes = new Uint8Array(arrayBuffer);
+          const len = bytes.byteLength;
+          for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          const base64Data = window.btoa(binary);
+
+          setUploadArgs({
+            userId: user?.id ?? 0,
+            data: base64Data,
+          });
         }
-        const base64Data = window.btoa(binary);
-
-        setUploadArgs({
-          filename: file.name,
-          data: base64Data,
-        });
       }
-    }
-  }, []);
+    },
+    [user?.id],
+  );
 
   const handleUpload = useCallback(() => {
     if (!uploadArgs) return;
-    doUploadFile.mutate(uploadArgs);
+    doUploadAvatar.mutate(uploadArgs);
 
     if (inputRef.current) {
       inputRef.current.value = '';
     }
-  }, [doUploadFile, uploadArgs]);
+  }, [doUploadAvatar, uploadArgs]);
 
   return (
     <ContentSection header="Change avatar" direction="row" justifyContent="space-between">

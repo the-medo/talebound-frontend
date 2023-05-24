@@ -19,9 +19,18 @@ export const userSlice = createSlice({
       console.log('setUser action.payload', action.payload);
       state.user = action.payload;
     },
+    updateUser: (state, action: PayloadAction<PbUser>) => {
+      if (state.user) {
+        Object.assign(state.user, action.payload);
+      } else {
+        state.user = action.payload;
+      }
+      setItem(LSKey.USER, state.user);
+      console.log('updateUser action.payload', action.payload);
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, updateUser } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
