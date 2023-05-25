@@ -244,6 +244,7 @@ export interface PbUser {
   /** @format date-time */
   createdAt?: string;
   isEmailVerified?: boolean;
+  img?: PbImage;
 }
 
 export interface PbVerifyEmailResponse {

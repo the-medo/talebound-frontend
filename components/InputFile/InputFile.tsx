@@ -83,34 +83,31 @@ interface InputFileProps {
   showBorder?: boolean;
   showTitle?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  ref?: MutableRefObject<HTMLInputElement | null>;
 }
 
-const InputFile: React.FC<InputFileProps> = ({
-  multiple = false,
-  showBorder = true,
-  showTitle = true,
-  onChange,
-  ref,
-}) => {
-  return (
-    <InputFileLabel showBorder={showBorder} showTitle={showTitle} htmlFor="images">
-      {showTitle && (
-        <>
-          <InputFileDropTitle>Drop file{multiple && 's'} here</InputFileDropTitle>
-          or
-        </>
-      )}
-      <InputFileStyled
-        ref={ref}
-        onChange={onChange}
-        type="file"
-        id="images"
-        accept="image/*"
-        required
-      />
-    </InputFileLabel>
-  );
-};
+const InputFile: React.ForwardRefExoticComponent<
+  InputFileProps & React.RefAttributes<HTMLInputElement>
+> = React.forwardRef<HTMLInputElement, InputFileProps>(
+  ({ multiple = false, showBorder = true, showTitle = true, onChange }, forwardedRef) => {
+    return (
+      <InputFileLabel showBorder={showBorder} showTitle={showTitle} htmlFor="images">
+        {showTitle && (
+          <>
+            <InputFileDropTitle>Drop file{multiple && 's'} here</InputFileDropTitle>
+            or
+          </>
+        )}
+        <InputFileStyled
+          ref={forwardedRef}
+          onChange={onChange}
+          type="file"
+          id="images"
+          accept="image/*"
+          required
+        />
+      </InputFileLabel>
+    );
+  },
+);
 
 export default InputFile;

@@ -7,6 +7,7 @@ import { setUser } from '../../utils/auth/userSlice';
 import { useLogout } from '../../api/useLogout';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
+import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -76,7 +77,7 @@ const Menu: React.FC = () => {
                   as="button"
                   color="primary"
                   size="md"
-                  src="/assets/images/avatar.png"
+                  src={user?.img?.url ?? DEFAULT_AVATAR_URL}
                 />
               </Dropdown.Trigger>
             </Navbar.Item>

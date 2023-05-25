@@ -2,15 +2,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Column } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, Loading } from '@nextui-org/react';
 import ContentSection from '../../components/ContentSection/ContentSection';
-import { useUploadFile } from '../../api/useUploadFile';
-import { PbUploadImageRequest } from '../../generated/api-types/data-contracts';
 import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
 import { useAuth } from '../../hooks/useAuth';
-import { setUser, updateUser } from '../../utils/auth/userSlice';
+import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
-import { router } from 'next/client';
+import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 
 const AvatarChange: React.FC = () => {
   const { user } = useAuth();
@@ -21,6 +19,7 @@ const AvatarChange: React.FC = () => {
       dispatch(
         updateUser({
           imgId: data.data.image?.id,
+          img: data.data.image,
         }),
       );
     },
@@ -59,6 +58,7 @@ const AvatarChange: React.FC = () => {
     if (!uploadArgs) return;
     doUploadAvatar.mutate(uploadArgs);
 
+    setUploadArgs(undefined);
     if (inputRef.current) {
       inputRef.current.value = '';
     }
@@ -68,18 +68,20 @@ const AvatarChange: React.FC = () => {
     <ContentSection header="Change avatar" direction="row" justifyContent="space-between">
       <Column css={{ $$gap: '0.5rem' }}>
         <InputFile
-          ref={inputRef}
           onChange={onChange}
           multiple={false}
           showBorder={false}
           showTitle={false}
+          ref={inputRef}
         />
-        <Button onClick={handleUpload}>Upload</Button>
+        <Button onClick={handleUpload}>
+          {doUploadAvatar.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
+        </Button>
       </Column>
       <Avatar
         color="primary"
         css={{ size: '7rem', marginTop: '-1rem' }}
-        src="/assets/images/avatar.png"
+        src={user?.img?.url ?? DEFAULT_AVATAR_URL}
       />
     </ContentSection>
   );
