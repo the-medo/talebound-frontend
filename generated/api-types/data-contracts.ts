@@ -146,6 +146,8 @@ export interface PbImage {
   baseUrl?: string;
   /** @format date-time */
   createdAt?: string;
+  /** @format int32 */
+  userId?: number;
 }
 
 export interface PbLoginUserRequest {
