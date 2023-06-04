@@ -10,11 +10,11 @@ export interface PbGetAverageUserEvaluationsByTypeRequest {
   type: PbEvaluationType;
 }
 
-export const useAverageUserEvaluation = createQuery<
+export const useGetAverageUserEvaluationByType = createQuery<
   PbGetAverageUserEvaluationsByTypeResponse,
   PbGetAverageUserEvaluationsByTypeRequest
 >({
-  primaryKey: 'useAverageUserEvaluation',
+  primaryKey: 'useGetAverageUserEvaluationByType',
   queryFn: async ({ queryKey: [, variables] }) => {
     const { data } = await UsersCollection.taleboundGetAverageUserEvaluationsByType(
       variables.userId,

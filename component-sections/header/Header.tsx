@@ -6,7 +6,8 @@ import InfoSection from '../../components/InfoSection';
 const BaseHeader = styled('div', {
   width: '100%',
   height: '310px',
-  backgroundImage: 'url("../assets/images/header.png")',
+  backgroundImage:
+    'url("https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/efaae215-d5c5-4070-e61d-949f10521200/original")',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',

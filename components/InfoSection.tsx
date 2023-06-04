@@ -23,6 +23,14 @@ const SectionContent = styled('div', {
   borderRadius: '10px',
   backgroundColor: '$transparent40',
 
+  variants: {
+    background: {
+      true: {
+        backgroundColor: '$gray50',
+      },
+    },
+  },
+
   ['a']: {
     fontSize: '$xs',
     // alignSelf: 'flex-end',
@@ -30,16 +38,23 @@ const SectionContent = styled('div', {
 });
 
 interface InfoSectionProps extends PropsWithChildren {
+  background?: boolean;
   title?: string;
   linkTitle?: string;
   linkHref?: string;
 }
 
-const InfoSection: React.FC<InfoSectionProps> = ({ title, linkTitle, linkHref, children }) => {
+const InfoSection: React.FC<InfoSectionProps> = ({
+  background,
+  title,
+  linkTitle,
+  linkHref,
+  children,
+}) => {
   return (
     <Section>
       {title && <span>{title}</span>}
-      <SectionContent>
+      <SectionContent background={background}>
         {children}
         <>{linkTitle && linkHref && <Link href={linkHref}>{linkTitle}</Link>}</>
       </SectionContent>

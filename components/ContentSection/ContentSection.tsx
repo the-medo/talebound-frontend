@@ -1,6 +1,7 @@
 import { styled } from '@nextui-org/react';
 import React, { PropsWithChildren } from 'react';
 import { CSSProperties } from '@stitches/react';
+import { TitleH4 } from '../Typography/Typography';
 
 const StyledSection = styled('section', {
   display: 'flex',
@@ -13,17 +14,12 @@ const StyledSection = styled('section', {
   justifyContent: 'flex-start',
 });
 
-const StyledSectionHeader = styled('h4', {
-  color: '$primary800',
-  textDecoration: 'underline',
-});
-
 const StyledSectionContent = styled('div', {
   display: 'flex',
   alignItems: '$$alignItems',
   justifyContent: '$$justifyContent',
   flexBasis: '$$flexBasis',
-  gap: '$sm',
+  gap: '$md',
 
   variants: {
     direction: {
@@ -55,7 +51,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 }) => {
   return (
     <StyledSection>
-      {header && <StyledSectionHeader>{header}</StyledSectionHeader>}
+      {header && <TitleH4>{header}</TitleH4>}
       <StyledSectionContent
         direction={direction}
         css={{ $$alignItems: alignItems, $$justifyContent: justifyContent, $$flexBasis: flexBasis }}

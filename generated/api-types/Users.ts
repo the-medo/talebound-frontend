@@ -19,10 +19,13 @@ import {
   PbGetAverageUserEvaluationsByTypeResponse,
   PbGetEvaluationVotesByUserIdAndVoterResponse,
   PbGetEvaluationVotesByUserIdResponse,
+  PbGetUserPostsResponse,
   PbGetUserRolesResponse,
   PbGetUsersResponse,
+  PbGetWorldsOfCreatorResponse,
   PbLoginUserRequest,
   PbLoginUserResponse,
+  PbPost,
   PbRemoveRoleFromUserResponse,
   PbResetPasswordSendCodeRequest,
   PbResetPasswordSendCodeResponse,
@@ -32,6 +35,7 @@ import {
   PbUpdateUserRequest,
   PbUpdateUserResponse,
   PbUploadUserAvatarResponse,
+  PbViewUser,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -104,6 +108,23 @@ export class Users<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description returns information about one user
+   *
+   * @tags Talebound
+   * @name TaleboundGetUserById
+   * @summary Get user
+   * @request GET:/users/id/{userId}
+   * @response `200` `PbViewUser` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetUserById = (userId: number, params: RequestParams = {}) =>
+    this.http.request<PbViewUser, RpcStatus>({
+      path: `/users/id/${userId}`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
@@ -393,6 +414,60 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description Use this API to update user introduction
+   *
+   * @tags Talebound
+   * @name TaleboundUpdateUserIntroduction
+   * @summary Update user introduction
+   * @request PATCH:/users/{userId}/introduction
+   * @response `200` `PbPost` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundUpdateUserIntroduction = (
+    userId: number,
+    body: {
+      content?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbPost, RpcStatus>({
+      path: `/users/${userId}/introduction`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get posts of user by userID
+   *
+   * @tags Talebound
+   * @name TaleboundGetUserPosts
+   * @summary Get user posts
+   * @request GET:/users/{userId}/posts
+   * @response `200` `PbGetUserPostsResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetUserPosts = (
+    userId: number,
+    query?: {
+      /** @format int32 */
+      postTypeId?: number;
+      /** @format int32 */
+      limit?: number;
+      /** @format int32 */
+      offset?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetUserPostsResponse, RpcStatus>({
+      path: `/users/${userId}/posts`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description removes role from user
    *
    * @tags Talebound
@@ -406,6 +481,23 @@ export class Users<SecurityDataType = unknown> {
     this.http.request<PbRemoveRoleFromUserResponse, RpcStatus>({
       path: `/users/${userId}/roles/${roleId}`,
       method: 'DELETE',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get list of worlds that the creator is part of
+   *
+   * @tags Talebound
+   * @name TaleboundGetWorldsOfCreator
+   * @summary Get creator's worlds
+   * @request GET:/users/{userId}/worlds_creator
+   * @response `200` `PbGetWorldsOfCreatorResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetWorldsOfCreator = (userId: string, params: RequestParams = {}) =>
+    this.http.request<PbGetWorldsOfCreatorResponse, RpcStatus>({
+      path: `/users/${userId}/worlds_creator`,
+      method: 'GET',
       format: 'json',
       ...params,
     });

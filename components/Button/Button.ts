@@ -13,6 +13,26 @@ export const Button = styled('button', {
   cursor: 'pointer',
   transition: 'all 0.3s ease-in-out',
 
+  variants: {
+    type: {
+      secondary: {
+        background: '$white',
+        border: '1px solid $primary200',
+        color: '$primary500',
+
+        '&:hover': {
+          background: '$gray200',
+          color: '$primary500',
+        },
+      },
+    },
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+    },
+  },
+
   '&:hover': {
     background: '$primary900',
     color: '$white300',

@@ -24,11 +24,11 @@ export class Evaluations<SecurityDataType = unknown> {
   }
 
   /**
-   * No description
+   * @description Get evaluation by id
    *
    * @tags Talebound
    * @name TaleboundGetEvaluationById
-   * @summary ============= USER EVALUATION =================
+   * @summary Get evaluation by id
    * @request GET:/evaluations/id/{id}
    * @response `200` `PbGetEvaluationByIdResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.

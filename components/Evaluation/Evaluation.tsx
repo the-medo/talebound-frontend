@@ -13,6 +13,17 @@ const EvaluationWrapper = styled(Column, {
   gap: '$sm',
   borderRadius: '$md',
   background: '$white700',
+
+  variants: {
+    compact: {
+      true: {
+        padding: '$xs',
+        gap: '$xs',
+        borderRadius: '0',
+        background: 'transparent',
+      },
+    },
+  },
 });
 
 const EvaluationTitle = styled('p', {
@@ -22,9 +33,10 @@ const EvaluationTitle = styled('p', {
 interface EvaluationProps {
   data: PbAverageEvaluationVote;
   disabled?: boolean;
+  compact?: boolean;
 }
 
-const Evaluation: React.FC<EvaluationProps> = ({ data, disabled }) => {
+const Evaluation: React.FC<EvaluationProps> = ({ data, disabled, compact = false }) => {
   const { user } = useAuth();
 
   const doVote = useCreateOrUpdateEvaluationVote();
@@ -47,12 +59,19 @@ const Evaluation: React.FC<EvaluationProps> = ({ data, disabled }) => {
   );
 
   return (
-    <EvaluationWrapper>
-      <Row css={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+    <EvaluationWrapper compact={compact}>
+      <Row
+        css={{
+          $$gap: '1rem',
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <EvaluationTitle>{data.name}</EvaluationTitle>
         <Rating onChange={handleChange} defaultValue={data.average} disabled={disabled} />
       </Row>
-      <Text span>{data.description}</Text>
+      {!compact && <Text span>{data.description}</Text>}
     </EvaluationWrapper>
   );
 };

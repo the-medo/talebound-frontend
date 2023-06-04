@@ -56,6 +56,13 @@ export interface PbCreateOrUpdateEvaluationVoteResponse {
   evaluationVote?: PbEvaluationVote;
 }
 
+export interface PbCreatePostRequest {
+  title?: string;
+  content?: string;
+  /** @format int32 */
+  postTypeId?: number;
+}
+
 export interface PbCreateUserRequest {
   username?: string;
   email?: string;
@@ -66,12 +73,22 @@ export interface PbCreateUserResponse {
   user?: PbUser;
 }
 
+export interface PbCreateWorldRequest {
+  name?: string;
+  description?: string;
+}
+
 export interface PbDeleteChatMessageResponse {
   success?: boolean;
   message?: string;
 }
 
 export interface PbDeleteEvaluationVoteResponse {
+  success?: boolean;
+  message?: string;
+}
+
+export interface PbDeletePostResponse {
   success?: boolean;
   message?: string;
 }
@@ -127,12 +144,45 @@ export interface PbGetEvaluationsByTypeResponse {
   evaluation?: PbEvaluation[];
 }
 
+export interface PbGetPostHistoryResponse {
+  historyPosts?: PbHistoryPost[];
+}
+
+export interface PbGetUserPostsResponse {
+  posts?: PbPost[];
+}
+
 export interface PbGetUserRolesResponse {
   role?: PbRole[];
 }
 
 export interface PbGetUsersResponse {
   users?: PbUser[];
+}
+
+export interface PbGetWorldsOfCreatorResponse {
+  worlds?: PbWorldOfCreatorResponse[];
+}
+
+export interface PbHistoryPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  postTypeId?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
 }
 
 export interface PbImage {
@@ -162,6 +212,25 @@ export interface PbLoginUserResponse {
   accessTokenExpiresAt?: string;
   /** @format date-time */
   refreshTokenExpiresAt?: string;
+}
+
+export interface PbPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  postTypeId?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
 }
 
 export interface PbRemoveRoleFromUserResponse {
@@ -208,6 +277,8 @@ export interface PbUpdateUserRequest {
   password?: string;
   /** @format int32 */
   imgId?: number;
+  /** @format int32 */
+  introductionPostId?: number;
 }
 
 export interface PbUpdateUserResponse {
@@ -247,14 +318,58 @@ export interface PbUser {
   createdAt?: string;
   isEmailVerified?: boolean;
   img?: PbImage;
+  /** @format int32 */
+  introductionPostId?: number;
 }
 
 export interface PbVerifyEmailResponse {
   isVerified?: boolean;
 }
 
+export interface PbViewUser {
+  /** @format int32 */
+  id?: number;
+  username?: string;
+  email?: string;
+  /** @format int32 */
+  imgId?: number;
+  /** @format date-time */
+  passwordChangedAt?: string;
+  /** @format date-time */
+  createdAt?: string;
+  isEmailVerified?: boolean;
+  avatarImageUrl?: string;
+  avatarImageGuid?: string;
+  /** @format int32 */
+  introductionPostId?: number;
+  /** @format date-time */
+  introductionPostDeletedAt?: string;
+}
+
+export interface PbWorld {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  public?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  description?: string;
+  imageAvatar?: string;
+  imageHeader?: string;
+  /** @format int32 */
+  rating?: number;
+  /** @format int32 */
+  activity?: number;
+}
+
+export interface PbWorldOfCreatorResponse {
+  world?: PbWorld;
+  isMain?: boolean;
+}
+
 export interface ProtobufAny {
   '@type'?: string;
+
   [key: string]: any;
 }
 
