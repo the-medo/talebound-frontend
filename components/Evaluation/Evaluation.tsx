@@ -5,14 +5,19 @@ import { Column, Row } from '../Flex/Flex';
 import { PbAverageEvaluationVote } from '../../generated/api-types/data-contracts';
 import { useAuth } from '../../hooks/useAuth';
 import { useCreateOrUpdateEvaluationVote } from '../../api/useCreateOrUpdateEvaluationVote';
+import { labelStyle } from '../../styles/typefaces';
 
 const EvaluationWrapper = styled(Column, {
-  padding: '$sm',
+  padding: '$md',
   width: '100%',
   gap: '$sm',
+  borderRadius: '$md',
+  background: '$white700',
 });
 
-const EvaluationTitle = styled(Text, {});
+const EvaluationTitle = styled('p', {
+  ...labelStyle,
+});
 
 interface EvaluationProps {
   data: PbAverageEvaluationVote;
@@ -44,12 +49,10 @@ const Evaluation: React.FC<EvaluationProps> = ({ data, disabled }) => {
   return (
     <EvaluationWrapper>
       <Row css={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-        <EvaluationTitle h5>{data.name}</EvaluationTitle>
+        <EvaluationTitle>{data.name}</EvaluationTitle>
         <Rating onChange={handleChange} defaultValue={data.average} disabled={disabled} />
       </Row>
-      <Text small i>
-        {data.description}
-      </Text>
+      <Text span>{data.description}</Text>
     </EvaluationWrapper>
   );
 };

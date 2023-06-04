@@ -28,5 +28,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </HydrationProvider>
   );
 }
-
-export default MyApp;

@@ -2,12 +2,10 @@ import React, { useEffect, useMemo } from 'react';
 import { Input, Loading, styled, useInput } from '@nextui-org/react';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
+import { labelStyle } from '../../styles/typefaces';
 
 const RegisterLabel = styled('label', {
-  color: '$primary800',
-  fontFamily: '$heading',
-  fontSize: '$md',
-  textTransform: 'uppercase',
+  ...labelStyle,
   width: 'min(75%, 20rem)',
   marginBottom: '$md',
 });
