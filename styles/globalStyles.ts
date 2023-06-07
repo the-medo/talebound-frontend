@@ -10,7 +10,8 @@ const globalStyles = globalCss({
     fontSize: '16px',
   },
   html: {
-    backgroundImage: 'linear-gradient(to right top, #eafff9 0%, #fff2e8 100%)',
+    // backgroundImage: 'linear-gradient(to right top, #eafff9 0%, #fff2e8 100%)',
+    backgroundColor: '#f8f8f8',
   },
   body: {
     fontFamily: '$text',
