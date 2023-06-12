@@ -26,6 +26,13 @@ const EvaluationWrapper = styled(Column, {
   },
 });
 
+const EvaluationRow = styled(Row, {
+  gap: '1rem',
+  width: '100%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
 const EvaluationTitle = styled('p', {
   ...labelStyle,
 });
@@ -60,17 +67,10 @@ const Evaluation: React.FC<EvaluationProps> = ({ data, disabled, compact = false
 
   return (
     <EvaluationWrapper compact={compact}>
-      <Row
-        css={{
-          $$gap: '1rem',
-          width: '100%',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <EvaluationRow>
         <EvaluationTitle>{data.name}</EvaluationTitle>
         <Rating onChange={handleChange} defaultValue={data.average} disabled={disabled} />
-      </Row>
+      </EvaluationRow>
       {!compact && <Text span>{data.description}</Text>}
     </EvaluationWrapper>
   );
