@@ -1,7 +1,10 @@
 import type { StorybookConfig } from '@storybook/nextjs';
 
 const config: StorybookConfig = {
-  stories: ['../components/**/*.mdx', '../components/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: [
+    '../@(components|components-radix-ui)/**/*.mdx',
+    '../@(components|components-radix-ui)/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
   addons: [
     '@storybook/addon-docs',
     '@storybook/addon-links',
