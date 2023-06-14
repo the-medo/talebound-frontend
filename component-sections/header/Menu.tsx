@@ -8,6 +8,7 @@ import { useLogout } from '../../api/useLogout';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { DEFAULT_AVATAR_URL } from '../../utils/constants';
+import UserDropdown from '../../components/UserDropdown/UserDropdown';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -69,6 +70,7 @@ const Menu: React.FC = () => {
         }}
       >
         <Client>
+          <UserDropdown />
           <Dropdown placement="bottom-right">
             <Navbar.Item id="navbar-item-1">
               <Dropdown.Trigger>

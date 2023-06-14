@@ -1,23 +1,15 @@
 import { keyframes } from '@stitches/react';
 
-const slideUpAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateY(2px)' },
-  '100%': { opacity: 1, transform: 'translateY(0)' },
+const openScale = keyframes({
+  '0%': { opacity: 0, transform: 'translateZ(0px) scale(0.35)' },
+  '60%': { opacity: 0.75, backfaceVisibility: 'hidden', transform: 'translateZ(0px) scale(1.05)' },
+  '100%': { opacity: 1, transform: 'translateZ(0px) scale(1)' },
 });
 
-const slideRightAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateX(-2px)' },
-  '100%': { opacity: 1, transform: 'translateX(0)' },
-});
-
-const slideDownAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateY(-2px)' },
-  '100%': { opacity: 1, transform: 'translateY(0)' },
-});
-
-const slideLeftAndFade = keyframes({
-  '0%': { opacity: 0, transform: 'translateX(2px)' },
-  '100%': { opacity: 1, transform: 'translateX(0)' },
+const closeScale = keyframes({
+  '0%': { opacity: 1, transform: 'translateZ(0px) scale(1)' },
+  '40%': { opacity: 0.75, transform: 'translateZ(0px) scale(1.05)' },
+  '100%': { opacity: 0, transform: 'translateZ(0px) scale(0.35)' },
 });
 
 export const stylesDropdownContent = {
@@ -27,13 +19,35 @@ export const stylesDropdownContent = {
   padding: 5,
   boxShadow:
     '0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)',
-  animationDuration: '400ms',
-  animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-  willChange: 'transform, opacity',
+  animationDuration: '0.3s',
+  animationFillMode: 'both',
+  animationTimingFunction: 'ease-out',
+  willChange: 'transform, opacity, backface-visibility',
+  '&[data-side="top"]': {
+    '&[data-align="start"]': { transformOrigin: 'left bottom' },
+    '&[data-align="center"]': { transformOrigin: 'bottom' },
+    '&[data-align="end"]': { transformOrigin: 'right bottom' },
+  },
+  '&[data-side="right"]': {
+    '&[data-align="start"]': { transformOrigin: 'left top' },
+    '&[data-align="center"]': { transformOrigin: 'left' },
+    '&[data-align="end"]': { transformOrigin: 'left bottom' },
+  },
+  '&[data-side="bottom"]': {
+    '&[data-align="start"]': { transformOrigin: 'left top' },
+    '&[data-align="center"]': { transformOrigin: 'top' },
+    '&[data-align="end"]': { transformOrigin: 'right top' },
+  },
+  '&[data-side="left"]': {
+    '&[data-align="start"]': { transformOrigin: 'right top' },
+    '&[data-align="center"]': { transformOrigin: 'right' },
+    '&[data-align="end"]': { transformOrigin: 'right bottom' },
+  },
+
   '&[data-state="open"]': {
-    '&[data-side="top"]': { animationName: slideDownAndFade },
-    '&[data-side="right"]': { animationName: slideLeftAndFade },
-    '&[data-side="bottom"]': { animationName: slideUpAndFade },
-    '&[data-side="left"]': { animationName: slideRightAndFade },
+    animationName: openScale,
+  },
+  '&[data-state="closed"]': {
+    animationName: closeScale,
   },
 };
