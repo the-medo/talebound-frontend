@@ -1,4 +1,4 @@
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 export const HeaderNavigation = styled('nav', {
   position: 'absolute',

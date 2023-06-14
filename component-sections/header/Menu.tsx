@@ -1,5 +1,5 @@
 import React, { Key, useCallback } from 'react';
-import { Avatar, Dropdown, Link, Navbar, styled, Text } from '@nextui-org/react';
+import { Avatar, Dropdown, Link, Navbar, Text } from '@nextui-org/react';
 import Logo from '../../components/Logo/Logo';
 import { Client } from 'react-hydration-provider';
 import { useAuth } from '../../hooks/useAuth';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 import UserDropdown from '../../components/UserDropdown/UserDropdown';
+import { styled } from '../../styles/stitches.config';
 
 const HeaderHeading = styled('h1', {
   margin: '0',

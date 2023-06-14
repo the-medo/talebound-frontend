@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
-import { Input, Loading, styled, useInput } from '@nextui-org/react';
-import { HelperType } from '../../utils/form/nextUiTypes';
-import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
+import { Loading } from '@nextui-org/react';
+// import { HelperType } from '../../utils/form/nextUiTypes';
+// import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
 import { labelStyle } from '../../styles/typefaces';
+import { useInput } from '../../hooks/useInput';
+import { styled } from '../../styles/stitches.config';
+import Input from '../Input/Input';
 
 const RegisterLabel = styled('label', {
   ...labelStyle,
@@ -30,24 +33,17 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
   setButtonDisabled,
   successMessage,
 }) => {
-  const {
-    value: password1Value,
-    bindings: { onChange: onChangePassword1 },
-  } = useInput('');
+  const { value: password1Value, onChange: onChangePassword1 } = useInput<string>('');
+  const { value: password2Value, onChange: onChangePassword2 } = useInput<string>('');
 
-  const {
-    value: password2Value,
-    bindings: { onChange: onChangePassword2 },
-  } = useInput('');
-
-  const helperPassword1: HelperType = useMemo(
-    () => validatePassword(password1Value),
-    [password1Value],
-  );
-  const helperPassword2: HelperType = useMemo(
-    () => validatePasswordAgain(password1Value, password2Value),
-    [password1Value, password2Value],
-  );
+  // const helperPassword1: HelperType = useMemo(
+  //   () => validatePassword(password1Value),
+  //   [password1Value],
+  // );
+  // const helperPassword2: HelperType = useMemo(
+  //   () => validatePasswordAgain(password1Value, password2Value),
+  //   [password1Value, password2Value],
+  // );
 
   useEffect(() => {
     if (setPasswordValue) setPasswordValue(password1Value);
@@ -79,31 +75,29 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
         <>
           <RegisterLabel id="reg-pass1">
             Password
-            <Input.Password
+            <Input
+              type="password"
               onChange={onChangePassword1}
               name="reg-pass1"
               id="reg-pass1"
               fullWidth
               required
-              shadow={false}
-              animated={false}
-              helperColor={helperPassword1.color}
-              helperText={helperPassword1.text}
+              // helperColor={helperPassword1.color}
+              // helperText={helperPassword1.text}
               aria-labelledby="reg-pass1"
             />
           </RegisterLabel>
           <RegisterLabel id="reg-pass2">
             Password again
-            <Input.Password
+            <Input
+              type="password"
               onChange={onChangePassword2}
               name="reg-pass2"
               id="reg-pass2"
               fullWidth
               required
-              shadow={false}
-              animated={false}
-              helperColor={helperPassword2.color}
-              helperText={helperPassword2.text}
+              // helperColor={helperPassword2.color}
+              // helperText={helperPassword2.text}
               aria-labelledby="reg-pass2"
             />
           </RegisterLabel>

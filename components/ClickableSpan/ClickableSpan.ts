@@ -1,4 +1,4 @@
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 export const ClickableSpan = styled('span', {
   color: '$primary200 !important',

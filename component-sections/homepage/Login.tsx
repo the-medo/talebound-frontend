@@ -1,23 +1,24 @@
 'use client';
 
 import React, { KeyboardEvent, useCallback, useMemo } from 'react';
-import { styled, Text, useInput, Button, Loading, FormElement } from '@nextui-org/react';
+import { Text, Loading } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
-import {
-  InputTransparent,
-  PasswordTransparent,
-} from '../../components/InputTransparent/InputTransparent';
+import Input from '../../components/Input/Input';
 import Link from 'next/link';
 import { useLogin } from '../../api/useLogin';
 import { useRouter } from 'next/router';
 import { setUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
 import { Client } from 'react-hydration-provider';
+import { useInput } from '../../hooks/useInput';
+import { styled } from '../../styles/stitches.config';
+import { Button } from '../../components/Button/Button';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
   top: '0',
   right: '0',
+  bottom: '0',
   padding: '$2xl $md',
   fontWeight: '$bold',
   fontSize: '$xl',
@@ -39,7 +40,7 @@ const LoginBox = styled(VerticalSemitransparent, {
       display: 'none',
     },
 
-    [`& ${InputTransparent}`]: {
+    [`& ${Input}`]: {
       maxWidth: '400px',
       width: '75%',
     },
@@ -87,15 +88,8 @@ const Login: React.FC = () => {
     },
   });
 
-  const {
-    value: usernameValue,
-    bindings: { onChange: onChangeUsername },
-  } = useInput('');
-
-  const {
-    value: passwordValue,
-    bindings: { onChange: onChangePassword },
-  } = useInput('');
+  const { value: usernameValue, onChange: onChangeUsername } = useInput('');
+  const { value: passwordValue, onChange: onChangePassword } = useInput('');
 
   const buttonDisabled = useMemo(
     () => !passwordValue || !usernameValue || login.isLoading,
@@ -112,7 +106,7 @@ const Login: React.FC = () => {
   }, [usernameValue, passwordValue, login]);
 
   const submitOnEnter = useCallback(
-    (event: KeyboardEvent<FormElement>) => {
+    (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.code === 'Enter') submitLogin();
     },
     [submitLogin],
@@ -122,39 +116,27 @@ const Login: React.FC = () => {
     <Client>
       <LoginBox>
         <h3 id="login">Login</h3>
-        <InputTransparent
+        <Input
           onChange={onChangeUsername}
           aria-labelledby="login"
           placeholder="Username"
-          fullWidth
           required
-          shadow={false}
-          animated={false}
           onKeyDown={submitOnEnter}
+          fullWidth
+          transparent
         />
-        <PasswordTransparent
+        <Input
+          type={'password'}
           onChange={onChangePassword}
           aria-labelledby="login"
           placeholder="Password"
-          fullWidth
           required
-          shadow={false}
-          animated={false}
           onKeyDown={submitOnEnter}
+          fullWidth
+          transparent
         />
         <LoginButtonWrapper>
-          <Button
-            color="primary"
-            auto
-            size="md"
-            onPress={submitLogin}
-            css={{
-              opacity: !buttonDisabled ? '1' : '0.5',
-              '&:hover': {
-                opacity: !buttonDisabled ? '0.8' : '0.5',
-              },
-            }}
-          >
+          <Button type="primary" size="md" onClick={submitLogin} disabled={buttonDisabled}>
             {login.isLoading || login.isSuccess ? (
               <Loading color="currentColor" size="xs" />
             ) : (

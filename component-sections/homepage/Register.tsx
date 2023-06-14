@@ -1,12 +1,9 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Checkbox, Modal, styled, Text, useInput, useModal, Button } from '@nextui-org/react';
+import { Checkbox, Modal, Text, useModal } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
-import {
-  InputTransparent,
-  PasswordTransparent,
-} from '../../components/InputTransparent/InputTransparent';
+import Input from '../../components/Input/Input';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validateEmail } from '../../utils/form/validateEmail';
 import { validateUsername } from '../../utils/form/validateUsername';
@@ -16,6 +13,9 @@ import PagePrivacyPolicy from '../../screens/privacy-policy/PagePrivacyPolicy';
 import { ClickableSpan } from '../../components/ClickableSpan/ClickableSpan';
 import { useCreateUser } from '../../api/useCreateUser';
 import { Client } from 'react-hydration-provider';
+import { styled } from '../../styles/stitches.config';
+import { useInput } from '../../hooks/useInput';
+import { Button } from '../../components/Button/Button';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -95,36 +95,24 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
 
   const createUser = useCreateUser();
 
-  const {
-    value: usernameValue,
-    bindings: { onChange: onChangeUsername },
-  } = useInput('');
-  const {
-    value: emailValue,
-    bindings: { onChange: onChangeEmail },
-  } = useInput('');
-  const {
-    value: password1Value,
-    bindings: { onChange: onChangePassword1 },
-  } = useInput('');
-  const {
-    value: password2Value,
-    bindings: { onChange: onChangePassword2 },
-  } = useInput('');
+  const { value: usernameValue, onChange: onChangeUsername } = useInput('');
+  const { value: emailValue, onChange: onChangeEmail } = useInput('');
+  const { value: password1Value, onChange: onChangePassword1 } = useInput('');
+  const { value: password2Value, onChange: onChangePassword2 } = useInput('');
 
-  const helperUsername: HelperType = useMemo(
-    () => validateUsername(usernameValue),
-    [usernameValue],
-  );
-  const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
-  const helperPassword1: HelperType = useMemo(
-    () => validatePassword(password1Value),
-    [password1Value],
-  );
-  const helperPassword2: HelperType = useMemo(
-    () => validatePasswordAgain(password1Value, password2Value),
-    [password1Value, password2Value],
-  );
+  // const helperUsername: HelperType = useMemo(
+  //   () => validateUsername(usernameValue),
+  //   [usernameValue],
+  // );
+  // const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
+  // const helperPassword1: HelperType = useMemo(
+  //   () => validatePassword(password1Value),
+  //   [password1Value],
+  // );
+  // const helperPassword2: HelperType = useMemo(
+  //   () => validatePasswordAgain(password1Value, password2Value),
+  //   [password1Value, password2Value],
+  // );
 
   const handleTOS = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -184,16 +172,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-username">
                   Username
-                  <InputTransparent
+                  <Input
                     onChange={onChangeUsername}
                     type="text"
                     fullWidth
-                    clearable
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperUsername.color}
-                    helperText={helperUsername.text}
+                    // helperColor={helperUsername.color}
+                    // helperText={helperUsername.text}
                     aria-labelledby="reg-username"
                   />
                 </RegisterLabel>
@@ -202,18 +187,15 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-email">
                   Email
-                  <InputTransparent
+                  <Input
                     onChange={onChangeEmail}
                     type="text"
                     name="reg-email"
                     id="reg-email"
                     fullWidth
-                    clearable
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperEmail.color}
-                    helperText={helperEmail.text}
+                    // helperColor={helperEmail.color}
+                    // helperText={helperEmail.text}
                     aria-labelledby="reg-email"
                   />
                 </RegisterLabel>
@@ -222,14 +204,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-pass1">
                   Password
-                  <PasswordTransparent
+                  <Input
+                    type={'password'}
                     onChange={onChangePassword1}
                     fullWidth
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperPassword1.color}
-                    helperText={helperPassword1.text}
+                    // helperColor={helperPassword1.color}
+                    // helperText={helperPassword1.text}
                     aria-labelledby="reg-pass1"
                   />
                 </RegisterLabel>
@@ -238,16 +219,15 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-pass2">
                   Password again
-                  <PasswordTransparent
+                  <Input
+                    type={'password'}
                     onChange={onChangePassword2}
                     name="reg-pass2"
                     id="reg-pass2"
                     fullWidth
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperPassword2.color}
-                    helperText={helperPassword2.text}
+                    // helperColor={helperPassword2.color}
+                    // helperText={helperPassword2.text}
                     aria-labelledby="reg-pass2"
                   />
                 </RegisterLabel>
@@ -260,18 +240,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 </Text>
               </RegisterCheckbox>
               <div>
-                <Button
-                  color="primary"
-                  auto
-                  size="md"
-                  onPress={submitNewUser}
-                  css={{
-                    opacity: !buttonDisabled ? '1' : '0.5',
-                    '&:hover': {
-                      opacity: !buttonDisabled ? '0.8' : '0.5',
-                    },
-                  }}
-                >
+                <Button color="primary" size="md" onClick={submitNewUser} disabled={buttonDisabled}>
                   <Text b size="$lg" color="$white">
                     {createUser.isLoading ? 'Creating...' : 'Sign up'}
                   </Text>

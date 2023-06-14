@@ -9,7 +9,6 @@ import { Avatar } from '@nextui-org/react';
 import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 import { DropdownMenuContent } from '../../components-radix-ui/DropdownMenu/DropdownMenuContent';
 import { DropdownMenuItem } from '../../components-radix-ui/DropdownMenu/DropdownMenuItem';
-import { RightSlot } from '../../components-radix-ui/DropdownMenu/RightSlot';
 import { DropdownMenuSeparator } from '../../components-radix-ui/DropdownMenu/DropdownMenuSeparator';
 
 interface UserDropdownProps {}

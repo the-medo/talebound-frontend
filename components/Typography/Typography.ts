@@ -1,4 +1,4 @@
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 export const TitleH4 = styled('h4', {
   color: '$primary800',

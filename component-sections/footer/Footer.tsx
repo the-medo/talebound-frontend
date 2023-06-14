@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { styled, Text } from '@nextui-org/react';
+import { Text } from '@nextui-org/react';
 import { SiDiscord, SiGithub, SiKofi, SiYoutube } from 'react-icons/si';
 import Logo from '../../components/Logo/Logo';
+import { styled } from '../../styles/stitches.config';
 
 const FooterDiv = styled('div', {
   width: '100%',

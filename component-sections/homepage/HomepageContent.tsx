@@ -1,8 +1,8 @@
 import React from 'react';
 import { MainContent } from '../../components/MainContent/MainContent';
-import { styled } from '@nextui-org/react';
 import { Column } from '../../components/Flex/Flex';
 import HomepageCard from './HomepageCard';
+import { styled } from '../../styles/stitches.config';
 
 const ContentQuote = styled(Column, {
   gap: '$lg',

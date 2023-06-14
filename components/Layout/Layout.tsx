@@ -3,8 +3,8 @@ import { useAuth } from '../../hooks/useAuth';
 import Header from '../../component-sections/header/Header';
 import Footer from '../../component-sections/footer/Footer';
 import HomepageHeader from '../../component-sections/homepage/HomepageHeader';
-import { styled } from '@nextui-org/react';
 import { Client } from 'react-hydration-provider';
+import { styled } from '../../styles/stitches.config';
 
 const PageWrapper = styled('div', {
   display: 'flex',

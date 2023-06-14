@@ -1,7 +1,7 @@
-import { styled } from '@nextui-org/react';
 import React, { PropsWithChildren } from 'react';
 import { CSSProperties } from '@stitches/react';
 import { TitleH4 } from '../Typography/Typography';
+import { styled } from '../../styles/stitches.config';
 
 const StyledSection = styled('section', {
   display: 'flex',

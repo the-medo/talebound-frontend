@@ -1,7 +1,7 @@
-import { styled } from '@nextui-org/react';
 import React, { useEffect } from 'react';
 import { default as NextLink } from 'next/link';
 import { AiFillAccountBook, AiFillAndroid, AiFillHome } from 'react-icons/ai';
+import { styled } from '../../styles/stitches.config';
 
 const Navbar = styled('nav', {
   display: 'flex',
