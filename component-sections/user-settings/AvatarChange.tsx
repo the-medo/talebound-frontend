@@ -2,13 +2,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Column } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
-import { Loading } from '@nextui-org/react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
 import { useAuth } from '../../hooks/useAuth';
 import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
 import Avatar from '../../components/Avatar/Avatar';
+import Loading from '../../components/Loading/Loading';
 
 const AvatarChange: React.FC = () => {
   const { user } = useAuth();

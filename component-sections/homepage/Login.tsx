@@ -1,7 +1,7 @@
 'use client';
 
 import React, { KeyboardEvent, useCallback, useMemo } from 'react';
-import { Text, Loading } from '@nextui-org/react';
+import { Text } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import Link from 'next/link';
@@ -13,6 +13,7 @@ import { Client } from 'react-hydration-provider';
 import { useInput } from '../../hooks/useInput';
 import { styled } from '../../styles/stitches.config';
 import { Button } from '../../components/Button/Button';
+import Loading from '../../components/Loading/Loading';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',

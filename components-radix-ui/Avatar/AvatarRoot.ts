@@ -41,4 +41,8 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
       },
     },
   },
+
+  defaultVariants: {
+    size: 'lg',
+  },
 });

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
-import { Loading } from '@nextui-org/react';
 // import { HelperType } from '../../utils/form/nextUiTypes';
 // import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
 import { labelStyle } from '../../styles/typefaces';
 import { useInput } from '../../hooks/useInput';
 import { styled } from '../../styles/stitches.config';
 import Input from '../Input/Input';
+import { Row } from '../Flex/Flex';
+import Loading from '../Loading/Loading';
 
 const RegisterLabel = styled('label', {
   ...labelStyle,
@@ -66,7 +67,10 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
     <>
       {display === PasswordChangeStatus.PasswordSuccess && <h5>{successMessage}</h5>}
       {display === PasswordChangeStatus.CodeVerify && (
-        <Loading color="secondary">Verifying code...</Loading>
+        <Row>
+          <Loading color="secondary" />
+          Verifying code...
+        </Row>
       )}
       {display === PasswordChangeStatus.CodeInvalid && (
         <h5>Code is invalid or expired. Please try again</h5>

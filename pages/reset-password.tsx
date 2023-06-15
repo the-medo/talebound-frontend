@@ -1,13 +1,16 @@
 import Head from 'next/head';
 import React, { useCallback, useMemo } from 'react';
 import Layout from '../components/Layout/Layout';
-import { Button, Input, Text, useInput } from '@nextui-org/react';
+import { Text } from '@nextui-org/react';
 import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
 import { useResetPassword } from '../api/useResetPassword';
 import { styled } from '../styles/stitches.config';
+import { useInput } from '../hooks/useInput';
+import Input from '../components/Input/Input';
+import { Button } from '../components/Button/Button';
 
 const Header = styled('h3', {
   fontFamily: '$heading',
@@ -40,10 +43,7 @@ const MiddleContainer = styled('div', {
 });
 
 export default function ResetPassword() {
-  const {
-    value: emailValue,
-    bindings: { onChange: onChangeEmail },
-  } = useInput('');
+  const { value: emailValue, onChange: onChangeEmail } = useInput('');
   const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
 
   const resetPasswordSendCode = useResetPassword();
@@ -86,27 +86,18 @@ export default function ResetPassword() {
                   name="reg-email"
                   id="reg-email"
                   fullWidth
-                  clearable
                   required
-                  shadow={false}
-                  animated={false}
-                  helperColor={helperEmail.color}
-                  helperText={helperEmail.text}
+                  // helperColor={helperEmail.color}
+                  // helperText={helperEmail.text}
                   aria-labelledby="reg-email"
                 />
               </RegisterLabel>
               <ReCaptcha sitekey={getRecaptchaSiteKey()} />
               <Button
                 color="primary"
-                auto
                 size="md"
-                onPress={submitResetPassword}
-                css={{
-                  opacity: !buttonDisabled ? '1' : '0.5',
-                  '&:hover': {
-                    opacity: !buttonDisabled ? '0.8' : '0.5',
-                  },
-                }}
+                onClick={submitResetPassword}
+                disabled={buttonDisabled}
               >
                 <Text b size="$lg" color="$white">
                   {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}

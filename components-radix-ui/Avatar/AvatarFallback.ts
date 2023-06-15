@@ -12,5 +12,5 @@ export const AvatarFallback = styled(AvatarPrimitive.Fallback, {
   color: teal.teal11,
   fontSize: 15,
   lineHeight: 1,
-  fontWeight: 500,
+  fontWeight: 600,
 });
