@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import React, { useCallback, useMemo } from 'react';
 import Layout from '../components/Layout/Layout';
-import { Button, Input, styled, Text, useInput } from '@nextui-org/react';
+import { Button, Input, Text, useInput } from '@nextui-org/react';
 import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
 import { useResetPassword } from '../api/useResetPassword';
+import { styled } from '../styles/stitches.config';
 
 const Header = styled('h3', {
   fontFamily: '$heading',

@@ -1,5 +1,5 @@
 import React, { Key, useCallback } from 'react';
-import { Avatar, Dropdown, Link, Navbar, Text } from '@nextui-org/react';
+import { Dropdown, Link, Navbar, Text } from '@nextui-org/react';
 import Logo from '../../components/Logo/Logo';
 import { Client } from 'react-hydration-provider';
 import { useAuth } from '../../hooks/useAuth';
@@ -7,7 +7,6 @@ import { setUser } from '../../utils/auth/userSlice';
 import { useLogout } from '../../api/useLogout';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 import UserDropdown from '../../components/UserDropdown/UserDropdown';
 import { styled } from '../../styles/stitches.config';
 
@@ -75,13 +74,7 @@ const Menu: React.FC = () => {
           <Dropdown placement="bottom-right">
             <Navbar.Item id="navbar-item-1">
               <Dropdown.Trigger>
-                <Avatar
-                  bordered
-                  as="button"
-                  color="primary"
-                  size="md"
-                  src={user?.img?.url ?? DEFAULT_AVATAR_URL}
-                />
+                <button>User menu</button>
               </Dropdown.Trigger>
             </Navbar.Item>
             <Dropdown.Menu

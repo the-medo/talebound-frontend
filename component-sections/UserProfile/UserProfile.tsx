@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { useGetUserById } from '../../api/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { Column, Row } from '../../components/Flex/Flex';
-import { DEFAULT_AVATAR_URL } from '../../utils/constants';
-import { Avatar } from '@nextui-org/react';
 import { TitleH4 } from '../../components/Typography/Typography';
 import { parseISO } from 'date-fns';
 import { formatDate } from '../../utils/functions/formatDate';
@@ -14,6 +12,7 @@ import { Button } from '../../components/Button/Button';
 import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import Evaluation from '../../components/Evaluation/Evaluation';
+import Avatar from '../../components/Avatar/Avatar';
 
 interface UserProfileProps {
   userId: number;
@@ -43,11 +42,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       <Column css={{ flexGrow: 5, flexBasis: '10rem' }}>
         <ContentSection direction="row" flexBasis="100%">
           <Column css={{ $$gap: '0.5rem' }}>
-            <Avatar
-              color="primary"
-              css={{ size: '200px' }}
-              src={data?.avatarImageUrl ?? DEFAULT_AVATAR_URL}
-            />
+            <Avatar type="user" size="2xl" url={data?.avatarImageUrl} />
             <Button fullWidth type="secondary">
               Edit
             </Button>

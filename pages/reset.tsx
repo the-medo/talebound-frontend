@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Button, Loading, styled, Text } from '@nextui-org/react';
+import { Button, Loading, Text } from '@nextui-org/react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
@@ -10,6 +10,7 @@ import PasswordChangeInputs, {
   PasswordChangeStatus,
 } from '../components/PasswordChangeInputs/PasswordChangeInputs';
 import Layout from '../components/Layout/Layout';
+import { styled } from '../styles/stitches.config';
 
 const Header = styled('h3', {
   fontFamily: '$heading',

@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth';
 import { useLogout } from '../../api/useLogout';
 import { setUser } from '../../utils/auth/userSlice';
-import { Avatar } from '@nextui-org/react';
-import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 import { DropdownMenuContent } from '../../components-radix-ui/DropdownMenu/DropdownMenuContent';
 import { DropdownMenuItem } from '../../components-radix-ui/DropdownMenu/DropdownMenuItem';
 import { DropdownMenuSeparator } from '../../components-radix-ui/DropdownMenu/DropdownMenuSeparator';
+import Avatar from '../Avatar/Avatar';
+import { DropdownMenuTrigger } from '../../components-radix-ui/DropdownMenu/DropdownMenuTrigger';
 
 interface UserDropdownProps {}
 
@@ -40,15 +40,9 @@ const UserDropdown: React.FC<UserDropdownProps> = () => {
 
   return (
     <DropdownMenuRadix.Root>
-      <DropdownMenuRadix.Trigger asChild>
-        <Avatar
-          bordered
-          as="button"
-          color="primary"
-          size="md"
-          src={user?.img?.url ?? DEFAULT_AVATAR_URL}
-        />
-      </DropdownMenuRadix.Trigger>
+      <DropdownMenuTrigger circle>
+        <Avatar size="md" type="user" url={user?.img?.url} />
+      </DropdownMenuTrigger>
 
       <DropdownMenuRadix.Portal>
         <DropdownMenuContent align={'end'} sideOffset={15}>

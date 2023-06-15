@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import { styled } from '@nextui-org/react';
 import Link from 'next/link';
+import { styled } from '../styles/stitches.config';
 
 const Section = styled('div', {
   display: 'flex',

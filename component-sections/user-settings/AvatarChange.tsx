@@ -2,13 +2,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Column } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
-import { Avatar, Loading } from '@nextui-org/react';
+import { Loading } from '@nextui-org/react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
 import { useAuth } from '../../hooks/useAuth';
 import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
-import { DEFAULT_AVATAR_URL } from '../../utils/constants';
+import Avatar from '../../components/Avatar/Avatar';
 
 const AvatarChange: React.FC = () => {
   const { user } = useAuth();
@@ -78,11 +78,7 @@ const AvatarChange: React.FC = () => {
           {doUploadAvatar.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
         </Button>
       </Column>
-      <Avatar
-        color="primary"
-        css={{ size: '7rem', marginTop: '-1rem' }}
-        src={user?.img?.url ?? DEFAULT_AVATAR_URL}
-      />
+      <Avatar size="xl" type="user" url={user?.img?.url} />
     </ContentSection>
   );
 };
