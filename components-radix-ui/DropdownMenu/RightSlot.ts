@@ -1,4 +1,4 @@
-import { styled } from '@stitches/react';
+import { styled } from '../../styles/stitches.config';
 import { mauve } from '@radix-ui/colors';
 
 export const RightSlot = styled('div', {

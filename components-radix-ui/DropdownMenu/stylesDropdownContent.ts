@@ -1,4 +1,4 @@
-import { keyframes } from '@stitches/react';
+import { keyframes } from '../../styles/stitches.config';
 
 const openScale = keyframes({
   '0%': { opacity: 0, transform: 'translateZ(0px) scale(0.35)' },

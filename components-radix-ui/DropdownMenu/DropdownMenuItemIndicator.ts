@@ -1,4 +1,4 @@
-import { styled } from '@stitches/react';
+import { styled } from '../../styles/stitches.config';
 import * as DropdownMenuRadix from '@radix-ui/react-dropdown-menu';
 
 export const DropdownMenuItemIndicator = styled(DropdownMenuRadix.ItemIndicator, {
