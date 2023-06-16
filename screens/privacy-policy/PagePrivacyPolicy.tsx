@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from '@nextui-org/react';
 import { Row, Col } from '../../components/Flex/Flex';
+import { TitleH2 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
 
 interface PagePrivacyPolicyProps {}
 
@@ -8,14 +9,14 @@ const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
   return (
     <Row fullWidth padding="xl">
       <Col>
-        <Text h2>Privacy policy</Text>
+        <TitleH2>Privacy policy</TitleH2>
         <Text>
           At Talebound, we take your privacy seriously. This Privacy Policy outlines how we collect,
           use, and protect your personal information when you use our website and services.
         </Text>
         <ol>
           <li>
-            <Text b>Information We Collect</Text>
+            <Text weight="bold">Information We Collect</Text>
           </li>
           <Text>
             We collect personal information when you register for an account on Talebound, including
@@ -24,9 +25,10 @@ const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
             with other users.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>How We Use Your Information</Text>
+            <Text weight="bold">How We Use Your Information</Text>
           </li>
           <Text>
             We use your email address to communicate with you about your account, send you updates
@@ -34,9 +36,10 @@ const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
             provide, maintain, and improve our website and services.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Information Security</Text>
+            <Text weight="bold">Information Security</Text>
           </li>
           <Text>
             We are committed to protecting your personal information. We use industry-standard
@@ -45,18 +48,20 @@ const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
             and we cannot guarantee the absolute security of your information.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Sharing Your Information</Text>
+            <Text weight="bold">Sharing Your Information</Text>
           </li>
           <Text>
             We do not sell, rent, or share your personal information with third parties, except as
             required by law or to protect the safety, rights, or property of Talebound or our users.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Changes to This Privacy Policy</Text>
+            <Text weight="bold">Changes to This Privacy Policy</Text>
           </li>
           <Text>
             We may update this Privacy Policy from time to time. Any changes will be posted on this
@@ -64,8 +69,11 @@ const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
             privacy practices.
           </Text>
           <br />
+          <br />
         </ol>
-        <Text b>Last updated:</Text> 27th April, 2023
+        <Text>
+          <Text weight="bold">Last updated:</Text> 27th April, 2023
+        </Text>
       </Col>
     </Row>
   );

@@ -1,5 +1,5 @@
 import React, { Key, useCallback } from 'react';
-import { Dropdown, Link, Navbar, Text } from '@nextui-org/react';
+import { Dropdown, Link, Navbar } from '@nextui-org/react';
 import Logo from '../../components/Logo/Logo';
 import { Client } from 'react-hydration-provider';
 import { useAuth } from '../../hooks/useAuth';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import UserDropdown from '../../components/UserDropdown/UserDropdown';
 import { styled } from '../../styles/stitches.config';
+import { Text } from '../../components/Typography/Text';
 
 const HeaderHeading = styled('h1', {
   margin: '0',
@@ -83,10 +84,10 @@ const Menu: React.FC = () => {
               onAction={handleUserDropdown}
             >
               <Dropdown.Item key="profile" textValue="asdf" css={{ height: '$18' }}>
-                <Text b color="inherit" css={{ d: 'flex' }}>
+                <Text weight="bold" css={{ color: 'inherit', display: 'flex' }}>
                   Signed in as
                 </Text>
-                <Text b color="inherit" css={{ d: 'flex' }}>
+                <Text weight="bold" css={{ color: 'inherit', display: 'flex' }}>
                   {user?.email}
                 </Text>
               </Dropdown.Item>

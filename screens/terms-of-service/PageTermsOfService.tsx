@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from '@nextui-org/react';
 import { Row, Col } from '../../components/Flex/Flex';
+import { TitleH2 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
 
 interface PageTermsOfServiceProps {
   offset?: number;
@@ -9,15 +10,15 @@ interface PageTermsOfServiceProps {
 const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
   return (
     <Row fullWidth padding="xl">
-      <Col>
-        <Text h2>Terms of service</Text>
+      <Col gap="md">
+        <TitleH2>Terms of service</TitleH2>
         <Text>
           By using the Talebound website and services, you agree to be bound by the following Terms
           of Service:
         </Text>
         <ol>
           <li>
-            <Text b>Eligibility</Text>
+            <Text weight="bold">Eligibility</Text>
           </li>
           <Text>
             You must be at least 13 years of age to use Talebound. By using our website and
@@ -25,9 +26,9 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
             with these Terms of Service.
           </Text>
           <br />
-
+          <br />
           <li>
-            <Text b>Content and Conduct</Text>
+            <Text weight="bold">Content and Conduct</Text>
           </li>
           <Text>
             You are responsible for the content you create and share on Talebound, including the
@@ -35,9 +36,10 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
             harassing, defamatory, abusive, threatening, or otherwise objectionable.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Intellectual Property</Text>
+            <Text weight="bold">Intellectual Property</Text>
           </li>
           <Text>
             You retain ownership of the content you create on Talebound. By using our services, you
@@ -45,18 +47,20 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
             distribute your content on our platform.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Account Security</Text>
+            <Text weight="bold">Account Security</Text>
           </li>
           <Text>
             You are responsible for maintaining the confidentiality of your account and password.
             You agree to notify us immediately of any unauthorized access or use of your account.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Limitation of Liability</Text>
+            <Text weight="bold">Limitation of Liability</Text>
           </li>
           <Text>
             Talebound is provided &quot;as is&quot; and without warranties of any kind. We shall not
@@ -64,9 +68,10 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
             damages, arising out of the use or inability to use our website or services.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Changes to the Terms of Service</Text>
+            <Text weight="bold">Changes to the Terms of Service</Text>
           </li>
           <Text>
             We may update these Terms of Service from time to time. Any changes will be posted on
@@ -74,17 +79,21 @@ const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
             changes to the Terms of Service.
           </Text>
           <br />
+          <br />
 
           <li>
-            <Text b>Termination</Text>
+            <Text weight="bold">Termination</Text>
           </li>
           <Text>
             We reserve the right to terminate your access to Talebound at any time, with or without
             cause, and without prior notice.
           </Text>
           <br />
+          <br />
         </ol>
-        <Text b>Last updated:</Text> 27th April, 2023
+        <Text>
+          <Text weight="bold">Last updated:</Text> 27th April, 2023
+        </Text>
       </Col>
     </Row>
   );

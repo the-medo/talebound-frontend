@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text } from '@nextui-org/react';
 import { Row, Col } from '../../components/Flex/Flex';
+import { TitleH2, TitleH3 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
 
 const PageAbout: React.FC = () => {
   return (
     <Row fullWidth padding="xl">
       <Col>
-        <Text h2>About Talebound</Text>
+        <TitleH2>About Talebound</TitleH2>
         <Text>
           Welcome to Talebound, the premier platform for text-based role-playing games and immersive
           storytelling experiences. Our mission is to bring together storytellers, dungeon masters,
@@ -15,7 +16,7 @@ const PageAbout: React.FC = () => {
         </Text>
         <br />
 
-        <Text h3>Our Journey</Text>
+        <TitleH3>Our Journey</TitleH3>
         <Text>
           Talebound was started in 2023. We believe that stories have the power to connect people,
           inspire new ideas, and transport us to realms of endless possibilities. Talebound is the
@@ -25,7 +26,7 @@ const PageAbout: React.FC = () => {
         <br />
         <br />
 
-        <Text h3>Our Platform</Text>
+        <TitleH3>Our Platform</TitleH3>
         <Text>
           Talebound offers a wide array of features and tools to enhance your text-based
           role-playing experience. From customizable world-building tools and diverse character
@@ -41,7 +42,7 @@ const PageAbout: React.FC = () => {
         </Text>
         <br />
 
-        <Text h3>Our Community</Text>
+        <TitleH3>Our Community</TitleH3>
         <Text>
           At the heart of Talebound is our vibrant and diverse community of dreamers, creators, and
           adventurers. We are proud to foster an inclusive and supportive environment where users

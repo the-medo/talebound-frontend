@@ -1,12 +1,12 @@
 import React from 'react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import Evaluation from '../../components/Evaluation/Evaluation';
-import { Text } from '@nextui-org/react';
 import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
 import { useAuth } from '../../hooks/useAuth';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import { Flex } from '../../components/Flex/Flex';
 import Loading from '../../components/Loading/Loading';
+import { Text } from '../../components/Typography/Text';
 
 interface SelfEvaluationProps {}
 

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Text } from '@nextui-org/react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
@@ -14,15 +13,8 @@ import { styled } from '../styles/stitches.config';
 import Loading from '../components/Loading/Loading';
 import { Row } from '../components/Flex/Flex';
 import { Button } from '../components/Button/Button';
-
-const Header = styled('h3', {
-  fontFamily: '$heading',
-  color: '$primary',
-  textDecoration: 'underline',
-  '@media(max-width: 400px)': {
-    fontSize: '$lg',
-  },
-});
+import { Text } from '../components/Typography/Text';
+import { TitleH3 } from '../components/Typography/Title';
 
 const MiddleContainer = styled('div', {
   width: 'min(600px, 80%)',
@@ -106,7 +98,7 @@ export default function ResetPasswordVerify() {
       </Head>
       <Layout mandatoryLoggedOut={true} centered>
         <MiddleContainer>
-          <Header>Reset password</Header>
+          <TitleH3>Reset password</TitleH3>
           {display === PasswordChangeStatus.PasswordSuccess && (
             <h5>Success! You can now sign in.</h5>
           )}
@@ -131,14 +123,14 @@ export default function ResetPasswordVerify() {
                 {resetPassword.isLoading ? (
                   <Loading color="currentColor" size="sm" />
                 ) : (
-                  <Text b size="$lg" color="$white">
+                  <Text weight="bold" size="lg" color="white">
                     Save
                   </Text>
                 )}
               </Button>
 
               {resetPassword.isError && (
-                <Text color="error">
+                <Text color="danger">
                   Error when resetting password. Please check the fields and try again.
                 </Text>
               )}

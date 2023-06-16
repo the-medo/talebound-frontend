@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Checkbox, Modal, Text, useModal } from '@nextui-org/react';
+import { Checkbox, Modal, useModal } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import { HelperType } from '../../utils/form/nextUiTypes';
@@ -16,6 +16,8 @@ import { Client } from 'react-hydration-provider';
 import { styled } from '../../styles/stitches.config';
 import { useInput } from '../../hooks/useInput';
 import { Button } from '../../components/Button/Button';
+import { TitleH4 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -160,9 +162,9 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
           {createUser.isSuccess && (
             <>
               <RegisterHeader>User created!</RegisterHeader>
-              <Text h4 css={{ color: '$white', textAlign: 'center' }}>
+              <TitleH4 color="white" css={{ textAlign: 'center' }}>
                 Please, check your email for verification link and sign in
-              </Text>
+              </TitleH4>
             </>
           )}
           {!createUser.isSuccess && (
@@ -233,7 +235,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 </RegisterLabel>
               </FieldWrapper>
               <RegisterCheckbox size="md" onChange={handleCheckbox}>
-                <Text size="xs" color="$white">
+                <Text size="xs" color="white">
                   I agree to the <ClickableSpan onClick={handleTOS}>Terms of Service</ClickableSpan>{' '}
                   and I have read the{' '}
                   <ClickableSpan onClick={handlePrivacy}>Privacy Policy</ClickableSpan>
@@ -241,14 +243,14 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               </RegisterCheckbox>
               <div>
                 <Button color="primary" size="md" onClick={submitNewUser} disabled={buttonDisabled}>
-                  <Text b size="$lg" color="$white">
+                  <Text weight="bold" size="lg" color="white">
                     {createUser.isLoading ? 'Creating...' : 'Sign up'}
                   </Text>
                 </Button>
               </div>
 
               {createUser.isError && (
-                <Text color="error">
+                <Text color="danger">
                   Error when creating user. Please check the fields and try again.
                 </Text>
               )}
@@ -277,7 +279,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
         {...bindingsPrivacy}
       >
         <Modal.Body>
-          <PagePrivacyPolicy offset={0} />
+          <PagePrivacyPolicy />
         </Modal.Body>
       </Modal>
     </Client>

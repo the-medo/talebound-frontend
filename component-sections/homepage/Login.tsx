@@ -1,7 +1,6 @@
 'use client';
 
 import React, { KeyboardEvent, useCallback, useMemo } from 'react';
-import { Text } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import Link from 'next/link';
@@ -14,6 +13,7 @@ import { useInput } from '../../hooks/useInput';
 import { styled } from '../../styles/stitches.config';
 import { Button } from '../../components/Button/Button';
 import Loading from '../../components/Loading/Loading';
+import { Text } from '../../components/Typography/Text';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
@@ -70,11 +70,20 @@ const LoginButtonWrapper = styled('div', {
 });
 
 const ForgotPassword = styled(Link, {
-  fontSize: '$xs',
+  fontSize: '$sm',
   color: '$white',
-  opacity: 0.8,
+  marginTop: '$md',
+  marginBottom: '$md',
+  paddingTop: '$xs',
+  paddingBottom: '$xs',
+  paddingLeft: '$sm',
+  paddingRight: '$sm',
+  borderTop: '1px solid $primary300',
+  borderBottom: '1px solid $primary300',
+  opacity: 1,
+
   '&:hover': {
-    opacity: 1,
+    opacity: 0.8,
   },
 });
 
@@ -141,16 +150,16 @@ const Login: React.FC = () => {
             {login.isLoading || login.isSuccess ? (
               <Loading color="currentColor" size="xs" />
             ) : (
-              <Text b size="$lg" color="$white">
+              <Text weight="bold" size="lg" color="white">
                 Sign in
               </Text>
             )}
           </Button>
-          <Text size="$sm">or</Text>
+          <Text size="sm">or</Text>
           <Link href="/#register">Sign up</Link>
           <ForgotPassword href="/reset-password">Forgot password?</ForgotPassword>
 
-          {login.isError && !login.isLoading && <Text color="error">Something went wrong.</Text>}
+          {login.isError && !login.isLoading && <Text color="danger">Something went wrong.</Text>}
         </LoginButtonWrapper>
       </LoginBox>
     </Client>

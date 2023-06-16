@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useGetUserById } from '../../api/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../components/Flex/Flex';
-import { TitleH4 } from '../../components/Typography/Typography';
+import { TitleH4 } from '../../components/Typography/Title';
 import { parseISO } from 'date-fns';
 import { formatDate } from '../../utils/functions/formatDate';
 import InfoRow from '../../components/InfoRow/InfoRow';
