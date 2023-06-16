@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useGetUserById } from '../../api/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
-import { Column, Row } from '../../components/Flex/Flex';
+import { Col, Row } from '../../components/Flex/Flex';
 import { TitleH4 } from '../../components/Typography/Typography';
 import { parseISO } from 'date-fns';
 import { formatDate } from '../../utils/functions/formatDate';
@@ -39,9 +39,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
 
   return (
     <>
-      <Column css={{ flexGrow: 5, flexBasis: '10rem' }}>
+      <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
         <ContentSection direction="row" flexBasis="100%">
-          <Column css={{ $$gap: '0.5rem' }}>
+          <Col>
             <Avatar type="user" size="2xl" url={data?.avatarImageUrl} />
             <Button fullWidth type="secondary">
               Edit
@@ -52,32 +52,32 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
             <Button fullWidth type="secondary">
               Ban
             </Button>
-          </Column>
-          <Column fullWidth css={{ $$gap: '0.25rem' }}>
+          </Col>
+          <Col fullWidth gap="sm">
             <TitleH4>{data?.username}</TitleH4>
-            <Row fullWidth css={{ $$justifyContent: 'space-between' }}>
-              <Column css={{ $$gap: '0.25rem' }}>
+            <Row fullWidth justifyContent="between">
+              <Col gap="sm">
                 <InfoRowBox>
                   <InfoRow title="Last active:" value="unknown" />
                   <InfoRow title="Registered:" value={formatDate(data?.createdAt, false, 'week')} />
                 </InfoRowBox>
-              </Column>
-              <Column css={{ flexBasis: '370px' }}>
+              </Col>
+              <Col css={{ flexBasis: '370px' }}>
                 {(evaluationData?.averageEvaluationVote ?? []).map((evaluation) => (
                   <Evaluation data={evaluation} disabled compact />
                 ))}
-              </Column>
+              </Col>
             </Row>
-          </Column>
+          </Col>
         </ContentSection>
-      </Column>
-      <Column css={{ flexGrow: 1, flexBasis: '30rem' }}>
+      </Col>
+      <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
         <ContentSection direction="column" header="Introduction">
           <InfoSection linkTitle={'Add introduction'} linkHref={'/quests'} background>
             Introduction missing
           </InfoSection>
         </ContentSection>
-      </Column>
+      </Col>
     </>
   );
 };

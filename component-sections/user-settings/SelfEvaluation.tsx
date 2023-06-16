@@ -29,7 +29,7 @@ const SelfEvaluation: React.FC<SelfEvaluationProps> = () => {
         expertise in the following areas:
       </Text>
       {isLoading && (
-        <Flex css={{ alignSelf: 'center' }}>
+        <Flex alignSelf="center">
           <Loading color="secondary" /> Loading...
         </Flex>
       )}

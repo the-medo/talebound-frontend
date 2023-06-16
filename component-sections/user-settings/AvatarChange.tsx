@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Column } from '../../components/Flex/Flex';
+import { Col } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
 import ContentSection from '../../components/ContentSection/ContentSection';
@@ -66,7 +66,7 @@ const AvatarChange: React.FC = () => {
 
   return (
     <ContentSection header="Change avatar" direction="row" justifyContent="space-between">
-      <Column css={{ $$gap: '0.5rem' }}>
+      <Col gap="md">
         <InputFile
           onChange={onChange}
           multiple={false}
@@ -77,7 +77,7 @@ const AvatarChange: React.FC = () => {
         <Button onClick={handleUpload}>
           {doUploadAvatar.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
         </Button>
-      </Column>
+      </Col>
       <Avatar size="xl" type="user" url={user?.img?.url} />
     </ContentSection>
   );

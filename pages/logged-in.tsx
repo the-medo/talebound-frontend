@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Client } from 'react-hydration-provider';
-import { Column } from '../components/Flex/Flex';
+import { Col } from '../components/Flex/Flex';
 import Layout from '../components/Layout/Layout';
 import LeftNavbar from '../components/LeftNavbar/LeftNavbar';
 
@@ -15,7 +15,7 @@ export default function Home() {
         <title>Talebound</title>
       </Head>
       <Layout mandatoryLogin={true} navbar={<LeftNavbar />}>
-        <Column css={{ padding: '2rem', gap: '2rem' }}>
+        <Col gap="lg" padding="lg">
           <Client>{user?.email}</Client>
           <Client>Logged in = {isLoggedIn ? 'true' : 'false'}</Client>
           <p>
@@ -80,7 +80,7 @@ export default function Home() {
             nascetur ridiculus mus mauris. Nisl rhoncus mattis rhoncus urna neque viverra. Sed risus
             pretium quam vulputate dignissim suspendisse in est.
           </p>
-        </Column>
+        </Col>
       </Layout>
     </>
   );

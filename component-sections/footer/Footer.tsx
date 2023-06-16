@@ -119,14 +119,14 @@ const Footer: React.FC = () => {
               Talebound
             </Text>
             <Link href="/">Home</Link>
-            <Link href="/pages/about">About</Link>
+            <Link href="/about">About</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">
               Terms
             </Text>
-            <Link href="/pages/privacy-policy">Privacy policy</Link>
-            <Link href="/pages/terms-of-service">Terms of Service</Link>
+            <Link href="/privacy-policy">Privacy policy</Link>
+            <Link href="/terms-of-service">Terms of Service</Link>
           </LinkColumn>
           <LinkColumn>
             <Text h5 color="$primary600" transform="uppercase">
