@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Modal, useModal } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import { HelperType } from '../../utils/form/nextUiTypes';
@@ -19,6 +18,7 @@ import { Button } from '../../components/Button/Button';
 import { TitleH4 } from '../../components/Typography/Title';
 import { Text } from '../../components/Typography/Text';
 import Checkbox from '../../components/Checkbox/Checkbox';
+import Modal from '../../components/Modal/Modal';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -87,8 +87,6 @@ interface HomepageRegisterProps {
 
 const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
   const [checked, setChecked] = useState(false);
-  const { setVisible: setVisibleTos, bindings: bindingsTos } = useModal();
-  const { setVisible: setVisiblePrivacy, bindings: bindingsPrivacy } = useModal();
 
   const createUser = useCreateUser();
 
@@ -97,35 +95,27 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
   const { value: password1Value, onChange: onChangePassword1 } = useInput('');
   const { value: password2Value, onChange: onChangePassword2 } = useInput('');
 
-  // const helperUsername: HelperType = useMemo(
-  //   () => validateUsername(usernameValue),
-  //   [usernameValue],
-  // );
-  // const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
-  // const helperPassword1: HelperType = useMemo(
-  //   () => validatePassword(password1Value),
-  //   [password1Value],
-  // );
-  // const helperPassword2: HelperType = useMemo(
-  //   () => validatePasswordAgain(password1Value, password2Value),
-  //   [password1Value, password2Value],
-  // );
-
-  const handleTOS = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setVisibleTos(true);
-    },
-    [setVisibleTos],
+  const helperUsername: HelperType = useMemo(
+    () => validateUsername(usernameValue),
+    [usernameValue],
+  );
+  const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
+  const helperPassword1: HelperType = useMemo(
+    () => validatePassword(password1Value),
+    [password1Value],
+  );
+  const helperPassword2: HelperType = useMemo(
+    () => validatePasswordAgain(password1Value, password2Value),
+    [password1Value, password2Value],
   );
 
-  const handlePrivacy = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setVisiblePrivacy(true);
-    },
-    [setVisiblePrivacy],
-  );
+  /**
+   * Link to open modal is inside a label, so we need to reverse the checkbox state
+   * If we try to prevent default instead, modal won't open
+   */
+  const handleModalOpen = useCallback(() => {
+    setChecked((p) => !p);
+  }, []);
 
   const handleCheckbox = useCallback((v: boolean) => {
     setChecked(v);
@@ -229,11 +219,22 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                   />
                 </RegisterLabel>
               </FieldWrapper>
-              <Checkbox value={checked} onChange={handleCheckbox}>
+              <Checkbox id="req_checkbox" value={checked} onChange={handleCheckbox}>
                 <Text size="xs" color="white">
-                  I agree to the <ClickableSpan onClick={handleTOS}>Terms of Service</ClickableSpan>{' '}
+                  I agree to the{' '}
+                  <Modal
+                    trigger={
+                      <ClickableSpan onClick={handleModalOpen}>Terms of Service</ClickableSpan>
+                    }
+                    content={<PageTermsOfService />}
+                  />{' '}
                   and I have read the{' '}
-                  <ClickableSpan onClick={handlePrivacy}>Privacy Policy</ClickableSpan>
+                  <Modal
+                    trigger={
+                      <ClickableSpan onClick={handleModalOpen}>Privacy Policy</ClickableSpan>
+                    }
+                    content={<PagePrivacyPolicy />}
+                  />
                 </Text>
               </Checkbox>
               <div>
@@ -253,30 +254,6 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
           )}
         </RegisterBox>
       </RegisterBackground>
-
-      <Modal
-        closeButton
-        scroll
-        width="min(80%, 1000px)"
-        aria-labelledby="modal-tos"
-        {...bindingsTos}
-      >
-        <Modal.Body>
-          <PageTermsOfService offset={0} />
-        </Modal.Body>
-      </Modal>
-
-      <Modal
-        closeButton
-        scroll
-        width="min(80%, 1000px)"
-        aria-labelledby="modal-tos"
-        {...bindingsPrivacy}
-      >
-        <Modal.Body>
-          <PagePrivacyPolicy />
-        </Modal.Body>
-      </Modal>
     </Client>
   );
 };

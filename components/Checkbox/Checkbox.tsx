@@ -46,9 +46,9 @@ const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <Flex alignItems="center" css={{ flexDirection: childrenDirection }}>
-      {childrenRender === 'before' && children}
+      {childrenRender === 'before' && <label htmlFor={id}>{children}</label>}
       {checkboxRenderer}
-      {childrenRender === 'after' && children}
+      {childrenRender === 'after' && <label htmlFor={id}>{children}</label>}
     </Flex>
   );
 };

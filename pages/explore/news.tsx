@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Layout from '../../components/Layout/Layout';
 import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
 import { Col } from '../../components/Flex/Flex';
-import InputFileModal from '../../components/InputFileModal/InputFileModal';
 
 interface newsProps {}
 
@@ -15,9 +14,7 @@ const news: React.FC<newsProps> = () => {
       </Head>
       <Layout mandatoryLogin={true}>
         <LeftNavbar />
-        <Col gap="lg" padding="lg">
-          <InputFileModal />
-        </Col>
+        <Col gap="lg" padding="lg"></Col>
       </Layout>
     </>
   );

@@ -3,9 +3,7 @@ import { Row, Col } from '../../components/Flex/Flex';
 import { TitleH2 } from '../../components/Typography/Title';
 import { Text } from '../../components/Typography/Text';
 
-interface PageTermsOfServiceProps {
-  offset?: number;
-}
+interface PageTermsOfServiceProps {}
 
 const PageTermsOfService: React.FC<PageTermsOfServiceProps> = () => {
   return (
