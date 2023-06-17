@@ -1,6 +1,5 @@
-import { NextUIProvider } from '@nextui-org/react';
 import { AppProps } from 'next/app';
-import globalStyles, { baseTheme } from '../styles/globalStyles';
+import globalStyles from '../styles/globalStyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
@@ -16,15 +15,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <HydrationProvider>
-      <NextUIProvider theme={baseTheme}>
-        <CookiesProvider>
-          <StoreProvider>
-            <QueryClientProvider client={queryClient}>
-              <Component {...pageProps} />
-            </QueryClientProvider>
-          </StoreProvider>
-        </CookiesProvider>
-      </NextUIProvider>
+      <CookiesProvider>
+        <StoreProvider>
+          <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+          </QueryClientProvider>
+        </StoreProvider>
+      </CookiesProvider>
     </HydrationProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { CSS } from '@nextui-org/react';
+import { CSS } from '@stitches/react';
 
 export const labelStyle: CSS = {
   color: '$primary800',

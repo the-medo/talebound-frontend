@@ -1,4 +1,4 @@
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 export const EditorContainer = styled('div', {
   border: '1px solid #ddd',

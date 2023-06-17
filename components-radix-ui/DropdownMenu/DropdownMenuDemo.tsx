@@ -14,6 +14,10 @@ import { DropdownMenuItemIndicator } from './DropdownMenuItemIndicator';
 import { DropdownMenuLabel } from './DropdownMenuLabel';
 import { DropdownMenuRadioItem } from './DropdownMenuRadioItem';
 import { DropdownMenuArrow } from './DropdownMenuArrow';
+import { DropdownMenuPortal } from './DropdownMenuPortal';
+import { DropdownMenuTrigger } from './DropdownMenuTrigger';
+import { DropdownMenuRoot } from './DropdownMenuRoot';
+import { DropdownMenuSub } from './DropdownMenuSub';
 
 interface DropdownMenuDemoProps {}
 
@@ -23,14 +27,14 @@ const DropdownMenuDemo: React.FC<DropdownMenuDemoProps> = () => {
   const [person, setPerson] = React.useState('pedro');
 
   return (
-    <DropdownMenuRadix.Root>
-      <DropdownMenuRadix.Trigger asChild>
+    <DropdownMenuRoot>
+      <DropdownMenuTrigger asChild>
         <IconButton>
           <AiOutlineMenu />
         </IconButton>
-      </DropdownMenuRadix.Trigger>
+      </DropdownMenuTrigger>
 
-      <DropdownMenuRadix.Portal>
+      <DropdownMenuPortal>
         <DropdownMenuContent sideOffset={5}>
           <DropdownMenuItem>
             New Tab <RightSlot>⌘+T</RightSlot>
@@ -41,14 +45,14 @@ const DropdownMenuDemo: React.FC<DropdownMenuDemoProps> = () => {
           <DropdownMenuItem disabled>
             New Private Window <RightSlot>⇧+⌘+N</RightSlot>
           </DropdownMenuItem>
-          <DropdownMenuRadix.Sub>
+          <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               More Tools
               <RightSlot>
                 <FaChevronRight />
               </RightSlot>
             </DropdownMenuSubTrigger>
-            <DropdownMenuRadix.Portal>
+            <DropdownMenuPortal>
               <DropdownMenuSubContent sideOffset={2} alignOffset={-5}>
                 <DropdownMenuItem>
                   Save Page As… <RightSlot>⌘+S</RightSlot>
@@ -58,8 +62,8 @@ const DropdownMenuDemo: React.FC<DropdownMenuDemoProps> = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Developer Tools</DropdownMenuItem>
               </DropdownMenuSubContent>
-            </DropdownMenuRadix.Portal>
-          </DropdownMenuRadix.Sub>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem
             checked={bookmarksChecked}
@@ -95,8 +99,8 @@ const DropdownMenuDemo: React.FC<DropdownMenuDemoProps> = () => {
 
           <DropdownMenuArrow />
         </DropdownMenuContent>
-      </DropdownMenuRadix.Portal>
-    </DropdownMenuRadix.Root>
+      </DropdownMenuPortal>
+    </DropdownMenuRoot>
   );
 };
 

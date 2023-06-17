@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { styled, Text } from '@nextui-org/react';
 import Rating from '../Rating/Rating';
-import { Column, Row } from '../Flex/Flex';
+import { Col, Row } from '../Flex/Flex';
 import { PbAverageEvaluationVote } from '../../generated/api-types/data-contracts';
 import { useAuth } from '../../hooks/useAuth';
 import { useCreateOrUpdateEvaluationVote } from '../../api/useCreateOrUpdateEvaluationVote';
 import { labelStyle } from '../../styles/typefaces';
+import { styled } from '../../styles/stitches.config';
 
-const EvaluationWrapper = styled(Column, {
+const EvaluationWrapper = styled(Col, {
   padding: '$md',
   width: '100%',
   gap: '$sm',
@@ -71,7 +71,7 @@ const Evaluation: React.FC<EvaluationProps> = ({ data, disabled, compact = false
         <EvaluationTitle>{data.name}</EvaluationTitle>
         <Rating onChange={handleChange} defaultValue={data.average} disabled={disabled} />
       </EvaluationRow>
-      {!compact && <Text span>{data.description}</Text>}
+      {!compact && <span>{data.description}</span>}
     </EvaluationWrapper>
   );
 };

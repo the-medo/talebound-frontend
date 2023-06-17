@@ -1,7 +1,7 @@
-import { styled } from '@nextui-org/react';
 import React from 'react';
 import Menu from './Menu';
 import InfoSection from '../../components/InfoSection';
+import { styled } from '../../styles/stitches.config';
 
 const BaseHeader = styled('div', {
   width: '100%',

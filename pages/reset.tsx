@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Button, Loading, styled, Text } from '@nextui-org/react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
@@ -10,15 +9,12 @@ import PasswordChangeInputs, {
   PasswordChangeStatus,
 } from '../components/PasswordChangeInputs/PasswordChangeInputs';
 import Layout from '../components/Layout/Layout';
-
-const Header = styled('h3', {
-  fontFamily: '$heading',
-  color: '$primary',
-  textDecoration: 'underline',
-  '@media(max-width: 400px)': {
-    fontSize: '$lg',
-  },
-});
+import { styled } from '../styles/stitches.config';
+import Loading from '../components/Loading/Loading';
+import { Row } from '../components/Flex/Flex';
+import { Button } from '../components/Button/Button';
+import { Text } from '../components/Typography/Text';
+import { TitleH3 } from '../components/Typography/Title';
 
 const MiddleContainer = styled('div', {
   width: 'min(600px, 80%)',
@@ -102,12 +98,15 @@ export default function ResetPasswordVerify() {
       </Head>
       <Layout mandatoryLoggedOut={true} centered>
         <MiddleContainer>
-          <Header>Reset password</Header>
+          <TitleH3>Reset password</TitleH3>
           {display === PasswordChangeStatus.PasswordSuccess && (
             <h5>Success! You can now sign in.</h5>
           )}
           {display === PasswordChangeStatus.CodeVerify && (
-            <Loading color="secondary">Verifying code...</Loading>
+            <Row>
+              <Loading color="secondary" />
+              Verifying code...
+            </Row>
           )}
           {display === PasswordChangeStatus.CodeInvalid && (
             <h5>Code is invalid or expired. Please try again</h5>
@@ -120,29 +119,18 @@ export default function ResetPasswordVerify() {
                 setButtonDisabled={setExternalButtonDisabled}
                 successMessage="Success! You can now sign in."
               />
-              <Button
-                color="primary"
-                auto
-                size="md"
-                onPress={submitResetPassword}
-                css={{
-                  opacity: !buttonDisabled ? '1' : '0.5',
-                  '&:hover': {
-                    opacity: !buttonDisabled ? '0.8' : '0.5',
-                  },
-                }}
-              >
+              <Button disabled={buttonDisabled} size="md" onClick={submitResetPassword}>
                 {resetPassword.isLoading ? (
                   <Loading color="currentColor" size="sm" />
                 ) : (
-                  <Text b size="$lg" color="$white">
+                  <Text weight="bold" size="lg" color="white">
                     Save
                   </Text>
                 )}
               </Button>
 
               {resetPassword.isError && (
-                <Text color="error">
+                <Text color="danger">
                   Error when resetting password. Please check the fields and try again.
                 </Text>
               )}

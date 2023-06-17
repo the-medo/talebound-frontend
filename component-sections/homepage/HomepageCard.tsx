@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 const CardImage = styled('div', {
   variants: {

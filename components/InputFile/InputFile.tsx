@@ -1,5 +1,5 @@
-import { styled } from '@nextui-org/react';
-import React, { MutableRefObject, useCallback } from 'react';
+import { styled } from '@stitches/react';
+import React from 'react';
 
 const InputFileStyled = styled('input', {
   width: '350px',

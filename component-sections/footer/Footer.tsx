@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import { styled, Text } from '@nextui-org/react';
 import { SiDiscord, SiGithub, SiKofi, SiYoutube } from 'react-icons/si';
 import Logo from '../../components/Logo/Logo';
+import { styled } from '../../styles/stitches.config';
+import { TitleH5 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
 
 const FooterDiv = styled('div', {
   width: '100%',
@@ -114,23 +116,23 @@ const Footer: React.FC = () => {
         </LogoWrapper>
         <LinkColumnWrapper>
           <LinkColumn>
-            <Text h5 color="$primary600" transform="uppercase">
+            <TitleH5 underline={false} css={{ color: '$primary600', textTransform: 'uppercase' }}>
               Talebound
-            </Text>
+            </TitleH5>
             <Link href="/">Home</Link>
-            <Link href="/pages/about">About</Link>
+            <Link href="/about">About</Link>
           </LinkColumn>
           <LinkColumn>
-            <Text h5 color="$primary600" transform="uppercase">
+            <TitleH5 underline={false} css={{ color: '$primary600', textTransform: 'uppercase' }}>
               Terms
-            </Text>
-            <Link href="/pages/privacy-policy">Privacy policy</Link>
-            <Link href="/pages/terms-of-service">Terms of Service</Link>
+            </TitleH5>
+            <Link href="/privacy-policy">Privacy policy</Link>
+            <Link href="/terms-of-service">Terms of Service</Link>
           </LinkColumn>
           <LinkColumn>
-            <Text h5 color="$primary600" transform="uppercase">
+            <TitleH5 underline={false} css={{ color: '$primary600', textTransform: 'uppercase' }}>
               How to play
-            </Text>
+            </TitleH5>
             <Link href="/how-to/basics">Basics</Link>
             <Link href="/how-to/world-differences">World differences</Link>
           </LinkColumn>
@@ -151,12 +153,12 @@ const Footer: React.FC = () => {
             </Link>
           </FooterIcons>
           <Link href="https://github.com/the-medo" target="_blank">
-            <Text color={'white'}>by Medo</Text>
+            <Text color="white">by Medo</Text>
           </Link>
           <Link href="https://github.com/the-medo" target="_blank">
             <img src="https://avatars.githubusercontent.com/u/8963255?s=60&v=4" alt="the-medo" />
           </Link>
-          <Text color={'white'} css={{ height: '20px' }}>
+          <Text color="white" css={{ height: '20px' }}>
             © {new Date().getFullYear()} Talebound
           </Text>
         </FooterAvatar>

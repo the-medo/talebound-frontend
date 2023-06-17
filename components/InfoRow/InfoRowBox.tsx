@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 export const InfoRowBox = styled('div', {
   display: 'flex',

@@ -1,6 +1,5 @@
 import React, { ComponentType } from 'react';
-import globalStyles, { baseTheme } from '../styles/globalStyles';
-import { NextUIProvider } from '@nextui-org/react';
+import globalStyles from '../styles/globalStyles';
 import { StoreProvider } from '../store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -14,13 +13,11 @@ export const decorators: StorybookDecorator[] = [
     globalStyles();
 
     return (
-      <NextUIProvider theme={baseTheme}>
-        <StoreProvider>
-          <QueryClientProvider client={queryClient}>
-            <Story />
-          </QueryClientProvider>
-        </StoreProvider>
-      </NextUIProvider>
+      <StoreProvider>
+        <QueryClientProvider client={queryClient}>
+          <Story />
+        </QueryClientProvider>
+      </StoreProvider>
     );
   },
 ];

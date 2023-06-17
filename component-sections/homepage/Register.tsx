@@ -1,12 +1,8 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Checkbox, Modal, styled, Text, useInput, useModal, Button } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
-import {
-  InputTransparent,
-  PasswordTransparent,
-} from '../../components/InputTransparent/InputTransparent';
+import Input from '../../components/Input/Input';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validateEmail } from '../../utils/form/validateEmail';
 import { validateUsername } from '../../utils/form/validateUsername';
@@ -16,6 +12,13 @@ import PagePrivacyPolicy from '../../screens/privacy-policy/PagePrivacyPolicy';
 import { ClickableSpan } from '../../components/ClickableSpan/ClickableSpan';
 import { useCreateUser } from '../../api/useCreateUser';
 import { Client } from 'react-hydration-provider';
+import { styled } from '../../styles/stitches.config';
+import { useInput } from '../../hooks/useInput';
+import { Button } from '../../components/Button/Button';
+import { TitleH4 } from '../../components/Typography/Title';
+import { Text } from '../../components/Typography/Text';
+import Checkbox from '../../components/Checkbox/Checkbox';
+import Modal from '../../components/Modal/Modal';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -74,14 +77,8 @@ const RegisterLabel = styled('label', {
 const FieldWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  width: '$full',
+  width: '100%',
   marginBottom: '$md',
-});
-
-const RegisterCheckbox = styled(Checkbox, {
-  '& .nextui-checkbox-mask': {
-    color: '$white',
-  },
 });
 
 interface HomepageRegisterProps {
@@ -90,27 +87,13 @@ interface HomepageRegisterProps {
 
 const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
   const [checked, setChecked] = useState(false);
-  const { setVisible: setVisibleTos, bindings: bindingsTos } = useModal();
-  const { setVisible: setVisiblePrivacy, bindings: bindingsPrivacy } = useModal();
 
   const createUser = useCreateUser();
 
-  const {
-    value: usernameValue,
-    bindings: { onChange: onChangeUsername },
-  } = useInput('');
-  const {
-    value: emailValue,
-    bindings: { onChange: onChangeEmail },
-  } = useInput('');
-  const {
-    value: password1Value,
-    bindings: { onChange: onChangePassword1 },
-  } = useInput('');
-  const {
-    value: password2Value,
-    bindings: { onChange: onChangePassword2 },
-  } = useInput('');
+  const { value: usernameValue, onChange: onChangeUsername } = useInput('');
+  const { value: emailValue, onChange: onChangeEmail } = useInput('');
+  const { value: password1Value, onChange: onChangePassword1 } = useInput('');
+  const { value: password2Value, onChange: onChangePassword2 } = useInput('');
 
   const helperUsername: HelperType = useMemo(
     () => validateUsername(usernameValue),
@@ -126,21 +109,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
     [password1Value, password2Value],
   );
 
-  const handleTOS = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setVisibleTos(true);
-    },
-    [setVisibleTos],
-  );
-
-  const handlePrivacy = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setVisiblePrivacy(true);
-    },
-    [setVisiblePrivacy],
-  );
+  /**
+   * Link to open modal is inside a label, so we need to reverse the checkbox state
+   * If we try to prevent default instead, modal won't open
+   */
+  const handleModalOpen = useCallback(() => {
+    setChecked((p) => !p);
+  }, []);
 
   const handleCheckbox = useCallback((v: boolean) => {
     setChecked(v);
@@ -172,9 +147,9 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
           {createUser.isSuccess && (
             <>
               <RegisterHeader>User created!</RegisterHeader>
-              <Text h4 css={{ color: '$white', textAlign: 'center' }}>
+              <TitleH4 color="white" css={{ textAlign: 'center' }}>
                 Please, check your email for verification link and sign in
-              </Text>
+              </TitleH4>
             </>
           )}
           {!createUser.isSuccess && (
@@ -184,16 +159,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-username">
                   Username
-                  <InputTransparent
+                  <Input
                     onChange={onChangeUsername}
                     type="text"
                     fullWidth
-                    clearable
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperUsername.color}
-                    helperText={helperUsername.text}
+                    // helperColor={helperUsername.color}
+                    // helperText={helperUsername.text}
                     aria-labelledby="reg-username"
                   />
                 </RegisterLabel>
@@ -202,18 +174,15 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-email">
                   Email
-                  <InputTransparent
+                  <Input
                     onChange={onChangeEmail}
                     type="text"
                     name="reg-email"
                     id="reg-email"
                     fullWidth
-                    clearable
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperEmail.color}
-                    helperText={helperEmail.text}
+                    // helperColor={helperEmail.color}
+                    // helperText={helperEmail.text}
                     aria-labelledby="reg-email"
                   />
                 </RegisterLabel>
@@ -222,14 +191,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-pass1">
                   Password
-                  <PasswordTransparent
+                  <Input
+                    type={'password'}
                     onChange={onChangePassword1}
                     fullWidth
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperPassword1.color}
-                    helperText={helperPassword1.text}
+                    // helperColor={helperPassword1.color}
+                    // helperText={helperPassword1.text}
                     aria-labelledby="reg-pass1"
                   />
                 </RegisterLabel>
@@ -238,48 +206,47 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <FieldWrapper>
                 <RegisterLabel id="reg-pass2">
                   Password again
-                  <PasswordTransparent
+                  <Input
+                    type={'password'}
                     onChange={onChangePassword2}
                     name="reg-pass2"
                     id="reg-pass2"
                     fullWidth
                     required
-                    shadow={false}
-                    animated={false}
-                    helperColor={helperPassword2.color}
-                    helperText={helperPassword2.text}
+                    // helperColor={helperPassword2.color}
+                    // helperText={helperPassword2.text}
                     aria-labelledby="reg-pass2"
                   />
                 </RegisterLabel>
               </FieldWrapper>
-              <RegisterCheckbox size="md" onChange={handleCheckbox}>
-                <Text size="xs" color="$white">
-                  I agree to the <ClickableSpan onClick={handleTOS}>Terms of Service</ClickableSpan>{' '}
+              <Checkbox id="req_checkbox" value={checked} onChange={handleCheckbox}>
+                <Text size="xs" color="white">
+                  I agree to the{' '}
+                  <Modal
+                    trigger={
+                      <ClickableSpan onClick={handleModalOpen}>Terms of Service</ClickableSpan>
+                    }
+                    content={<PageTermsOfService />}
+                  />{' '}
                   and I have read the{' '}
-                  <ClickableSpan onClick={handlePrivacy}>Privacy Policy</ClickableSpan>
+                  <Modal
+                    trigger={
+                      <ClickableSpan onClick={handleModalOpen}>Privacy Policy</ClickableSpan>
+                    }
+                    content={<PagePrivacyPolicy />}
+                  />
                 </Text>
-              </RegisterCheckbox>
+              </Checkbox>
               <div>
-                <Button
-                  color="primary"
-                  auto
-                  size="md"
-                  onPress={submitNewUser}
-                  css={{
-                    opacity: !buttonDisabled ? '1' : '0.5',
-                    '&:hover': {
-                      opacity: !buttonDisabled ? '0.8' : '0.5',
-                    },
-                  }}
-                >
-                  <Text b size="$lg" color="$white">
+                <Button color="primary" size="md" onClick={submitNewUser} disabled={buttonDisabled}>
+                  <Text weight="bold" size="lg" color="white">
                     {createUser.isLoading ? 'Creating...' : 'Sign up'}
                   </Text>
                 </Button>
               </div>
 
               {createUser.isError && (
-                <Text color="error">
+                <Text color="danger">
                   Error when creating user. Please check the fields and try again.
                 </Text>
               )}
@@ -287,30 +254,6 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
           )}
         </RegisterBox>
       </RegisterBackground>
-
-      <Modal
-        closeButton
-        scroll
-        width="min(80%, 1000px)"
-        aria-labelledby="modal-tos"
-        {...bindingsTos}
-      >
-        <Modal.Body>
-          <PageTermsOfService offset={0} />
-        </Modal.Body>
-      </Modal>
-
-      <Modal
-        closeButton
-        scroll
-        width="min(80%, 1000px)"
-        aria-labelledby="modal-tos"
-        {...bindingsPrivacy}
-      >
-        <Modal.Body>
-          <PagePrivacyPolicy offset={0} />
-        </Modal.Body>
-      </Modal>
     </Client>
   );
 };

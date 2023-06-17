@@ -1,23 +1,25 @@
 'use client';
 
 import React, { KeyboardEvent, useCallback, useMemo } from 'react';
-import { styled, Text, useInput, Button, Loading, FormElement } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
-import {
-  InputTransparent,
-  PasswordTransparent,
-} from '../../components/InputTransparent/InputTransparent';
+import Input from '../../components/Input/Input';
 import Link from 'next/link';
 import { useLogin } from '../../api/useLogin';
 import { useRouter } from 'next/router';
 import { setUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
 import { Client } from 'react-hydration-provider';
+import { useInput } from '../../hooks/useInput';
+import { styled } from '../../styles/stitches.config';
+import { Button } from '../../components/Button/Button';
+import Loading from '../../components/Loading/Loading';
+import { Text } from '../../components/Typography/Text';
 
 const LoginBox = styled(VerticalSemitransparent, {
   position: 'absolute',
   top: '0',
   right: '0',
+  bottom: '0',
   padding: '$2xl $md',
   fontWeight: '$bold',
   fontSize: '$xl',
@@ -39,7 +41,7 @@ const LoginBox = styled(VerticalSemitransparent, {
       display: 'none',
     },
 
-    [`& ${InputTransparent}`]: {
+    [`& ${Input}`]: {
       maxWidth: '400px',
       width: '75%',
     },
@@ -68,11 +70,20 @@ const LoginButtonWrapper = styled('div', {
 });
 
 const ForgotPassword = styled(Link, {
-  fontSize: '$xs',
+  fontSize: '$sm',
   color: '$white',
-  opacity: 0.8,
+  marginTop: '$md',
+  marginBottom: '$md',
+  paddingTop: '$xs',
+  paddingBottom: '$xs',
+  paddingLeft: '$sm',
+  paddingRight: '$sm',
+  borderTop: '1px solid $primary300',
+  borderBottom: '1px solid $primary300',
+  opacity: 1,
+
   '&:hover': {
-    opacity: 1,
+    opacity: 0.8,
   },
 });
 
@@ -87,15 +98,8 @@ const Login: React.FC = () => {
     },
   });
 
-  const {
-    value: usernameValue,
-    bindings: { onChange: onChangeUsername },
-  } = useInput('');
-
-  const {
-    value: passwordValue,
-    bindings: { onChange: onChangePassword },
-  } = useInput('');
+  const { value: usernameValue, onChange: onChangeUsername } = useInput('');
+  const { value: passwordValue, onChange: onChangePassword } = useInput('');
 
   const buttonDisabled = useMemo(
     () => !passwordValue || !usernameValue || login.isLoading,
@@ -112,7 +116,7 @@ const Login: React.FC = () => {
   }, [usernameValue, passwordValue, login]);
 
   const submitOnEnter = useCallback(
-    (event: KeyboardEvent<FormElement>) => {
+    (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.code === 'Enter') submitLogin();
     },
     [submitLogin],
@@ -122,52 +126,40 @@ const Login: React.FC = () => {
     <Client>
       <LoginBox>
         <h3 id="login">Login</h3>
-        <InputTransparent
+        <Input
           onChange={onChangeUsername}
           aria-labelledby="login"
           placeholder="Username"
-          fullWidth
           required
-          shadow={false}
-          animated={false}
           onKeyDown={submitOnEnter}
+          fullWidth
+          transparent
         />
-        <PasswordTransparent
+        <Input
+          type={'password'}
           onChange={onChangePassword}
           aria-labelledby="login"
           placeholder="Password"
-          fullWidth
           required
-          shadow={false}
-          animated={false}
           onKeyDown={submitOnEnter}
+          fullWidth
+          transparent
         />
         <LoginButtonWrapper>
-          <Button
-            color="primary"
-            auto
-            size="md"
-            onPress={submitLogin}
-            css={{
-              opacity: !buttonDisabled ? '1' : '0.5',
-              '&:hover': {
-                opacity: !buttonDisabled ? '0.8' : '0.5',
-              },
-            }}
-          >
+          <Button type="primary" size="md" onClick={submitLogin} disabled={buttonDisabled}>
             {login.isLoading || login.isSuccess ? (
               <Loading color="currentColor" size="xs" />
             ) : (
-              <Text b size="$lg" color="$white">
+              <Text weight="bold" size="lg" color="white">
                 Sign in
               </Text>
             )}
           </Button>
-          <Text size="$sm">or</Text>
+          <Text size="sm">or</Text>
           <Link href="/#register">Sign up</Link>
           <ForgotPassword href="/reset-password">Forgot password?</ForgotPassword>
 
-          {login.isError && !login.isLoading && <Text color="error">Something went wrong.</Text>}
+          {login.isError && !login.isLoading && <Text color="danger">Something went wrong.</Text>}
         </LoginButtonWrapper>
       </LoginBox>
     </Client>

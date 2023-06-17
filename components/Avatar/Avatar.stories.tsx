@@ -1,0 +1,28 @@
+import { Meta, StoryObj } from '@storybook/react';
+import Avatar from './Avatar';
+
+const meta: Meta<typeof Avatar> = {
+  title: 'Components/Avatar',
+  component: Avatar,
+  render: (args) => <Avatar {...args} />,
+};
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const storyDefault: Story = {
+  name: 'Default',
+  args: {
+    url: 'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/c5fba38d-0447-4e06-b04e-96f59e4e2d00/100x100',
+    fallbackText: 'test',
+  },
+};
+
+export const storyNoUrl: Story = {
+  name: 'No url',
+  args: {
+    type: 'user',
+    fallbackText: 'test',
+  },
+};

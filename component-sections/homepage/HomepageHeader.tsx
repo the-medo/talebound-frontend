@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from '@nextui-org/react';
 import Login from './Login';
+import { styled } from '../../styles/stitches.config';
 
 const Header = styled('div', {
   width: '100%',

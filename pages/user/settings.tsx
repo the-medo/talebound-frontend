@@ -5,7 +5,7 @@ import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
 import AvatarChange from '../../component-sections/user-settings/AvatarChange';
 import PasswordChange from '../../component-sections/user-settings/PasswordChange';
 import SelfEvaluation from '../../component-sections/user-settings/SelfEvaluation';
-import { Column, Row } from '../../components/Flex/Flex';
+import { Col, Row } from '../../components/Flex/Flex';
 
 interface settingsProps {}
 
@@ -17,13 +17,13 @@ const settings: React.FC<settingsProps> = () => {
       </Head>
       <Layout mandatoryLogin={true} vertical={true} navbar={<LeftNavbar />}>
         <Row css={{ flexWrap: 'wrap' }}>
-          <Column css={{ flexGrow: 5, flexBasis: '10rem' }}>
+          <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             <AvatarChange />
             <PasswordChange />
-          </Column>
-          <Column css={{ flexGrow: 1, flexBasis: '30rem' }}>
+          </Col>
+          <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
             <SelfEvaluation />
-          </Column>
+          </Col>
         </Row>
       </Layout>
     </>

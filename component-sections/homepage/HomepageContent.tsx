@@ -1,10 +1,10 @@
 import React from 'react';
 import { MainContent } from '../../components/MainContent/MainContent';
-import { styled } from '@nextui-org/react';
-import { Column } from '../../components/Flex/Flex';
+import { Col } from '../../components/Flex/Flex';
 import HomepageCard from './HomepageCard';
+import { styled } from '../../styles/stitches.config';
 
-const ContentQuote = styled(Column, {
+const ContentQuote = styled(Col, {
   gap: '$lg',
   textAlign: 'center',
   maxWidth: '960px',
@@ -29,7 +29,7 @@ const CardWrapper = styled('div', {
   gap: '$md',
 });
 
-const CardColumn = styled(Column, {
+const CardColumn = styled(Col, {
   gap: '$md',
 });
 

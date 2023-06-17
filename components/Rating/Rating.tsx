@@ -1,7 +1,7 @@
 import React from 'react';
 import { Rate } from 'antd';
 import { MdRectangle } from 'react-icons/md';
-import { styled } from '@nextui-org/react';
+import { styled } from '../../styles/stitches.config';
 
 const StyledRating = styled(Rate, {
   color: '$primary800',

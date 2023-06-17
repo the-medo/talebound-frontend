@@ -1,8 +1,8 @@
-import { InputProps } from '@nextui-org/react';
+import { CSSProperties } from '@stitches/react';
 
 export type HelperType = {
   text: string;
-  color?: InputProps['helperColor'];
+  color?: CSSProperties['color'];
 };
 
 export const helperOK: HelperType = {

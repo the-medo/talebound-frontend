@@ -1,21 +1,17 @@
 import Head from 'next/head';
 import React, { useCallback, useMemo } from 'react';
 import Layout from '../components/Layout/Layout';
-import { Button, Input, styled, Text, useInput } from '@nextui-org/react';
 import { HelperType } from '../utils/form/nextUiTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
 import { useResetPassword } from '../api/useResetPassword';
-
-const Header = styled('h3', {
-  fontFamily: '$heading',
-  color: '$primary',
-  textDecoration: 'underline',
-  '@media(max-width: 400px)': {
-    fontSize: '$lg',
-  },
-});
+import { styled } from '../styles/stitches.config';
+import { useInput } from '../hooks/useInput';
+import Input from '../components/Input/Input';
+import { Button } from '../components/Button/Button';
+import { Text } from '../components/Typography/Text';
+import { TitleH3 } from '../components/Typography/Title';
 
 const RegisterLabel = styled('label', {
   color: '$primary800',
@@ -39,10 +35,7 @@ const MiddleContainer = styled('div', {
 });
 
 export default function ResetPassword() {
-  const {
-    value: emailValue,
-    bindings: { onChange: onChangeEmail },
-  } = useInput('');
+  const { value: emailValue, onChange: onChangeEmail } = useInput('');
   const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
 
   const resetPasswordSendCode = useResetPassword();
@@ -67,7 +60,7 @@ export default function ResetPassword() {
       </Head>
       <Layout mandatoryLoggedOut={true}>
         <MiddleContainer>
-          <Header>Recover password</Header>
+          <TitleH3>Recover password</TitleH3>
 
           {resetPasswordSendCode.isSuccess && (
             <>
@@ -85,35 +78,26 @@ export default function ResetPassword() {
                   name="reg-email"
                   id="reg-email"
                   fullWidth
-                  clearable
                   required
-                  shadow={false}
-                  animated={false}
-                  helperColor={helperEmail.color}
-                  helperText={helperEmail.text}
+                  // helperColor={helperEmail.color}
+                  // helperText={helperEmail.text}
                   aria-labelledby="reg-email"
                 />
               </RegisterLabel>
               <ReCaptcha sitekey={getRecaptchaSiteKey()} />
               <Button
                 color="primary"
-                auto
                 size="md"
-                onPress={submitResetPassword}
-                css={{
-                  opacity: !buttonDisabled ? '1' : '0.5',
-                  '&:hover': {
-                    opacity: !buttonDisabled ? '0.8' : '0.5',
-                  },
-                }}
+                onClick={submitResetPassword}
+                disabled={buttonDisabled}
               >
-                <Text b size="$lg" color="$white">
+                <Text weight="bold" size="lg" color="white">
                   {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}
                 </Text>
               </Button>
 
               {resetPasswordSendCode.isError && (
-                <Text color="error">
+                <Text color="danger">
                   Error when recovering password. Please refresh and try again. If the problem
                   persists, please contact support at support@talebound.net
                 </Text>

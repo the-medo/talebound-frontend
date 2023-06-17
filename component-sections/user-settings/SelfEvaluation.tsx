@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import Evaluation from '../../components/Evaluation/Evaluation';
-import { Loading, Text } from '@nextui-org/react';
 import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
 import { useAuth } from '../../hooks/useAuth';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import { Flex } from '../../components/Flex/Flex';
+import Loading from '../../components/Loading/Loading';
+import { Text } from '../../components/Typography/Text';
 
 interface SelfEvaluationProps {}
 
@@ -28,8 +29,8 @@ const SelfEvaluation: React.FC<SelfEvaluationProps> = () => {
         expertise in the following areas:
       </Text>
       {isLoading && (
-        <Flex css={{ alignSelf: 'center' }}>
-          <Loading color="secondary">Loading...</Loading>
+        <Flex alignSelf="center">
+          <Loading color="secondary" /> Loading...
         </Flex>
       )}
       {data?.averageEvaluationVote?.map((evaluation) => (

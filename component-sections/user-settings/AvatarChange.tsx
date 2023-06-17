@@ -1,14 +1,14 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Column } from '../../components/Flex/Flex';
+import { Col } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
-import { Avatar, Loading } from '@nextui-org/react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
 import { useAuth } from '../../hooks/useAuth';
 import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
-import { DEFAULT_AVATAR_URL } from '../../utils/constants';
+import Avatar from '../../components/Avatar/Avatar';
+import Loading from '../../components/Loading/Loading';
 
 const AvatarChange: React.FC = () => {
   const { user } = useAuth();
@@ -66,7 +66,7 @@ const AvatarChange: React.FC = () => {
 
   return (
     <ContentSection header="Change avatar" direction="row" justifyContent="space-between">
-      <Column css={{ $$gap: '0.5rem' }}>
+      <Col gap="md">
         <InputFile
           onChange={onChange}
           multiple={false}
@@ -77,12 +77,8 @@ const AvatarChange: React.FC = () => {
         <Button onClick={handleUpload}>
           {doUploadAvatar.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
         </Button>
-      </Column>
-      <Avatar
-        color="primary"
-        css={{ size: '7rem', marginTop: '-1rem' }}
-        src={user?.img?.url ?? DEFAULT_AVATAR_URL}
-      />
+      </Col>
+      <Avatar size="xl" type="user" url={user?.img?.url} />
     </ContentSection>
   );
 };
