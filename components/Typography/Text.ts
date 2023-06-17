@@ -61,11 +61,25 @@ export const Text = styled('span', {
         color: '$black',
       },
     },
+
+    i: {
+      true: {
+        fontStyle: 'italic',
+      },
+    },
+
+    b: {
+      true: {
+        fontWeight: '$bold',
+      },
+    },
   },
 
   defaultVariants: {
     size: 'md',
     weight: 'regular',
     color: 'black',
+    i: false,
+    b: false,
   },
 });
