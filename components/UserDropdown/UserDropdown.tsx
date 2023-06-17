@@ -10,6 +10,8 @@ import { DropdownMenuItem } from '../../components-radix-ui/DropdownMenu/Dropdow
 import { DropdownMenuSeparator } from '../../components-radix-ui/DropdownMenu/DropdownMenuSeparator';
 import Avatar from '../Avatar/Avatar';
 import { DropdownMenuTrigger } from '../../components-radix-ui/DropdownMenu/DropdownMenuTrigger';
+import { DropdownMenuRoot } from '../../components-radix-ui/DropdownMenu/DropdownMenuRoot';
+import { DropdownMenuPortal } from '../../components-radix-ui/DropdownMenu/DropdownMenuPortal';
 
 interface UserDropdownProps {}
 
@@ -20,43 +22,38 @@ const UserDropdown: React.FC<UserDropdownProps> = () => {
 
   const logout = useLogout({
     onSuccess: () => {
-      console.log('Logging out...');
       dispatch(setUser(undefined));
       void router.push('/');
     },
   });
 
-  const handleUserDropdown = useCallback(
-    (key: Key) => {
-      console.log('handleUserDropdown called', key);
-      if (key === 'logout') {
-        logout.mutate();
-      } else if (key === 'settings') {
-        void router.push('/user/settings');
-      }
-    },
-    [logout, router],
-  );
+  const openSettings = useCallback(() => {
+    void router.push('/user/settings');
+  }, [router]);
+
+  const handleLogout = useCallback(() => {
+    logout.mutate();
+  }, [logout]);
 
   return (
-    <DropdownMenuRadix.Root>
+    <DropdownMenuRoot>
       <DropdownMenuTrigger circle>
         <Avatar size="md" type="user" url={user?.img?.url} />
       </DropdownMenuTrigger>
 
-      <DropdownMenuRadix.Portal>
+      <DropdownMenuPortal>
         <DropdownMenuContent align={'end'} sideOffset={15}>
           <DropdownMenuItem>
             Signed in as&nbsp;<strong>{user?.username}</strong>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem onSelect={openSettings}>Settings</DropdownMenuItem>
           <DropdownMenuItem>Help & Feedback</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenuRadix.Portal>
-    </DropdownMenuRadix.Root>
+      </DropdownMenuPortal>
+    </DropdownMenuRoot>
   );
 };
 

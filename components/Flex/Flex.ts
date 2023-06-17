@@ -116,4 +116,8 @@ export const Col = styled(Flex, {
 
 export const Row = styled(Flex, {
   flexDirection: 'row',
+
+  defaultVariants: {
+    alignItems: 'center',
+  },
 });
