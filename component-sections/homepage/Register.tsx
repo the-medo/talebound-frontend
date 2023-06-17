@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Checkbox, Modal, useModal } from '@nextui-org/react';
+import { Modal, useModal } from '@nextui-org/react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import { HelperType } from '../../utils/form/nextUiTypes';
@@ -18,6 +18,7 @@ import { useInput } from '../../hooks/useInput';
 import { Button } from '../../components/Button/Button';
 import { TitleH4 } from '../../components/Typography/Title';
 import { Text } from '../../components/Typography/Text';
+import Checkbox from '../../components/Checkbox/Checkbox';
 
 const RegisterBackground = styled('div', {
   position: 'relative',
@@ -76,14 +77,8 @@ const RegisterLabel = styled('label', {
 const FieldWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  width: '$full',
+  width: '100%',
   marginBottom: '$md',
-});
-
-const RegisterCheckbox = styled(Checkbox, {
-  '& .nextui-checkbox-mask': {
-    color: '$white',
-  },
 });
 
 interface HomepageRegisterProps {
@@ -234,13 +229,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                   />
                 </RegisterLabel>
               </FieldWrapper>
-              <RegisterCheckbox size="md" onChange={handleCheckbox}>
+              <Checkbox value={checked} onChange={handleCheckbox}>
                 <Text size="xs" color="white">
                   I agree to the <ClickableSpan onClick={handleTOS}>Terms of Service</ClickableSpan>{' '}
                   and I have read the{' '}
                   <ClickableSpan onClick={handlePrivacy}>Privacy Policy</ClickableSpan>
                 </Text>
-              </RegisterCheckbox>
+              </Checkbox>
               <div>
                 <Button color="primary" size="md" onClick={submitNewUser} disabled={buttonDisabled}>
                   <Text weight="bold" size="lg" color="white">
