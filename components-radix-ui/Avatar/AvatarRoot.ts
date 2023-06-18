@@ -1,6 +1,5 @@
 import { styled } from '../../styles/stitches.config';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { blackA } from '@radix-ui/colors';
 
 export const AvatarRoot = styled(AvatarPrimitive.Root, {
   display: 'inline-flex',
@@ -11,7 +10,7 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
   userSelect: 'none',
   borderRadius: '100%',
   border: '1px solid $primary500',
-  backgroundColor: blackA.blackA3,
+  backgroundColor: 'rgba(0,0,0,.04)',
 
   variants: {
     size: {

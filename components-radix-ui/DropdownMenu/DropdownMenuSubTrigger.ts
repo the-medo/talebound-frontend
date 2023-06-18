@@ -1,12 +1,11 @@
 import { styled } from '../../styles/stitches.config';
 import * as DropdownMenuRadix from '@radix-ui/react-dropdown-menu';
-import { teal } from '@radix-ui/colors';
 import { stylesDropdownMenuItem } from './stylesDropdownMenuItem';
 
 export const DropdownMenuSubTrigger = styled(DropdownMenuRadix.SubTrigger, {
   '&[data-state="open"]': {
-    backgroundColor: teal.teal4,
-    color: teal.teal11,
+    backgroundColor: '$primary300',
+    color: '$primary800',
   },
   ...stylesDropdownMenuItem,
 });

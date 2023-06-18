@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@lexical/react": "^0.11.1",
-    "@radix-ui/colors": "^0.1.8",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.4",
