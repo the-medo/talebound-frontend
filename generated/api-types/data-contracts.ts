@@ -322,6 +322,12 @@ export interface PbUser {
   introductionPostId?: number;
 }
 
+export interface PbVerifyEmailRequest {
+  /** @format int64 */
+  emailId?: string;
+  secretCode?: string;
+}
+
 export interface PbVerifyEmailResponse {
   isVerified?: boolean;
 }
@@ -369,7 +375,6 @@ export interface PbWorldOfCreatorResponse {
 
 export interface ProtobufAny {
   '@type'?: string;
-
   [key: string]: any;
 }
 

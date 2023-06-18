@@ -9,8 +9,8 @@
  * ---------------------------------------------------------------
  */
 
-import { PbVerifyEmailResponse, RpcStatus } from './data-contracts';
-import { HttpClient, RequestParams } from './http-client';
+import {PbVerifyEmailRequest, PbVerifyEmailResponse, RpcStatus} from './data-contracts';
+import {ContentType, HttpClient, RequestParams} from './http-client';
 
 export class Verify<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
@@ -25,22 +25,16 @@ export class Verify<SecurityDataType = unknown> {
    * @tags Talebound
    * @name TaleboundVerifyEmail
    * @summary Verify email
-   * @request GET:/verify
+   * @request POST:/verify
    * @response `200` `PbVerifyEmailResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundVerifyEmail = (
-    query?: {
-      /** @format int64 */
-      emailId?: string;
-      secretCode?: string;
-    },
-    params: RequestParams = {},
-  ) =>
+  taleboundVerifyEmail = (body: PbVerifyEmailRequest, params: RequestParams = {}) =>
     this.http.request<PbVerifyEmailResponse, RpcStatus>({
       path: `/verify`,
-      method: 'GET',
-      query: query,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });
