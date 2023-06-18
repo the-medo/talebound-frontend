@@ -108,6 +108,15 @@ export const Flex = styled('div', {
         alignSelf: 'baseline',
       },
     },
+
+    direction: {
+      row: {
+        flexDirection: 'row',
+      },
+      column: {
+        flexDirection: 'column',
+      },
+    },
   },
 
   defaultVariants: {

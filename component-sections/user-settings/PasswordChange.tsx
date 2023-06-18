@@ -5,6 +5,7 @@ import PasswordChangeInputs, {
 import { Button } from '../../components/Button/Button';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { useUpdateUser } from '../../api/useUpdateUser';
+import { Col } from '../../components/Flex/Flex';
 
 interface PasswordChangeProps {}
 
@@ -34,15 +35,17 @@ const PasswordChange: React.FC<PasswordChangeProps> = () => {
 
   return (
     <ContentSection header="Change password">
-      <PasswordChangeInputs
-        display={display}
-        setPasswordValue={setPasswordValue}
-        setButtonDisabled={setExternalButtonDisabled}
-        successMessage="Password changed successfully."
-      />
-      {display === PasswordChangeStatus.PasswordForm && (
-        <Button onClick={submitChangePassword}>Change</Button>
-      )}
+      <Col css={{ width: '320px' }}>
+        <PasswordChangeInputs
+          display={display}
+          setPasswordValue={setPasswordValue}
+          setButtonDisabled={setExternalButtonDisabled}
+          successMessage="Password changed successfully."
+        />
+        {display === PasswordChangeStatus.PasswordForm && (
+          <Button onClick={submitChangePassword}>Change</Button>
+        )}
+      </Col>
     </ContentSection>
   );
 };

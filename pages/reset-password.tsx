@@ -12,13 +12,7 @@ import Input from '../components/Input/Input';
 import { Button } from '../components/Button/Button';
 import { Text } from '../components/Typography/Text';
 import { TitleH3 } from '../components/Typography/Title';
-
-const RegisterLabel = styled('label', {
-  color: '$primary800',
-  fontFamily: '$heading',
-  fontSize: '$md',
-  textTransform: 'uppercase',
-});
+import { Col } from '../components/Flex/Flex';
 
 const MiddleContainer = styled('div', {
   width: 'min(600px, 80%)',
@@ -61,49 +55,46 @@ export default function ResetPassword() {
       <Layout mandatoryLoggedOut={true}>
         <MiddleContainer>
           <TitleH3>Recover password</TitleH3>
-
-          {resetPasswordSendCode.isSuccess && (
-            <>
-              <h5>Success!</h5>
-              <h5> Email should arrive shortly.</h5>
-            </>
-          )}
-          {!resetPasswordSendCode.isSuccess && (
-            <>
-              <RegisterLabel id="reg-email">
-                Email
+          <Col gap="sm" style={{ width: '320px' }}>
+            {resetPasswordSendCode.isSuccess && (
+              <>
+                <h5>Success!</h5>
+                <h5> Email should arrive shortly.</h5>
+              </>
+            )}
+            {!resetPasswordSendCode.isSuccess && (
+              <>
                 <Input
+                  label="Email"
+                  id="reg-email"
                   onChange={onChangeEmail}
                   type="text"
-                  name="reg-email"
-                  id="reg-email"
                   fullWidth
                   required
-                  // helperColor={helperEmail.color}
-                  // helperText={helperEmail.text}
-                  aria-labelledby="reg-email"
+                  helperText={helperEmail.text}
+                  helperType={helperEmail.type}
                 />
-              </RegisterLabel>
-              <ReCaptcha sitekey={getRecaptchaSiteKey()} />
-              <Button
-                color="primary"
-                size="md"
-                onClick={submitResetPassword}
-                disabled={buttonDisabled}
-              >
-                <Text weight="bold" size="lg" color="white">
-                  {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}
-                </Text>
-              </Button>
+                <ReCaptcha sitekey={getRecaptchaSiteKey()} />
+                <Button
+                  color="primary"
+                  size="md"
+                  onClick={submitResetPassword}
+                  disabled={buttonDisabled}
+                >
+                  <Text weight="bold" size="lg" color="white">
+                    {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}
+                  </Text>
+                </Button>
 
-              {resetPasswordSendCode.isError && (
-                <Text color="danger">
-                  Error when recovering password. Please refresh and try again. If the problem
-                  persists, please contact support at support@talebound.net
-                </Text>
-              )}
-            </>
-          )}
+                {resetPasswordSendCode.isError && (
+                  <Text color="danger">
+                    Error when recovering password. Please refresh and try again. If the problem
+                    persists, please contact support at support@talebound.net
+                  </Text>
+                )}
+              </>
+            )}
+          </Col>
         </MiddleContainer>
       </Layout>
     </>

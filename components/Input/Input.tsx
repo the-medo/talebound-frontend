@@ -1,10 +1,9 @@
 import { styled } from '../../styles/stitches.config';
-import React from 'react';
-
-interface StyledInputVariants {
-  fullWidth?: boolean;
-  transparent?: boolean;
-}
+import React, { useMemo } from 'react';
+import Stitches from '@stitches/react';
+import { Col, Flex } from '../Flex/Flex';
+import { Label } from '../Typography/Label';
+import { Text } from '../Typography/Text';
 
 export const StyledInput = styled('input', {
   fontFamily: '$heading',
@@ -39,12 +38,45 @@ export const StyledInput = styled('input', {
   },
 });
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    StyledInputVariants {}
+export type InputVariants = Stitches.VariantProps<typeof StyledInput>;
 
-const Input: React.FC<InputProps> = (props) => {
-  return <StyledInput {...props} />;
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, InputVariants {
+  id: string;
+  label?: string;
+  labelDirection?: 'row' | 'column';
+  helperText?: string;
+  helperType?: 'danger' | 'warning' | 'info';
+}
+
+const Input: React.FC<InputProps> = ({
+  id,
+  label,
+  labelDirection = 'column',
+  helperText,
+  helperType,
+  ...otherProps
+}) => {
+  const labelId = `${id}-label`;
+  const helperId = `${id}-helper`;
+
+  const input = useMemo(
+    () => (
+      <StyledInput aria-labelledby={`${labelId} ${helperId}`} id={id} name={id} {...otherProps} />
+    ),
+    [id, otherProps],
+  );
+
+  return (
+    <Col alignItems="end" fullWidth gap="xs">
+      <Flex gap="xs" fullWidth direction={labelDirection}>
+        {label && <Label id={labelId}>{label}</Label>}
+        {input}
+      </Flex>
+      <Text color={helperType} size="xs" id={helperId}>
+        &nbsp;{helperText}
+      </Text>
+    </Col>
+  );
 };
 
 export default Input;

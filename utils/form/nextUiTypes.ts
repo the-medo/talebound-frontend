@@ -1,11 +1,11 @@
-import { CSSProperties } from '@stitches/react';
+import { InputProps } from '../../components/Input/Input';
 
 export type HelperType = {
   text: string;
-  color?: CSSProperties['color'];
+  type?: InputProps['helperType'];
 };
 
 export const helperOK: HelperType = {
   text: '',
-  color: undefined,
+  type: undefined,
 };

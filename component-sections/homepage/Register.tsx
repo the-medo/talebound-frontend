@@ -45,11 +45,14 @@ const RegisterBox = styled(VerticalSemitransparent, {
   left: '50%',
   transform: 'translate(-50%, 0%)',
   padding: '$2xl $xl',
-  fontWeight: '$bold',
   fontSize: '$xs',
   color: '$white600',
   textDecoration: 'none',
   minWidth: '33%',
+
+  label: {
+    fontWeight: '$bold',
+  },
 
   '@xsMax': {
     left: '$0',
@@ -66,20 +69,6 @@ const RegisterBox = styled(VerticalSemitransparent, {
 
 const RegisterHeader = styled('h2', {
   color: '$white',
-});
-
-const RegisterLabel = styled('label', {
-  color: '$primary800',
-  fontFamily: '$heading',
-  fontSize: '$md',
-  textTransform: 'uppercase',
-});
-
-const FieldWrapper = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  marginBottom: '$md',
 });
 
 interface HomepageRegisterProps {
@@ -157,73 +146,50 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
             <>
               <RegisterHeader>Sign up</RegisterHeader>
 
-              <FieldWrapper>
-                <RegisterLabel id="reg-username">
-                  Username
-                  <Input
-                    onChange={onChangeUsername}
-                    type="text"
-                    fullWidth
-                    required
-                    // helperColor={helperUsername.color}
-                    // helperText={helperUsername.text}
-                    aria-labelledby="reg-username"
-                    transparent
-                  />
-                </RegisterLabel>
-              </FieldWrapper>
-
-              <FieldWrapper>
-                <RegisterLabel id="reg-email">
-                  Email
-                  <Input
-                    onChange={onChangeEmail}
-                    type="text"
-                    name="reg-email"
-                    id="reg-email"
-                    fullWidth
-                    required
-                    // helperColor={helperEmail.color}
-                    // helperText={helperEmail.text}
-                    aria-labelledby="reg-email"
-                    transparent
-                  />
-                </RegisterLabel>
-              </FieldWrapper>
-
-              <FieldWrapper>
-                <RegisterLabel id="reg-pass1">
-                  Password
-                  <Input
-                    type={'password'}
-                    onChange={onChangePassword1}
-                    fullWidth
-                    required
-                    // helperColor={helperPassword1.color}
-                    // helperText={helperPassword1.text}
-                    aria-labelledby="reg-pass1"
-                    transparent
-                  />
-                </RegisterLabel>
-              </FieldWrapper>
-
-              <FieldWrapper>
-                <RegisterLabel id="reg-pass2">
-                  Password again
-                  <Input
-                    type={'password'}
-                    onChange={onChangePassword2}
-                    name="reg-pass2"
-                    id="reg-pass2"
-                    fullWidth
-                    required
-                    // helperColor={helperPassword2.color}
-                    // helperText={helperPassword2.text}
-                    aria-labelledby="reg-pass2"
-                    transparent
-                  />
-                </RegisterLabel>
-              </FieldWrapper>
+              <Input
+                label="Username"
+                id="reg-username"
+                type="text"
+                onChange={onChangeUsername}
+                fullWidth
+                required
+                helperText={helperUsername.text}
+                helperType={helperUsername.type}
+                transparent
+              />
+              <Input
+                label="Email"
+                id="reg-email"
+                onChange={onChangeEmail}
+                type="text"
+                fullWidth
+                required
+                helperText={helperEmail.text}
+                helperType={helperEmail.type}
+                transparent
+              />
+              <Input
+                label="Password"
+                id="reg-pass1"
+                type="password"
+                onChange={onChangePassword1}
+                fullWidth
+                required
+                helperText={helperPassword1.text}
+                helperType={helperPassword1.type}
+                transparent
+              />
+              <Input
+                label="Password again"
+                type="password"
+                id="reg-pass2"
+                onChange={onChangePassword2}
+                fullWidth
+                required
+                helperText={helperPassword2.text}
+                helperType={helperPassword2.type}
+                transparent
+              />
               <Checkbox
                 id="req_checkbox"
                 checked={checked}

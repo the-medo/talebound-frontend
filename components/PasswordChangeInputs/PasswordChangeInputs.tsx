@@ -1,18 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { HelperType } from '../../utils/form/nextUiTypes';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
-import { labelStyle } from '../../styles/typefaces';
 import { useInput } from '../../hooks/useInput';
-import { styled } from '../../styles/stitches.config';
 import Input from '../Input/Input';
 import { Row } from '../Flex/Flex';
 import Loading from '../Loading/Loading';
-
-const RegisterLabel = styled('label', {
-  ...labelStyle,
-  width: 'min(75%, 20rem)',
-  marginBottom: '$md',
-});
 
 export enum PasswordChangeStatus {
   PasswordSuccess = 'password-success',
@@ -77,34 +69,26 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
       )}
       {display === PasswordChangeStatus.PasswordForm && (
         <>
-          <RegisterLabel id="reg-pass1">
-            Password
-            <Input
-              type="password"
-              onChange={onChangePassword1}
-              name="reg-pass1"
-              id="reg-pass1"
-              fullWidth
-              required
-              // helperColor={helperPassword1.color}
-              // helperText={helperPassword1.text}
-              aria-labelledby="reg-pass1"
-            />
-          </RegisterLabel>
-          <RegisterLabel id="reg-pass2">
-            Password again
-            <Input
-              type="password"
-              onChange={onChangePassword2}
-              name="reg-pass2"
-              id="reg-pass2"
-              fullWidth
-              required
-              // helperColor={helperPassword2.color}
-              // helperText={helperPassword2.text}
-              aria-labelledby="reg-pass2"
-            />
-          </RegisterLabel>
+          <Input
+            id="reg-pass1"
+            label="Password"
+            type="password"
+            onChange={onChangePassword1}
+            fullWidth
+            required
+            helperType={helperPassword1.type}
+            helperText={helperPassword1.text}
+          />
+          <Input
+            id="reg-pass2"
+            label="Password again"
+            type="password"
+            onChange={onChangePassword2}
+            fullWidth
+            required
+            helperType={helperPassword2.type}
+            helperText={helperPassword2.text}
+          />
         </>
       )}
     </>

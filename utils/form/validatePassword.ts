@@ -14,7 +14,7 @@ export const validatePassword = (password: string): HelperType => {
   if (!isValidLength) {
     return {
       text: 'Needs to be between 6 and 100 characters',
-      color: 'error',
+      type: 'danger',
     };
   }
 
@@ -28,7 +28,7 @@ export const validatePasswordAgain = (password1: string, password2: string): Hel
   if (password1 !== password2) {
     return {
       text: "Passwords don't match",
-      color: 'error',
+      type: 'danger',
     };
   }
 
