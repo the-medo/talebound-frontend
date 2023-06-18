@@ -41,7 +41,7 @@ const LogoWrapper = styled('div', {
   display: 'flex',
   padding: '$sm',
   minWidth: '390px',
-  color: 'red',
+  justifyContent: 'center',
 
   '@smMax': {
     minWidth: '0px',
@@ -94,10 +94,10 @@ const FooterAvatar = styled('div', {
     justifyContent: 'flex-end',
   },
 
-  [`& img`]: {
+  [`& > a > img`]: {
     borderRadius: '50%',
-    width: '$10',
-    height: '$10',
+    width: '$md !important',
+    height: '$md !important',
   },
 });
 
