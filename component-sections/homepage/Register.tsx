@@ -27,6 +27,7 @@ const RegisterBackground = styled('div', {
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
+  margin: '-$sm',
   maskImage:
     'linear-gradient(45deg, rgba(255, 255, 255, 0) 0%, #ffffff 35%, #ffffff 65%,  rgba(255, 255, 255, 0) 100%)',
   backgroundImage: '$$backgroundImage',
@@ -167,6 +168,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                     // helperColor={helperUsername.color}
                     // helperText={helperUsername.text}
                     aria-labelledby="reg-username"
+                    transparent
                   />
                 </RegisterLabel>
               </FieldWrapper>
@@ -184,6 +186,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                     // helperColor={helperEmail.color}
                     // helperText={helperEmail.text}
                     aria-labelledby="reg-email"
+                    transparent
                   />
                 </RegisterLabel>
               </FieldWrapper>
@@ -199,6 +202,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                     // helperColor={helperPassword1.color}
                     // helperText={helperPassword1.text}
                     aria-labelledby="reg-pass1"
+                    transparent
                   />
                 </RegisterLabel>
               </FieldWrapper>
@@ -216,10 +220,16 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                     // helperColor={helperPassword2.color}
                     // helperText={helperPassword2.text}
                     aria-labelledby="reg-pass2"
+                    transparent
                   />
                 </RegisterLabel>
               </FieldWrapper>
-              <Checkbox id="req_checkbox" value={checked} onChange={handleCheckbox}>
+              <Checkbox
+                id="req_checkbox"
+                checked={checked}
+                onCheckedChange={handleCheckbox}
+                transparent
+              >
                 <Text size="xs" color="white">
                   I agree to the{' '}
                   <Modal

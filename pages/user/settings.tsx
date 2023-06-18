@@ -16,7 +16,7 @@ const settings: React.FC<settingsProps> = () => {
         <title>User settings</title>
       </Head>
       <Layout mandatoryLogin={true} vertical={true} navbar={<LeftNavbar />}>
-        <Row css={{ flexWrap: 'wrap' }}>
+        <Row alignItems="start" css={{ flexWrap: 'wrap' }}>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             <AvatarChange />
             <PasswordChange />

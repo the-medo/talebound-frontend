@@ -1,51 +1,39 @@
 import React, { PropsWithChildren, useMemo } from 'react';
-import { CheckboxRoot } from '../../components-radix-ui/Checkbox/CheckboxRoot';
+import { CheckboxRoot, CheckboxVariants } from '../../components-radix-ui/Checkbox/CheckboxRoot';
 import { CheckboxIndicator } from '../../components-radix-ui/Checkbox/CheckboxIndicator';
 import { MdCheck } from 'react-icons/md';
 import { Flex } from '../Flex/Flex';
 import { CSSProperties } from '@stitches/react';
+import { CheckboxProps as RadixCheckboxProps } from '@radix-ui/react-checkbox';
 
-interface CheckboxProps extends PropsWithChildren {
+interface CheckboxProps extends PropsWithChildren, CheckboxVariants, RadixCheckboxProps {
   id?: string;
-  defaultValue?: boolean;
-  value?: boolean;
-  disabled?: boolean;
   childrenRender?: 'before' | 'after';
   childrenDirection?: CSSProperties['flexDirection'];
-  onChange?: (v: boolean) => void;
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
   id,
-  defaultValue = false,
-  value,
-  disabled = false,
-  onChange,
   childrenRender = 'after',
   childrenDirection = 'row',
   children,
+  ...checkboxProps
 }) => {
   const checkboxRenderer = useMemo(
     () => (
-      <CheckboxRoot
-        checked={value}
-        onCheckedChange={onChange}
-        defaultChecked={defaultValue}
-        id={id}
-        disabled={disabled}
-      >
+      <CheckboxRoot id={id} {...checkboxProps}>
         <CheckboxIndicator>
           <MdCheck size={20} />
         </CheckboxIndicator>
       </CheckboxRoot>
     ),
-    [value, onChange, defaultValue, id],
+    [checkboxProps, id],
   );
 
   if (!children) return checkboxRenderer;
 
   return (
-    <Flex alignItems="center" css={{ flexDirection: childrenDirection }}>
+    <Flex gap="md" alignItems="center" css={{ flexDirection: childrenDirection }}>
       {childrenRender === 'before' && <label htmlFor={id}>{children}</label>}
       {checkboxRenderer}
       {childrenRender === 'after' && <label htmlFor={id}>{children}</label>}

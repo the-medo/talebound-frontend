@@ -2,6 +2,7 @@ import React from 'react';
 import { Rate } from 'antd';
 import { MdRectangle } from 'react-icons/md';
 import { styled } from '../../styles/stitches.config';
+import { BsDiamondFill } from 'react-icons/bs';
 
 const StyledRating = styled(Rate, {
   color: '$primary800',
@@ -16,6 +17,8 @@ interface RatingProps {
   onChange?: (value: number) => void;
 }
 
+const ratingIcon = <BsDiamondFill />;
+
 const Rating: React.FC<RatingProps> = ({ defaultValue, onChange, disabled }) => {
   return (
     <StyledRating
@@ -23,7 +26,7 @@ const Rating: React.FC<RatingProps> = ({ defaultValue, onChange, disabled }) => 
       allowClear
       disabled={disabled}
       onChange={onChange}
-      character={<MdRectangle />}
+      character={ratingIcon}
       defaultValue={defaultValue}
     />
   );

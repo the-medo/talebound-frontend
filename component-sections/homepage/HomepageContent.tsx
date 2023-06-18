@@ -29,10 +29,6 @@ const CardWrapper = styled('div', {
   gap: '$md',
 });
 
-const CardColumn = styled(Col, {
-  gap: '$md',
-});
-
 const HomepageContent: React.FC = () => {
   return (
     <MainContent>
@@ -43,7 +39,7 @@ const HomepageContent: React.FC = () => {
         captivating stories, and forge unforgettable friendships.
       </ContentQuote>
       <CardWrapper>
-        <CardColumn>
+        <Col gap="md">
           <HomepageCard
             image="1"
             cardType="left"
@@ -66,8 +62,8 @@ const HomepageContent: React.FC = () => {
                 from a variety of world-specific races, classes, and skills, and bring them to life in the immersive
                 environment crafted by the world's creator."
           />
-        </CardColumn>
-        <CardColumn>
+        </Col>
+        <Col gap="md">
           <HomepageCard
             image="4"
             cardType="right"
@@ -91,7 +87,7 @@ const HomepageContent: React.FC = () => {
                 developer and you are missing something, feel free to contribute! Talebound is open source. You can find
                 links to github in the footer."
           />
-        </CardColumn>
+        </Col>
       </CardWrapper>
     </MainContent>
   );

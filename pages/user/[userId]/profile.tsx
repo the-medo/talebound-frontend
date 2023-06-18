@@ -17,7 +17,9 @@ const profile: React.FC<profileProps> = () => {
         <title>User profile</title>
       </Head>
       <Layout mandatoryLogin={false} vertical={true} navbar={<LeftNavbar />}>
-        <Row css={{ flexWrap: 'wrap' }}>{userId && <UserProfile userId={userId} />}</Row>
+        <Row alignItems="start" css={{ flexWrap: 'wrap' }}>
+          {userId && <UserProfile userId={userId} />}
+        </Row>
       </Layout>
     </>
   );

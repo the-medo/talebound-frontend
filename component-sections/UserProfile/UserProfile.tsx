@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useGetUserById } from '../../api/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../components/Flex/Flex';
-import { TitleH4 } from '../../components/Typography/Title';
+import { TitleH2, TitleH4 } from '../../components/Typography/Title';
 import { parseISO } from 'date-fns';
 import { formatDate } from '../../utils/functions/formatDate';
 import InfoRow from '../../components/InfoRow/InfoRow';
@@ -41,7 +41,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
     <>
       <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
         <ContentSection direction="row" flexBasis="100%">
-          <Col>
+          <Col gap="sm">
             <Avatar type="user" size="2xl" url={data?.avatarImageUrl} />
             <Button fullWidth type="secondary">
               Edit
@@ -54,7 +54,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
             </Button>
           </Col>
           <Col fullWidth gap="sm">
-            <TitleH4>{data?.username}</TitleH4>
+            <TitleH2>{data?.username}</TitleH2>
             <Row fullWidth justifyContent="between">
               <Col gap="sm">
                 <InfoRowBox>
@@ -62,7 +62,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                   <InfoRow title="Registered:" value={formatDate(data?.createdAt, false, 'week')} />
                 </InfoRowBox>
               </Col>
-              <Col css={{ flexBasis: '370px' }}>
+              <Col css={{ flexBasis: '420px' }}>
                 {(evaluationData?.averageEvaluationVote ?? []).map((evaluation) => (
                   <Evaluation data={evaluation} disabled compact />
                 ))}

@@ -11,6 +11,9 @@ export const Flex = styled('div', {
     },
 
     gap: {
+      none: {
+        gap: '0',
+      },
       xs: {
         gap: '$xs',
       },
@@ -29,6 +32,9 @@ export const Flex = styled('div', {
     },
 
     padding: {
+      none: {
+        gap: '0',
+      },
       xs: {
         padding: '$xs',
       },
@@ -106,7 +112,7 @@ export const Flex = styled('div', {
 
   defaultVariants: {
     fullWidth: 'false',
-    gap: 'md',
+    gap: 'none',
   },
 });
 
