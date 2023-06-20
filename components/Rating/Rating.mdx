@@ -4,6 +4,7 @@ import * as stories from './Rating.stories.tsx';
 <Meta of={stories}/>
 
 # Rating
+
 Renders a rating component. Can be used anywhere a rating is needed - user self evaluation, world / rule system / DM reviews and more.
 
 By default, the rating component will render a 5 icon rating system. The user can click on the icons to select a rating, or hover over them to see the rating they would select. Supports half points.
@@ -11,12 +12,15 @@ By default, the rating component will render a 5 icon rating system. The user ca
 Uses antd's [Rate](https://ant.design/components/rate/) component with custom icon.
 
 ## Default
+
 <Canvas>
   <Story of={stories.storyDefault}/>
 </Canvas>
 
 ## Disabled
+
 Note that the disabled state is not interactive - only the resulting rating is shown.
+
 <Canvas>
   <Story of={stories.storyDisabled}/>
 </Canvas>
