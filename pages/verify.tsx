@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout/Layout';
 import { styled } from '../styles/stitches.config';
@@ -7,7 +7,6 @@ import Loading from '../components/Loading/Loading';
 import { Row } from '../components/Flex/Flex';
 import { TitleH3 } from '../components/Typography/Title';
 import { useVerify } from '../api/useVerify';
-import { useClearResetErrorBoundary } from '@tanstack/react-query/build/lib/errorBoundaryUtils';
 import { Text } from '../components/Typography/Text';
 
 const MiddleContainer = styled('div', {
@@ -41,8 +40,6 @@ export default function Verify() {
 
     setAttempted(true);
   }, [attempted, id, secret_code]);
-
-  console.log(verify);
 
   return (
     <>

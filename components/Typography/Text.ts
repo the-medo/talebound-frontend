@@ -1,6 +1,10 @@
 import { styled } from '../../styles/stitches.config';
 
 export const Text = styled('span', {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.25rem',
+
   variants: {
     size: {
       xs: {
@@ -14,6 +18,9 @@ export const Text = styled('span', {
       },
       lg: {
         fontSize: '$lg',
+      },
+      inherit: {
+        fontSize: 'inherit',
       },
     },
 
@@ -60,6 +67,9 @@ export const Text = styled('span', {
       black: {
         color: '$black',
       },
+      currentColor: {
+        color: 'currentColor',
+      },
     },
 
     i: {
@@ -76,9 +86,9 @@ export const Text = styled('span', {
   },
 
   defaultVariants: {
-    size: 'md',
+    size: 'inherit',
     weight: 'regular',
-    color: 'black',
+    color: 'currentColor',
     i: false,
     b: false,
   },

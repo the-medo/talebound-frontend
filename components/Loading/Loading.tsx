@@ -17,7 +17,7 @@ type LoadingColor =
   | 'success';
 
 const LoadingWrapper = styled('span', {
-  display: 'flex',
+  display: 'inline-flex',
   borderRadius: '50%',
   position: 'relative',
   width: '1.75rem',
