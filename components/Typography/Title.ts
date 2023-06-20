@@ -42,16 +42,16 @@ const titleStyles = {
         color: '$tertiary800',
       },
       success: {
-        color: '$success500',
+        color: '$success',
       },
       danger: {
-        color: '$danger500',
+        color: '$danger',
       },
       info: {
-        color: '$info500',
+        color: '$info',
       },
       warning: {
-        color: '$warning500',
+        color: '$warning',
       },
       white: {
         color: '$white',

@@ -3,7 +3,7 @@ import Evaluation from './Evaluation';
 import { PbAverageEvaluationVote } from '../../generated/api-types/data-contracts';
 
 const meta: Meta<typeof Evaluation> = {
-  title: 'Components/Evaluation',
+  title: '4. Components/Evaluation',
   component: Evaluation,
   render: (args) => <Evaluation {...args} />,
 };

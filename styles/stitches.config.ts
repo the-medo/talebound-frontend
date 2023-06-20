@@ -4,30 +4,20 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
   createStitches({
     theme: {
       colors: {
-        white100: '#FFFFFF',
-        white200: '#FEFEFE',
-        white300: '#FCFCFC',
-        white400: '#FAFAFA',
-        white500: '#F8F6F8',
-        white600: '#EEEEEE',
-        white700: '#EAEAEA',
-        white800: '#E4E4E4',
-        white900: '#E1E1E1',
-
         black: '#202729',
-        white: '$white500',
+        white: '#F8F6F8',
 
-        primary500: '#36866f',
-        secondary500: '#78959a',
-        tertiary500: '#5b6b82',
-
+        primary: '#36866f',
         secondary: '#78959a',
         tertiary: '#5b6b82',
 
-        success500: '#45a359',
-        danger500: '#f44336',
-        info500: '#028FCC',
-        warning500: '#c39321',
+        success: '#45a359',
+        danger: '#f44336',
+        info: '#028FCC',
+        warning: '#c39321',
+
+        pageBackground: '$white',
+        navbarBackground: '#2f3738',
 
         transparent0: 'rgba(255, 255, 255, 0)',
         transparent10: 'rgba(255, 255, 255, 0.1)',
@@ -45,6 +35,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         primary200: '#c5d2ce',
         primary300: '#89ab9a',
         primary400: '#87bda8',
+        primary500: '$primary',
         primary600: '#277364',
         primary700: '#1B605A',
         primary800: '#114D4D',
@@ -54,6 +45,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         secondary200: '#DFF4F3',
         secondary300: '#C2E0E0',
         secondary400: '#A2C0C2',
+        secondary500: '$secondary',
         secondary600: '#577A84',
         secondary700: '#3C5F6E',
         secondary800: '#264559',
@@ -63,15 +55,27 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         tertiary200: '#D5E4F2',
         tertiary300: '#B2C5D9',
         tertiary400: '#8B9DB4',
+        tertiary500: '$tertiary',
         tertiary600: '#42536F',
         tertiary700: '#2D3D5D',
         tertiary800: '#1D2A4B',
         tertiary900: '#111C3E',
 
+        white100: '#FFFFFF',
+        white200: '#FEFEFE',
+        white300: '#FCFCFC',
+        white400: '#FAFAFA',
+        white500: '$white',
+        white600: '#EEEEEE',
+        white700: '#EAEAEA',
+        white800: '#E4E4E4',
+        white900: '#E1E1E1',
+
         success100: '#E2FADD',
         success200: '#C1F5BD',
         success300: '#94E396',
         success400: '#71C77B',
+        success500: '$success',
         success600: '#328C4E',
         success700: '#227544',
         success800: '#165E3A',
@@ -81,6 +85,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         info200: '#96EFF9',
         info300: '#61D7EF',
         info400: '#39B9E0',
+        info500: '$info',
         info600: '#016FAF',
         info700: '#015392',
         info800: '#003B76',
@@ -90,6 +95,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         warning200: '#F9E8A6',
         warning300: '#ECD176',
         warning400: '#DBB652',
+        warning500: '$warning',
         warning600: '#A77818',
         warning700: '#8C6010',
         warning800: '#71490A',
@@ -99,6 +105,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         danger200: '#FDC7AE',
         danger300: '#FBA186',
         danger400: '#F87D67',
+        danger500: '$danger',
         danger600: '#D12729',
         danger700: '#AF1B29',
         danger800: '#8D1127',
@@ -109,30 +116,21 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         primaryLightHover: '$primary300',
         primaryLightActive: '$primary400',
         primaryLightContrast: '$primary600',
-        primary: '$primary500', //#4ADE7B
         primaryBorder: '$primary500',
         primaryBorderHover: '$primary600',
         primarySolidHover: '$primary700',
         primarySolidContrast: '$white',
         primaryShadow: '$primary500',
 
-        dark1: '#154039',
-        dark2: '#14342F',
-        dark3: '#2C554E',
-
-        gradientDark: 'linear-gradient(to right top, $dark1 0%, $dark2 100%)',
-        gradientVerticalSemitransparent:
-          'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
-
         link: '$secondary700',
         link2: '$secondary300',
-        // background: '#f6fcfa',
-        background: 'transparent',
-        foreground: '$black',
-        background2: '#f1e8d8',
 
-        // you can also create your own color
-        myColor: '#ff4ecd',
+        // dark1: '#154039',
+        // dark2: '#14342F',
+
+        gradientDark: 'linear-gradient(to right top, $primary900 0%, $black 100%)',
+        gradientVerticalSemitransparent:
+          'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)',
 
         // ...  more colors
       },

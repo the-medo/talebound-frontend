@@ -5,6 +5,6 @@ export const DecorativeTitle = styled('h1', {
   fontSize: '2rem',
   lineHeight: '2rem',
   fontFamily: '$decorative',
-  color: '$dark1',
+  color: '$primary900',
   display: 'inline',
 });

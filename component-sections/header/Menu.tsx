@@ -10,7 +10,7 @@ import Link from 'next/link';
 const StyledNavbar = styled('nav', {
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
   backdropFilter: 'saturate(180%) blur(8px) opacity(0)',
-  boxShadow: '0 0 5px 0.1px $colors$dark1',
+  boxShadow: '0 0 5px 0.1px $colors$primary900',
   position: 'sticky',
   top: '0',
   zIndex: 1000,

@@ -65,7 +65,7 @@ const LoadingWrapper = styled('span', {
         color: '$black',
       },
       success: {
-        color: '$success500',
+        color: '$success',
       },
     },
   },

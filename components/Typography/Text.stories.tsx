@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Text } from './Text';
 
 const meta: Meta<typeof Text> = {
-  title: 'Typography/Text',
+  title: '2. Typography/Text',
   component: Text,
   render: (args) => <Text {...args} />,
 };

@@ -13,7 +13,7 @@ export const StyledInput = styled('input', {
   fontSize: '$md',
   transition: 'all 0.2s ease-in-out',
   border: '1px solid transparent',
-  color: '$dark1',
+  color: '$primary900',
   backgroundColor: '$white700',
 
   '&:focus': {
