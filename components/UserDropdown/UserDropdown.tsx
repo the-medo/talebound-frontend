@@ -27,6 +27,10 @@ const UserDropdown: React.FC<UserDropdownProps> = () => {
     },
   });
 
+  const openProfile = useCallback(() => {
+    void router.push(`/user/${user?.id}/profile`);
+  }, [router, user?.id]);
+
   const openSettings = useCallback(() => {
     void router.push('/user/settings');
   }, [router]);
@@ -43,7 +47,7 @@ const UserDropdown: React.FC<UserDropdownProps> = () => {
 
       <DropdownMenuPortal>
         <DropdownMenuContent align={'end'} sideOffset={15}>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={openProfile}>
             Signed in as&nbsp;<strong>{user?.username}</strong>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

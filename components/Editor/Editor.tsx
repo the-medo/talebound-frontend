@@ -13,12 +13,13 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { Spin } from 'antd';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 // import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin';
 // import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import debounce from 'lodash.debounce';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import ToolbarPlugin from './ToolbarPlugin/ToolbarPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -126,21 +127,22 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <EditorContainer>
+        <ToolbarPlugin />
         <EditorInner>
-          <Spin spinning={loading}>
-            <RichTextPlugin
-              contentEditable={contentEditable}
-              placeholder={placeholder}
-              ErrorBoundary={LexicalErrorBoundary}
-            />
-            {/*<OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />*/}
-            <AutoFocusPlugin />
-            {/*<CodeHighlightPlugin />*/}
-            <ListPlugin />
-            <LinkPlugin />
-            {/*<AutoLinkPlugin />*/}
-            {/*<ListMaxIndentLevelPlugin maxDepth={7} />*/}
-          </Spin>
+          {/*<Spin spinning={loading}>*/}
+          <RichTextPlugin
+            contentEditable={contentEditable}
+            placeholder={placeholder}
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+          <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
+          <AutoFocusPlugin />
+          {/*<CodeHighlightPlugin />*/}
+          <ListPlugin />
+          <LinkPlugin />
+          {/*<AutoLinkPlugin />*/}
+          {/*<ListMaxIndentLevelPlugin maxDepth={7} />*/}
+          {/*</Spin>*/}
         </EditorInner>
       </EditorContainer>
     </LexicalComposer>

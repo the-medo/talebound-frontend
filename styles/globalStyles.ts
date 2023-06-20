@@ -26,6 +26,7 @@ const globalStyles = globalCss({
   a: {
     textDecoration: 'none',
     color: '$primary',
+    cursor: 'pointer',
   },
   '::-webkit-scrollbar': {
     width: '12px' /* Adjust the width of the scrollbar */,

@@ -13,8 +13,9 @@ import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEv
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import Evaluation from '../../components/Evaluation/Evaluation';
 import Avatar from '../../components/Avatar/Avatar';
+import UserIntroduction from './UserIntroduction';
 
-interface UserProfileProps {
+export interface UserProfileProps {
   userId: number;
 }
 
@@ -31,11 +32,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
     },
     suspense: true,
   });
-
-  useEffect(() => {
-    console.log('data', data);
-    console.log('createdAt', data?.createdAt, parseISO(data?.createdAt ?? ''));
-  }, [data]);
 
   return (
     <>
@@ -71,13 +67,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           </Col>
         </ContentSection>
       </Col>
-      <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
-        <ContentSection direction="column" header="Introduction">
-          <InfoSection linkTitle={'Add introduction'} linkHref={'/quests'} background>
-            Introduction missing
-          </InfoSection>
-        </ContentSection>
-      </Col>
+      <UserIntroduction userId={userId} />
     </>
   );
 };
