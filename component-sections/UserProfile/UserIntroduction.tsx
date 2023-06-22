@@ -32,9 +32,9 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
             <Editor onChange={onEditorChange} />
           </Flex>
         )}
-        {user?.id === userId && (
+        {user?.id === userId && !editIntroduction && (
           <InfoSection
-            linkTitle={'Add introduction'}
+            linkTitle={'Edit introduction'}
             linkAction={editIntroductionHandler}
             background
           >
