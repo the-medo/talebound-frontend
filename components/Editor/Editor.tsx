@@ -10,16 +10,21 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
+import { MarkNode } from '@lexical/mark';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-// import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin';
-// import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import debounce from 'lodash.debounce';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import ToolbarPlugin from './ToolbarPlugin/ToolbarPlugin';
+import ToolbarPlugin from './plugins/ToolbarPlugin/ToolbarPlugin';
+import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/CodeHighlightPlugin';
+import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin/ListMaxIndentLevelPlugin';
+import AutoLinkPlugin from './plugins/AutoLinkPlugin/AutoLinkPlugin';
+import MarkdownPlugin from './plugins/MarkdownPlugin/MarkdownPlugin';
+import { TableNode as NewTableNode } from './nodes/TableNode';
+import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -39,10 +44,13 @@ const editorConfig: InitialConfigType = {
     CodeNode,
     CodeHighlightNode,
     TableNode,
+    NewTableNode,
     TableCellNode,
     TableRowNode,
     AutoLinkNode,
     LinkNode,
+    MarkNode,
+    HorizontalRuleNode,
   ],
 };
 
@@ -137,11 +145,12 @@ const Editor: React.FC<EditorProps> = ({
           />
           <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
           <AutoFocusPlugin />
-          {/*<CodeHighlightPlugin />*/}
+          <CodeHighlightPlugin />
           <ListPlugin />
           <LinkPlugin />
-          {/*<AutoLinkPlugin />*/}
-          {/*<ListMaxIndentLevelPlugin maxDepth={7} />*/}
+          <AutoLinkPlugin />
+          <MarkdownPlugin />
+          <ListMaxIndentLevelPlugin maxDepth={7} />
           {/*</Spin>*/}
         </EditorInner>
       </EditorContainer>

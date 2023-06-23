@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { $getNodeByKey, LexicalEditor } from 'lexical';
 import { $isCodeNode, getCodeLanguages } from '@lexical/code';
 import { ToolbarSelect } from './componentsToolbar';
-import { styled } from '../../../styles/stitches.config';
+import { styled } from '../../../../styles/stitches.config';
 
 export const ToolbarCodeLanguageSelect = styled(ToolbarSelect, {
   textTransform: 'capitalize',

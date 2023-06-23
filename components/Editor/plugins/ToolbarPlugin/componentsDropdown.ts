@@ -1,4 +1,4 @@
-import { styled } from '../../../styles/stitches.config';
+import { styled } from '../../../../styles/stitches.config';
 
 export const DropdownContainer = styled('div', {
   zIndex: 5,

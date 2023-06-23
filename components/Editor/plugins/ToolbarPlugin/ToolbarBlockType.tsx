@@ -14,7 +14,7 @@ import { createPortal } from 'react-dom';
 import BlockOptionsDropdownList from './BlockOptionsDropdownList';
 import { Divider, ToolbarItemButton } from './componentsToolbar';
 import { LexicalEditor } from 'lexical';
-import { styled } from '../../../styles/stitches.config';
+import { styled } from '../../../../styles/stitches.config';
 
 export const IconWrapper = styled('span', {
   display: 'flex',
