@@ -5,14 +5,13 @@ import InfoSection from '../../components/InfoSection';
 import { useGetUserById } from '../../api/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';
 import { UserProfileProps } from './UserProfile';
-import Editor from '../../components/Editor/Editor';
 import { useGetPostById } from '../../api/useGetPostById';
 import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,
 } from '../../api/useUpdateUserIntroduction';
 import { EditorState, LexicalEditor } from 'lexical';
-import Loading from '../../components/Loading/Loading';
+import Editor from '../../components/Editor/Editor';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
@@ -25,8 +24,13 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     suspense: true,
   });
 
+  const loadIntroductionData = useMemo(
+    () => userData?.introductionPostId !== undefined,
+    [userData?.introductionPostId],
+  );
+
   const { data: introductionData, isLoading: isLoadingIntroduction } = useGetPostById({
-    enabled: userData?.introductionPostId !== undefined,
+    enabled: loadIntroductionData,
     variables: userData?.introductionPostId ?? 0,
     suspense: true,
   });
@@ -37,7 +41,8 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     },
   });
 
-  const isLoading = isLoadingUser || isLoadingIntroduction;
+  const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
+
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
     [user?.id, userData?.id],
@@ -80,32 +85,26 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
   }, [isLoading, userData?.introductionPostId, introductionData?.content]);
 
   return (
-    <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
-      <ContentSection direction="column" header="Introduction">
-        <Flex fullWidth>
-          {!isLoading ? (
-            <Editor
-              loading={false}
-              editorState={editorState}
-              postView={!isMyPost || !editIntroduction}
-              onChange={onEditorChange}
-              onButtonAction={onSave}
-              error={updateUserIntroduction.isError}
-            />
-          ) : (
-            <Loading />
-          )}
-        </Flex>
-        {user?.id === userId && !editIntroduction && (
-          <InfoSection
-            linkTitle={'Edit introduction'}
-            linkAction={editIntroductionHandler}
-            background
-          >
-            {!isLoading && userData?.introductionPostId === undefined && 'Introduction missing'}
-          </InfoSection>
-        )}
-      </ContentSection>
+    <Col fullWidth>
+      {editorState && (
+        <Editor
+          loading={false}
+          editorState={editorState}
+          postView={!isMyPost || !editIntroduction}
+          onChange={onEditorChange}
+          onButtonAction={onSave}
+          error={updateUserIntroduction.isError}
+        />
+      )}
+      {user?.id === userId && !editIntroduction && (
+        <InfoSection
+          linkTitle={'Edit introduction'}
+          linkAction={editIntroductionHandler}
+          background
+        >
+          {!isLoading && userData?.introductionPostId === undefined && 'Introduction missing'}
+        </InfoSection>
+      )}
     </Col>
   );
 };

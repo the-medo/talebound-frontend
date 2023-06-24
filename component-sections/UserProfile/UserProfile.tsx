@@ -1,28 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { useGetUserById } from '../../api/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../components/Flex/Flex';
-import { TitleH2, TitleH4 } from '../../components/Typography/Title';
-import { parseISO } from 'date-fns';
+import { TitleH2 } from '../../components/Typography/Title';
 import { formatDate } from '../../utils/functions/formatDate';
 import InfoRow from '../../components/InfoRow/InfoRow';
 import InfoRowBox from '../../components/InfoRow/InfoRowBox';
-import InfoSection from '../../components/InfoSection';
 import { Button } from '../../components/Button/Button';
 import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import Evaluation from '../../components/Evaluation/Evaluation';
 import Avatar from '../../components/Avatar/Avatar';
-import UserIntroduction from './UserIntroduction';
+import Loading from '../../components/Loading/Loading';
 
 export interface UserProfileProps {
   userId: number;
 }
 
+const UserIntroduction = React.lazy(() => import('./UserIntroduction'));
+
 const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
   const { data, isLoading, error } = useGetUserById({
     variables: userId,
-    suspense: true,
   });
 
   const { data: evaluationData } = useGetAverageUserEvaluationByType({
@@ -30,7 +29,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       userId: userId,
       type: PbEvaluationType.Self,
     },
-    suspense: true,
   });
 
   return (
@@ -67,7 +65,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           </Col>
         </ContentSection>
       </Col>
-      <UserIntroduction userId={userId} />
+      <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
+        <ContentSection direction="column" header="Introduction">
+          <Suspense fallback={<Loading />}>
+            <UserIntroduction userId={userId} />
+          </Suspense>
+        </ContentSection>
+      </Col>
     </>
   );
 };
