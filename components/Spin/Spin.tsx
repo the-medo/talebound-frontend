@@ -7,18 +7,28 @@ const StyledSpin = styled(AntdSpin, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  height: '100%',
+
+  variants: {
+    padding: {
+      true: {
+        paddingTop: '$lg',
+      },
+    },
+  },
 });
 
 interface SpinProps extends PropsWithChildren {
   loading?: boolean;
+  padding?: boolean;
   children?: React.ReactNode;
 }
 
 const Indicator = <Loading />;
 
-const Spin: React.FC<SpinProps> = ({ loading, children }) => {
+const Spin: React.FC<SpinProps> = ({ loading, children, padding = true }) => {
   return (
-    <StyledSpin spinning={loading} indicator={Indicator}>
+    <StyledSpin padding={padding} spinning={loading} indicator={Indicator}>
       {children}
     </StyledSpin>
   );

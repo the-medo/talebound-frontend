@@ -12,7 +12,7 @@ import {
   useUpdateUserIntroduction,
 } from '../../api/useUpdateUserIntroduction';
 import { EditorState, LexicalEditor } from 'lexical';
-import { Spin } from 'antd';
+import Loading from '../../components/Loading/Loading';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
@@ -31,9 +31,17 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     suspense: true,
   });
 
-  const updateUserIntroduction = useUpdateUserIntroduction();
+  const updateUserIntroduction = useUpdateUserIntroduction({
+    onSuccess: () => {
+      setEditIntroduction(false);
+    },
+  });
 
   const isLoading = isLoadingUser || isLoadingIntroduction;
+  const isMyPost = useMemo(
+    () => user?.id === userData?.id && user?.id !== undefined,
+    [user?.id, userData?.id],
+  );
 
   const editIntroductionHandler = useCallback(() => {
     setEditIntroduction(true);
@@ -74,19 +82,20 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
   return (
     <Col css={{ flexGrow: 1, flexBasis: '30rem' }}>
       <ContentSection direction="column" header="Introduction">
-        <Spin spinning={isLoading}>
-          <Flex style={{ height: '400px' }}>
-            {!isLoading && (
-              <Editor
-                editorState={editorState}
-                disabled={true}
-                onChange={onEditorChange}
-                onButtonAction={onSave}
-                error={updateUserIntroduction.isError}
-              />
-            )}
-          </Flex>
-        </Spin>
+        <Flex fullWidth>
+          {!isLoading ? (
+            <Editor
+              loading={false}
+              editorState={editorState}
+              postView={!isMyPost || !editIntroduction}
+              onChange={onEditorChange}
+              onButtonAction={onSave}
+              error={updateUserIntroduction.isError}
+            />
+          ) : (
+            <Loading />
+          )}
+        </Flex>
         {user?.id === userId && !editIntroduction && (
           <InfoSection
             linkTitle={'Edit introduction'}

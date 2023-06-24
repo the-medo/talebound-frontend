@@ -27,11 +27,8 @@ import { TableNode as NewTableNode } from './nodes/TableNode';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
-import { Simulate } from 'react-dom/test-utils';
-import error = Simulate.error;
 import { Text } from '../Typography/Text';
 import Loading from '../Loading/Loading';
-import Spin from '../Spin/Spin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -67,6 +64,7 @@ interface EditorProps {
   onButtonAction?: (editorState: EditorState, editor: LexicalEditor) => void;
   buttonLabel?: string;
   disabled?: boolean;
+  postView?: boolean;
   loading?: boolean;
   error?: boolean;
   debounceTime?: number;
@@ -78,10 +76,15 @@ const Editor: React.FC<EditorProps> = ({
   onButtonAction,
   buttonLabel = 'Save',
   disabled,
+  postView,
   loading,
   error,
-  debounceTime = 2000,
+  debounceTime = 0,
 }) => {
+  if (postView) {
+    disabled = true;
+  }
+
   const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
 
   const editorStateRef = useRef<EditorState>();
@@ -100,6 +103,10 @@ const Editor: React.FC<EditorProps> = ({
   }, [disabled]); //, editorState
 
   useEffect(() => {
+    editorRef.current?.setEditable(!disabled);
+  }, [disabled]);
+
+  useEffect(() => {
     window.onbeforeunload = contentSaved
       ? null
       : (e: BeforeUnloadEvent) => {
@@ -107,7 +114,6 @@ const Editor: React.FC<EditorProps> = ({
           e.returnValue = '';
 
           if (editorStateRef.current && editorRef.current) {
-            console.log('IN saveOnLeave !!!!!!!', editorRef.current.getEditorState());
             onChange(editorStateRef.current, editorRef.current);
           }
         };
@@ -123,26 +129,24 @@ const Editor: React.FC<EditorProps> = ({
       editorStateRef.current = editorState;
       editorRef.current = editor;
       onChange(editorState, editor);
-      setContentSaved(true);
+      if (debounceTime > 0) setContentSaved(true);
     }, debounceTime),
-    [onChange],
+    [onChange, debounceTime],
   );
 
   const onChangeHandler = useCallback(
     (editorState: EditorState, editor: LexicalEditor) => {
       if (isInitialLoad) {
-        console.log('EDITOR - Initial load');
         editorStateRef.current = editorState;
         editorRef.current = editor;
         setIsInitialLoad(false);
         return;
       }
-      console.log('EDITOR - ON CHANGE DETECTED');
 
-      setContentSaved(false);
+      if (debounceTime > 0) setContentSaved(false);
       onChangeHandlerDebounced(editorState, editor);
     },
-    [isInitialLoad, onChangeHandlerDebounced],
+    [isInitialLoad, onChangeHandlerDebounced, debounceTime],
   );
 
   const handleButtonAction = useCallback(() => {
@@ -151,34 +155,35 @@ const Editor: React.FC<EditorProps> = ({
   }, [onButtonAction]);
 
   return (
-    <Spin loading={true}>
-      <Col gap="sm" alignItems="end">
-        <LexicalComposer initialConfig={initialConfig}>
-          <EditorContainer>
-            {!disabled && <ToolbarPlugin />}
-            <EditorInner>
-              <RichTextPlugin
-                contentEditable={contentEditable}
-                placeholder={placeholder}
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-              <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
-              <AutoFocusPlugin />
-              <CodeHighlightPlugin />
-              <ListPlugin />
-              <LinkPlugin />
-              <AutoLinkPlugin />
-              <MarkdownPlugin />
-              <ListMaxIndentLevelPlugin maxDepth={7} />
-            </EditorInner>
-          </EditorContainer>
-        </LexicalComposer>
+    <Col fullWidth gap="sm" alignItems="end">
+      <LexicalComposer initialConfig={initialConfig}>
+        <EditorContainer postView={postView}>
+          {!postView && <ToolbarPlugin />}
+          {loading && <Loading />}
+          <EditorInner postView={postView}>
+            <RichTextPlugin
+              contentEditable={contentEditable}
+              placeholder={placeholder}
+              ErrorBoundary={LexicalErrorBoundary}
+            />
+            <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
+            <AutoFocusPlugin />
+            <CodeHighlightPlugin />
+            <ListPlugin />
+            <LinkPlugin />
+            <AutoLinkPlugin />
+            <MarkdownPlugin />
+            <ListMaxIndentLevelPlugin maxDepth={7} />
+          </EditorInner>
+        </EditorContainer>
+      </LexicalComposer>
+      {!postView && (
         <Row gap="md">
           {error && <Text color="danger">An error occurred</Text>}
           <Button onClick={handleButtonAction}>{buttonLabel}</Button>
         </Row>
-      </Col>
-    </Spin>
+      )}
+    </Col>
   );
 };
 

@@ -188,7 +188,7 @@ const ToolbarPlugin = (): JSX.Element => {
   }, [editor]);
 
   return (
-    <Toolbar ref={toolbarRef}>
+    <Toolbar data-test-id="toolbar" ref={toolbarRef}>
       <ToolbarItemButton disabled={!canUndo} onClick={undoCallback} aria-label="Undo">
         <BsArrowCounterclockwise />
       </ToolbarItemButton>

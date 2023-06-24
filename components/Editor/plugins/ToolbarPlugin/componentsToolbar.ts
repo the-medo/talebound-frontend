@@ -36,16 +36,17 @@ export const Divider = styled('div', {
 });
 
 export const Toolbar = styled('div', {
+  position: 'sticky',
+  top: '0',
   display: 'flex',
   flexWrap: 'wrap',
   marginBottom: '1px',
-  background: '#fff',
+  background: '$white300',
   padding: '4px',
-  borderTopLeftRadius: '10px',
-  borderTopRightRadius: '10px',
-  borderBottom: '1px solid #ccc',
+  borderBottom: '1px solid $white900',
   verticalAlign: 'middle',
   gap: '2px',
+  zIndex: 2,
 });
 
 export const ToolbarSelect = styled('select', {

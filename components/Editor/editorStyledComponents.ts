@@ -1,22 +1,30 @@
 import { styled } from '../../styles/stitches.config';
 
 export const EditorContainer = styled('div', {
-  border: '1px solid #ddd',
   display: 'flex',
+  position: 'relative',
+  border: '1px solid $white900',
   flexDirection: 'column',
   flexGrow: 1,
   alignSelf: 'stretch',
   color: '#000',
-  position: 'relative',
   lineHeight: '20px',
   fontWeight: 400,
   textAlign: 'left',
-  borderRadius: '10px',
+
+  variants: {
+    postView: {
+      true: {
+        border: '0',
+      },
+    },
+  },
 });
 
 export const EditorInner = styled('div', {
-  background: '#fff',
+  background: '$white100',
   position: 'relative',
+  height: '100%',
 
   '& .other h2': {
     fontSize: '18px',
@@ -50,12 +58,12 @@ export const EditorInner = styled('div', {
   },
 
   '& .editor-input': {
-    minHeight: '150px',
+    minHeight: '250px',
+    height: '100%',
     resize: 'none',
-    fontSize: '15px',
-    //caret-color: rgb(5, 5, 5);
+    fontSize: '1rem',
     position: 'relative',
-    tabSize: '1',
+    tabSize: '2',
     outline: '0',
     padding: '15px 10px',
     caretColor: '#444',
@@ -225,6 +233,16 @@ export const EditorInner = styled('div', {
 
   '& pre::-webkit-scrollbar-thumb': {
     background: '#999',
+  },
+
+  variants: {
+    postView: {
+      true: {
+        '& .editor-input': {
+          minHeight: '0px',
+        },
+      },
+    },
   },
 });
 
