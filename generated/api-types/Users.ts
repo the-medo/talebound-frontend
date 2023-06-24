@@ -427,6 +427,7 @@ export class Users<SecurityDataType = unknown> {
     userId: number,
     body: {
       content?: string;
+      saveAsDraft?: boolean;
     },
     params: RequestParams = {},
   ) =>

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Col, Flex } from '../../components/Flex/Flex';
-import ContentSection from '../../components/ContentSection/ContentSection';
+import { Col } from '../../components/Flex/Flex';
 import InfoSection from '../../components/InfoSection';
 import { useGetUserById } from '../../api/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';

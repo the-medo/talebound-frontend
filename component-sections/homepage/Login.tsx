@@ -127,6 +127,7 @@ const Login: React.FC = () => {
       <LoginBox>
         <h3 id="login">Login</h3>
         <Input
+          id="login-username"
           onChange={onChangeUsername}
           aria-labelledby="login"
           placeholder="Username"
@@ -136,6 +137,7 @@ const Login: React.FC = () => {
           transparent
         />
         <Input
+          id="login-password"
           type={'password'}
           onChange={onChangePassword}
           aria-labelledby="login"

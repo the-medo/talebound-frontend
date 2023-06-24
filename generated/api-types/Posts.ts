@@ -96,6 +96,8 @@ export class Posts<SecurityDataType = unknown> {
       content?: string;
       /** @format int32 */
       postTypeId?: number;
+      isDraft?: boolean;
+      isPrivate?: boolean;
     },
     params: RequestParams = {},
   ) =>

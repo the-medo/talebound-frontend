@@ -5,6 +5,7 @@ export interface UpdateUserIntroductionRequest {
   userId: number;
   body: {
     content?: string;
+    saveAsDraft?: boolean;
   };
 }
 

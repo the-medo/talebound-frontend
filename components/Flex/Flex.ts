@@ -136,6 +136,12 @@ export const Flex = styled('div', {
         flexDirection: 'column',
       },
     },
+
+    wrap: {
+      true: {
+        flexWrap: 'wrap',
+      },
+    },
   },
 
   defaultVariants: {

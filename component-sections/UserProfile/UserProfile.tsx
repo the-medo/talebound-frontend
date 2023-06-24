@@ -49,14 +49,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           </Col>
           <Col fullWidth gap="sm">
             <TitleH2>{data?.username}</TitleH2>
-            <Row fullWidth justifyContent="between">
-              <Col gap="sm">
+            <Row gap="md" fullWidth justifyContent="between" wrap>
+              <Col gap="sm" css={{ flexBasis: '200px', minWidth: '200px' }}>
                 <InfoRowBox>
                   <InfoRow title="Last active:" value="unknown" />
                   <InfoRow title="Registered:" value={formatDate(data?.createdAt, false, 'week')} />
                 </InfoRowBox>
               </Col>
-              <Col css={{ flexBasis: '420px' }}>
+              <Col css={{ flexBasis: '420px', minWidth: '420px' }}>
                 {(evaluationData?.averageEvaluationVote ?? []).map((evaluation) => (
                   <Evaluation data={evaluation} disabled compact />
                 ))}

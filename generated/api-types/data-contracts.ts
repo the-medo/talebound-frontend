@@ -61,6 +61,8 @@ export interface PbCreatePostRequest {
   content?: string;
   /** @format int32 */
   postTypeId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
 }
 
 export interface PbCreateUserRequest {
@@ -183,6 +185,8 @@ export interface PbHistoryPost {
   lastUpdatedAt?: string;
   /** @format int32 */
   lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
 }
 
 export interface PbImage {
@@ -231,6 +235,8 @@ export interface PbPost {
   lastUpdatedAt?: string;
   /** @format int32 */
   lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
 }
 
 export interface PbRemoveRoleFromUserResponse {
