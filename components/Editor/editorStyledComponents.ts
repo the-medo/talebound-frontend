@@ -11,7 +11,7 @@ export const EditorContainer = styled('div', {
   lineHeight: '20px',
   fontWeight: 400,
   textAlign: 'left',
-  borderRadius: '10px 10px 2px 2px',
+  borderRadius: '10px',
 });
 
 export const EditorInner = styled('div', {

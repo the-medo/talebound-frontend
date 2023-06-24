@@ -25,6 +25,13 @@ import AutoLinkPlugin from './plugins/AutoLinkPlugin/AutoLinkPlugin';
 import MarkdownPlugin from './plugins/MarkdownPlugin/MarkdownPlugin';
 import { TableNode as NewTableNode } from './nodes/TableNode';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
+import { Button } from '../Button/Button';
+import { Col, Row } from '../Flex/Flex';
+import { Simulate } from 'react-dom/test-utils';
+import error = Simulate.error;
+import { Text } from '../Typography/Text';
+import Loading from '../Loading/Loading';
+import Spin from '../Spin/Spin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -57,16 +64,22 @@ const editorConfig: InitialConfigType = {
 interface EditorProps {
   onChange: (editorState: EditorState, editor: LexicalEditor) => void;
   editorState?: string;
+  onButtonAction?: (editorState: EditorState, editor: LexicalEditor) => void;
+  buttonLabel?: string;
   disabled?: boolean;
   loading?: boolean;
+  error?: boolean;
   debounceTime?: number;
 }
 
 const Editor: React.FC<EditorProps> = ({
   onChange,
   editorState,
+  onButtonAction,
+  buttonLabel = 'Save',
   disabled,
   loading,
+  error,
   debounceTime = 2000,
 }) => {
   const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
@@ -132,29 +145,40 @@ const Editor: React.FC<EditorProps> = ({
     [isInitialLoad, onChangeHandlerDebounced],
   );
 
+  const handleButtonAction = useCallback(() => {
+    if (onButtonAction) onButtonAction(editorStateRef.current!, editorRef.current!);
+    console.log('EDITOR - ON BUTTON ACTION');
+  }, [onButtonAction]);
+
   return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <EditorContainer>
-        <ToolbarPlugin />
-        <EditorInner>
-          {/*<Spin spinning={loading}>*/}
-          <RichTextPlugin
-            contentEditable={contentEditable}
-            placeholder={placeholder}
-            ErrorBoundary={LexicalErrorBoundary}
-          />
-          <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
-          <AutoFocusPlugin />
-          <CodeHighlightPlugin />
-          <ListPlugin />
-          <LinkPlugin />
-          <AutoLinkPlugin />
-          <MarkdownPlugin />
-          <ListMaxIndentLevelPlugin maxDepth={7} />
-          {/*</Spin>*/}
-        </EditorInner>
-      </EditorContainer>
-    </LexicalComposer>
+    <Spin loading={true}>
+      <Col gap="sm" alignItems="end">
+        <LexicalComposer initialConfig={initialConfig}>
+          <EditorContainer>
+            {!disabled && <ToolbarPlugin />}
+            <EditorInner>
+              <RichTextPlugin
+                contentEditable={contentEditable}
+                placeholder={placeholder}
+                ErrorBoundary={LexicalErrorBoundary}
+              />
+              <OnChangePlugin onChange={onChangeHandler} ignoreSelectionChange={true} />
+              <AutoFocusPlugin />
+              <CodeHighlightPlugin />
+              <ListPlugin />
+              <LinkPlugin />
+              <AutoLinkPlugin />
+              <MarkdownPlugin />
+              <ListMaxIndentLevelPlugin maxDepth={7} />
+            </EditorInner>
+          </EditorContainer>
+        </LexicalComposer>
+        <Row gap="md">
+          {error && <Text color="danger">An error occurred</Text>}
+          <Button onClick={handleButtonAction}>{buttonLabel}</Button>
+        </Row>
+      </Col>
+    </Spin>
   );
 };
 
