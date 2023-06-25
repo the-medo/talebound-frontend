@@ -119,7 +119,7 @@ export default function ResetPasswordVerify() {
                 setButtonDisabled={setExternalButtonDisabled}
                 successMessage="Success! You can now sign in."
               />
-              <Button disabled={buttonDisabled} size="md" onClick={submitResetPassword}>
+              <Button disabled={buttonDisabled} onClick={submitResetPassword}>
                 {resetPassword.isLoading ? (
                   <Loading color="currentColor" size="sm" />
                 ) : (

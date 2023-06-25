@@ -148,7 +148,7 @@ const Login: React.FC = () => {
           transparent
         />
         <LoginButtonWrapper>
-          <Button type="primary" size="md" onClick={submitLogin} disabled={buttonDisabled}>
+          <Button type="primaryFill" size="md" onClick={submitLogin} disabled={buttonDisabled}>
             {login.isLoading || login.isSuccess ? (
               <Loading color="currentColor" size="xs" />
             ) : (

@@ -214,7 +214,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 </Text>
               </Checkbox>
               <div>
-                <Button color="primary" size="md" onClick={submitNewUser} disabled={buttonDisabled}>
+                <Button onClick={submitNewUser} disabled={buttonDisabled}>
                   <Text weight="bold" size="lg" color="white">
                     {createUser.isLoading ? 'Creating...' : 'Sign up'}
                   </Text>
