@@ -110,6 +110,22 @@ export const Button = styled('button', {
           outline: '1px solid $danger',
         },
       },
+      ghost: {
+        background: 'transparent',
+        border: '1px solid transparent',
+        color: 'inherit',
+        boxShadow: '$sm',
+
+        '&:hover': {
+          border: '1px solid currentColor',
+          background: '$transparent30',
+          boxShadow: '$sm',
+        },
+
+        '&:focus': {
+          outline: '1px solid currentColor',
+        },
+      },
     },
 
     size: {
@@ -129,13 +145,13 @@ export const Button = styled('button', {
         height: '40px',
         paddingLeft: '$md',
         paddingRight: '$md',
-        fontSize: '$md',
+        fontSize: '$lg',
       },
       xl: {
         height: '48px',
         paddingLeft: '$xl',
         paddingRight: '$xl',
-        fontSize: '$lg',
+        fontSize: '$xl',
       },
     },
 
@@ -148,17 +164,57 @@ export const Button = styled('button', {
       },
     },
 
-    // disabled: {
-    //   true: {
-    //     opacity: 0.7,
-    //     cursor: 'not-allowed',
-    //   },
-    // },
+    icon: {
+      true: {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
   },
+
+  compoundVariants: [
+    {
+      size: 'sm',
+      icon: 'true',
+      css: {
+        width: '24px',
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
+    {
+      size: 'md',
+      icon: 'true',
+      css: {
+        width: '32px',
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
+    {
+      size: 'lg',
+      icon: 'true',
+      css: {
+        width: '40px',
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
+    {
+      size: 'xl',
+      icon: 'true',
+      css: {
+        width: '48px',
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
+  ],
 
   defaultVariants: {
     type: 'primaryFill',
     size: 'md',
     fullWidth: false,
+    icon: false,
   },
 });

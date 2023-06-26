@@ -30,6 +30,7 @@ By default, icons (svg elements) inside button have font-size of 1.25em, but you
 - primaryOutline
 - dangerFill
 - dangerOutline
+- ghost
 
 <Canvas>
   <Button type="primaryFill">Button primaryFill (default)</Button>
@@ -38,6 +39,7 @@ By default, icons (svg elements) inside button have font-size of 1.25em, but you
   <Button type="secondaryOutline">Button secondaryOutline</Button>
   <Button type="dangerFill">Button dangerFill</Button>
   <Button type="dangerOutline">Button dangerOutline</Button>
+  <Button type="ghost">Button ghost</Button>
 </Canvas>
 
 ## Sizes
@@ -49,6 +51,19 @@ sm, md (default), lg, xl
   <Button size="md">Button md (default)</Button>
   <Button size="lg">Button lg</Button>
   <Button size="xl">Button xl</Button>
+  <br />
+  <Button size="sm" icon>
+    <RxTrash />
+  </Button>
+  <Button size="md" icon>
+    <RxTrash />
+  </Button>
+  <Button size="lg" icon>
+    <RxTrash />
+  </Button>
+  <Button size="xl" icon>
+    <RxTrash />
+  </Button>
 </Canvas>
 
 ## Special props
@@ -57,6 +72,10 @@ sm, md (default), lg, xl
   <Button disabled>Button disabled</Button>
 - fullWidth - sets width to 100%, otherwise it is "fit-content" (default: false)
   <Button fullWidth>Button fullWidth</Button>
+- icon - makes button as square. This type of button expects only icon as children (default: false)
+  <Button type="dangerFill" icon>
+    <RxTrash />
+  </Button>
 
 ## More examples
 
@@ -70,4 +89,9 @@ sm, md (default), lg, xl
     <Text>Close </Text>
     <RxCross1 size="0.75em" />
   </Button>
+  <Text color="danger">
+    <Button type="ghost" icon>
+      <RxCross1 size="0.75em" />
+    </Button>
+  </Text>
 </Row>

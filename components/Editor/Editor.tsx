@@ -335,7 +335,7 @@ const Editor: React.FC<EditorProps> = ({
           <Text color="danger">
             {error}{' '}
             {resetError && (
-              <Button size="sm" onClick={resetError}>
+              <Button size="sm" type="ghost" onClick={resetError}>
                 <RxCross1 size="0.8em" />
               </Button>
             )}

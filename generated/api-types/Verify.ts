@@ -9,8 +9,8 @@
  * ---------------------------------------------------------------
  */
 
-import {PbVerifyEmailRequest, PbVerifyEmailResponse, RpcStatus} from './data-contracts';
-import {ContentType, HttpClient, RequestParams} from './http-client';
+import { PbVerifyEmailRequest, PbVerifyEmailResponse, RpcStatus } from './data-contracts';
+import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class Verify<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;

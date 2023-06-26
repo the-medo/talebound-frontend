@@ -1,8 +1,8 @@
-import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as stories from './Avatar.stories';
 import Avatar from './Avatar';
 
-<Meta of={stories}/>
+<Meta of={stories} />
 
 # Avatar
 
@@ -27,7 +27,7 @@ interface AvatarProps {
 By default, size is "lg"
 
 <Canvas>
-  <Story of={stories.storyDefault}/>
+  <Story of={stories.storyDefault} />
 </Canvas>
 
 ## No url
@@ -37,7 +37,7 @@ It is possible to render default avatar, without giving out URL. If that is the 
 Example of "unknown" user avatar:
 
 <Canvas>
-  <Story of={stories.storyNoUrl}/>
+  <Story of={stories.storyNoUrl} />
 </Canvas>
 
 ## Sizes
@@ -93,11 +93,11 @@ type AvatarType = 'unknown' | 'user' | 'character' | 'world' | 'ruleset';
 ```
 
 <Canvas>
-  <Avatar type="unknown"/>
-  <Avatar type="user"/>
-  <Avatar type="character"/>
-  <Avatar type="world"/>
-  <Avatar type="ruleset"/>
+  <Avatar type="unknown" />
+  <Avatar type="user" />
+  <Avatar type="character" />
+  <Avatar type="world" />
+  <Avatar type="ruleset" />
 </Canvas>
 
 ## Fallback
@@ -105,5 +105,5 @@ type AvatarType = 'unknown' | 'user' | 'character' | 'world' | 'ruleset';
 You can pass in a fallback text, which will be used if there is no URL and no type provided.
 
 <Canvas>
-  <Avatar type="unknown" fallbackText="MD"/>
+  <Avatar type="unknown" fallbackText="MD" />
 </Canvas>
