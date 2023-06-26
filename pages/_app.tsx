@@ -7,7 +7,7 @@ import { StoreProvider } from '../store';
 import { CookiesProvider } from 'react-cookie';
 import { HydrationProvider } from 'react-hydration-provider';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 axios.defaults.withCredentials = true;
 
 function MyApp({ Component, pageProps }: AppProps) {

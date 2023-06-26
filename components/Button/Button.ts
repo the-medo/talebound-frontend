@@ -16,10 +16,12 @@ export const Button = styled('button', {
   },
 
   '&:focus': {
-    outline: 'none',
-    background: '$primary900',
-    color: '$transparent80',
     boxShadow: '$focus',
+  },
+
+  '&:disabled': {
+    opacity: 0.7,
+    cursor: 'not-allowed',
   },
 
   variants: {
@@ -33,6 +35,10 @@ export const Button = styled('button', {
           background: '$primary900',
           color: '$white300',
         },
+
+        '&:focus': {
+          outline: '1px solid $primary900',
+        },
       },
       primaryOutline: {
         background: '$white',
@@ -42,6 +48,10 @@ export const Button = styled('button', {
         '&:hover': {
           background: '$primary900',
           color: '$white300',
+        },
+
+        '&:focus': {
+          outline: '1px solid $primary900',
         },
       },
       secondaryFill: {
@@ -53,6 +63,10 @@ export const Button = styled('button', {
           background: '$secondary900',
           color: '$white300',
         },
+
+        '&:focus': {
+          outline: '1px solid $secondary900',
+        },
       },
       secondaryOutline: {
         background: '$white',
@@ -62,6 +76,10 @@ export const Button = styled('button', {
         '&:hover': {
           background: '$secondary900',
           color: '$white300',
+        },
+
+        '&:focus': {
+          outline: '1px solid $secondary900',
         },
       },
       dangerFill: {
@@ -73,6 +91,10 @@ export const Button = styled('button', {
           background: '$danger800',
           color: '$white500',
         },
+
+        '&:focus': {
+          outline: '1px solid $danger',
+        },
       },
       dangerOutline: {
         background: '$white',
@@ -82,6 +104,10 @@ export const Button = styled('button', {
         '&:hover': {
           background: '$danger',
           color: '$white500',
+        },
+
+        '&:focus': {
+          outline: '1px solid $danger',
         },
       },
     },
@@ -122,12 +148,12 @@ export const Button = styled('button', {
       },
     },
 
-    disabled: {
-      true: {
-        opacity: 0.7,
-        cursor: 'not-allowed',
-      },
-    },
+    // disabled: {
+    //   true: {
+    //     opacity: 0.7,
+    //     cursor: 'not-allowed',
+    //   },
+    // },
   },
 
   defaultVariants: {

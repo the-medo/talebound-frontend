@@ -10,7 +10,7 @@ import {
   useUpdateUserIntroduction,
 } from '../../api/useUpdateUserIntroduction';
 import { EditorState, LexicalEditor } from 'lexical';
-import Editor from '../../components/Editor/Editor';
+import Editor, { EditorOnSaveAction } from '../../components/Editor/Editor';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
@@ -34,11 +34,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     suspense: true,
   });
 
-  const updateUserIntroduction = useUpdateUserIntroduction({
-    onSuccess: () => {
-      setEditIntroduction(false);
-    },
-  });
+  const updateUserIntroduction = useUpdateUserIntroduction();
 
   const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
 
@@ -61,19 +57,38 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     console.log('introductionData', introductionData);
   }, [introductionData]);
 
-  const onSave = useCallback(
-    (editorState: EditorState, _editor: LexicalEditor) => {
+  const onSave: EditorOnSaveAction = useCallback(
+    (editorState, _editor, draft, successAction, errorAction, finishAction) => {
       const props: UpdateUserIntroductionRequest = {
         userId: userId,
+        postId: userData?.introductionPostId,
         body: {
           content: JSON.stringify(editorState),
+          saveAsDraft: draft,
         },
       };
 
-      updateUserIntroduction.mutate(props);
+      updateUserIntroduction.mutate(props, {
+        onSuccess: () => {
+          console.log('Inside onSuccess of updateUserIntroduction.mutate');
+          if (successAction) successAction();
+        },
+        onError: () => {
+          console.log('Inside onError of updateUserIntroduction.mutate');
+          if (errorAction) errorAction();
+        },
+        onSettled: () => {
+          console.log('Inside onSettled of updateUserIntroduction.mutate');
+          if (finishAction) finishAction();
+        },
+      });
     },
-    [userId],
+    [userData?.introductionPostId, userId],
   );
+
+  const closeEditorHandler = useCallback(() => {
+    setEditIntroduction(false);
+  }, []);
 
   const editorState = useMemo(() => {
     if (!isLoading && userData?.introductionPostId !== undefined) {
@@ -85,17 +100,24 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
 
   return (
     <Col fullWidth>
-      {editorState && (
+      <p>Content: {introductionData?.content}</p>
+      <p>Is draft: {introductionData?.isDraft}</p>
+      {(editorState || (isMyPost && userData?.introductionPostId === undefined)) && (
         <Editor
-          loading={false}
+          loading={updateUserIntroduction.isLoading}
           editorState={editorState}
+          disabled={!isMyPost}
           postView={!isMyPost || !editIntroduction}
+          isDraft={introductionData?.isDraft ?? false}
+          alreadyExists={introductionData?.id !== undefined}
+          draftable={true}
           onChange={onEditorChange}
-          onButtonAction={onSave}
-          error={updateUserIntroduction.isError}
+          onSaveAction={onSave}
+          error={updateUserIntroduction.error?.message}
+          closeEditor={closeEditorHandler}
         />
       )}
-      {user?.id === userId && !editIntroduction && (
+      {isMyPost && !editIntroduction && (
         <InfoSection
           linkTitle={'Edit introduction'}
           linkAction={editIntroductionHandler}

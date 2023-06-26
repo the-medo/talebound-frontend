@@ -29,6 +29,8 @@ import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import Loading from '../Loading/Loading';
+import { RxCross1 } from 'react-icons/rx';
+import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -58,33 +60,48 @@ const editorConfig: InitialConfigType = {
   ],
 };
 
+export type EditorOnSaveAction = (
+  editorState: EditorState,
+  editor: LexicalEditor,
+  draft: boolean,
+  successAction?: () => void,
+  errorAction?: () => void,
+  finishedAction?: () => void,
+) => void;
+
 interface EditorProps {
   onChange: (editorState: EditorState, editor: LexicalEditor) => void;
   editorState?: string;
-  onButtonAction?: (editorState: EditorState, editor: LexicalEditor) => void;
-  buttonLabel?: string;
+  onSaveAction?: EditorOnSaveAction;
+  actionLabel?: 'Save' | 'Post';
+  draftable?: boolean;
+  isDraft?: boolean;
+  alreadyExists?: boolean;
   disabled?: boolean;
   postView?: boolean;
+  closeEditor?: () => void;
   loading?: boolean;
-  error?: boolean;
+  error?: string;
   debounceTime?: number;
 }
 
 const Editor: React.FC<EditorProps> = ({
   onChange,
   editorState,
-  onButtonAction,
-  buttonLabel = 'Save',
-  disabled,
+  onSaveAction,
+  actionLabel = 'Save',
+  draftable,
+  isDraft = false,
+  alreadyExists,
+  disabled = false,
   postView,
+  closeEditor,
   loading,
   error,
   debounceTime = 0,
 }) => {
-  if (postView) {
-    disabled = true;
-  }
-
+  const finalDisabled = useMemo(() => (postView ? true : disabled), [postView, disabled]);
+  const finalActionLabel = useMemo(() => (alreadyExists ? 'Save' : actionLabel), [actionLabel]);
   const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
 
   const editorStateRef = useRef<EditorState>();
@@ -92,19 +109,20 @@ const Editor: React.FC<EditorProps> = ({
   const placeholder = useMemo(() => <Placeholder>No content yet</Placeholder>, []);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [contentSaved, setContentSaved] = useState(true);
+  const [actionInProgress, setActionInProgress] = useState(false);
 
   const initialConfig = useMemo(() => {
     return {
       ...editorConfig,
-      editorState: editorState,
-      editable: !disabled,
+      editorState: editorState ?? EMPTY_EDITOR_STATE,
+      editable: !finalDisabled,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled]); //, editorState
+  }, []); //, editorState
 
   useEffect(() => {
-    editorRef.current?.setEditable(!disabled);
-  }, [disabled]);
+    editorRef.current?.setEditable(!finalDisabled);
+  }, [finalDisabled]);
 
   useEffect(() => {
     window.onbeforeunload = contentSaved
@@ -143,19 +161,103 @@ const Editor: React.FC<EditorProps> = ({
         return;
       }
 
-      if (debounceTime > 0) setContentSaved(false);
+      // if (debounceTime > 0) setContentSaved(false);
+      setContentSaved(false);
       onChangeHandlerDebounced(editorState, editor);
     },
     [isInitialLoad, onChangeHandlerDebounced, debounceTime],
   );
 
-  const handleButtonAction = useCallback(() => {
-    if (onButtonAction) onButtonAction(editorStateRef.current!, editorRef.current!);
-    console.log('EDITOR - ON BUTTON ACTION');
-  }, [onButtonAction]);
+  const closeEditorHandler = useCallback(() => {
+    if (closeEditor) closeEditor();
+  }, [closeEditor]);
+
+  const discardChangesHandler = useCallback(() => {
+    if (editorRef.current && !contentSaved) {
+      editorRef.current?.setEditorState(
+        editorRef.current?.parseEditorState(initialConfig.editorState ?? EMPTY_EDITOR_STATE),
+      );
+    }
+    closeEditorHandler();
+  }, [closeEditorHandler, contentSaved]);
+
+  const handleSaveAction = useCallback(() => {
+    if (onSaveAction) {
+      setActionInProgress(true);
+      onSaveAction(
+        editorStateRef.current!,
+        editorRef.current!,
+        isDraft,
+        () => {
+          setContentSaved(true);
+        },
+        () => {},
+        () => {
+          closeEditorHandler();
+          setActionInProgress(false);
+        },
+      );
+    }
+  }, [isDraft, onSaveAction]);
+
+  const handleSaveAndPublish = useCallback(() => {
+    if (onSaveAction) {
+      setActionInProgress(true);
+      onSaveAction(
+        editorStateRef.current!,
+        editorRef.current!,
+        false,
+        () => {
+          setContentSaved(true);
+        },
+        () => {},
+        () => {
+          closeEditorHandler();
+          setActionInProgress(false);
+        },
+      );
+    }
+  }, [onSaveAction]);
+
+  const handleSaveAndKeepEditingAction = useCallback(() => {
+    if (onSaveAction) {
+      setActionInProgress(true);
+      onSaveAction(
+        editorStateRef.current!,
+        editorRef.current!,
+        isDraft,
+        () => {
+          setContentSaved(true);
+        },
+        () => {},
+        () => {
+          setActionInProgress(false);
+        },
+      );
+    }
+  }, [isDraft, onSaveAction]);
+
+  const handleSaveDraftAction = useCallback(() => {
+    if (!draftable) return;
+    if (onSaveAction) {
+      setActionInProgress(true);
+      onSaveAction(
+        editorStateRef.current!,
+        editorRef.current!,
+        true,
+        () => {
+          setContentSaved(true);
+        },
+        () => {},
+        () => {
+          setActionInProgress(false);
+        },
+      );
+    }
+  }, [onSaveAction, draftable]);
 
   return (
-    <Col fullWidth gap="sm" alignItems="end">
+    <Col fullWidth gap="sm">
       <LexicalComposer initialConfig={initialConfig}>
         <EditorContainer postView={postView}>
           {!postView && <ToolbarPlugin />}
@@ -177,12 +279,53 @@ const Editor: React.FC<EditorProps> = ({
           </EditorInner>
         </EditorContainer>
       </LexicalComposer>
-      {!postView && (
-        <Row gap="md">
-          {error && <Text color="danger">An error occurred</Text>}
-          <Button onClick={handleButtonAction}>{buttonLabel}</Button>
-        </Row>
-      )}
+      <Col gap="sm">
+        {!postView && (
+          <Row gap="sm">
+            {!contentSaved && (
+              <>
+                <Button disabled={actionInProgress} onClick={handleSaveAction}>
+                  {finalActionLabel}{' '}
+                </Button>
+                {draftable && isDraft && (
+                  <Button
+                    disabled={actionInProgress}
+                    type="secondaryFill"
+                    onClick={handleSaveAndPublish}
+                  >
+                    Save and publish
+                  </Button>
+                )}
+                <Button
+                  disabled={actionInProgress}
+                  type="primaryOutline"
+                  onClick={handleSaveAndKeepEditingAction}
+                >
+                  {finalActionLabel} and keep editing
+                </Button>
+                {draftable && !alreadyExists && (
+                  <Button
+                    disabled={actionInProgress}
+                    type="secondaryOutline"
+                    onClick={handleSaveDraftAction}
+                  >
+                    Save as draft
+                  </Button>
+                )}
+              </>
+            )}
+            <Button
+              disabled={actionInProgress}
+              type="dangerOutline"
+              onClick={discardChangesHandler}
+            >
+              <Text>{contentSaved ? 'Close' : 'Discard'}</Text>
+              <RxCross1 size="0.8em" />
+            </Button>
+          </Row>
+        )}
+        {error && <Text color="danger">{error}</Text>}
+      </Col>
     </Col>
   );
 };
