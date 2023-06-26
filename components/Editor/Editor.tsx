@@ -31,6 +31,8 @@ import { Text } from '../Typography/Text';
 import Loading from '../Loading/Loading';
 import { RxCross1 } from 'react-icons/rx';
 import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
+import { Simulate } from 'react-dom/test-utils';
+import reset = Simulate.reset;
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -66,11 +68,11 @@ export type EditorOnSaveAction = (
   draft: boolean,
   successAction?: () => void,
   errorAction?: () => void,
-  finishedAction?: () => void,
+  settleAction?: () => void,
 ) => void;
 
 interface EditorProps {
-  onChange: (editorState: EditorState, editor: LexicalEditor) => void;
+  onChange?: (editorState: EditorState, editor: LexicalEditor) => void;
   editorState?: string;
   onSaveAction?: EditorOnSaveAction;
   actionLabel?: 'Save' | 'Post';
@@ -82,7 +84,9 @@ interface EditorProps {
   closeEditor?: () => void;
   loading?: boolean;
   error?: string;
+  resetError?: () => void;
   debounceTime?: number;
+  saveOnDebounce?: boolean;
 }
 
 const Editor: React.FC<EditorProps> = ({
@@ -98,7 +102,9 @@ const Editor: React.FC<EditorProps> = ({
   closeEditor,
   loading,
   error,
+  resetError,
   debounceTime = 0,
+  saveOnDebounce,
 }) => {
   const finalDisabled = useMemo(() => (postView ? true : disabled), [postView, disabled]);
   const finalActionLabel = useMemo(() => (alreadyExists ? 'Save' : actionLabel), [actionLabel]);
@@ -131,7 +137,7 @@ const Editor: React.FC<EditorProps> = ({
           e.preventDefault();
           e.returnValue = '';
 
-          if (editorStateRef.current && editorRef.current) {
+          if (editorStateRef.current && editorRef.current && onChange) {
             onChange(editorStateRef.current, editorRef.current);
           }
         };
@@ -146,10 +152,10 @@ const Editor: React.FC<EditorProps> = ({
     debounce((editorState: EditorState, editor: LexicalEditor) => {
       editorStateRef.current = editorState;
       editorRef.current = editor;
-      onChange(editorState, editor);
-      if (debounceTime > 0) setContentSaved(true);
+      if (onChange) onChange(editorState, editor);
+      if (debounceTime > 0 && saveOnDebounce) setContentSaved(true);
     }, debounceTime),
-    [onChange, debounceTime],
+    [onChange, debounceTime, saveOnDebounce],
   );
 
   const onChangeHandler = useCallback(
@@ -179,9 +185,10 @@ const Editor: React.FC<EditorProps> = ({
       );
     }
     closeEditorHandler();
+    if (resetError) resetError();
   }, [closeEditorHandler, contentSaved]);
 
-  const handleSaveAction = useCallback(() => {
+  const saveActionHandler = useCallback(() => {
     if (onSaveAction) {
       setActionInProgress(true);
       onSaveAction(
@@ -200,7 +207,7 @@ const Editor: React.FC<EditorProps> = ({
     }
   }, [isDraft, onSaveAction]);
 
-  const handleSaveAndPublish = useCallback(() => {
+  const saveAndPublishActionHandler = useCallback(() => {
     if (onSaveAction) {
       setActionInProgress(true);
       onSaveAction(
@@ -219,7 +226,7 @@ const Editor: React.FC<EditorProps> = ({
     }
   }, [onSaveAction]);
 
-  const handleSaveAndKeepEditingAction = useCallback(() => {
+  const saveAndKeepEditingActionHandler = useCallback(() => {
     if (onSaveAction) {
       setActionInProgress(true);
       onSaveAction(
@@ -237,7 +244,7 @@ const Editor: React.FC<EditorProps> = ({
     }
   }, [isDraft, onSaveAction]);
 
-  const handleSaveDraftAction = useCallback(() => {
+  const saveDraftActionHandler = useCallback(() => {
     if (!draftable) return;
     if (onSaveAction) {
       setActionInProgress(true);
@@ -284,14 +291,14 @@ const Editor: React.FC<EditorProps> = ({
           <Row gap="sm">
             {!contentSaved && (
               <>
-                <Button disabled={actionInProgress} onClick={handleSaveAction}>
+                <Button disabled={actionInProgress} onClick={saveActionHandler}>
                   {finalActionLabel}{' '}
                 </Button>
                 {draftable && isDraft && (
                   <Button
                     disabled={actionInProgress}
                     type="secondaryFill"
-                    onClick={handleSaveAndPublish}
+                    onClick={saveAndPublishActionHandler}
                   >
                     Save and publish
                   </Button>
@@ -299,7 +306,7 @@ const Editor: React.FC<EditorProps> = ({
                 <Button
                   disabled={actionInProgress}
                   type="primaryOutline"
-                  onClick={handleSaveAndKeepEditingAction}
+                  onClick={saveAndKeepEditingActionHandler}
                 >
                   {finalActionLabel} and keep editing
                 </Button>
@@ -307,7 +314,7 @@ const Editor: React.FC<EditorProps> = ({
                   <Button
                     disabled={actionInProgress}
                     type="secondaryOutline"
-                    onClick={handleSaveDraftAction}
+                    onClick={saveDraftActionHandler}
                   >
                     Save as draft
                   </Button>
@@ -324,7 +331,16 @@ const Editor: React.FC<EditorProps> = ({
             </Button>
           </Row>
         )}
-        {error && <Text color="danger">{error}</Text>}
+        {error && (
+          <Text color="danger">
+            {error}{' '}
+            {resetError && (
+              <Button size="sm" onClick={resetError}>
+                <RxCross1 size="0.8em" />
+              </Button>
+            )}
+          </Text>
+        )}
       </Col>
     </Col>
   );

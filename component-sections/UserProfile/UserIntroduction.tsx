@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Col } from '../../components/Flex/Flex';
 import InfoSection from '../../components/InfoSection';
 import { useGetUserById } from '../../api/useGetUserById';
@@ -9,8 +9,8 @@ import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,
 } from '../../api/useUpdateUserIntroduction';
-import { EditorState, LexicalEditor } from 'lexical';
 import Editor, { EditorOnSaveAction } from '../../components/Editor/Editor';
+import { parseError } from '../../utils/types/error';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
@@ -47,18 +47,8 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     setEditIntroduction(true);
   }, []);
 
-  const onEditorChange = useCallback(() => {}, []);
-
-  useEffect(() => {
-    console.log('userData', userData);
-  }, [userData]);
-
-  useEffect(() => {
-    console.log('introductionData', introductionData);
-  }, [introductionData]);
-
   const onSave: EditorOnSaveAction = useCallback(
-    (editorState, _editor, draft, successAction, errorAction, finishAction) => {
+    (editorState, _editor, draft, successAction, errorAction, settleAction) => {
       const props: UpdateUserIntroductionRequest = {
         userId: userId,
         postId: userData?.introductionPostId,
@@ -70,16 +60,13 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
 
       updateUserIntroduction.mutate(props, {
         onSuccess: () => {
-          console.log('Inside onSuccess of updateUserIntroduction.mutate');
           if (successAction) successAction();
         },
         onError: () => {
-          console.log('Inside onError of updateUserIntroduction.mutate');
           if (errorAction) errorAction();
         },
         onSettled: () => {
-          console.log('Inside onSettled of updateUserIntroduction.mutate');
-          if (finishAction) finishAction();
+          if (settleAction) settleAction();
         },
       });
     },
@@ -98,10 +85,12 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     }
   }, [isLoading, userData?.introductionPostId, introductionData?.content]);
 
+  const resetErrorHandler = useCallback(() => {
+    updateUserIntroduction.reset();
+  }, []);
+
   return (
     <Col fullWidth>
-      <p>Content: {introductionData?.content}</p>
-      <p>Is draft: {introductionData?.isDraft}</p>
       {(editorState || (isMyPost && userData?.introductionPostId === undefined)) && (
         <Editor
           loading={updateUserIntroduction.isLoading}
@@ -111,9 +100,9 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
           isDraft={introductionData?.isDraft ?? false}
           alreadyExists={introductionData?.id !== undefined}
           draftable={true}
-          onChange={onEditorChange}
           onSaveAction={onSave}
-          error={updateUserIntroduction.error?.message}
+          error={parseError(updateUserIntroduction.error)}
+          resetError={resetErrorHandler}
           closeEditor={closeEditorHandler}
         />
       )}
