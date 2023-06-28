@@ -76,7 +76,7 @@ export default function ResetPassword() {
                 />
                 <ReCaptcha sitekey={getRecaptchaSiteKey()} />
                 <Button
-                  color="primary"
+                  color="primaryFill"
                   size="md"
                   onClick={submitResetPassword}
                   disabled={buttonDisabled}

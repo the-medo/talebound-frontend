@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
 import * as stories from './Button.stories';
 import { Button } from './Button';
 import { Col, Row } from '../Flex/Flex';
@@ -18,28 +18,30 @@ If you do it, it is recommended to add Text component as well, because without i
 By default, icons (svg elements) inside button have font-size of 1.25em, but you can change with "size" property on icon.
 
 ```
-<Button type="dangerOutline">
+<Button color="dangerOutline">
   <Text>Button with slightly bigger icon</Text>
   <RxTrash size="1.5em" />
 </Button>
 ```
 
-## Types
+## Colors
 
 - primaryFill = default
 - primaryOutline
+- secondaryFill
+- secondaryOutline
 - dangerFill
 - dangerOutline
 - ghost
 
 <Canvas>
-  <Button type="primaryFill">Button primaryFill (default)</Button>
-  <Button type="primaryOutline">Button primaryOutline</Button>
-  <Button type="secondaryFill">Button secondaryFill</Button>
-  <Button type="secondaryOutline">Button secondaryOutline</Button>
-  <Button type="dangerFill">Button dangerFill</Button>
-  <Button type="dangerOutline">Button dangerOutline</Button>
-  <Button type="ghost">Button ghost</Button>
+  <Button color="primaryFill">Button primaryFill (default)</Button>
+  <Button color="primaryOutline">Button primaryOutline</Button>
+  <Button color="secondaryFill">Button secondaryFill</Button>
+  <Button color="secondaryOutline">Button secondaryOutline</Button>
+  <Button color="dangerFill">Button dangerFill</Button>
+  <Button color="dangerOutline">Button dangerOutline</Button>
+  <Button color="ghost">Button ghost</Button>
 </Canvas>
 
 ## Sizes
@@ -68,12 +70,24 @@ sm, md (default), lg, xl
 
 ## Special props
 
+- loading - renders overlay with spinner inside button (default: false)
+  <Col gap="sm">
+    <Button color="primaryFill" loading>
+      Button with loading state
+    </Button>
+    <Button color="dangerFill" loading>
+      Button with loading state
+    </Button>
+    <Button color="dangerOutline" loading>
+      Button with loading state
+    </Button>
+  </Col>
 - disabled - changes opacity to 0.7 and pointer-events to none (default: false)
   <Button disabled>Button disabled</Button>
 - fullWidth - sets width to 100%, otherwise it is "fit-content" (default: false)
   <Button fullWidth>Button fullWidth</Button>
 - icon - makes button as square. This type of button expects only icon as children (default: false)
-  <Button type="dangerFill" icon>
+  <Button color="dangerFill" icon>
     <RxTrash />
   </Button>
 
@@ -81,16 +95,16 @@ sm, md (default), lg, xl
 
 <Row gap="sm">
   <Button>Default button setting</Button>
-  <Button type="dangerFill">
+  <Button color="dangerFill">
     <RxTrash />
     <Text>Delete</Text>
   </Button>
-  <Button type="dangerOutline">
+  <Button color="dangerOutline">
     <Text>Close </Text>
     <RxCross1 size="0.75em" />
   </Button>
   <Text color="danger">
-    <Button type="ghost" icon>
+    <Button color="ghost" icon>
       <RxCross1 size="0.75em" />
     </Button>
   </Text>

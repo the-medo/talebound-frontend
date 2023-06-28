@@ -22,7 +22,7 @@ xs, sm, md, lg
 
 ## Colors
 
-primary, secondary, tertiary, white, black, success
+primary, secondary, tertiary, white, black, success, danger
 
 <Canvas>
   <Loading color="primary" />
@@ -31,12 +31,13 @@ primary, secondary, tertiary, white, black, success
   <Loading color="white" />
   <Loading color="black" />
   <Loading color="success" />
+  <Loading color="danger" />
 </Canvas>
 
-It is possible to also use "currentColor". Example of Loading component inside of `<Text color="danger">`
+It is possible to also use "currentColor". Example of Loading component inside of `<Text color="info">`
 
 <Canvas>
-  <Text color="danger" size="lg">
+  <Text color="info" size="lg">
     <Loading color="currentColor" />
     <Text i>Loading...</Text>
   </Text>

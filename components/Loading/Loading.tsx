@@ -14,7 +14,8 @@ type LoadingColor =
   | 'tertiary'
   | 'white'
   | 'black'
-  | 'success';
+  | 'success'
+  | 'danger';
 
 const LoadingWrapper = styled('span', {
   display: 'inline-flex',
@@ -66,6 +67,9 @@ const LoadingWrapper = styled('span', {
       },
       success: {
         color: '$success',
+      },
+      danger: {
+        color: '$danger',
       },
     },
   },

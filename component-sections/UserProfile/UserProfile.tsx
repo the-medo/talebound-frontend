@@ -37,13 +37,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         <ContentSection direction="row" flexBasis="100%">
           <Col gap="sm">
             <Avatar type="user" size="2xl" url={data?.avatarImageUrl} />
-            <Button fullWidth type="primaryOutline">
+            <Button fullWidth color="primaryOutline">
               Edit
             </Button>
-            <Button fullWidth type="primaryOutline">
+            <Button fullWidth color="primaryOutline">
               Message
             </Button>
-            <Button fullWidth type="primaryOutline">
+            <Button fullWidth color="primaryOutline">
               Ban
             </Button>
           </Col>
