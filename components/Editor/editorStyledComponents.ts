@@ -18,6 +18,11 @@ export const EditorContainer = styled('div', {
         border: '0',
       },
     },
+    loading: {
+      true: {
+        opacity: 0.7,
+      },
+    },
   },
 });
 

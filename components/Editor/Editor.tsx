@@ -274,9 +274,8 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <Col fullWidth gap="sm">
       <LexicalComposer initialConfig={initialConfig}>
-        <EditorContainer postView={postView}>
+        <EditorContainer postView={postView} loading={loading}>
           {!postView && <ToolbarPlugin />}
-          {loading && <Loading />}
           <EditorInner postView={postView}>
             <RichTextPlugin
               contentEditable={contentEditable}
@@ -301,6 +300,7 @@ const Editor: React.FC<EditorProps> = ({
               <>
                 <Button
                   disabled={actionInProgress !== EditorAction.IDLE}
+                  loading={actionInProgress === EditorAction.SAVE}
                   onClick={saveActionHandler}
                 >
                   {finalActionLabel}{' '}
@@ -308,6 +308,7 @@ const Editor: React.FC<EditorProps> = ({
                 {draftable && isDraft && (
                   <Button
                     disabled={actionInProgress !== EditorAction.IDLE}
+                    loading={actionInProgress === EditorAction.SAVE_AND_PUBLISH}
                     color="secondaryFill"
                     onClick={saveAndPublishActionHandler}
                   >
@@ -316,6 +317,7 @@ const Editor: React.FC<EditorProps> = ({
                 )}
                 <Button
                   disabled={actionInProgress !== EditorAction.IDLE}
+                  loading={actionInProgress === EditorAction.SAVE_AND_KEEP_EDITING}
                   color="primaryOutline"
                   onClick={saveAndKeepEditingActionHandler}
                 >
@@ -324,6 +326,7 @@ const Editor: React.FC<EditorProps> = ({
                 {draftable && !alreadyExists && (
                   <Button
                     disabled={actionInProgress !== EditorAction.IDLE}
+                    loading={actionInProgress === EditorAction.SAVE_AS_DRAFT}
                     color="secondaryOutline"
                     onClick={saveDraftActionHandler}
                   >
