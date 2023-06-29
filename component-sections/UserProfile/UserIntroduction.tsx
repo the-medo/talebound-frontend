@@ -11,6 +11,7 @@ import {
 } from '../../api/useUpdateUserIntroduction';
 import Editor, { EditorOnSaveAction } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
+import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
@@ -28,7 +29,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     [userData?.introductionPostId],
   );
 
-  const { data: introductionData, isLoading: isLoadingIntroduction } = useGetPostById({
+  const { data: data, isLoading: isLoadingIntroduction } = useGetPostById({
     enabled: loadIntroductionData,
     variables: userData?.introductionPostId ?? 0,
     suspense: true,
@@ -37,6 +38,8 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
   const updateUserIntroduction = useUpdateUserIntroduction();
 
   const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
+
+  const hasIntroduction = !isLoading && data?.post?.content !== undefined;
 
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
@@ -70,7 +73,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
         },
       });
     },
-    [userData?.introductionPostId, userId],
+    [updateUserIntroduction, userData?.introductionPostId, userId],
   );
 
   const closeEditorHandler = useCallback(() => {
@@ -79,33 +82,39 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
 
   const editorState = useMemo(() => {
     if (!isLoading && userData?.introductionPostId !== undefined) {
-      return introductionData?.content;
+      return data?.post?.content;
+    } else if (!hasIntroduction) {
+      return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [isLoading, userData?.introductionPostId, introductionData?.content]);
+  }, [hasIntroduction, isLoading, userData?.introductionPostId, data?.post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateUserIntroduction.reset();
-  }, []);
+  }, [updateUserIntroduction]);
+
+  /*
+  (editorState ||
+        (isMyPost && userData?.introductionPostId === undefined))
+
+   */
 
   return (
     <Col fullWidth>
-      {(editorState || (isMyPost && userData?.introductionPostId === undefined)) && (
-        <Editor
-          loading={updateUserIntroduction.isLoading}
-          editorState={editorState}
-          disabled={!isMyPost}
-          postView={!isMyPost || !editIntroduction}
-          isDraft={introductionData?.isDraft ?? false}
-          alreadyExists={introductionData?.id !== undefined}
-          draftable={true}
-          onSaveAction={onSave}
-          error={parseError(updateUserIntroduction.error)}
-          resetError={resetErrorHandler}
-          closeEditor={closeEditorHandler}
-        />
-      )}
+      <Editor
+        loading={updateUserIntroduction.isLoading}
+        editorState={editorState}
+        disabled={!isMyPost}
+        postView={!isMyPost || !editIntroduction}
+        isDraft={data?.post?.isDraft ?? false}
+        alreadyExists={data?.post?.id !== undefined}
+        draftable={data?.postType?.draftable ?? false}
+        onSaveAction={onSave}
+        error={parseError(updateUserIntroduction.error)}
+        resetError={resetErrorHandler}
+        closeEditor={closeEditorHandler}
+      />
       {isMyPost && !editIntroduction && (
         <InfoSection
           linkTitle={'Edit introduction'}

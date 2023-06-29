@@ -80,6 +80,61 @@ export interface PbCreateWorldRequest {
   description?: string;
 }
 
+export interface PbDataHistoryPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  postTypeId?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
+  postTypeName?: string;
+  postTypeDraftable?: boolean;
+  postTypePrivatable?: boolean;
+}
+
+export interface PbDataPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  postTypeId?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
+}
+
+export interface PbDataPostType {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  draftable?: boolean;
+  privatable?: boolean;
+}
+
 export interface PbDeleteChatMessageResponse {
   success?: boolean;
   message?: string;
@@ -167,26 +222,8 @@ export interface PbGetWorldsOfCreatorResponse {
 }
 
 export interface PbHistoryPost {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  postId?: number;
-  /** @format int32 */
-  postTypeId?: number;
-  /** @format int32 */
-  userId?: number;
-  title?: string;
-  content?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  deletedAt?: string;
-  /** @format date-time */
-  lastUpdatedAt?: string;
-  /** @format int32 */
-  lastUpdatedUserId?: number;
-  isDraft?: boolean;
-  isPrivate?: boolean;
+  post?: PbDataHistoryPost;
+  postType?: PbDataPostType;
 }
 
 export interface PbImage {
@@ -219,24 +256,8 @@ export interface PbLoginUserResponse {
 }
 
 export interface PbPost {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  postTypeId?: number;
-  /** @format int32 */
-  userId?: number;
-  title?: string;
-  content?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  deletedAt?: string;
-  /** @format date-time */
-  lastUpdatedAt?: string;
-  /** @format int32 */
-  lastUpdatedUserId?: number;
-  isDraft?: boolean;
-  isPrivate?: boolean;
+  post?: PbDataPost;
+  postType?: PbDataPostType;
 }
 
 export interface PbRemoveRoleFromUserResponse {

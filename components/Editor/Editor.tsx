@@ -32,7 +32,8 @@ import Loading from '../Loading/Loading';
 import { RxCross1 } from 'react-icons/rx';
 import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
 import { Simulate } from 'react-dom/test-utils';
-import reset = Simulate.reset;
+import { AiOutlineSend } from 'react-icons/ai';
+import { RiDraftLine } from 'react-icons/ri';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -101,7 +102,7 @@ const Editor: React.FC<EditorProps> = ({
   onChange,
   editorState,
   onSaveAction,
-  actionLabel = 'Save',
+  actionLabel = 'Post',
   draftable,
   isDraft = false,
   alreadyExists,
@@ -115,7 +116,10 @@ const Editor: React.FC<EditorProps> = ({
   saveOnDebounce,
 }) => {
   const finalDisabled = useMemo(() => (postView ? true : disabled), [postView, disabled]);
-  const finalActionLabel = useMemo(() => (alreadyExists ? 'Save' : actionLabel), [actionLabel]);
+  const finalActionLabel = useMemo(
+    () => (alreadyExists ? 'Save' : actionLabel),
+    [actionLabel, alreadyExists],
+  );
   const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
 
   const editorStateRef = useRef<EditorState>();
@@ -179,7 +183,7 @@ const Editor: React.FC<EditorProps> = ({
       setContentSaved(false);
       onChangeHandlerDebounced(editorState, editor);
     },
-    [isInitialLoad, onChangeHandlerDebounced, debounceTime],
+    [isInitialLoad, onChangeHandlerDebounced],
   );
 
   const closeEditorHandler = useCallback(() => {
@@ -191,10 +195,11 @@ const Editor: React.FC<EditorProps> = ({
       editorRef.current?.setEditorState(
         editorRef.current?.parseEditorState(initialConfig.editorState ?? EMPTY_EDITOR_STATE),
       );
+      setContentSaved(true);
     }
     closeEditorHandler();
     if (resetError) resetError();
-  }, [closeEditorHandler, contentSaved]);
+  }, [closeEditorHandler, contentSaved, initialConfig.editorState, resetError]);
 
   const saveActionHandler = useCallback(() => {
     if (onSaveAction) {
@@ -206,14 +211,16 @@ const Editor: React.FC<EditorProps> = ({
         () => {
           setContentSaved(true);
         },
-        () => {},
         () => {
-          closeEditorHandler();
-          setActionInProgress(EditorAction.IDLE);
+          /* no error action */
         },
+          () => {
+            closeEditorHandler();
+            setActionInProgress(EditorAction.IDLE);
+          };,
       );
     }
-  }, [isDraft, onSaveAction]);
+  }, [closeEditorHandler, isDraft, onSaveAction]);
 
   const saveAndPublishActionHandler = useCallback(() => {
     if (onSaveAction) {
@@ -225,14 +232,16 @@ const Editor: React.FC<EditorProps> = ({
         () => {
           setContentSaved(true);
         },
-        () => {},
+        () => {
+          /* no error action */
+        },
         () => {
           closeEditorHandler();
           setActionInProgress(0);
         },
       );
     }
-  }, [onSaveAction]);
+  }, [closeEditorHandler, onSaveAction]);
 
   const saveAndKeepEditingActionHandler = useCallback(() => {
     if (onSaveAction) {
@@ -244,7 +253,9 @@ const Editor: React.FC<EditorProps> = ({
         () => {
           setContentSaved(true);
         },
-        () => {},
+        () => {
+          /* no error action */
+        },
         () => {
           setActionInProgress(EditorAction.IDLE);
         },
@@ -263,7 +274,9 @@ const Editor: React.FC<EditorProps> = ({
         () => {
           setContentSaved(true);
         },
-        () => {},
+        () => {
+          /* no error action */
+        },
         () => {
           setActionInProgress(EditorAction.IDLE);
         },
@@ -298,13 +311,6 @@ const Editor: React.FC<EditorProps> = ({
           <Row gap="sm">
             {!contentSaved && (
               <>
-                <Button
-                  disabled={actionInProgress !== EditorAction.IDLE}
-                  loading={actionInProgress === EditorAction.SAVE}
-                  onClick={saveActionHandler}
-                >
-                  {finalActionLabel}{' '}
-                </Button>
                 {draftable && isDraft && (
                   <Button
                     disabled={actionInProgress !== EditorAction.IDLE}
@@ -312,9 +318,17 @@ const Editor: React.FC<EditorProps> = ({
                     color="secondaryFill"
                     onClick={saveAndPublishActionHandler}
                   >
-                    Save and publish
+                    <Text>Save and publish</Text>
+                    <AiOutlineSend size="0.8em" />
                   </Button>
                 )}
+                <Button
+                  disabled={actionInProgress !== EditorAction.IDLE}
+                  loading={actionInProgress === EditorAction.SAVE}
+                  onClick={saveActionHandler}
+                >
+                  {finalActionLabel}
+                </Button>
                 <Button
                   disabled={actionInProgress !== EditorAction.IDLE}
                   loading={actionInProgress === EditorAction.SAVE_AND_KEEP_EDITING}
@@ -330,19 +344,43 @@ const Editor: React.FC<EditorProps> = ({
                     color="secondaryOutline"
                     onClick={saveDraftActionHandler}
                   >
-                    Save as draft
+                    <Text>Save as draft</Text>
+                    <RiDraftLine />
                   </Button>
                 )}
+                <Button
+                  disabled={actionInProgress !== EditorAction.IDLE}
+                  color="dangerOutline"
+                  onClick={discardChangesHandler}
+                >
+                  <Text>Discard</Text>
+                  <RxCross1 size="0.8em" />
+                </Button>
               </>
             )}
-            <Button
-              disabled={actionInProgress !== EditorAction.IDLE}
-              color="dangerOutline"
-              onClick={discardChangesHandler}
-            >
-              <Text>{contentSaved ? 'Close' : 'Discard'}</Text>
-              <RxCross1 size="0.8em" />
-            </Button>
+            {contentSaved && (
+              <>
+                {draftable && isDraft && (
+                  <Button
+                    disabled={actionInProgress !== EditorAction.IDLE}
+                    loading={actionInProgress === EditorAction.SAVE_AND_PUBLISH}
+                    color="secondaryFill"
+                    onClick={saveAndPublishActionHandler}
+                  >
+                    <Text>Publish</Text>
+                    <AiOutlineSend size="0.8em" />
+                  </Button>
+                )}
+                <Button
+                  disabled={actionInProgress !== EditorAction.IDLE}
+                  color="dangerOutline"
+                  onClick={closeEditorHandler}
+                >
+                  <Text>Close</Text>
+                  <RxCross1 size="0.8em" />
+                </Button>
+              </>
+            )}
           </Row>
         )}
         {error && (
