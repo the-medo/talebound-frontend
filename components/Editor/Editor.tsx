@@ -214,10 +214,10 @@ const Editor: React.FC<EditorProps> = ({
         () => {
           /* no error action */
         },
-          () => {
-            closeEditorHandler();
-            setActionInProgress(EditorAction.IDLE);
-          };,
+        () => {
+          closeEditorHandler();
+          setActionInProgress(EditorAction.IDLE);
+        },
       );
     }
   }, [closeEditorHandler, isDraft, onSaveAction]);
