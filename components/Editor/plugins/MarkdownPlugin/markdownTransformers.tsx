@@ -6,7 +6,6 @@ import {
   ElementTransformer,
   TEXT_FORMAT_TRANSFORMERS,
   TEXT_MATCH_TRANSFORMERS,
-  TextMatchTransformer,
   Transformer,
 } from '@lexical/markdown';
 import {
@@ -26,7 +25,7 @@ import {
   TableNode,
   TableRowNode,
 } from '@lexical/table';
-import { $createTextNode, $isParagraphNode, $isTextNode, LexicalNode } from 'lexical';
+import { $isParagraphNode, $isTextNode, LexicalNode } from 'lexical';
 
 // import { $createImageNode, $isImageNode, ImageNode } from '../../nodes/ImageNode';
 

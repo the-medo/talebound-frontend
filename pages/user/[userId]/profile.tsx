@@ -6,9 +6,7 @@ import { Row } from '../../../components/Flex/Flex';
 import UserProfile from '../../../component-sections/UserProfile/UserProfile';
 import useNumericParam from '../../../hooks/useNumericParam';
 
-interface profileProps {}
-
-const profile: React.FC<profileProps> = () => {
+const Profile: React.FC = () => {
   const userId = useNumericParam('userId');
 
   return (
@@ -25,4 +23,4 @@ const profile: React.FC<profileProps> = () => {
   );
 };
 
-export default profile;
+export default Profile;

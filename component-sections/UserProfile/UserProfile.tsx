@@ -20,7 +20,11 @@ export interface UserProfileProps {
 const UserIntroduction = React.lazy(() => import('./UserIntroduction'));
 
 const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
-  const { data, isLoading, error } = useGetUserById({
+  const {
+    data,
+    isLoading: _isLoading,
+    error: _error,
+  } = useGetUserById({
     variables: userId,
   });
 
@@ -58,7 +62,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
               </Col>
               <Col css={{ flexBasis: '420px', minWidth: '420px' }}>
                 {(evaluationData?.averageEvaluationVote ?? []).map((evaluation) => (
-                  <Evaluation data={evaluation} disabled compact />
+                  <Evaluation key={evaluation.evaluationId} data={evaluation} disabled compact />
                 ))}
               </Col>
             </Row>

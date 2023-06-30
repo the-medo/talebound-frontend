@@ -1,5 +1,4 @@
-import React, { Key, useCallback } from 'react';
-import * as DropdownMenuRadix from '@radix-ui/react-dropdown-menu';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth';
@@ -13,9 +12,7 @@ import { DropdownMenuTrigger } from '../../components-radix-ui/DropdownMenu/Drop
 import { DropdownMenuRoot } from '../../components-radix-ui/DropdownMenu/DropdownMenuRoot';
 import { DropdownMenuPortal } from '../../components-radix-ui/DropdownMenu/DropdownMenuPortal';
 
-interface UserDropdownProps {}
-
-const UserDropdown: React.FC<UserDropdownProps> = () => {
+const UserDropdown: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useAuth();

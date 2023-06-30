@@ -24,7 +24,7 @@ export function useAuth(): Auth {
     if (!isLoggedIn) {
       dispatch(setUser(undefined));
     }
-  }, [isLoggedIn]);
+  }, [dispatch, isLoggedIn]);
 
   return useMemo(() => ({ user, isLoggedIn: isLoggedIn }), [user, isLoggedIn]);
 }

@@ -343,7 +343,6 @@ function TableActionMenu({
   const [x, y] = coords;
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="dropdown"
       ref={dropDownRef}

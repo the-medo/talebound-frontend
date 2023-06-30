@@ -1,6 +1,5 @@
 import React from 'react';
 import { Rate } from 'antd';
-import { MdRectangle } from 'react-icons/md';
 import { styled } from '../../styles/stitches.config';
 import { BsDiamondFill } from 'react-icons/bs';
 

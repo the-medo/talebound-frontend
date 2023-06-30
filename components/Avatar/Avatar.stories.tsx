@@ -11,7 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const storyDefault: Story = {
+export const StoryDefault: Story = {
   name: 'Default',
   args: {
     url: 'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/c5fba38d-0447-4e06-b04e-96f59e4e2d00/100x100',
@@ -19,7 +19,7 @@ export const storyDefault: Story = {
   },
 };
 
-export const storyNoUrl: Story = {
+export const StoryNoUrl: Story = {
   name: 'No url',
   args: {
     type: 'user',

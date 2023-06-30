@@ -4,7 +4,7 @@ type MaxFormattedDistance = 'hour' | 'day' | 'week' | 'month' | 'year' | 'none';
 
 export const formatDate = (
   date: Date | undefined | string,
-  includeTime: boolean = false,
+  includeTime = false,
   maxFormattedDistance: MaxFormattedDistance = 'day',
 ): string => {
   if (!date) return ' --- ';

@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { default as NextLink } from 'next/link';
-import { AiFillAccountBook, AiFillAndroid, AiFillHome } from 'react-icons/ai';
 import { styled } from '../../styles/stitches.config';
 
 const Navbar = styled('nav', {
@@ -98,35 +97,7 @@ const NavbarHeader = styled('div', {
   },
 });
 
-export type NItem = {
-  label: string;
-  icon?: React.ReactNode;
-  href: string;
-};
-
-const testItems: NItem[] = [
-  {
-    label: 'Overview',
-    icon: <AiFillHome />,
-    href: '/',
-  },
-  {
-    label: 'News',
-    icon: <AiFillAccountBook />,
-    href: '/about',
-  },
-  {
-    label: 'Quests',
-    icon: <AiFillAndroid />,
-    href: '/contact',
-  },
-];
-
-interface NavbarProps {}
-
-const LeftNavbar: React.FC<NavbarProps> = () => {
-  useEffect(() => {}, []);
-
+const LeftNavbar: React.FC = () => {
   return (
     <Navbar>
       <NavbarHeader>

@@ -22,7 +22,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const storyDefault: Story = {
+export const StoryDefault: Story = {
   name: 'Default',
   args: {
     data: mockData,
@@ -31,7 +31,7 @@ export const storyDefault: Story = {
   },
 };
 
-export const storyCompact: Story = {
+export const StoryCompact: Story = {
   name: 'Compact',
   args: {
     data: mockData,

@@ -16,7 +16,7 @@ import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorSta
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
 
 const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn: _isLoggedIn } = useAuth();
   const [editIntroduction, setEditIntroduction] = React.useState(false);
 
   const { data: userData, isLoading: isLoadingUser } = useGetUserById({

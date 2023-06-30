@@ -41,16 +41,13 @@ const plainTextEditorJSON = (text: string) =>
     ? emptyEditorJSON
     : `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":${text},"type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`;
 
-const TableComponent = React.lazy(
-  // @ts-ignore
-  () => import('./TableComponent'),
-);
+const TableComponent = React.lazy(() => import('./TableComponent'));
 
 export function createUID(): string {
   return Math.random()
     .toString(36)
     .replace(/[^a-z]+/g, '')
-    .substr(0, 5);
+    .substring(0, 5);
 }
 
 function createCell(type: 'normal' | 'header'): Cell {

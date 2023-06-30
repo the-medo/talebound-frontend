@@ -7,9 +7,7 @@ import PasswordChange from '../../component-sections/user-settings/PasswordChang
 import SelfEvaluation from '../../component-sections/user-settings/SelfEvaluation';
 import { Col, Row } from '../../components/Flex/Flex';
 
-interface settingsProps {}
-
-const settings: React.FC<settingsProps> = () => {
+const Settings: React.FC = () => {
   return (
     <>
       <Head>
@@ -30,4 +28,4 @@ const settings: React.FC<settingsProps> = () => {
   );
 };
 
-export default settings;
+export default Settings;

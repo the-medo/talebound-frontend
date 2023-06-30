@@ -7,9 +7,7 @@ import ContentSection from '../../components/ContentSection/ContentSection';
 import { useUpdateUser } from '../../api/useUpdateUser';
 import { Col } from '../../components/Flex/Flex';
 
-interface PasswordChangeProps {}
-
-const PasswordChange: React.FC<PasswordChangeProps> = () => {
+const PasswordChange: React.FC = () => {
   const [passwordValue, setPasswordValue] = React.useState<string>('');
   const [externalButtonDisabled, setExternalButtonDisabled] = React.useState<boolean>(true);
 

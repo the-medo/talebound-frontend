@@ -63,7 +63,7 @@ const Input: React.FC<InputProps> = ({
     () => (
       <StyledInput aria-labelledby={`${labelId} ${helperId}`} id={id} name={id} {...otherProps} />
     ),
-    [id, otherProps],
+    [helperId, id, labelId, otherProps],
   );
 
   return (

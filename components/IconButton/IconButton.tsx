@@ -53,11 +53,13 @@ interface IconButtonProps extends PropsWithChildren {
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ children, onClick, ...props }, forwardedRef) => {
     return (
-      <StyledIconButton ref={forwardedRef} {...props}>
+      <StyledIconButton onClick={onClick} ref={forwardedRef} {...props}>
         {children}
       </StyledIconButton>
     );
   },
 );
+
+IconButton.displayName = 'IconButton';
 
 export default IconButton;

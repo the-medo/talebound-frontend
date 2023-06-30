@@ -28,10 +28,8 @@ import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
-import Loading from '../Loading/Loading';
 import { RxCross1 } from 'react-icons/rx';
 import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
-import { Simulate } from 'react-dom/test-utils';
 import { AiOutlineSend } from 'react-icons/ai';
 import { RiDraftLine } from 'react-icons/ri';
 
@@ -64,16 +62,16 @@ const editorConfig: InitialConfigType = {
 };
 
 export type EditorOnSaveAction = (
-  editorState: EditorState,
-  editor: LexicalEditor,
-  draft: boolean,
-  successAction?: () => void,
-  errorAction?: () => void,
-  settleAction?: () => void,
+  _editorState: EditorState,
+  _editor: LexicalEditor,
+  _draft: boolean,
+  _successAction?: () => void,
+  _errorAction?: () => void,
+  _settleAction?: () => void,
 ) => void;
 
 interface EditorProps {
-  onChange?: (editorState: EditorState, editor: LexicalEditor) => void;
+  onChange?: (_editorState: EditorState, _editor: LexicalEditor) => void;
   editorState?: string;
   onSaveAction?: EditorOnSaveAction;
   actionLabel?: 'Save' | 'Post';
@@ -202,32 +200,32 @@ const Editor: React.FC<EditorProps> = ({
   }, [closeEditorHandler, contentSaved, initialConfig.editorState, resetError]);
 
   const saveActionHandler = useCallback(() => {
-    if (onSaveAction) {
-      setActionInProgress(EditorAction.SAVE);
-      onSaveAction(
-        editorStateRef.current!,
-        editorRef.current!,
-        isDraft,
-        () => {
-          setContentSaved(true);
-        },
-        () => {
-          /* no error action */
-        },
-        () => {
-          closeEditorHandler();
-          setActionInProgress(EditorAction.IDLE);
-        },
-      );
-    }
+      if (onSaveAction && editorStateRef.current && editorRef.current) {
+        setActionInProgress(EditorAction.SAVE);
+        onSaveAction(
+          editorStateRef.current,
+          editorRef.current,
+          isDraft,
+          () => {
+            setContentSaved(true);
+          },
+          () => {
+            /* no error action */
+          },
+          () => {
+            closeEditorHandler();
+            setActionInProgress(EditorAction.IDLE);
+          },
+        );
+      }
   }, [closeEditorHandler, isDraft, onSaveAction]);
 
   const saveAndPublishActionHandler = useCallback(() => {
-    if (onSaveAction) {
+    if (onSaveAction && editorStateRef.current && editorRef.current) {
       setActionInProgress(EditorAction.SAVE_AND_PUBLISH);
       onSaveAction(
-        editorStateRef.current!,
-        editorRef.current!,
+        editorStateRef.current,
+        editorRef.current,
         false,
         () => {
           setContentSaved(true);
@@ -244,11 +242,11 @@ const Editor: React.FC<EditorProps> = ({
   }, [closeEditorHandler, onSaveAction]);
 
   const saveAndKeepEditingActionHandler = useCallback(() => {
-    if (onSaveAction) {
+    if (onSaveAction && editorStateRef.current && editorRef.current) {
       setActionInProgress(EditorAction.SAVE_AND_KEEP_EDITING);
       onSaveAction(
-        editorStateRef.current!,
-        editorRef.current!,
+        editorStateRef.current,
+        editorRef.current,
         isDraft,
         () => {
           setContentSaved(true);
@@ -265,11 +263,11 @@ const Editor: React.FC<EditorProps> = ({
 
   const saveDraftActionHandler = useCallback(() => {
     if (!draftable) return;
-    if (onSaveAction) {
+    if (onSaveAction && editorStateRef.current && editorRef.current) {
       setActionInProgress(EditorAction.SAVE_AS_DRAFT);
       onSaveAction(
-        editorStateRef.current!,
-        editorRef.current!,
+        editorStateRef.current,
+        editorRef.current,
         true,
         () => {
           setContentSaved(true);

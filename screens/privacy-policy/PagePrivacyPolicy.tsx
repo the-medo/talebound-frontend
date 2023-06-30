@@ -3,9 +3,7 @@ import { Row, Col } from '../../components/Flex/Flex';
 import { TitleH2 } from '../../components/Typography/Title';
 import { Text } from '../../components/Typography/Text';
 
-interface PagePrivacyPolicyProps {}
-
-const PagePrivacyPolicy: React.FC<PagePrivacyPolicyProps> = () => {
+const PagePrivacyPolicy: React.FC = () => {
   return (
     <Row fullWidth padding="xl">
       <Col>

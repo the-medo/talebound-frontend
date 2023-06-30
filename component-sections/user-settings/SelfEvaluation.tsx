@@ -8,12 +8,14 @@ import { Flex } from '../../components/Flex/Flex';
 import Loading from '../../components/Loading/Loading';
 import { Text } from '../../components/Typography/Text';
 
-interface SelfEvaluationProps {}
-
-const SelfEvaluation: React.FC<SelfEvaluationProps> = () => {
+const SelfEvaluation: React.FC = () => {
   const { user } = useAuth();
 
-  const { data, isLoading, error } = useGetAverageUserEvaluationByType({
+  const {
+    data,
+    isLoading,
+    error: _error,
+  } = useGetAverageUserEvaluationByType({
     variables: {
       userId: user?.id ?? 0,
       type: PbEvaluationType.Self,
@@ -34,7 +36,7 @@ const SelfEvaluation: React.FC<SelfEvaluationProps> = () => {
         </Flex>
       )}
       {data?.averageEvaluationVote?.map((evaluation) => (
-        <Evaluation data={evaluation} />
+        <Evaluation key={evaluation.evaluationId} data={evaluation} />
       ))}
     </ContentSection>
   );

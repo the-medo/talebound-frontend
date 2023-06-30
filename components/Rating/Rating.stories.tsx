@@ -11,7 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const storyDefault: Story = {
+export const StoryDefault: Story = {
   name: 'Default',
   args: {
     defaultValue: 3,
@@ -19,7 +19,7 @@ export const storyDefault: Story = {
   },
 };
 
-export const storyDisabled: Story = {
+export const StoryDisabled: Story = {
   name: 'Disabled',
   args: {
     defaultValue: 3,

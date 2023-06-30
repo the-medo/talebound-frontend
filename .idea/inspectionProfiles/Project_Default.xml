@@ -33,6 +33,9 @@
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="JSUnusedAssignment" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSUnusedGlobalSymbols" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSUnusedLocalSymbols" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="com.haulmont.rcb.ExhaustiveDepsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

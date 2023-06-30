@@ -4,9 +4,7 @@ import Layout from '../../components/Layout/Layout';
 import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
 import { Col } from '../../components/Flex/Flex';
 
-interface newsProps {}
-
-const news: React.FC<newsProps> = () => {
+const News: React.FC = () => {
   return (
     <>
       <Head>
@@ -20,4 +18,4 @@ const news: React.FC<newsProps> = () => {
   );
 };
 
-export default news;
+export default News;

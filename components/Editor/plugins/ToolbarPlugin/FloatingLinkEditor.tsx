@@ -158,10 +158,10 @@ const FloatingLinkEditor: React.FC<FloatingLinkEditorProps> = ({ editor }) => {
     [editor, lastSelection, linkUrl],
   );
 
-  const divOnMouseDownHandler = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => event.preventDefault(),
-    [],
-  );
+  // const divOnMouseDownHandler = useCallback(
+  //   (event: React.MouseEvent<HTMLDivElement>) => event.preventDefault(),
+  //   [],
+  // );
   const divOnClickHandler = useCallback(() => setEditMode(true), []);
 
   return (

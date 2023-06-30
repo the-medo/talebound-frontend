@@ -110,4 +110,6 @@ const InputFile: React.ForwardRefExoticComponent<
   },
 );
 
+InputFile.displayName = 'InputFile';
+
 export default InputFile;

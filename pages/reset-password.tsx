@@ -45,6 +45,7 @@ export default function ResetPassword() {
     resetPasswordSendCode.mutate({
       email: emailValue,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buttonDisabled, emailValue]);
 
   return (

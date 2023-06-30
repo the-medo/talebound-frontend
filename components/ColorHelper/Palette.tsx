@@ -21,7 +21,7 @@ export const Palette: React.FC<PaletteProps> = ({ colors = [[defaultColorType]] 
       </Col>
       <Col gap="sm">
         {colors.map((colorArray) => (
-          <Row gap="sm">
+          <Row gap="sm" key={colorArray[0].c}>
             {colorArray.map((color) => (
               <StyledColorHelper
                 key={color.c}

@@ -20,35 +20,35 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const storyBaseColors: Story = {
+export const StoryBaseColors: Story = {
   name: 'Color - Base',
   args: {
     colors: baseColors,
   },
 };
 
-export const storyPrimaryColors: Story = {
+export const StoryPrimaryColors: Story = {
   name: 'Color - Primary',
   args: {
     colors: primaryColors,
   },
 };
 
-export const storySecondaryColors: Story = {
+export const StorySecondaryColors: Story = {
   name: 'Color - Secondary',
   args: {
     colors: secondaryColors,
   },
 };
 
-export const storyTertiaryColors: Story = {
+export const StoryTertiaryColors: Story = {
   name: 'Color - Tertiary',
   args: {
     colors: tertiaryColors,
   },
 };
 
-export const storyWhiteColors: Story = {
+export const StoryWhiteColors: Story = {
   name: 'Shades of white',
   args: {
     bg: 'dark',
@@ -56,7 +56,7 @@ export const storyWhiteColors: Story = {
   },
 };
 
-export const storyTransparentColors: Story = {
+export const StoryTransparentColors: Story = {
   name: 'Shades of transparent',
   args: {
     bg: 'image',
@@ -64,7 +64,7 @@ export const storyTransparentColors: Story = {
   },
 };
 
-export const storyStatusColors: Story = {
+export const StoryStatusColors: Story = {
   name: 'Status colors',
   args: {
     colors: statusColors,

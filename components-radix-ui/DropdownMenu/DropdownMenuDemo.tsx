@@ -19,9 +19,7 @@ import { DropdownMenuTrigger } from './DropdownMenuTrigger';
 import { DropdownMenuRoot } from './DropdownMenuRoot';
 import { DropdownMenuSub } from './DropdownMenuSub';
 
-interface DropdownMenuDemoProps {}
-
-const DropdownMenuDemo: React.FC<DropdownMenuDemoProps> = () => {
+const DropdownMenuDemo: React.FC = () => {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true);
   const [urlsChecked, setUrlsChecked] = React.useState(false);
   const [person, setPerson] = React.useState('pedro');
