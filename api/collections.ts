@@ -8,6 +8,7 @@ import { getApiUrl } from '../utils/functions/config';
 import { Evaluations } from '../generated/api-types/Evaluations';
 import { Files } from '../generated/api-types/Files';
 import { Posts } from '../generated/api-types/Posts';
+import { PostTypes } from '../generated/api-types/PostTypes';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -30,3 +31,4 @@ export const VerifyCollection = new Verify(API);
 export const EvaluationsCollection = new Evaluations(API);
 export const FilesCollection = new Files(API);
 export const PostsCollection = new Posts(API);
+export const PostTypesCollection = new PostTypes(API);

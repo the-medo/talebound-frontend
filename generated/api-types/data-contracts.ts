@@ -205,6 +205,10 @@ export interface PbGetPostHistoryResponse {
   historyPosts?: PbHistoryPost[];
 }
 
+export interface PbGetPostTypesResponse {
+  postTypes?: PbDataPostType[];
+}
+
 export interface PbGetUserPostsResponse {
   posts?: PbPost[];
 }
