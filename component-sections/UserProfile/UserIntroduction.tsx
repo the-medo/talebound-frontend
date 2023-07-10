@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { Col } from '../../components/Flex/Flex';
-import InfoSection from '../../components/InfoSection';
 import { useGetUserById } from '../../api/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';
 import { UserProfileProps } from './UserProfile';
@@ -9,15 +8,16 @@ import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,
 } from '../../api/useUpdateUserIntroduction';
-import Editor, { EditorOnSaveAction } from '../../components/Editor/Editor';
+import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
 import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';
 
-type UserIntroductionProps = Pick<UserProfileProps, 'userId'>;
+type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
+  postViewOnly?: boolean;
+};
 
-const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
+const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnly = false }) => {
   const { user, isLoggedIn: _isLoggedIn } = useAuth();
-  const [editIntroduction, setEditIntroduction] = React.useState(false);
 
   const { data: userData, isLoading: isLoadingUser } = useGetUserById({
     variables: userId,
@@ -46,10 +46,6 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     [user?.id, userData?.id],
   );
 
-  const editIntroductionHandler = useCallback(() => {
-    setEditIntroduction(true);
-  }, []);
-
   const onSave: EditorOnSaveAction = useCallback(
     (editorState, _editor, draft, successAction, errorAction, settleAction) => {
       const props: UpdateUserIntroductionRequest = {
@@ -76,10 +72,6 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     [updateUserIntroduction, userData?.introductionPostId, userId],
   );
 
-  const closeEditorHandler = useCallback(() => {
-    setEditIntroduction(false);
-  }, []);
-
   const editorState = useMemo(() => {
     if (!isLoading && userData?.introductionPostId !== undefined) {
       return data?.post?.content;
@@ -94,36 +86,22 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId }) => {
     updateUserIntroduction.reset();
   }, [updateUserIntroduction]);
 
-  /*
-  (editorState ||
-        (isMyPost && userData?.introductionPostId === undefined))
-
-   */
-
   return (
     <Col fullWidth>
       <Editor
         loading={updateUserIntroduction.isLoading}
+        hasRightToEdit={isMyPost}
         editorState={editorState}
-        disabled={!isMyPost}
-        postView={!isMyPost || !editIntroduction}
+        disabled={false}
+        editable={!postViewOnly}
+        defaultPostViewType={PostViewType.POST}
         isDraft={data?.post?.isDraft ?? false}
         alreadyExists={data?.post?.id !== undefined}
         draftable={data?.postType?.draftable ?? false}
         onSaveAction={onSave}
         error={parseError(updateUserIntroduction.error)}
         resetError={resetErrorHandler}
-        closeEditor={closeEditorHandler}
       />
-      {isMyPost && !editIntroduction && (
-        <InfoSection
-          linkTitle={'Edit introduction'}
-          linkAction={editIntroductionHandler}
-          background
-        >
-          {!isLoading && userData?.introductionPostId === undefined && 'Introduction missing'}
-        </InfoSection>
-      )}
     </Col>
   );
 };
