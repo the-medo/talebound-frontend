@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import React, { useCallback, useEffect, useRef, useState, JSX } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -7,9 +7,9 @@ import {
   UNDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   FORMAT_TEXT_COMMAND,
-  FORMAT_ELEMENT_COMMAND,
   $getSelection,
   $isRangeSelection,
+  ElementFormatType,
 } from 'lexical';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isParentElementRTL } from '@lexical/selection';
@@ -24,11 +24,7 @@ import {
   BsArrowClockwise,
   BsArrowCounterclockwise,
   BsCode,
-  BsJustify,
   BsLink,
-  BsTextCenter,
-  BsTextLeft,
-  BsTextRight,
   BsTypeBold,
   BsTypeItalic,
   BsTypeStrikethrough,
@@ -37,6 +33,7 @@ import {
 import { Divider, Toolbar, ToolbarItemButton } from './componentsToolbar';
 import ToolbarBlockType, { BlockType } from './ToolbarBlockType';
 import SelectCodeLanguage from './SelectCodeLanguage';
+import ToolbarAlignType from './ToolbarAlignType';
 
 export const LOW_PRIORITY = 1;
 
@@ -50,6 +47,7 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [blockType, setBlockType] = useState<BlockType>('paragraph');
+  const [alignType, setAlignType] = useState<ElementFormatType>('left');
   const [selectedElementKey, setSelectedElementKey] = useState<string | null>(null);
   const [codeLanguage, setCodeLanguage] = useState('');
   const [_, setIsRTL] = useState(false);
@@ -95,7 +93,9 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
 
       // Update links
       const node = getSelectedNode(selection);
+
       const parent = node.getParent();
+      setAlignType(parent?.getFormatType() ?? 'left');
       if ($isLinkNode(parent) || $isLinkNode(node)) {
         setIsLink(true);
       } else {
@@ -175,22 +175,6 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
   }, [editor]);
 
-  const leftElementCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
-  }, [editor]);
-
-  const centerElementCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
-  }, [editor]);
-
-  const rightElementCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
-  }, [editor]);
-
-  const justifyElementCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
-  }, [editor]);
-
   return (
     <Toolbar data-test-id="toolbar" ref={toolbarRef}>
       <ToolbarItemButton disabled={!canUndo || disabled} onClick={undoCallback} aria-label="Undo">
@@ -264,35 +248,13 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
             <BsLink />
           </ToolbarItemButton>
           {isLink && createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
-          <Divider />
-          <ToolbarItemButton
+          <Divider />{' '}
+          <ToolbarAlignType
             disabled={disabled}
-            onClick={leftElementCallback}
-            aria-label="Left Align"
-          >
-            <BsTextLeft />
-          </ToolbarItemButton>
-          <ToolbarItemButton
-            disabled={disabled}
-            onClick={centerElementCallback}
-            aria-label="Center Align"
-          >
-            <BsTextCenter />
-          </ToolbarItemButton>
-          <ToolbarItemButton
-            disabled={disabled}
-            onClick={rightElementCallback}
-            aria-label="Right Align"
-          >
-            <BsTextRight />
-          </ToolbarItemButton>
-          <ToolbarItemButton
-            disabled={disabled}
-            onClick={justifyElementCallback}
-            aria-label="Justify Align"
-          >
-            <BsJustify />
-          </ToolbarItemButton>{' '}
+            alignType={alignType}
+            editor={editor}
+            toolbarRef={toolbarRef}
+          />
         </>
       )}
     </Toolbar>

@@ -146,7 +146,6 @@ const ToolbarBlockType: React.FC<ToolbarBlockControlsProps> = ({
         <ChevronWrapper>
           <BsChevronDown />
         </ChevronWrapper>
-        {/*<i className="chevron-down" />*/}
       </ToolbarItemButton>
       {showBlockOptionsDropDown &&
         createPortal(
