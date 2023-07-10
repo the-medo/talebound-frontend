@@ -15,6 +15,7 @@ import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { MarkNode } from '@lexical/mark';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
@@ -35,6 +36,7 @@ import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
 import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
+import { useSharedHistoryContext } from './context/SharedHistoryContext';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -126,6 +128,7 @@ const Editor: React.FC<EditorProps> = ({
   debounceTime = 0,
   saveOnDebounce,
 }) => {
+  const { historyState } = useSharedHistoryContext();
   const finalActionLabel = useMemo(
     () => (alreadyExists ? 'Save' : actionLabel),
     [actionLabel, alreadyExists],
@@ -325,6 +328,7 @@ const Editor: React.FC<EditorProps> = ({
         <EditorContainer postView={postViewType === PostViewType.POST} loading={loading}>
           {postViewType === PostViewType.EDIT && <ToolbarPlugin disabled={disabled} />}
           <EditorInner postView={postViewType === PostViewType.POST}>
+            <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={contentEditable}
               placeholder={placeholder}
