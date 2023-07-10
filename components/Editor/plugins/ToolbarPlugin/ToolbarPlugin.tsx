@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, JSX } from 'react';
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -40,7 +40,11 @@ import SelectCodeLanguage from './SelectCodeLanguage';
 
 export const LOW_PRIORITY = 1;
 
-const ToolbarPlugin = (): JSX.Element => {
+interface ToolbarPluginProps {
+  disabled?: boolean;
+}
+
+const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
@@ -189,26 +193,38 @@ const ToolbarPlugin = (): JSX.Element => {
 
   return (
     <Toolbar data-test-id="toolbar" ref={toolbarRef}>
-      <ToolbarItemButton disabled={!canUndo} onClick={undoCallback} aria-label="Undo">
+      <ToolbarItemButton disabled={!canUndo || disabled} onClick={undoCallback} aria-label="Undo">
         <BsArrowCounterclockwise />
       </ToolbarItemButton>
-      <ToolbarItemButton disabled={!canRedo} onClick={redoCallback} aria-label="Redo">
+      <ToolbarItemButton disabled={!canRedo || disabled} onClick={redoCallback} aria-label="Redo">
         <BsArrowClockwise />
       </ToolbarItemButton>
       <Divider />
-      <ToolbarBlockType blockType={blockType} editor={editor} toolbarRef={toolbarRef} />
+      <ToolbarBlockType
+        disabled={disabled}
+        blockType={blockType}
+        editor={editor}
+        toolbarRef={toolbarRef}
+      />
       {blockType === 'code' ? (
         <SelectCodeLanguage
+          disabled={disabled}
           selectedElementKey={selectedElementKey}
           editor={editor}
           codeLanguage={codeLanguage}
         />
       ) : (
         <>
-          <ToolbarItemButton onClick={boldTextCallback} active={isBold} aria-label="Format Bold">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={boldTextCallback}
+            active={isBold}
+            aria-label="Format Bold"
+          >
             <BsTypeBold />
           </ToolbarItemButton>
           <ToolbarItemButton
+            disabled={disabled}
             onClick={italicTextCallback}
             active={isItalic}
             aria-label="Format Italics"
@@ -216,6 +232,7 @@ const ToolbarPlugin = (): JSX.Element => {
             <BsTypeItalic />
           </ToolbarItemButton>
           <ToolbarItemButton
+            disabled={disabled}
             onClick={underlineTextCallback}
             active={isUnderline}
             aria-label="Format Underline"
@@ -223,30 +240,57 @@ const ToolbarPlugin = (): JSX.Element => {
             <BsTypeUnderline />
           </ToolbarItemButton>
           <ToolbarItemButton
+            disabled={disabled}
             onClick={strikethroughTextCallback}
             active={isStrikethrough}
             aria-label="Format Strikethrough"
           >
             <BsTypeStrikethrough />
           </ToolbarItemButton>
-          <ToolbarItemButton onClick={codeTextCallback} active={isCode} aria-label="Insert Code">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={codeTextCallback}
+            active={isCode}
+            aria-label="Insert Code"
+          >
             <BsCode />
           </ToolbarItemButton>
-          <ToolbarItemButton onClick={insertLink} active={isLink} aria-label="Insert Link">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={insertLink}
+            active={isLink}
+            aria-label="Insert Link"
+          >
             <BsLink />
           </ToolbarItemButton>
           {isLink && createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
           <Divider />
-          <ToolbarItemButton onClick={leftElementCallback} aria-label="Left Align">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={leftElementCallback}
+            aria-label="Left Align"
+          >
             <BsTextLeft />
           </ToolbarItemButton>
-          <ToolbarItemButton onClick={centerElementCallback} aria-label="Center Align">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={centerElementCallback}
+            aria-label="Center Align"
+          >
             <BsTextCenter />
           </ToolbarItemButton>
-          <ToolbarItemButton onClick={rightElementCallback} aria-label="Right Align">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={rightElementCallback}
+            aria-label="Right Align"
+          >
             <BsTextRight />
           </ToolbarItemButton>
-          <ToolbarItemButton onClick={justifyElementCallback} aria-label="Justify Align">
+          <ToolbarItemButton
+            disabled={disabled}
+            onClick={justifyElementCallback}
+            aria-label="Justify Align"
+          >
             <BsJustify />
           </ToolbarItemButton>{' '}
         </>

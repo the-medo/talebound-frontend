@@ -323,7 +323,7 @@ const Editor: React.FC<EditorProps> = ({
     <Col fullWidth gap="sm">
       <LexicalComposer initialConfig={initialConfig}>
         <EditorContainer postView={postViewType === PostViewType.POST} loading={loading}>
-          {postViewType === PostViewType.EDIT && <ToolbarPlugin />}
+          {postViewType === PostViewType.EDIT && <ToolbarPlugin disabled={disabled} />}
           <EditorInner postView={postViewType === PostViewType.POST}>
             <RichTextPlugin
               contentEditable={contentEditable}
