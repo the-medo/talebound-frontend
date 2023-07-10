@@ -11,6 +11,7 @@ import {
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
 import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';
+import { PostTypeEnum, usePostType } from '../../hooks/usePostType';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
   postViewOnly?: boolean;
@@ -18,6 +19,7 @@ type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
 
 const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnly = false }) => {
   const { user, isLoggedIn: _isLoggedIn } = useAuth();
+  const postType = usePostType(PostTypeEnum.UserIntroduction);
 
   const { data: userData, isLoading: isLoadingUser } = useGetUserById({
     variables: userId,
@@ -97,7 +99,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
         defaultPostViewType={PostViewType.POST}
         isDraft={data?.post?.isDraft ?? false}
         alreadyExists={data?.post?.id !== undefined}
-        draftable={data?.postType?.draftable ?? false}
+        draftable={data?.postType?.draftable ?? postType?.draftable ?? false}
         onSaveAction={onSave}
         error={parseError(updateUserIntroduction.error)}
         resetError={resetErrorHandler}
