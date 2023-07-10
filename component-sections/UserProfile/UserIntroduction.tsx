@@ -31,7 +31,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
     [userData?.introductionPostId],
   );
 
-  const { data: data, isLoading: isLoadingIntroduction } = useGetPostById({
+  const { data: postData, isLoading: isLoadingIntroduction } = useGetPostById({
     enabled: loadIntroductionData,
     variables: userData?.introductionPostId ?? 0,
     suspense: true,
@@ -41,7 +41,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
 
   const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
 
-  const hasIntroduction = !isLoading && data?.post?.content !== undefined;
+  const hasIntroduction = !isLoading && postData?.post?.content !== undefined;
 
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
@@ -76,13 +76,13 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
 
   const editorState = useMemo(() => {
     if (!isLoading && userData?.introductionPostId !== undefined) {
-      return data?.post?.content;
+      return postData?.post?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isLoading, userData?.introductionPostId, data?.post?.content]);
+  }, [hasIntroduction, isLoading, userData?.introductionPostId, postData?.post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateUserIntroduction.reset();
@@ -97,9 +97,9 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
         disabled={false}
         editable={!postViewOnly}
         defaultPostViewType={PostViewType.POST}
-        isDraft={data?.post?.isDraft ?? false}
-        alreadyExists={data?.post?.id !== undefined}
-        draftable={data?.postType?.draftable ?? postType?.draftable ?? false}
+        isDraft={postData?.post?.isDraft ?? false}
+        alreadyExists={postData?.post?.id !== undefined}
+        draftable={postData?.postType?.draftable ?? postType?.draftable ?? false}
         onSaveAction={onSave}
         error={parseError(updateUserIntroduction.error)}
         resetError={resetErrorHandler}

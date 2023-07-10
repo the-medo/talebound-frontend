@@ -126,8 +126,6 @@ const Editor: React.FC<EditorProps> = ({
   debounceTime = 0,
   saveOnDebounce,
 }) => {
-  console.log('alreadyExists', alreadyExists);
-
   const finalActionLabel = useMemo(
     () => (alreadyExists ? 'Save' : actionLabel),
     [actionLabel, alreadyExists],
@@ -321,10 +319,6 @@ const Editor: React.FC<EditorProps> = ({
     }
   }, [onSaveAction, draftable]);
 
-  useEffect(() => {
-    console.log('draftable', draftable, 'isDraft', isDraft, 'alreadyExists', alreadyExists);
-  }, [alreadyExists, draftable, isDraft]);
-
   return (
     <Col fullWidth gap="sm">
       <LexicalComposer initialConfig={initialConfig}>
@@ -425,14 +419,26 @@ const Editor: React.FC<EditorProps> = ({
           </Row>
         )}
         {postViewType === PostViewType.POST && hasRightToEdit && (
-          <Button
-            disabled={actionInProgress !== EditorAction.IDLE}
-            loading={actionInProgress === EditorAction.SAVE_AND_PUBLISH}
-            color="secondaryFill"
-            onClick={openEditorHandler}
-          >
-            <Text>Edit</Text>
-          </Button>
+          <Row gap="sm">
+            <Button
+              disabled={actionInProgress !== EditorAction.IDLE}
+              color="secondaryFill"
+              onClick={openEditorHandler}
+            >
+              <Text>Edit</Text>
+            </Button>
+            {draftable && isDraft && (
+              <Button
+                disabled={actionInProgress !== EditorAction.IDLE}
+                loading={actionInProgress === EditorAction.SAVE_AND_PUBLISH}
+                color="secondaryFill"
+                onClick={saveAndPublishActionHandler}
+              >
+                <Text>Publish</Text>
+                <AiOutlineSend size="0.8em" />
+              </Button>
+            )}
+          </Row>
         )}
         {error && (
           <Text color="danger">
