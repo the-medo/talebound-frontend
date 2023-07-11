@@ -19,6 +19,7 @@ export const ModalContent = styled(DialogRadix.Content, {
   minHeight: '200px',
   maxHeight: '85vh',
   padding: 25,
+  zIndex: 10,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   '&:focus': { outline: 'none' },
 });

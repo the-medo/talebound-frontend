@@ -23,7 +23,7 @@ const Modal: React.FC<ModalProps> = ({ trigger, content, title, description, ...
       <ModalTrigger asChild>{trigger}</ModalTrigger>
       <ModalPortal>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
           {title && <ModalTitle>{title}</ModalTitle>}
           {description && <ModalDescription>{description}</ModalDescription>}
           {content}

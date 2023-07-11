@@ -37,6 +37,8 @@ import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
+import InlineImagePlugin from './plugins/InlineImagePlugin';
+import { InlineImageNode } from './nodes/InlineImageNode';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -63,6 +65,7 @@ const editorConfig: InitialConfigType = {
     LinkNode,
     MarkNode,
     HorizontalRuleNode,
+    InlineImageNode,
   ],
 };
 
@@ -341,6 +344,7 @@ const Editor: React.FC<EditorProps> = ({
             <LinkPlugin />
             <AutoLinkPlugin />
             <MarkdownPlugin />
+            <InlineImagePlugin />
             <ListMaxIndentLevelPlugin maxDepth={7} />
           </EditorInner>
         </EditorContainer>

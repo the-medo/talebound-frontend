@@ -32,6 +32,7 @@ import ToolbarBlockType, { BlockType } from './ToolbarBlockType';
 import SelectCodeLanguage from './SelectCodeLanguage';
 import ToolbarAlignType from './ToolbarAlignType';
 import ToolbarOtherOptions from './ToolbarOtherOptions';
+import ToolbarInsert from './ToolbarInsert';
 
 export const LOW_PRIORITY = 1;
 
@@ -221,6 +222,7 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
             editor={editor}
             toolbarRef={toolbarRef}
           />
+          <Divider /> <ToolbarInsert disabled={disabled} editor={editor} toolbarRef={toolbarRef} />
         </>
       )}
     </Toolbar>

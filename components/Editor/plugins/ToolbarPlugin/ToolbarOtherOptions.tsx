@@ -65,7 +65,6 @@ const ToolbarOtherOptions: React.FC<ToolbarOtherOptionsProps> = ({
           />,
           document.body,
         )}
-      <Divider />
     </>
   );
 };
