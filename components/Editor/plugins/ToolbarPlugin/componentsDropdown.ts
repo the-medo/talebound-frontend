@@ -40,6 +40,7 @@ export const DropdownItem = styled('button', {
     small: {
       true: {
         minWidth: '100px',
+        width: 'calc(100% - 16px)',
       },
     },
   },

@@ -11,7 +11,7 @@ import {
   $isRangeSelection,
   ElementFormatType,
 } from 'lexical';
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { $isLinkNode } from '@lexical/link';
 import { $isParentElementRTL } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
 import { $isListNode, ListNode } from '@lexical/list';
@@ -23,17 +23,15 @@ import FloatingLinkEditor from './FloatingLinkEditor';
 import {
   BsArrowClockwise,
   BsArrowCounterclockwise,
-  BsCode,
-  BsLink,
   BsTypeBold,
   BsTypeItalic,
-  BsTypeStrikethrough,
   BsTypeUnderline,
 } from 'react-icons/bs';
 import { Divider, Toolbar, ToolbarItemButton } from './componentsToolbar';
 import ToolbarBlockType, { BlockType } from './ToolbarBlockType';
 import SelectCodeLanguage from './SelectCodeLanguage';
 import ToolbarAlignType from './ToolbarAlignType';
+import ToolbarOtherOptions from './ToolbarOtherOptions';
 
 export const LOW_PRIORITY = 1;
 
@@ -139,14 +137,6 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
     );
   }, [editor, updateToolbar]);
 
-  const insertLink = useCallback(() => {
-    if (!isLink) {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
-    } else {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-    }
-  }, [editor, isLink]);
-
   const undoCallback = useCallback(() => {
     editor.dispatchCommand(UNDO_COMMAND, undefined);
   }, [editor]);
@@ -165,14 +155,6 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
 
   const underlineTextCallback = useCallback(() => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
-  }, [editor]);
-
-  const strikethroughTextCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
-  }, [editor]);
-
-  const codeTextCallback = useCallback(() => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
   }, [editor]);
 
   return (
@@ -223,30 +205,14 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
           >
             <BsTypeUnderline />
           </ToolbarItemButton>
-          <ToolbarItemButton
+          <ToolbarOtherOptions
             disabled={disabled}
-            onClick={strikethroughTextCallback}
-            active={isStrikethrough}
-            aria-label="Format Strikethrough"
-          >
-            <BsTypeStrikethrough />
-          </ToolbarItemButton>
-          <ToolbarItemButton
-            disabled={disabled}
-            onClick={codeTextCallback}
-            active={isCode}
-            aria-label="Insert Code"
-          >
-            <BsCode />
-          </ToolbarItemButton>
-          <ToolbarItemButton
-            disabled={disabled}
-            onClick={insertLink}
-            active={isLink}
-            aria-label="Insert Link"
-          >
-            <BsLink />
-          </ToolbarItemButton>
+            editor={editor}
+            toolbarRef={toolbarRef}
+            isStrikethrough={isStrikethrough}
+            isCode={isCode}
+            isLink={isLink}
+          />
           {isLink && createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
           <Divider />{' '}
           <ToolbarAlignType
