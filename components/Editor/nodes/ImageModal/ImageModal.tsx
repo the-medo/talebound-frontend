@@ -11,7 +11,7 @@ interface ImageModalProps {
 const ImageModal: React.FC<ImageModalProps> = ({ editor, trigger }) => {
   const content = useMemo(() => <ImageModalContent editor={editor} />, [editor]);
 
-  return <Modal trigger={trigger} content={content} />;
+  return <Modal size="md" trigger={trigger} content={content} />;
 };
 
 export default ImageModal;
