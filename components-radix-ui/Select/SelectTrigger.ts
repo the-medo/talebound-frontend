@@ -8,20 +8,18 @@ export const SelectTrigger = styled(Select.SelectTrigger, {
   gap: '$md',
   justifyContent: 'space-between',
 
+  border: '1px solid transparent',
   fontFamily: '$heading',
   padding: '$4',
   borderRadius: '$md',
   cursor: 'pointer',
   fontSize: '$md',
   transition: 'all 0.2s ease-in-out',
-  border: '1px solid transparent',
   color: '$primary900',
-  backgroundColor: '$white700',
 
   '&:focus': {
     outline: 'none',
     boxShadow: '$md',
-    border: '1px solid $white900',
   },
 
   variants: {
@@ -31,28 +29,30 @@ export const SelectTrigger = styled(Select.SelectTrigger, {
       },
     },
 
-    transparent: {
-      true: {
+    mode: {
+      transparent: {
         background: '$transparent40',
         '&:hover': { backgroundColor: '$transparent70' },
         '&:focus': { backgroundColor: '$transparent70' },
       },
+      grey: {
+        backgroundColor: '$white700',
+        '&:focus': { border: '1px solid $white900' },
+      },
+      white: {
+        borderColor: '$primary300',
+        backgroundColor: '$white200',
+        '&:focus': {
+          border: '1px solid $primary500',
+          backgroundColor: '$white100',
+        },
+      },
     },
   },
 
-  // all: 'unset',
-  // display: 'inline-flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
-  // borderRadius: 4,
-  // padding: '0 15px',
-  // fontSize: 13,
-  // lineHeight: 1,
-  // height: 35,
-  // gap: 5,
-  // backgroundColor: 'white',
-  // color: 'black',
-  // boxShadow: `0 2px 10px black`,
+  defaultVariants: {
+    mode: 'white',
+  },
   // '&:hover': { backgroundColor: '$primary200' },
   // '&:focus': { boxShadow: `0 0 0 2px black` },
   // '&[data-placeholder]': { color: '$primary500' },

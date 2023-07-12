@@ -72,12 +72,7 @@ const ImageAttributes: React.FC = () => {
         options={options}
       />
 
-      <Checkbox
-        id="req_checkbox"
-        checked={showCaption}
-        onCheckedChange={onChangeShowCaption}
-        transparent
-      >
+      <Checkbox id="req_checkbox" checked={showCaption} onCheckedChange={onChangeShowCaption}>
         Show caption
       </Checkbox>
     </Col>

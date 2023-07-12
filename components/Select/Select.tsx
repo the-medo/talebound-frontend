@@ -80,14 +80,7 @@ const Select: React.FC<SelectProps> = ({
           defaultValue={defaultValue}
           disabled={disabled}
         >
-          <SelectTrigger
-            css={triggerCss}
-            aria-label={label}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onMouseUp={(e) => e.stopPropagation()}
-            {...otherProps}
-          >
+          <SelectTrigger css={triggerCss} aria-label={label} {...otherProps}>
             <SelectValue placeholder={placeholder} />
             <SelectIcon>
               <BsChevronDown />
