@@ -16,12 +16,14 @@ interface InsertDropdownListProps {
   editor: LexicalEditor;
   toolbarRef: React.RefObject<HTMLDivElement>;
   setShowOtherOptionsDropDown: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowImageModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const InsertDropdownList = ({
   editor,
   toolbarRef,
   setShowOtherOptionsDropDown,
+  setShowImageModal,
 }: InsertDropdownListProps): JSX.Element => {
   const dropDownRef = useRef<HTMLDivElement>(null);
   const [modal, showModal] = useModal();
@@ -62,23 +64,18 @@ const InsertDropdownList = ({
 
   return (
     <DropdownContainer ref={dropDownRef}>
-      <ImageModal
-        trigger={
-          <DropdownItem
-            active={false}
-            onClick={placeholderCallback}
-            aria-label="Table"
-            small={true}
-          >
-            <DropdownItemIcon>
-              <BsTable />
-            </DropdownItemIcon>
+      <DropdownItem
+        active={false}
+        onClick={() => setShowImageModal(true)}
+        aria-label="Table"
+        small={true}
+      >
+        <DropdownItemIcon>
+          <BsTable />
+        </DropdownItemIcon>
+        <DropdownItemText>Table</DropdownItemText>
+      </DropdownItem>
 
-            <DropdownItemText>Table</DropdownItemText>
-          </DropdownItem>
-        }
-        editor={editor}
-      />
       <DropdownItem
         active={false}
         onClick={() => {

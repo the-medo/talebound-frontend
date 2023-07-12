@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import { IconWrapper } from './ToolbarBlockType';
 import { styled } from '../../../../styles/stitches.config';
 import InsertDropdownList from './InsertDropdownList';
+import ImageModal from '../../nodes/ImageModal/ImageModal';
 
 const ChevronWrapper = styled(IconWrapper, {
   width: '14px',
@@ -34,6 +35,7 @@ interface ToolbarInsertProps {
 
 const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, editor }) => {
   const [showInsertDropDown, setShowInsertDropDown] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const showInsertDropdownListCallback = useCallback(() => setShowInsertDropDown((p) => !p), []);
 
@@ -58,9 +60,16 @@ const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, edi
             editor={editor}
             toolbarRef={toolbarRef}
             setShowOtherOptionsDropDown={setShowInsertDropDown}
+            setShowImageModal={setShowImageModal}
           />,
           document.body,
         )}
+      <ImageModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        editor={editor}
+        trigger={null}
+      />
     </>
   );
 };

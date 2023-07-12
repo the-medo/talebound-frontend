@@ -14,7 +14,6 @@ import type {
 import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import * as React from 'react';
 import { Suspense } from 'react';
-import { styled } from '../../../styles/stitches.config';
 
 const InlineImageComponent = React.lazy(() => import('./InlineImageComponent'));
 
@@ -263,4 +262,8 @@ export function $createInlineImageNode({
 
 export function $isInlineImageNode(node: LexicalNode | null | undefined): node is InlineImageNode {
   return node instanceof InlineImageNode;
+}
+
+export function $isInlineImagePosition(value: string | undefined): value is Position {
+  return ['left', 'right', 'full', undefined].includes(value);
 }

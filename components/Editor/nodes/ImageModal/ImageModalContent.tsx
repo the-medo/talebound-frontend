@@ -44,41 +44,41 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor }) => {
   }, [payload, editor]);
 
   return (
-    <>
+    <Col gap="md" css={{ flexGrow: 1 }} onClick={(e) => e.stopPropagation()}>
       <Row gap="md">
-        <Col gap="md" css={{ flexGrow: 1 }}>
-          <Row gap="md">
-            <Button
-              color={activeTab === ImageModalTabs.Url ? 'primaryFill' : 'primaryOutline'}
-              onClick={handleUrlTabClick}
-            >
-              Url
-            </Button>
-            <Button
-              color={activeTab === ImageModalTabs.Upload ? 'primaryFill' : 'primaryOutline'}
-              onClick={handleUploadTabClick}
-            >
-              Upload
-            </Button>
-            <Button
-              color={activeTab === ImageModalTabs.YourImages ? 'primaryFill' : 'primaryOutline'}
-              onClick={handleYourImagesTabClick}
-            >
-              Your images
-            </Button>
-          </Row>
-          <Row gap="md" justifyContent="between">
-            {activeTab === ImageModalTabs.Url && <ImageModalTabUrl editor={editor} />}
-            {activeTab === ImageModalTabs.Upload && <ImageModalTabUpload editor={editor} />}
-            {activeTab === ImageModalTabs.YourImages && <ImageModalTabYourImages editor={editor} />}
-            <Col gap="md">
-              <ImageAttributes />
-            </Col>
-          </Row>
+        <Button
+          color={activeTab === ImageModalTabs.Url ? 'primaryFill' : 'primaryOutline'}
+          onClick={handleUrlTabClick}
+        >
+          Url
+        </Button>
+        <Button
+          color={activeTab === ImageModalTabs.Upload ? 'primaryFill' : 'primaryOutline'}
+          onClick={handleUploadTabClick}
+        >
+          Upload
+        </Button>
+        <Button
+          color={activeTab === ImageModalTabs.YourImages ? 'primaryFill' : 'primaryOutline'}
+          onClick={handleYourImagesTabClick}
+        >
+          Your images
+        </Button>
+      </Row>
+      <hr />
+      <Row gap="md" justifyContent="between" alignItems="start">
+        {activeTab === ImageModalTabs.Url && <ImageModalTabUrl editor={editor} />}
+        {activeTab === ImageModalTabs.Upload && <ImageModalTabUpload editor={editor} />}
+        {activeTab === ImageModalTabs.YourImages && <ImageModalTabYourImages editor={editor} />}
+        <Col gap="md">
+          <ImageAttributes />
         </Col>
       </Row>
-      <Button onClick={handleOnClick}>Add image</Button>
-    </>
+      <hr />
+      <Row gap="md" alignSelf="end">
+        <Button onClick={handleOnClick}>Add image</Button>
+      </Row>
+    </Col>
   );
 };
 

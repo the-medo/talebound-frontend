@@ -1,16 +1,25 @@
-import React, { ChangeEventHandler, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useInput } from '../../../../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
 import { updateInlineImagePayload } from './imageModalSlice';
 import { Col } from '../../../Flex/Flex';
 import Input from '../../../Input/Input';
-import { Text } from '../../../Typography/Text';
 import Checkbox from '../../../Checkbox/Checkbox';
+import Select from '../../../Select/Select';
+import { SelectOptions } from '../../../../components-radix-ui/Select/selectLib';
+import { $isInlineImagePosition } from '../InlineImageNode';
 
-interface ImageAttributesProps {}
+const options: SelectOptions = {
+  type: 'options',
+  options: [
+    { value: 'left', label: 'Left' },
+    { value: 'right', label: 'Right' },
+    { value: 'full', label: 'Full' },
+  ],
+};
 
-const ImageAttributes: React.FC<ImageAttributesProps> = () => {
+const ImageAttributes: React.FC = () => {
   const dispatch = useDispatch();
   const showCaption = useSelector(
     (state: ReduxState) => state.imageModal.inlineImagePayload.showCaption,
@@ -21,7 +30,7 @@ const ImageAttributes: React.FC<ImageAttributesProps> = () => {
   useEffect(() => {
     dispatch(
       updateInlineImagePayload({
-        alt: altValue,
+        altText: altValue,
       }),
     );
   }, [altValue]);
@@ -37,12 +46,12 @@ const ImageAttributes: React.FC<ImageAttributesProps> = () => {
     [dispatch],
   );
 
-  const onChangePosition: ChangeEventHandler<HTMLSelectElement> = useCallback(
-    (e) => {
-      if (['left', 'right', 'full'].includes(e.target.value)) {
+  const onChangePosition = useCallback(
+    (value: string) => {
+      if ($isInlineImagePosition(value)) {
         dispatch(
           updateInlineImagePayload({
-            position: e.target.value,
+            position: value,
           }),
         );
       }
@@ -53,11 +62,15 @@ const ImageAttributes: React.FC<ImageAttributesProps> = () => {
   return (
     <Col css={{ width: '300px' }}>
       <Input id={'alt'} label={'Alt'} onChange={onChangeAlt} />
-      <select onChange={onChangePosition} value={position}>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="full">Full</option>
-      </select>
+      <Select
+        id="position"
+        label="Position"
+        fullWidth={true}
+        defaultValue={position}
+        onValueChange={onChangePosition}
+        value={position}
+        options={options}
+      />
 
       <Checkbox
         id="req_checkbox"
