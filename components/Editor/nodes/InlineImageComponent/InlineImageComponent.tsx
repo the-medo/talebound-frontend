@@ -1,13 +1,6 @@
-import type { Position } from './InlineImageNode';
+import type { Position } from '../InlineImageNode/InlineImageNode';
+import { $isInlineImageNode } from '../InlineImageNode/InlineImageNode';
 import type { GridSelection, LexicalEditor, NodeKey, NodeSelection, RangeSelection } from 'lexical';
-
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { LexicalNestedComposer } from '@lexical/react/LexicalNestedComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
-import { mergeRegister } from '@lexical/utils';
 import {
   $getNodeByKey,
   $getSelection,
@@ -22,26 +15,27 @@ import {
   KEY_ESCAPE_COMMAND,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import * as React from 'react';
-import { ChangeEventHandler, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
-import useModal from '../hooks/useModal';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { LexicalNestedComposer } from '@lexical/react/LexicalNestedComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+import { mergeRegister } from '@lexical/utils';
+import * as React from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+
+import useModal from '../../hooks/useModal';
 // import FloatingLinkEditorPlugin from '../plugins/FloatingLinkEditorPlugin/index';
 // import FloatingTextFormatToolbarPlugin from '../plugins/FloatingTextFormatToolbarPlugin/index';
 // import LinkPlugin from '../plugins/LinkPlugin';
-import { DialogActions } from '../ui/Dialog';
-import Placeholder from '../ui/Placeholder';
-
-import { $isInlineImageNode, InlineImageNode } from './InlineImageNode';
-import { styled } from '../../../styles/stitches.config';
-import Input from '../../Input/Input';
+import Placeholder from '../../ui/Placeholder';
+import { styled } from '../../../../styles/stitches.config';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { Button } from '../../Button/Button';
-
-const StyledSelect = styled('select', {
-  marginBottom: '1rem',
-  width: '290px',
-});
+import { Button } from '../../../Button/Button';
+import { LazyImage } from './LazyImage';
+import { UpdateInlineImageDialog } from './UpdateInlineImageDialog';
 
 const InlineImageNodeContentEditable = styled(ContentEditable, {
   minHeight: '20px',
@@ -77,134 +71,13 @@ const InlineImageNodePlaceholder = styled(Placeholder, {
   pointerEvents: 'none',
 });
 
-const imageCache = new Set();
-
-function useSuspenseImage(src: string) {
-  if (!imageCache.has(src)) {
-    throw new Promise((resolve) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imageCache.add(src);
-        resolve(null);
-      };
-    });
-  }
-}
-
-function LazyImage({
-  altText,
-  className,
-  imageRef,
-  src,
-  width,
-  height,
-  position,
-}: {
-  altText: string;
-  className: string | null;
-  height: 'inherit' | number;
-  imageRef: { current: null | HTMLImageElement };
-  src: string;
-  width: 'inherit' | number;
-  position: Position;
-}): JSX.Element {
-  useSuspenseImage(src);
-  return (
-    <img
-      className={className || undefined}
-      src={src}
-      alt={altText}
-      ref={imageRef}
-      data-position={position}
-      style={{
-        display: 'block',
-        height,
-        width,
-      }}
-      draggable="false"
-    />
-  );
-}
-
-export function UpdateInlineImageDialog({
-  activeEditor,
-  nodeKey,
-  onClose,
-}: {
-  activeEditor: LexicalEditor;
-  nodeKey: NodeKey;
-  onClose: () => void;
-}): JSX.Element {
-  const editorState = activeEditor.getEditorState();
-  const node = editorState.read(() => $getNodeByKey(nodeKey) as InlineImageNode);
-  const [altText, setAltText] = useState(node.getAltText());
-  const [showCaption, setShowCaption] = useState(node.getShowCaption());
-  const [position, setPosition] = useState<Position>(node.getPosition());
-
-  const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCaption(e.target.checked);
-  };
-
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as Position);
-  };
-
-  const handleOnConfirm = () => {
-    const payload = { altText, position, showCaption };
-    if (node) {
-      activeEditor.update(() => {
-        node.update(payload);
-      });
-    }
-    onClose();
-  };
-
-  const altTextChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setAltText(e.target.value);
-  }, []);
-
-  return (
-    <>
-      <div style={{ marginBottom: '1em' }}>
-        <Input
-          id="alt-text-input"
-          label="Alt Text"
-          placeholder="Descriptive alternative text"
-          onChange={altTextChangeHandler}
-          value={altText}
-          data-test-id="image-modal-alt-text-input"
-        />
-      </div>
-      Position:
-      <StyledSelect
-        style={{ marginBottom: '1em', width: '208px' }}
-        value={position}
-        name="position"
-        id="position-select"
-        onChange={handlePositionChange}
-      >
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="full">Full Width</option>
-      </StyledSelect>
-      <div className="Input__wrapper">
-        <input
-          id="caption"
-          type="checkbox"
-          checked={showCaption}
-          onChange={handleShowCaptionChange}
-        />
-        <label htmlFor="caption">Show Caption</label>
-      </div>
-      <DialogActions>
-        <Button data-test-id="image-modal-file-upload-btn" onClick={() => handleOnConfirm()}>
-          Confirm
-        </Button>
-      </DialogActions>
-    </>
-  );
-}
+const ImageCaptionContainer = styled('div', {
+  display: 'block',
+  backgroundColor: '$white200',
+  minWidth: '100%',
+  color: '#000',
+  overflow: 'hidden,',
+});
 
 export default function InlineImageComponent({
   src,
@@ -358,8 +231,18 @@ export default function InlineImageComponent({
     <Suspense fallback={null}>
       <>
         <div draggable={draggable}>
-          <button
-            className="image-edit-button"
+          <Button
+            css={{
+              position: 'absolute',
+              right: 12,
+              top: 12,
+              cursor: 'pointer',
+              userSelect: 'none',
+              opacity: 0.7,
+              ':hover': {
+                opacity: 1,
+              },
+            }}
             ref={buttonRef}
             onClick={() => {
               showModal('Update Inline Image', (onClose) => (
@@ -372,21 +255,20 @@ export default function InlineImageComponent({
             }}
           >
             Edit
-          </button>
+          </Button>
           <LazyImage
-            className={
-              isFocused ? `focused ${$isNodeSelection(selection) ? 'draggable' : ''}` : null
-            }
+            focused={isFocused}
+            grabbable={isFocused && $isNodeSelection(selection)}
+            position={position}
             src={src}
             altText={altText}
             imageRef={imageRef}
             width={width}
             height={height}
-            position={position}
           />
         </div>
         {showCaption && (
-          <div className="image-caption-container">
+          <ImageCaptionContainer>
             <LexicalNestedComposer initialEditor={caption}>
               <AutoFocusPlugin />
               {/*<LinkPlugin />
@@ -400,7 +282,7 @@ export default function InlineImageComponent({
                 ErrorBoundary={LexicalErrorBoundary}
               />
             </LexicalNestedComposer>
-          </div>
+          </ImageCaptionContainer>
         )}
       </>
       {modal}

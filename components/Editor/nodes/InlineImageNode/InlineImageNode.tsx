@@ -14,8 +14,11 @@ import type {
 import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import * as React from 'react';
 import { Suspense } from 'react';
+import { styled } from '../../../../styles/stitches.config';
 
-const InlineImageComponent = React.lazy(() => import('./InlineImageComponent'));
+const InlineImageComponent = React.lazy(
+  () => import('../InlineImageComponent/InlineImageComponent'),
+);
 
 export type Position = 'left' | 'right' | 'full' | undefined;
 
@@ -229,6 +232,7 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
 
   decorate(): JSX.Element {
     return (
+      // <SpanDecorator position={this.__position}>
       <Suspense fallback={null}>
         <InlineImageComponent
           src={this.__src}
@@ -241,6 +245,7 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
           position={this.__position}
         />
       </Suspense>
+      // </SpanDecorator>
     );
   }
 }

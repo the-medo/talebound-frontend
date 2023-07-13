@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InlineImagePayload } from '../InlineImageNode';
+import { InlineImagePayload } from '../InlineImageNode/InlineImageNode';
 
 export interface ImageModalSliceState {
   inlineImagePayload: Omit<InlineImagePayload, 'caption'>;

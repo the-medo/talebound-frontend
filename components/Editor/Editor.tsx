@@ -38,7 +38,7 @@ import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
-import { InlineImageNode } from './nodes/InlineImageNode';
+import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
 import ImageModal from './nodes/ImageModal/ImageModal';
 import {
   DropdownItem,

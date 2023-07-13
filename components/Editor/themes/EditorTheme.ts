@@ -20,6 +20,7 @@ const editorTheme = {
     listitem: 'editor-listitem',
   },
   image: 'editor-image',
+  inlineImage: 'inline-editor-image',
   link: 'editor-link',
   text: {
     bold: 'editor-text-bold',

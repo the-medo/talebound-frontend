@@ -223,6 +223,23 @@ export const EditorInner = styled('div', {
     margin: '0 0 0 16px',
   },
 
+  '& .inline-editor-image': {
+    cursor: 'default',
+    display: 'inline-block',
+    position: 'relative',
+    zIndex: '1',
+    // marginTop: '$sm',
+
+    '&.position-left': {
+      float: 'left',
+      marginRight: '$sm',
+    },
+    '&.position-right': {
+      float: 'right',
+      marginLeft: '$sm',
+    },
+  },
+
   '& .editor-listitem': {
     margin: '8px 32px 8px 32px',
   },

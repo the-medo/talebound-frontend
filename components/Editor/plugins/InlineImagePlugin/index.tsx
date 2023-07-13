@@ -1,4 +1,4 @@
-import type { Position } from '../../nodes/InlineImageNode';
+import type { Position } from '../../nodes/InlineImageNode/InlineImageNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
@@ -27,7 +27,7 @@ import {
   $isInlineImageNode,
   InlineImageNode,
   InlineImagePayload,
-} from '../../nodes/InlineImageNode';
+} from '../../nodes/InlineImageNode/InlineImageNode';
 import { DialogActions } from '../../ui/Dialog';
 import { CAN_USE_DOM } from '../../../../utils/functions/canUseDOM';
 import Input from '../../../Input/Input';

@@ -8,7 +8,7 @@ import Input from '../../../Input/Input';
 import Checkbox from '../../../Checkbox/Checkbox';
 import Select from '../../../Select/Select';
 import { SelectOptions } from '../../../../components-radix-ui/Select/selectLib';
-import { $isInlineImagePosition } from '../InlineImageNode';
+import { $isInlineImagePosition } from '../InlineImageNode/InlineImageNode';
 
 const options: SelectOptions = {
   type: 'options',
