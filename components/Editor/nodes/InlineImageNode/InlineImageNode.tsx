@@ -14,7 +14,6 @@ import type {
 import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import * as React from 'react';
 import { Suspense } from 'react';
-import { styled } from '../../../../styles/stitches.config';
 
 const InlineImageComponent = React.lazy(
   () => import('../InlineImageComponent/InlineImageComponent'),

@@ -20,10 +20,10 @@ const StyledLazyImage = styled('img', {
   variants: {
     position: {
       left: {
-        float: 'left',
+        // float: 'left',
       },
       right: {
-        float: 'right',
+        // float: 'right',
       },
       full: {},
     },

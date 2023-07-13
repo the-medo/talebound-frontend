@@ -58,13 +58,15 @@ const InlineImageNodeContentEditable = styled(ContentEditable, {
 });
 
 const InlineImageNodePlaceholder = styled(Placeholder, {
-  fontSize: '12px',
+  fontSize: '13px',
   color: '#888',
   overflow: 'hidden',
   position: 'absolute',
   textOverflow: 'ellipsis',
-  bottom: '10px',
-  left: '10px',
+  bottom: '4px',
+  left: '4px',
+  top: 'auto',
+  right: 'auto',
   userSelect: 'none',
   whiteSpace: 'nowrap',
   display: 'inline-block',
@@ -73,10 +75,16 @@ const InlineImageNodePlaceholder = styled(Placeholder, {
 
 const ImageCaptionContainer = styled('div', {
   display: 'block',
-  backgroundColor: '$white200',
+  backgroundColor: '$white600',
   minWidth: '100%',
   color: '#000',
-  overflow: 'hidden,',
+  overflow: 'hidden',
+  minHeight: '28px',
+
+  '& p.editor-paragraph': {
+    fontSize: '13px',
+    color: '$primary800',
+  },
 });
 
 export default function InlineImageComponent({

@@ -228,7 +228,7 @@ export const EditorInner = styled('div', {
     display: 'inline-block',
     position: 'relative',
     zIndex: '1',
-    // marginTop: '$sm',
+    marginBottom: '$sm',
 
     '&.position-left': {
       float: 'left',
