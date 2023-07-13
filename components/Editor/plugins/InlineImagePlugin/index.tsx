@@ -244,7 +244,7 @@ function onDragStart(event: DragEvent): boolean {
         src: node.__src,
         width: node.__width,
       },
-      type: 'image',
+      type: 'inline-image',
     }),
   );
 
@@ -301,7 +301,7 @@ function getDragImageData(event: DragEvent): null | InsertInlineImagePayload {
     return null;
   }
   const { type, data } = JSON.parse(dragData);
-  if (type !== 'image') {
+  if (type !== 'inline-image') {
     return null;
   }
 

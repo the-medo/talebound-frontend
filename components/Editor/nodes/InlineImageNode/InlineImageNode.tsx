@@ -231,12 +231,12 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
 
   decorate(): JSX.Element {
     return (
-      // <SpanDecorator position={this.__position}>
       <Suspense fallback={null}>
         <InlineImageComponent
           src={this.__src}
           altText={this.__altText}
           width={this.__width}
+          maxWidth={1000}
           height={this.__height}
           nodeKey={this.getKey()}
           showCaption={this.__showCaption}
@@ -244,7 +244,6 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
           position={this.__position}
         />
       </Suspense>
-      // </SpanDecorator>
     );
   }
 }

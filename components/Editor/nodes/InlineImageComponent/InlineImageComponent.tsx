@@ -36,6 +36,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { Button } from '../../../Button/Button';
 import { LazyImage } from './LazyImage';
 import { UpdateInlineImageDialog } from './UpdateInlineImageDialog';
+import ImageResizer from '../../ui/ImageResizer';
 
 const InlineImageNodeContentEditable = styled(ContentEditable, {
   minHeight: '20px',
@@ -92,10 +93,12 @@ export default function InlineImageComponent({
   altText,
   nodeKey,
   width,
+  maxWidth,
   height,
   showCaption,
   caption,
   position,
+  resizable = true,
 }: {
   altText: string;
   caption: LexicalEditor;
@@ -104,12 +107,15 @@ export default function InlineImageComponent({
   showCaption: boolean;
   src: string;
   width: 'inherit' | number;
+  maxWidth: number;
   position: Position;
+  resizable?: boolean;
 }): JSX.Element {
   const [modal, showModal] = useModal();
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
+  const [isResizing, setIsResizing] = useState<boolean>(false);
   const [editor] = useLexicalComposerContext();
   const [selection, setSelection] = useState<RangeSelection | NodeSelection | GridSelection | null>(
     null,
@@ -195,6 +201,11 @@ export default function InlineImageComponent({
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
+          console.log('======== Click IN', isResizing, payload);
+          if (isResizing) {
+            return true;
+          }
+          console.log('======== Click OUT');
           if (event.target === imageRef.current) {
             if (event.shiftKey) {
               setSelected(!isSelected);
@@ -233,8 +244,31 @@ export default function InlineImageComponent({
     };
   }, [clearSelection, editor, isSelected, nodeKey, onDelete, onEnter, onEscape, setSelected]);
 
+  const onResizeEnd = useCallback(
+    (nextWidth: 'inherit' | number, nextHeight: 'inherit' | number) => {
+      // Delay hiding the resize bars for click case
+      setTimeout(() => {
+        // setIsResizing(false);
+        console.log('should be false?');
+      }, 200);
+
+      editor.update(() => {
+        const node = $getNodeByKey(nodeKey);
+        if ($isInlineImageNode(node)) {
+          node.setWidthAndHeight(nextWidth, nextHeight);
+        }
+      });
+    },
+    [editor, nodeKey],
+  );
+
+  const onResizeStart = useCallback(() => {
+    // setIsResizing(true);
+  }, []);
+
   const draggable = isSelected && $isNodeSelection(selection);
   const isFocused = isSelected;
+
   return (
     <Suspense fallback={null}>
       <>
@@ -291,6 +325,15 @@ export default function InlineImageComponent({
               />
             </LexicalNestedComposer>
           </ImageCaptionContainer>
+        )}
+        {resizable && $isNodeSelection(selection) && isFocused && (
+          <ImageResizer
+            editor={editor}
+            imageRef={imageRef}
+            maxWidth={maxWidth}
+            onResizeStart={onResizeStart}
+            onResizeEnd={onResizeEnd}
+          />
         )}
       </>
       {modal}

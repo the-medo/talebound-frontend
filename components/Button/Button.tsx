@@ -265,7 +265,6 @@ export const Button: React.FC<ButtonProps> = ({
   css,
   ...rest
 }) => {
-  console.log('rest', rest);
   const loadingColor = useMemo(() => {
     switch (rest.color) {
       case 'primaryFill':
