@@ -292,6 +292,7 @@ function getImageNodeInSelection(): InlineImageNode | null {
   }
   const nodes = selection.getNodes();
   const node = nodes[0];
+
   return $isInlineImageNode(node) ? node : null;
 }
 

@@ -168,6 +168,14 @@ export default function ImageResizer({
     }
   };
 
+  const setWidth = (image: HTMLElement, width: number) => {
+    image.style.width = `${width}px`;
+    const wholeImageElement = image.closest('span.inline-editor-image') as HTMLSpanElement;
+    if (wholeImageElement) {
+      wholeImageElement.style.width = `${width}px`;
+    }
+  };
+
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>, direction: number) => {
     if (!editor.isEditable()) {
       return;
@@ -195,17 +203,13 @@ export default function ImageResizer({
 
       controlWrapper.classList.add('image-control-wrapper--resizing');
       image.style.height = `${height}px`;
-      image.style.width = `${width}px`;
-
-      // const wholeImageElement = image.closest('span.inline-editor-image') as HTMLSpanElement;
-      // if (wholeImageElement) {
-      //   wholeImageElement.style.width = `${width}px`;
-      // }
+      setWidth(image, width);
 
       document.addEventListener('pointermove', handlePointerMove);
       document.addEventListener('pointerup', handlePointerUp);
     }
   };
+
   const handlePointerMove = (event: PointerEvent) => {
     const image = imageRef.current;
     const positioning = positioningRef.current;
@@ -222,7 +226,7 @@ export default function ImageResizer({
         const width = clamp(positioning.startWidth + diff, minWidth, maxWidthContainer);
 
         const height = width / positioning.ratio;
-        image.style.width = `${width}px`;
+        setWidth(image, width);
         image.style.height = `${height}px`;
         positioning.currentHeight = height;
         positioning.currentWidth = width;
@@ -239,8 +243,8 @@ export default function ImageResizer({
         diff = positioning.direction & Direction.east ? -diff : diff;
 
         const width = clamp(positioning.startWidth + diff, minWidth, maxWidthContainer);
+        setWidth(image, width);
 
-        image.style.width = `${width}px`;
         positioning.currentWidth = width;
       }
     }
@@ -271,6 +275,7 @@ export default function ImageResizer({
       document.removeEventListener('pointerup', handlePointerUp);
     }
   };
+
   return (
     <div ref={controlWrapperRef}>
       <ImageResizerPoint

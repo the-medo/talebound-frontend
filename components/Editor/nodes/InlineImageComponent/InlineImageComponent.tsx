@@ -201,11 +201,9 @@ export default function InlineImageComponent({
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
-          console.log('======== Click IN', isResizing, payload);
           if (isResizing) {
             return true;
           }
-          console.log('======== Click OUT');
           if (event.target === imageRef.current) {
             if (event.shiftKey) {
               setSelected(!isSelected);
