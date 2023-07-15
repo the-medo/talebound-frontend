@@ -9,6 +9,7 @@ const initialState: ImageModalSliceState = {
   inlineImagePayload: {
     altText: '',
     src: '',
+    position: 'left',
   },
 };
 
@@ -24,6 +25,9 @@ export const imageModalSlice = createSlice({
         ...state.inlineImagePayload,
         ...action.payload,
       };
+    },
+    setInlineImagePayload: (state, action: PayloadAction<InlineImagePayload>) => {
+      state.inlineImagePayload = action.payload;
     },
   },
 });

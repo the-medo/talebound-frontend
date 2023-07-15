@@ -39,13 +39,6 @@ import { Text } from '../Typography/Text';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
-import ImageModal from './nodes/ImageModal/ImageModal';
-import {
-  DropdownItem,
-  DropdownItemIcon,
-  DropdownItemText,
-} from './plugins/ToolbarPlugin/componentsDropdown';
-import { BsTable } from 'react-icons/bs';
 
 const editorConfig: InitialConfigType = {
   // The editor theme

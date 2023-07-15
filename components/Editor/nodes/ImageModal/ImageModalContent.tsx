@@ -18,9 +18,10 @@ enum ImageModalTabs {
 
 interface ImageModalContentProps {
   editor: LexicalEditor;
+  setOpen: (v: boolean) => void;
 }
 
-const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor }) => {
+const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor, setOpen }) => {
   const [activeTab, setActiveTab] = React.useState(ImageModalTabs.Url);
   const payload = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload);
 
@@ -40,8 +41,8 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor }) => {
 
   const handleOnClick = useCallback(() => {
     editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
-    // onClose();
-  }, [payload, editor]);
+    setOpen(false);
+  }, [editor, payload, setOpen]);
 
   return (
     <Col gap="md" css={{ flexGrow: 1 }} onClick={(e) => e.stopPropagation()}>

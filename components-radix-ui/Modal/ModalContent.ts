@@ -40,15 +40,15 @@ export const ModalContent = styled(DialogRadix.Content, {
       },
       md: {
         width: '40vw',
-        minWidth: '450px',
+        minWidth: '550px',
       },
       lg: {
         width: '50vw',
-        minWidth: '450px',
+        minWidth: '550px',
       },
       xl: {
         width: '60vw',
-        minWidth: '450px',
+        minWidth: '550px',
       },
     },
   },

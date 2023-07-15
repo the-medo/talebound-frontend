@@ -37,6 +37,8 @@ import { Button } from '../../../Button/Button';
 import { LazyImage } from './LazyImage';
 import { UpdateInlineImageDialog } from './UpdateInlineImageDialog';
 import ImageResizer from '../../ui/ImageResizer';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { useSharedHistoryContext } from '../../context/SharedHistoryContext';
 
 const InlineImageNodeContentEditable = styled(ContentEditable, {
   minHeight: '20px',
@@ -112,6 +114,7 @@ export default function InlineImageComponent({
   resizable?: boolean;
 }): JSX.Element {
   const [modal, showModal] = useModal();
+  const { historyState } = useSharedHistoryContext();
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
@@ -165,11 +168,14 @@ export default function InlineImageComponent({
 
   const onEscape = useCallback(
     (event: KeyboardEvent) => {
+      console.log('activeEditorRef.current', activeEditorRef.current);
       if (activeEditorRef.current === caption || buttonRef.current === event.target) {
+        console.log('====== here ======');
         $setSelection(null);
         editor.update(() => {
           setSelected(true);
           const parentRootElement = editor.getRootElement();
+          console.log('parentRootElement', parentRootElement);
           if (parentRootElement !== null) {
             parentRootElement.focus();
           }
@@ -240,14 +246,23 @@ export default function InlineImageComponent({
       isMounted = false;
       unregister();
     };
-  }, [clearSelection, editor, isSelected, nodeKey, onDelete, onEnter, onEscape, setSelected]);
+  }, [
+    clearSelection,
+    editor,
+    isResizing,
+    isSelected,
+    nodeKey,
+    onDelete,
+    onEnter,
+    onEscape,
+    setSelected,
+  ]);
 
   const onResizeEnd = useCallback(
     (nextWidth: 'inherit' | number, nextHeight: 'inherit' | number) => {
       // Delay hiding the resize bars for click case
       setTimeout(() => {
         // setIsResizing(false);
-        console.log('should be false?');
       }, 200);
 
       editor.update(() => {
@@ -314,6 +329,7 @@ export default function InlineImageComponent({
               {/*<LinkPlugin />
               <FloatingLinkEditorPlugin />
               <FloatingTextFormatToolbarPlugin />*/}
+              <HistoryPlugin externalHistoryState={historyState} />
               <RichTextPlugin
                 contentEditable={<InlineImageNodeContentEditable />}
                 placeholder={
