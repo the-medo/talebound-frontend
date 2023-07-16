@@ -35,8 +35,8 @@ const OtherOptionsDropdownList = ({
 
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left + 250}px`;
+      dropDown.style.top = `${window.scrollY + top + 40}px`;
+      dropDown.style.left = `${window.scrollX + left + 250}px`;
     }
   }, [dropDownRef, toolbarRef]);
 

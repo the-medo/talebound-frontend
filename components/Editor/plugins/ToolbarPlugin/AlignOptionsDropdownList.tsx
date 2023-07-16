@@ -29,8 +29,8 @@ const AlignOptionsDropdownList = ({
 
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left + 370}px`;
+      dropDown.style.top = `${window.scrollY + top + 40}px`;
+      dropDown.style.left = `${window.scrollX + left + 370}px`;
     }
   }, [dropDownRef, toolbarRef]);
 

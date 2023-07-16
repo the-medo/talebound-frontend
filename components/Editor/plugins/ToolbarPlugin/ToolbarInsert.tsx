@@ -53,17 +53,17 @@ const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, edi
         <ChevronWrapper>
           <BsChevronDown />
         </ChevronWrapper>
+        {showInsertDropDown &&
+          createPortal(
+            <InsertDropdownList
+              editor={editor}
+              toolbarRef={toolbarRef}
+              setShowOtherOptionsDropDown={setShowInsertDropDown}
+              setShowImageModal={setShowImageModal}
+            />,
+            document.body,
+          )}
       </ToolbarItemButton>
-      {showInsertDropDown &&
-        createPortal(
-          <InsertDropdownList
-            editor={editor}
-            toolbarRef={toolbarRef}
-            setShowOtherOptionsDropDown={setShowInsertDropDown}
-            setShowImageModal={setShowImageModal}
-          />,
-          document.body,
-        )}
       <ImageModal
         open={showImageModal}
         setOpen={setShowImageModal}

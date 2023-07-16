@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { LexicalEditor } from 'lexical';
 import { BsImage, BsTable } from 'react-icons/bs';
 import {
@@ -9,8 +9,6 @@ import {
 } from './componentsDropdown';
 import { InsertInlineImageDialog } from '../InlineImagePlugin';
 import useModal from '../../hooks/useModal';
-import Modal from '../../../Modal/Modal';
-import ImageModal from '../../nodes/ImageModal/ImageModal';
 
 interface InsertDropdownListProps {
   editor: LexicalEditor;
@@ -34,8 +32,8 @@ const InsertDropdownList = ({
 
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left + 470}px`;
+      dropDown.style.top = `${window.scrollY + top + 40}px`;
+      dropDown.style.left = `${window.scrollX + left + 470}px`;
     }
   }, [dropDownRef, toolbarRef]);
 
@@ -59,8 +57,6 @@ const InsertDropdownList = ({
       };
     }
   }, [dropDownRef, setShowOtherOptionsDropDown, toolbarRef]);
-
-  const placeholderCallback = useCallback(() => {}, [editor]);
 
   return (
     <DropdownContainer ref={dropDownRef}>

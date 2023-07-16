@@ -296,31 +296,33 @@ export default function InlineImageComponent({
     <Suspense fallback={null}>
       <>
         <ImageComponentWrapper draggable={draggable} focused={isFocused}>
-          <Button
-            css={{
-              position: 'absolute',
-              right: 12,
-              top: 12,
-              cursor: 'pointer',
-              userSelect: 'none',
-              opacity: 0.7,
-              ':hover': {
-                opacity: 1,
-              },
-            }}
-            ref={buttonRef}
-            onClick={() => {
-              showModal('Update Inline Image', (onClose) => (
-                <UpdateInlineImageDialog
-                  activeEditor={editor}
-                  nodeKey={nodeKey}
-                  onClose={onClose}
-                />
-              ));
-            }}
-          >
-            Edit
-          </Button>
+          {isFocused && (
+            <Button
+              css={{
+                position: 'absolute',
+                right: 12,
+                top: 12,
+                cursor: 'pointer',
+                userSelect: 'none',
+                opacity: 0.7,
+                ':hover': {
+                  opacity: 1,
+                },
+              }}
+              ref={buttonRef}
+              onClick={() => {
+                showModal('Update Inline Image', (onClose) => (
+                  <UpdateInlineImageDialog
+                    activeEditor={editor}
+                    nodeKey={nodeKey}
+                    onClose={onClose}
+                  />
+                ));
+              }}
+            >
+              Edit
+            </Button>
+          )}
           <LazyImage
             grabbable={isFocused && $isNodeSelection(selection)}
             position={position}
