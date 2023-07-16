@@ -90,6 +90,16 @@ const ImageCaptionContainer = styled('div', {
   },
 });
 
+const ImageComponentWrapper = styled('div', {
+  variants: {
+    focused: {
+      true: {
+        outline: '2px solid $primary500',
+      },
+    },
+  },
+});
+
 export default function InlineImageComponent({
   src,
   altText,
@@ -285,7 +295,7 @@ export default function InlineImageComponent({
   return (
     <Suspense fallback={null}>
       <>
-        <div draggable={draggable}>
+        <ImageComponentWrapper draggable={draggable} focused={isFocused}>
           <Button
             css={{
               position: 'absolute',
@@ -312,7 +322,6 @@ export default function InlineImageComponent({
             Edit
           </Button>
           <LazyImage
-            focused={isFocused}
             grabbable={isFocused && $isNodeSelection(selection)}
             position={position}
             src={src}
@@ -321,25 +330,25 @@ export default function InlineImageComponent({
             width={width}
             height={height}
           />
-        </div>
-        {showCaption && (
-          <ImageCaptionContainer>
-            <LexicalNestedComposer initialEditor={caption}>
-              <AutoFocusPlugin />
-              {/*<LinkPlugin />
+          {showCaption && (
+            <ImageCaptionContainer>
+              <LexicalNestedComposer initialEditor={caption}>
+                <AutoFocusPlugin />
+                {/*<LinkPlugin />
               <FloatingLinkEditorPlugin />
               <FloatingTextFormatToolbarPlugin />*/}
-              <HistoryPlugin externalHistoryState={historyState} />
-              <RichTextPlugin
-                contentEditable={<InlineImageNodeContentEditable />}
-                placeholder={
-                  <InlineImageNodePlaceholder>Enter a caption...</InlineImageNodePlaceholder>
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-            </LexicalNestedComposer>
-          </ImageCaptionContainer>
-        )}
+                <HistoryPlugin externalHistoryState={historyState} />
+                <RichTextPlugin
+                  contentEditable={<InlineImageNodeContentEditable />}
+                  placeholder={
+                    <InlineImageNodePlaceholder>Enter a caption...</InlineImageNodePlaceholder>
+                  }
+                  ErrorBoundary={LexicalErrorBoundary}
+                />
+              </LexicalNestedComposer>
+            </ImageCaptionContainer>
+          )}
+        </ImageComponentWrapper>
         {resizable && $isNodeSelection(selection) && isFocused && (
           <ImageResizer
             editor={editor}

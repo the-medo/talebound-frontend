@@ -19,19 +19,9 @@ const StyledLazyImage = styled('img', {
 
   variants: {
     position: {
-      left: {
-        // float: 'left',
-      },
-      right: {
-        // float: 'right',
-      },
+      left: {},
+      right: {},
       full: {},
-    },
-
-    focused: {
-      true: {
-        outline: '2px solid rgb(60,132,244)',
-      },
     },
 
     grabbable: {
