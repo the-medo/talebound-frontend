@@ -10,6 +10,8 @@ export enum ImageVariant {
   'public' = 'public',
 }
 
+export const imageVariantArray = Object.keys(ImageVariant) as Array<ImageVariant>;
+
 export const modifyImageVariant = (url: string, newVariant: ImageVariant): string => {
   const urlObject = new URL(url);
   const pathParts = urlObject.pathname.split('/').filter(Boolean);
@@ -31,3 +33,14 @@ export const modifyImageVariant = (url: string, newVariant: ImageVariant): strin
 
   return urlObject.toString();
 };
+
+/**
+ * Checks whether the URL is a Talebound Cloudflare image URL.
+ *
+ * @param url - The URL to check.
+ * @returns A boolean indicating whether the URL is a Talebound Cloudflare image URL.
+ */
+export const isTaleboundCloudflareImage = (url: string): boolean =>
+  url.startsWith(
+    `https://${process.env.NEXT_PUBLIC_CLOUDFLARE_HOSTNAME}/${process.env.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH}`,
+  );

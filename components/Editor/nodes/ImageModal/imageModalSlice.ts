@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { InlineImagePayload } from '../InlineImageNode/InlineImageNode';
+import { ImageVariant } from '../../../../utils/images/image_utils';
 
 export interface ImageModalSliceState {
   inlineImagePayload: Omit<InlineImagePayload, 'caption'>;
+  selectedVariant?: ImageVariant;
 }
 
 const initialState: ImageModalSliceState = {
@@ -11,6 +13,7 @@ const initialState: ImageModalSliceState = {
     src: '',
     position: 'left',
   },
+  selectedVariant: undefined,
 };
 
 export const imageModalSlice = createSlice({
@@ -19,6 +22,7 @@ export const imageModalSlice = createSlice({
   reducers: {
     resetInlineImagePayload: (state) => {
       state.inlineImagePayload = initialState.inlineImagePayload;
+      state.selectedVariant = initialState.selectedVariant;
     },
     updateInlineImagePayload: (state, action: PayloadAction<Partial<InlineImagePayload>>) => {
       state.inlineImagePayload = {
@@ -29,9 +33,17 @@ export const imageModalSlice = createSlice({
     setInlineImagePayload: (state, action: PayloadAction<InlineImagePayload>) => {
       state.inlineImagePayload = action.payload;
     },
+    setSelectedVariant: (state, action: PayloadAction<ImageVariant>) => {
+      state.selectedVariant = action.payload;
+    },
   },
 });
 
-export const { resetInlineImagePayload, updateInlineImagePayload } = imageModalSlice.actions;
+export const {
+  resetInlineImagePayload,
+  updateInlineImagePayload,
+  setInlineImagePayload,
+  setSelectedVariant,
+} = imageModalSlice.actions;
 
 export const imageModalReducer = imageModalSlice.reducer;

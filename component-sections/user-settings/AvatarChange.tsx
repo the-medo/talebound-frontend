@@ -9,6 +9,7 @@ import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
 import Avatar from '../../components/Avatar/Avatar';
 import Loading from '../../components/Loading/Loading';
+import { fileInputChanged } from '../../utils/functions/fileInputChanged';
 
 const AvatarChange: React.FC = () => {
   const { user } = useAuth();
@@ -29,28 +30,13 @@ const AvatarChange: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    async (event) => {
-      if (event.target.files) {
-        const file = event.target.files[0];
-        if (file) {
-          const arrayBuffer = await file.arrayBuffer();
-
-          // Convert data to base64
-          let binary = '';
-          const bytes = new Uint8Array(arrayBuffer);
-          const len = bytes.byteLength;
-          for (let i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i]);
-          }
-          const base64Data = window.btoa(binary);
-
-          setUploadArgs({
-            userId: user?.id ?? 0,
-            data: base64Data,
-          });
-        }
-      }
-    },
+    async (event) =>
+      fileInputChanged(event, (base64Data) =>
+        setUploadArgs({
+          userId: user?.id ?? 0,
+          data: base64Data,
+        }),
+      ),
     [user?.id],
   );
 

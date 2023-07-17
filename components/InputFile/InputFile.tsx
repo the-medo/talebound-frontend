@@ -82,13 +82,17 @@ interface InputFileProps {
   multiple?: boolean;
   showBorder?: boolean;
   showTitle?: boolean;
+  disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const InputFile: React.ForwardRefExoticComponent<
   InputFileProps & React.RefAttributes<HTMLInputElement>
 > = React.forwardRef<HTMLInputElement, InputFileProps>(
-  ({ multiple = false, showBorder = true, showTitle = true, onChange }, forwardedRef) => {
+  (
+    { multiple = false, showBorder = true, showTitle = true, disabled = false, onChange },
+    forwardedRef,
+  ) => {
     return (
       <InputFileLabel showBorder={showBorder} showTitle={showTitle} htmlFor="images">
         {showTitle && (
@@ -103,6 +107,7 @@ const InputFile: React.ForwardRefExoticComponent<
           type="file"
           id="images"
           accept="image/*"
+          disabled={disabled}
           required
         />
       </InputFileLabel>

@@ -19,6 +19,8 @@ export const ModalContent = styled(DialogRadix.Content, {
   minWidth: '450px',
   minHeight: '200px',
   maxHeight: '85vh',
+  overflowY: 'scroll',
+
   padding: 25,
   zIndex: 10,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
