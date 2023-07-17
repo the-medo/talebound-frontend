@@ -322,14 +322,6 @@ export interface PbUploadImageRequest {
   data?: string;
 }
 
-export interface PbUploadImageResponse {
-  id?: string;
-  filename?: string;
-  variants?: string[];
-  /** @format date-time */
-  uploadedAt?: string;
-}
-
 export interface PbUploadUserAvatarResponse {
   /** @format int32 */
   userId?: number;

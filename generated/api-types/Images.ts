@@ -9,10 +9,10 @@
  * ---------------------------------------------------------------
  */
 
-import { PbUploadImageRequest, PbUploadImageResponse, RpcStatus } from './data-contracts';
+import { PbImage, PbUploadImageRequest, RpcStatus } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
-export class Files<SecurityDataType = unknown> {
+export class Images<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
 
   constructor(http: HttpClient<SecurityDataType>) {
@@ -23,15 +23,15 @@ export class Files<SecurityDataType = unknown> {
    * @description uploads an image file
    *
    * @tags Talebound
-   * @name TaleboundUploadImage
+   * @name TaleboundUploadDefaultImage
    * @summary Upload image
-   * @request POST:/files/upload
-   * @response `200` `PbUploadImageResponse` A successful response.
+   * @request POST:/images
+   * @response `200` `PbImage` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUploadImage = (body: PbUploadImageRequest, params: RequestParams = {}) =>
-    this.http.request<PbUploadImageResponse, RpcStatus>({
-      path: `/files/upload`,
+  taleboundUploadDefaultImage = (body: PbUploadImageRequest, params: RequestParams = {}) =>
+    this.http.request<PbImage, RpcStatus>({
+      path: `/images`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
