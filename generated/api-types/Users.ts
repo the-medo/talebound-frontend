@@ -19,6 +19,7 @@ import {
   PbGetAverageUserEvaluationsByTypeResponse,
   PbGetEvaluationVotesByUserIdAndVoterResponse,
   PbGetEvaluationVotesByUserIdResponse,
+  PbGetImagesResponse,
   PbGetUserPostsResponse,
   PbGetUserRolesResponse,
   PbGetUsersResponse,
@@ -410,6 +411,35 @@ export class Users<SecurityDataType = unknown> {
     this.http.request<PbDeleteEvaluationVoteResponse, RpcStatus>({
       path: `/users/${userId}/evaluation-vote/${evaluationId}/voter/${userIdVoter}`,
       method: 'DELETE',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description Get images of user by userID - filterable by image type
+   *
+   * @tags Talebound
+   * @name TaleboundGetUserImages
+   * @summary Get user images
+   * @request GET:/users/{userId}/images
+   * @response `200` `PbGetImagesResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetUserImages = (
+    userId: number,
+    query?: {
+      /** @format int32 */
+      imageTypeId?: number;
+      /** @format int32 */
+      limit?: number;
+      /** @format int32 */
+      offset?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetImagesResponse, RpcStatus>({
+      path: `/users/${userId}/images`,
+      method: 'GET',
+      query: query,
       format: 'json',
       ...params,
     });

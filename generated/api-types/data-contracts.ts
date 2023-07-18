@@ -201,6 +201,12 @@ export interface PbGetEvaluationsByTypeResponse {
   evaluation?: PbEvaluation[];
 }
 
+export interface PbGetImagesResponse {
+  images?: PbImage[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
 export interface PbGetPostHistoryResponse {
   historyPosts?: PbHistoryPost[];
 }

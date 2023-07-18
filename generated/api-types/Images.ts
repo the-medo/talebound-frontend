@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { PbImage, PbUploadImageRequest, RpcStatus } from './data-contracts';
+import { PbGetImagesResponse, PbImage, PbUploadImageRequest, RpcStatus } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class Images<SecurityDataType = unknown> {
@@ -19,6 +19,36 @@ export class Images<SecurityDataType = unknown> {
     this.http = http;
   }
 
+  /**
+   * @description Get images - paginated, filterable by user and image type
+   *
+   * @tags Talebound
+   * @name TaleboundGetImages
+   * @summary Get images
+   * @request GET:/images
+   * @response `200` `PbGetImagesResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetImages = (
+    query?: {
+      /** @format int32 */
+      userId?: number;
+      /** @format int32 */
+      imageTypeId?: number;
+      /** @format int32 */
+      limit?: number;
+      /** @format int32 */
+      offset?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetImagesResponse, RpcStatus>({
+      path: `/images`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
   /**
    * @description uploads an image file
    *
