@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
 import ImageAttributes from './ImageAttributes';
 import { styled } from '../../../../styles/stitches.config';
-import { Text } from '../../../Typography/Text';
 import {
   ImageVariant,
   isTaleboundCloudflareImage,
