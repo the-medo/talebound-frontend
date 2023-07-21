@@ -20,6 +20,8 @@ export const useGetImages = createInfiniteQuery<
       offset,
     });
 
+    console.log('[_primaryKey, variables]', [_primaryKey, variables]);
+
     return expandDataForInfiniteQuery(data, offset, PAGE_SIZE, data.totalCount);
   },
 

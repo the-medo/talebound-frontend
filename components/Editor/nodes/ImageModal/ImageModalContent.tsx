@@ -13,7 +13,7 @@ import { styled } from '../../../../styles/stitches.config';
 import {
   ImageVariant,
   isTaleboundCloudflareImage,
-  modifyImageVariant,
+  imageModifyVariant,
 } from '../../../../utils/images/image_utils';
 import { TitleH4 } from '../../../Typography/Title';
 import ImageVariantButtons from '../../../ImageVariantButtons/ImageVariantButtons';
@@ -78,7 +78,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor, setOpen }
 
   useEffect(() => {
     if (isTaleboundCloudflareImage(payload.src) && selectedVariant) {
-      const newUrl = modifyImageVariant(payload.src, selectedVariant);
+      const newUrl = imageModifyVariant(payload.src, selectedVariant);
       dispatch(updateInlineImagePayload({ src: newUrl }));
     }
   }, [selectedVariant, payload.src, dispatch]);

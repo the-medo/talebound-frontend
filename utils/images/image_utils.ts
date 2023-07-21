@@ -12,13 +12,37 @@ export enum ImageVariant {
 
 export const imageVariantArray = Object.keys(ImageVariant) as Array<ImageVariant>;
 
-export const modifyImageVariant = (url: string, newVariant: ImageVariant): string => {
+export const isImageVariant = (variant: string): variant is ImageVariant =>
+  imageVariantArray.includes(variant as ImageVariant);
+
+export const imageUrlWithoutVariant = (url: string): string => {
+  try {
+    const urlObject = new URL(url);
+    const pathParts = urlObject.pathname.split('/').filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+
+    // Check if last part of the path is a valid variant
+    if (isImageVariant(lastPart)) {
+      // Remove the last part of the path
+      pathParts.pop();
+    }
+
+    // Join the path parts back together and set the pathname on the URL object
+    urlObject.pathname = pathParts.join('/');
+
+    return urlObject.toString();
+  } catch (error) {
+    return url;
+  }
+};
+
+export const imageModifyVariant = (url: string, newVariant: ImageVariant): string => {
   const urlObject = new URL(url);
   const pathParts = urlObject.pathname.split('/').filter(Boolean);
   const lastPart = pathParts[pathParts.length - 1];
 
   // Check if last part of the path is a valid variant
-  if (Object.values(ImageVariant).includes(lastPart as ImageVariant)) {
+  if (isImageVariant(lastPart)) {
     // Replace the last part of the path with the new variant
     pathParts[pathParts.length - 1] = newVariant;
   } else {

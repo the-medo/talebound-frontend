@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { LexicalEditor } from 'lexical';
 import { useGetImages } from '../../../../api/useGetImages';
 import { useAuth } from '../../../../hooks/useAuth';
 import { Spin } from 'antd';
 import { Row } from '../../../Flex/Flex';
 import InfiniteScrollObserver from '../../../InfiniteScrollObserver/InfiniteScrollObserver';
-import { ImageVariant } from '../../../../utils/images/image_utils';
+import { imageUrlWithoutVariant, ImageVariant } from '../../../../utils/images/image_utils';
+import Image from '../../../Image/Image';
+import { PbImage } from '../../../../generated/api-types/data-contracts';
+import { updateInlineImagePayload } from './imageModalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReduxState } from '../../../../store';
 
 interface ImageModalTabYourImagesProps {
   editor: LexicalEditor;
@@ -13,10 +18,12 @@ interface ImageModalTabYourImagesProps {
 
 const ImageModalTabYourImages: React.FC<ImageModalTabYourImagesProps> = ({ editor }) => {
   const { user } = useAuth();
+  const dispatch = useDispatch();
+  const payload = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload);
 
   const {
     data: imagesData,
-    isLoading: isLoadingImages,
+    isFetching: isFetchingImages,
     fetchNextPage,
     hasNextPage,
   } = useGetImages({
@@ -27,15 +34,36 @@ const ImageModalTabYourImages: React.FC<ImageModalTabYourImagesProps> = ({ edito
     },
   });
 
+  const onClick = useCallback(
+    (image: PbImage) => {
+      dispatch(
+        updateInlineImagePayload({
+          src: image.url,
+        }),
+      );
+    },
+    [dispatch],
+  );
+
+  const selectedImageBaseUrl = useMemo(() => imageUrlWithoutVariant(payload.src), [payload.src]);
+
   return (
-    <Spin spinning={isLoadingImages}>
+    <Spin spinning={isFetchingImages}>
       <Row gap="sm" wrap css={{ maxHeight: 300, overflowY: 'scroll' }}>
         {imagesData?.pages.map((page) =>
           page.images?.map((i) => (
-            <img key={i.imgGuid} alt={i.name} src={`${i.baseUrl}/${ImageVariant['100x100']}`} />
+            <Image
+              key={i.imgGuid}
+              image={i}
+              onClick={onClick}
+              variant={ImageVariant['150x150']}
+              selected={selectedImageBaseUrl === i.baseUrl}
+            />
           )),
         )}
-        {hasNextPage && <InfiniteScrollObserver runOnObserve={fetchNextPage} />}
+        {hasNextPage && !isFetchingImages && (
+          <InfiniteScrollObserver runOnObserve={fetchNextPage} />
+        )}
       </Row>
     </Spin>
   );

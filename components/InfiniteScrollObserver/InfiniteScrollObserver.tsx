@@ -26,7 +26,11 @@ const InfiniteScrollObserver: React.FC<InfiniteScrollObserverProps> = ({ runOnOb
     };
   }, [observerTarget, runOnObserve]);
 
-  return <div ref={observerTarget}></div>;
+  return (
+    <div style={{ outline: '2px solid red' }} ref={observerTarget}>
+      &nbsp;
+    </div>
+  );
 };
 
 export default InfiniteScrollObserver;

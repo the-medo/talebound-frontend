@@ -1,8 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { LexicalEditor } from 'lexical';
-import { useUploadImage } from '../../../../api/useUploadImage';
+import { ExpandedUploadImageRequest, useUploadImage } from '../../../../api/useUploadImage';
 import { fileInputChanged } from '../../../../utils/functions/fileInputChanged';
-import { PbUploadImageRequest } from '../../../../generated/api-types/data-contracts';
 import InputFile from '../../../InputFile/InputFile';
 import { Button } from '../../../Button/Button';
 import Loading from '../../../Loading/Loading';
@@ -10,24 +9,29 @@ import { Col, Row } from '../../../Flex/Flex';
 import { useDispatch } from 'react-redux';
 import { updateInlineImagePayload } from './imageModalSlice';
 import ErrorText from '../../../ErrorText/ErrorText';
+import { useAuth } from '../../../../hooks/useAuth';
 
 interface ImageModalTabUploadProps {
   editor: LexicalEditor;
 }
 
 const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const doUploadImage = useUploadImage({
-    onSuccess: (data) => {
-      dispatch(
-        updateInlineImagePayload({
-          src: data.data.url,
-        }),
-      );
+    onSettled: (data, error) => {
+      if (error) return;
+      if (data) {
+        dispatch(
+          updateInlineImagePayload({
+            src: data.data.url,
+          }),
+        );
+      }
     },
   });
 
-  const [uploadArgs, setUploadArgs] = useState<PbUploadImageRequest>();
+  const [uploadArgs, setUploadArgs] = useState<ExpandedUploadImageRequest>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -36,9 +40,11 @@ const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
         setUploadArgs({
           filename: 'post-image',
           data: base64Data,
+          userId: user?.id ?? 0,
+          imageTypeId: 100,
         }),
       ),
-    [],
+    [user?.id],
   );
 
   const handleUpload = useCallback(() => {

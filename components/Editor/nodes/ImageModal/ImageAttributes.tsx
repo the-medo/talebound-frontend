@@ -61,7 +61,7 @@ const ImageAttributes: React.FC = () => {
 
   return (
     <Col css={{ width: '300px' }}>
-      <Input id={'alt'} label={'Alt'} onChange={onChangeAlt} />
+      <Input id={'alt'} label={'Alt text (when not loaded)'} onChange={onChangeAlt} />
       <Select
         id="position"
         label="Position"
