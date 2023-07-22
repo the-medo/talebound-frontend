@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { updateInlineImagePayload } from './imageModalSlice';
 import ErrorText from '../../../ErrorText/ErrorText';
 import { useAuth } from '../../../../hooks/useAuth';
+import { AxiosResponse } from 'axios';
+import { PbImage } from '../../../../generated/api-types/data-contracts';
 
 interface ImageModalTabUploadProps {
   editor: LexicalEditor;
@@ -18,18 +20,7 @@ interface ImageModalTabUploadProps {
 const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
-  const doUploadImage = useUploadImage({
-    onSettled: (data, error) => {
-      if (error) return;
-      if (data) {
-        dispatch(
-          updateInlineImagePayload({
-            src: data.data.url,
-          }),
-        );
-      }
-    },
-  });
+  const doUploadImage = useUploadImage();
 
   const [uploadArgs, setUploadArgs] = useState<ExpandedUploadImageRequest>();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,15 +38,30 @@ const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
     [user?.id],
   );
 
+  const uploadImageSuccessCallback = useCallback(
+    (data: AxiosResponse<PbImage>) => {
+      if (data) {
+        dispatch(
+          updateInlineImagePayload({
+            src: data.data.url,
+          }),
+        );
+      }
+    },
+    [dispatch],
+  );
+
   const handleUpload = useCallback(() => {
     if (!uploadArgs) return;
-    doUploadImage.mutate(uploadArgs);
+    doUploadImage.mutate(uploadArgs, {
+      onSuccess: uploadImageSuccessCallback,
+    });
 
     setUploadArgs(undefined);
     if (inputRef.current) {
       inputRef.current.value = '';
     }
-  }, [doUploadImage, uploadArgs]);
+  }, [doUploadImage, uploadArgs, uploadImageSuccessCallback]);
 
   return (
     <Col gap="md">

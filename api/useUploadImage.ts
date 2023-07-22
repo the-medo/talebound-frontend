@@ -14,9 +14,7 @@ export const useUploadImage = createMutation({
     ImagesCollection.taleboundUploadDefaultImage(variables),
 
   onSuccess: (data, variables) => {
-    console.log('onSuccess useUploadImage');
     const queryKeys = [];
-    console.log('MUTATE variables', variables);
 
     if (variables.userId && variables.imageTypeId) {
       queryKeys.push(
