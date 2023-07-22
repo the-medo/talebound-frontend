@@ -32,8 +32,8 @@ export const EditorInner = styled('div', {
   height: '100%',
 
   '& .other h2': {
-    fontSize: '18px',
-    color: '#444',
+    // fontSize: '18px',
+    color: '$primary800',
     marginBottom: '7px',
   },
 
@@ -50,8 +50,8 @@ export const EditorInner = styled('div', {
   },
 
   '& h1': {
-    fontSize: '24px',
-    color: '#333',
+    // fontSize: '24px',
+    color: '$primary800',
   },
 
   '& .ltr ': {
@@ -187,20 +187,18 @@ export const EditorInner = styled('div', {
   },
 
   '& .editor-heading-h1': {
-    fontSize: '24px',
-    color: 'rgb(5, 5, 5)',
-    fontWeight: '400',
+    color: '$primary800',
+    fontSize: '$xl',
     margin: '0 0 12px',
     padding: '0',
   },
 
   '& .editor-heading-h2': {
-    fontSize: '15px',
-    color: 'rgb(101, 103, 107)',
-    fontWeight: '700',
+    color: '$primary800',
+    fontSize: '$md',
+    textDecoration: 'underline',
     margin: '10px 0 0',
     padding: '0',
-    textTransform: 'uppercase',
   },
 
   '& .editor-quote': {
@@ -259,6 +257,10 @@ export const EditorInner = styled('div', {
 
   '& pre::-webkit-scrollbar-thumb': {
     background: '#999',
+  },
+
+  '& span[data-info="image-node"]': {
+    fontWeight: '400',
   },
 
   variants: {

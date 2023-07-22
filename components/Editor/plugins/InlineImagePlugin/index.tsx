@@ -1,4 +1,3 @@
-import type { ImagePosition } from '../../nodes/InlineImageNode/InlineImageNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
@@ -19,8 +18,7 @@ import {
   LexicalCommand,
   LexicalEditor,
 } from 'lexical';
-import * as React from 'react';
-import { ChangeEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 import {
   $createInlineImageNode,
@@ -28,11 +26,7 @@ import {
   InlineImageNode,
   InlineImagePayload,
 } from '../../nodes/InlineImageNode/InlineImageNode';
-import { DialogActions } from '../../ui/Dialog';
 import { CAN_USE_DOM } from '../../../../utils/functions/canUseDOM';
-import Input from '../../../Input/Input';
-import { styled } from '../../../../styles/stitches.config';
-import { Button } from '../../../Button/Button';
 
 export type InsertInlineImagePayload = Readonly<InlineImagePayload>;
 
@@ -42,130 +36,6 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
 export const INSERT_INLINE_IMAGE_COMMAND: LexicalCommand<InlineImagePayload> = createCommand(
   'INSERT_INLINE_IMAGE_COMMAND',
 );
-
-const StyledSelect = styled('select', {
-  marginBottom: '1rem',
-  width: '290px',
-});
-
-export function InsertInlineImageDialog({
-  activeEditor,
-  onClose,
-}: {
-  activeEditor: LexicalEditor;
-  onClose: () => void;
-}): JSX.Element {
-  const hasModifier = useRef(false);
-
-  const [src, setSrc] = useState('');
-  const [altText, setAltText] = useState('');
-  const [showCaption, setShowCaption] = useState(false);
-  const [position, setPosition] = useState<ImagePosition>('left');
-
-  const isDisabled = src === '';
-
-  const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCaption(e.target.checked);
-  };
-
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as ImagePosition);
-  };
-
-  const loadImage = (files: FileList | null) => {
-    console.log('FILES: ', files);
-    const reader = new FileReader();
-    reader.onload = function () {
-      if (typeof reader.result === 'string') {
-        setSrc(reader.result);
-      }
-      console.log(reader.result);
-      return '';
-    };
-    if (files !== null) {
-      console.log(files[0]);
-      reader.readAsDataURL(files[0]);
-    }
-  };
-
-  useEffect(() => {
-    hasModifier.current = false;
-    const handler = (e: KeyboardEvent) => {
-      hasModifier.current = e.altKey;
-    };
-    document.addEventListener('keydown', handler);
-    return () => {
-      document.removeEventListener('keydown', handler);
-    };
-  }, [activeEditor]);
-
-  const handleOnClick = () => {
-    const payload = { altText, position, showCaption, src };
-    activeEditor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
-    onClose();
-  };
-
-  const altTextChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setAltText(e.target.value);
-  }, []);
-
-  const loadImageHandler: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    // loadImage(e.target.files);
-  }, []);
-
-  return (
-    <>
-      <div style={{ marginBottom: '1em', pointerEvents: 'none' }}>
-        Image Upload:
-        <input
-          type="file"
-          onChange={loadImageHandler}
-          accept="image/*"
-          data-test-id="image-modal-file-upload"
-        />
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Input
-          id="alt-text-input"
-          label="Alt Text"
-          placeholder="Descriptive alternative text"
-          onChange={altTextChangeHandler}
-          value={altText}
-          data-test-id="image-modal-alt-text-input"
-        />
-      </div>
-      Position:
-      <StyledSelect
-        style={{ marginBottom: '1em', width: '290px' }}
-        name="position"
-        id="position-select"
-        onChange={handlePositionChange}
-      >
-        <option value="none">No alignment</option>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-      </StyledSelect>
-      <div className="Input__wrapper">
-        <input
-          id="caption"
-          type="checkbox"
-          checked={showCaption}
-          onChange={handleShowCaptionChange}
-        />
-        <label htmlFor="caption">Show Caption</label>
-      </div>
-      <DialogActions>
-        <Button
-          data-test-id="image-modal-file-upload-btn"
-          disabled={isDisabled}
-          onClick={() => handleOnClick()}
-        >
-          Confirm
-        </Button>
-      </DialogActions>
-    </>
-  );
-}
 
 export default function InlineImagePlugin(): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
