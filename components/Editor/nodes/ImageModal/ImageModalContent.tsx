@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { LexicalEditor } from 'lexical';
+import { $getNodeByKey, LexicalEditor, NodeKey } from 'lexical';
 import { Col, Row } from '../../../Flex/Flex';
 import { Button } from '../../../Button/Button';
 import ImageModalTabUrl from './ImageModalTabUrl';
@@ -11,9 +11,9 @@ import { ReduxState } from '../../../../store';
 import ImageAttributes from './ImageAttributes';
 import { styled } from '../../../../styles/stitches.config';
 import {
+  imageModifyVariant,
   ImageVariant,
   isTaleboundCloudflareImage,
-  imageModifyVariant,
 } from '../../../../utils/images/image_utils';
 import { TitleH4 } from '../../../Typography/Title';
 import ImageVariantButtons from '../../../ImageVariantButtons/ImageVariantButtons';
@@ -22,6 +22,8 @@ import {
   setSelectedVariant,
   updateInlineImagePayload,
 } from './imageModalSlice';
+import { ImageModalMode } from './imageModalLib';
+import { InlineImageNode } from '../InlineImageNode/InlineImageNode';
 
 enum ImageModalTabs {
   Url,
@@ -29,8 +31,10 @@ enum ImageModalTabs {
   YourImages,
 }
 
-interface ImageModalContentProps {
+export interface ImageModalContentProps {
   editor: LexicalEditor;
+  mode?: ImageModalMode;
+  nodeKey?: NodeKey;
   setOpen: (v: boolean) => void;
 }
 
@@ -38,7 +42,12 @@ const PreviewImage = styled('img', {
   maxWidth: '1000px',
 });
 
-const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor, setOpen }) => {
+const ImageModalContent: React.FC<ImageModalContentProps> = ({
+  editor,
+  mode = ImageModalMode.Insert,
+  nodeKey,
+  setOpen,
+}) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(ImageModalTabs.Url);
   const payload = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload);
@@ -63,11 +72,22 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor, setOpen }
     [handleTabClick],
   );
 
-  const handleOnClick = useCallback(() => {
-    editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
+  const handleSubmit = useCallback(() => {
+    if (mode === ImageModalMode.Update) {
+      if (nodeKey) {
+        const node = editor.getEditorState().read(() => $getNodeByKey(nodeKey) as InlineImageNode);
+        if (node) {
+          editor.update(() => {
+            node.update(payload);
+          });
+        }
+      }
+    } else if (mode === ImageModalMode.Insert) {
+      editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
+    }
     dispatch(resetInlineImagePayload());
     setOpen(false);
-  }, [editor, payload, setOpen]);
+  }, [mode, setOpen, nodeKey, payload, editor, dispatch]);
 
   const handleVariantChange = useCallback(
     (variant: ImageVariant) => {
@@ -131,7 +151,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({ editor, setOpen }
         </Col>
       )}
       <Row gap="md" alignSelf="end">
-        <Button onClick={handleOnClick}>Add image</Button>
+        <Button onClick={handleSubmit}>Add image</Button>
       </Row>
     </Col>
   );

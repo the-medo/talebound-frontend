@@ -4,14 +4,6 @@ import * as React from 'react';
 import { styled } from '../../../../styles/stitches.config';
 import Stitches from '@stitches/react';
 
-/*
-
-  cursor: 'default',
-  display: 'inline-block',
-  position: 'relative',
-  zIndex: 1,
- */
-
 const StyledLazyImage = styled('img', {
   maxWidth: '100%',
   cursor: 'default',

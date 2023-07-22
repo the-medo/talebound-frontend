@@ -25,20 +25,19 @@ import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection'
 import { mergeRegister } from '@lexical/utils';
 import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-
-import useModal from '../../hooks/useModal';
-// import FloatingLinkEditorPlugin from '../plugins/FloatingLinkEditorPlugin/index';
-// import FloatingTextFormatToolbarPlugin from '../plugins/FloatingTextFormatToolbarPlugin/index';
-// import LinkPlugin from '../plugins/LinkPlugin';
 import Placeholder from '../../ui/Placeholder';
 import { styled } from '../../../../styles/stitches.config';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { Button } from '../../../Button/Button';
 import { LazyImage } from './LazyImage';
-import { UpdateInlineImageDialog } from './UpdateInlineImageDialog';
 import ImageResizer from '../../ui/ImageResizer';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { useSharedHistoryContext } from '../../context/SharedHistoryContext';
+import ImageModal from '../ImageModal/ImageModal';
+import { updateInlineImagePayload } from '../ImageModal/imageModalSlice';
+import { useDispatch } from 'react-redux';
+import { ImageModalMode } from '../ImageModal/imageModalLib';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 
 const InlineImageNodeContentEditable = styled(ContentEditable, {
   minHeight: '20px',
@@ -123,7 +122,7 @@ export default function InlineImageComponent({
   position: Position;
   resizable?: boolean;
 }): JSX.Element {
-  const [modal, showModal] = useModal();
+  const dispatch = useDispatch();
   const { historyState } = useSharedHistoryContext();
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -133,6 +132,7 @@ export default function InlineImageComponent({
   const [selection, setSelection] = useState<RangeSelection | NodeSelection | GridSelection | null>(
     null,
   );
+  const [showImageModal, setShowImageModal] = useState(false);
   const activeEditorRef = useRef<LexicalEditor | null>(null);
 
   const onDelete = useCallback(
@@ -289,6 +289,18 @@ export default function InlineImageComponent({
     // setIsResizing(true);
   }, []);
 
+  const onEdit = useCallback(() => {
+    dispatch(
+      updateInlineImagePayload({
+        src: src,
+        altText: altText,
+        showCaption: showCaption,
+        position: position,
+      }),
+    );
+    setShowImageModal(true);
+  }, [altText, dispatch, position, showCaption, src]);
+
   const draggable = isSelected && $isNodeSelection(selection);
   const isFocused = isSelected;
 
@@ -310,15 +322,7 @@ export default function InlineImageComponent({
                 },
               }}
               ref={buttonRef}
-              onClick={() => {
-                showModal('Update Inline Image', (onClose) => (
-                  <UpdateInlineImageDialog
-                    activeEditor={editor}
-                    nodeKey={nodeKey}
-                    onClose={onClose}
-                  />
-                ));
-              }}
+              onClick={onEdit}
             >
               Edit
             </Button>
@@ -336,9 +340,7 @@ export default function InlineImageComponent({
             <ImageCaptionContainer>
               <LexicalNestedComposer initialEditor={caption}>
                 <AutoFocusPlugin />
-                {/*<LinkPlugin />
-              <FloatingLinkEditorPlugin />
-              <FloatingTextFormatToolbarPlugin />*/}
+                <LinkPlugin />
                 <HistoryPlugin externalHistoryState={historyState} />
                 <RichTextPlugin
                   contentEditable={<InlineImageNodeContentEditable />}
@@ -361,7 +363,14 @@ export default function InlineImageComponent({
           />
         )}
       </>
-      {modal}
+      <ImageModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        mode={ImageModalMode.Update}
+        editor={editor}
+        trigger={null}
+        nodeKey={nodeKey}
+      />
     </Suspense>
   );
 }

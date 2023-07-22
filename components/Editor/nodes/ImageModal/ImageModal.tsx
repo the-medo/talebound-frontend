@@ -1,19 +1,16 @@
 import React, { useMemo } from 'react';
-import { LexicalEditor } from 'lexical';
 import Modal from '../../../Modal/Modal';
-import ImageModalContent from './ImageModalContent';
+import ImageModalContent, { ImageModalContentProps } from './ImageModalContent';
 
-interface ImageModalProps {
-  editor: LexicalEditor;
+interface ImageModalProps extends ImageModalContentProps {
   trigger: React.ReactNode;
   open?: boolean;
-  setOpen: (v: boolean) => void;
 }
 
-const ImageModal: React.FC<ImageModalProps> = ({ editor, trigger, open, setOpen }) => {
+const ImageModal: React.FC<ImageModalProps> = ({ trigger, open, setOpen, ...contentProps }) => {
   const content = useMemo(
-    () => <ImageModalContent editor={editor} setOpen={setOpen} />,
-    [editor, setOpen],
+    () => <ImageModalContent setOpen={setOpen} {...contentProps} />,
+    [contentProps, setOpen],
   );
 
   return <Modal open={open} onOpenChange={setOpen} size="xl" trigger={trigger} content={content} />;
