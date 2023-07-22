@@ -10,16 +10,20 @@ import type {
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
-
 import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import * as React from 'react';
 import { Suspense } from 'react';
+import { getImageVariantFromUrl, ImageVariantWidths } from '../../../../utils/images/image_utils';
 
 const InlineImageComponent = React.lazy(
   () => import('../InlineImageComponent/InlineImageComponent'),
 );
 
-export type Position = 'left' | 'right' | 'full' | undefined;
+export enum ImagePosition {
+  Left = 'left',
+  Right = 'right',
+  None = 'none',
+}
 
 export interface InlineImagePayload {
   key?: NodeKey;
@@ -29,14 +33,14 @@ export interface InlineImagePayload {
   height?: number;
   showCaption?: boolean;
   caption?: LexicalEditor;
-  position?: Position;
+  position?: ImagePosition;
 }
 
 export interface UpdateInlineImagePayload {
   src?: string;
   altText?: string;
   showCaption?: boolean;
-  position?: Position;
+  position?: ImagePosition;
 }
 
 function convertInlineImageElement(domNode: Node): null | DOMConversionOutput {
@@ -56,7 +60,7 @@ export type SerializedInlineImageNode = Spread<
     height?: number;
     showCaption: boolean;
     caption: SerializedEditor;
-    position?: Position;
+    position?: ImagePosition;
   },
   SerializedLexicalNode
 >;
@@ -68,7 +72,7 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
   __height: 'inherit' | number;
   __showCaption: boolean;
   __caption: LexicalEditor;
-  __position: Position;
+  __position: ImagePosition;
 
   static getType(): string {
     return 'inline-image';
@@ -90,7 +94,7 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
   constructor(
     src: string,
     altText: string,
-    position: Position,
+    position: ImagePosition = ImagePosition.None,
     width?: 'inherit' | number,
     height?: 'inherit' | number,
     showCaption?: boolean,
@@ -185,11 +189,11 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
     writable.__showCaption = showCaption;
   }
 
-  getPosition(): Position {
+  getPosition(): ImagePosition {
     return this.__position;
   }
 
-  setPosition(position: Position): void {
+  setPosition(position: ImagePosition): void {
     const writable = this.getWritable();
     writable.__position = position;
   }
@@ -199,6 +203,15 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
     const { src, altText, showCaption, position } = payload;
     if (src !== undefined) {
       writable.__src = src;
+      //in case we change source of the image, we check if it was not cloudflare image - if yes, we change width based on variant
+      const variant = getImageVariantFromUrl(src);
+      if (variant) {
+        const span = document.querySelector(`span[data-info="image-node"]`);
+        if (span) {
+          const width = ImageVariantWidths[variant];
+          if (width) (span as HTMLElement).style.width = `${width}px`;
+        }
+      }
     }
     if (altText !== undefined) {
       writable.__altText = altText;
@@ -208,35 +221,35 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
     }
     if (position !== undefined) {
       writable.__position = position;
+      if (position === 'none') {
+        this.setWidthAndHeight('inherit', 'inherit');
+      }
     }
   }
-
-  // View
 
   createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement('span');
     if (this.__width !== 'inherit') {
       span.style.width = `${this.__width}px`;
     } else {
-      if (this.__position !== 'full') {
+      const variant = getImageVariantFromUrl(this.__src);
+      if (variant) {
+        const width = ImageVariantWidths[variant];
+        if (width) span.style.width = `${width}px`;
+      } else {
         span.style.width = `200px`;
       }
     }
 
-    const className = `${config.theme.inlineImage} position-${this.__position}`;
-    if (className !== undefined) {
-      span.className = className;
-    }
+    span.className = `${config.theme.inlineImage} position-${this.__position}`;
+    span.setAttribute('data-info', 'image-node');
     return span;
   }
 
   updateDOM(prevNode: InlineImageNode, dom: HTMLElement, config: EditorConfig): false {
     const position = this.__position;
     if (position !== prevNode.__position) {
-      const className = `${config.theme.inlineImage} position-${position}`;
-      if (className !== undefined) {
-        dom.className = className;
-      }
+      dom.className = `${config.theme.inlineImage} position-${position}`;
     }
     return false;
   }
@@ -280,6 +293,6 @@ export function $isInlineImageNode(node: LexicalNode | null | undefined): node i
   // return node?.getType() === 'inline-image';
 }
 
-export function $isInlineImagePosition(value: string | undefined): value is Position {
-  return ['left', 'right', 'full', undefined].includes(value);
+export function $isInlineImagePosition(value: string | undefined): value is ImagePosition {
+  return ['left', 'right', 'none', undefined].includes(value);
 }

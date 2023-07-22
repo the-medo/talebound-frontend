@@ -22,7 +22,7 @@ import {
   setSelectedVariant,
   updateInlineImagePayload,
 } from './imageModalSlice';
-import { ImageModalMode } from './imageModalLib';
+import { ImageModalAction, ImageModalMode } from './imageModalLib';
 import { InlineImageNode } from '../InlineImageNode/InlineImageNode';
 
 enum ImageModalTabs {
@@ -138,7 +138,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
       {payload.src && (
         <Col gap="md" alignSelf="between">
           {isCloudflareImage && (
-            <Row gap="md">
+            <Row gap="md" alignItems="start">
               <TitleH4>Variants</TitleH4>
               <ImageVariantButtons selected={selectedVariant} onClick={handleVariantChange} />
             </Row>
@@ -151,7 +151,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
         </Col>
       )}
       <Row gap="md" alignSelf="end">
-        <Button onClick={handleSubmit}>Add image</Button>
+        <Button onClick={handleSubmit}>{ImageModalAction[mode]} image</Button>
       </Row>
     </Col>
   );

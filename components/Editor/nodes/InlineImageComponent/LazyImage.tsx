@@ -1,4 +1,4 @@
-import { Position } from '../InlineImageNode/InlineImageNode';
+import { ImagePosition } from '../InlineImageNode/InlineImageNode';
 import { useSuspenseImage } from './inlineImageComponentLib';
 import * as React from 'react';
 import { styled } from '../../../../styles/stitches.config';
@@ -31,7 +31,7 @@ interface LazyImageProps extends LazyImageVariants {
   imageRef: { current: null | HTMLImageElement };
   src: string;
   width: 'inherit' | number;
-  position: Position;
+  position: ImagePosition;
 }
 
 export function LazyImage({

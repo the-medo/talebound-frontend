@@ -10,7 +10,7 @@ interface ImageVariantButtonsProps {
 
 const ImageVariantButtons: React.FC<ImageVariantButtonsProps> = ({ selected, onClick }) => {
   return (
-    <Row gap="sm">
+    <Row gap="sm" wrap>
       {imageVariantArray.map((variant) => {
         return (
           <ImageVariantButton

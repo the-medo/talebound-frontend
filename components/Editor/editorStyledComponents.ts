@@ -238,6 +238,10 @@ export const EditorInner = styled('div', {
       float: 'right',
       marginLeft: '$sm',
     },
+    '&.position-full': {
+      marginLeft: '$sm',
+      width: '100%',
+    },
   },
 
   '& .editor-listitem': {
@@ -265,6 +269,18 @@ export const EditorInner = styled('div', {
         },
       },
     },
+
+    maxImageWidth: {
+      600: {
+        '& span[data-info="image-node"]': {
+          maxWidth: '600px',
+        },
+      },
+    },
+  },
+
+  defaultVariants: {
+    maxImageWidth: '600',
   },
 });
 

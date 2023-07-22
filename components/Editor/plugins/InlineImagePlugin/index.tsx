@@ -1,4 +1,4 @@
-import type { Position } from '../../nodes/InlineImageNode/InlineImageNode';
+import type { ImagePosition } from '../../nodes/InlineImageNode/InlineImageNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
@@ -60,7 +60,7 @@ export function InsertInlineImageDialog({
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
   const [showCaption, setShowCaption] = useState(false);
-  const [position, setPosition] = useState<Position>('left');
+  const [position, setPosition] = useState<ImagePosition>('left');
 
   const isDisabled = src === '';
 
@@ -69,7 +69,7 @@ export function InsertInlineImageDialog({
   };
 
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as Position);
+    setPosition(e.target.value as ImagePosition);
   };
 
   const loadImage = (files: FileList | null) => {
@@ -141,9 +141,9 @@ export function InsertInlineImageDialog({
         id="position-select"
         onChange={handlePositionChange}
       >
+        <option value="none">No alignment</option>
         <option value="left">Left</option>
         <option value="right">Right</option>
-        <option value="full">Full Width</option>
       </StyledSelect>
       <div className="Input__wrapper">
         <input

@@ -10,10 +10,38 @@ export enum ImageVariant {
   'public' = 'public',
 }
 
+export const ImageVariantWidths: Record<ImageVariant, number | undefined> = {
+  [ImageVariant['100x100']]: 100,
+  [ImageVariant['1200x800']]: 1200,
+  [ImageVariant['150x150']]: 150,
+  [ImageVariant['1920x200']]: 1920,
+  [ImageVariant['200x200']]: 200,
+  [ImageVariant['300x300']]: 300,
+  [ImageVariant['30x30']]: 30,
+  [ImageVariant['original']]: undefined,
+  [ImageVariant['public']]: undefined,
+};
+
 export const imageVariantArray = Object.keys(ImageVariant) as Array<ImageVariant>;
 
 export const isImageVariant = (variant: string): variant is ImageVariant =>
   imageVariantArray.includes(variant as ImageVariant);
+
+export const getImageVariantFromUrl = (url: string): ImageVariant | undefined => {
+  try {
+    const urlObject = new URL(url);
+    const pathParts = urlObject.pathname.split('/').filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+
+    // Check if last part of the path is a valid variant
+    if (isImageVariant(lastPart)) {
+      return lastPart;
+    }
+  } catch (e) {
+    /**/
+  }
+  return undefined;
+};
 
 export const imageUrlWithoutVariant = (url: string): string => {
   try {

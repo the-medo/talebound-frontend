@@ -1,4 +1,4 @@
-import type { Position } from '../InlineImageNode/InlineImageNode';
+import type { ImagePosition } from '../InlineImageNode/InlineImageNode';
 import { $isInlineImageNode } from '../InlineImageNode/InlineImageNode';
 import type { GridSelection, LexicalEditor, NodeKey, NodeSelection, RangeSelection } from 'lexical';
 import {
@@ -119,7 +119,7 @@ export default function InlineImageComponent({
   src: string;
   width: 'inherit' | number;
   maxWidth: number;
-  position: Position;
+  position: ImagePosition;
   resizable?: boolean;
 }): JSX.Element {
   const dispatch = useDispatch();

@@ -7,7 +7,6 @@ import {
   DropdownItemIcon,
   DropdownItemText,
 } from './componentsDropdown';
-import { InsertInlineImageDialog } from '../InlineImagePlugin';
 import useModal from '../../hooks/useModal';
 
 interface InsertDropdownListProps {
@@ -60,12 +59,7 @@ const InsertDropdownList = ({
 
   return (
     <DropdownContainer ref={dropDownRef}>
-      <DropdownItem
-        active={false}
-        onClick={() => setShowImageModal(true)}
-        aria-label="Table"
-        small={true}
-      >
+      <DropdownItem active={false} aria-label="Table" small={true}>
         <DropdownItemIcon>
           <BsTable />
         </DropdownItemIcon>
@@ -74,11 +68,7 @@ const InsertDropdownList = ({
 
       <DropdownItem
         active={false}
-        onClick={() => {
-          showModal('Insert Inline Image', (onClose) => (
-            <InsertInlineImageDialog activeEditor={editor} onClose={onClose} />
-          ));
-        }}
+        onClick={() => setShowImageModal(true)}
         aria-label="Image"
         small={true}
       >

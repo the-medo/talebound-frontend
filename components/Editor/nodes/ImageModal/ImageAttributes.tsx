@@ -15,7 +15,7 @@ const options: SelectOptions = {
   options: [
     { value: 'left', label: 'Left' },
     { value: 'right', label: 'Right' },
-    { value: 'full', label: 'Full' },
+    { value: 'none', label: 'None' },
   ],
 };
 
