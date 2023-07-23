@@ -23,7 +23,7 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 
-import { EditorContainer, EditorInner, Placeholder } from './editorStyledComponents';
+import { EditorContainer, EditorInner, EditorWrapper, Placeholder } from './editorStyledComponents';
 import ExampleTheme from './themes/EditorTheme';
 import ToolbarPlugin from './plugins/ToolbarPlugin/ToolbarPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/CodeHighlightPlugin';
@@ -40,6 +40,7 @@ import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
+import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -137,7 +138,22 @@ const Editor: React.FC<EditorProps> = ({
     () => (alreadyExists ? 'Save' : actionLabel),
     [actionLabel, alreadyExists],
   );
-  const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  };
+
+  const contentEditable = useMemo(
+    () => (
+      <EditorWrapper className="editor" ref={onRef}>
+        <ContentEditable className="editor-input" />
+      </EditorWrapper>
+    ),
+    [],
+  );
   const [lastSavedEditorState, setLastSavedEditorState] = useState<string | EditorState>(
     editorState ?? EMPTY_EDITOR_STATE,
   );
@@ -347,6 +363,12 @@ const Editor: React.FC<EditorProps> = ({
             <MarkdownPlugin />
             <InlineImagePlugin />
             <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
+            {floatingAnchorElem && (
+              <>
+                <TableCellActionMenuPlugin cellMerge={true} anchorElem={floatingAnchorElem} />
+              </>
+            )}
+
             <ListMaxIndentLevelPlugin maxDepth={7} />
           </EditorInner>
         </EditorContainer>

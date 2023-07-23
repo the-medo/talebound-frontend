@@ -1,5 +1,12 @@
 import { keyframes, styled } from '../../styles/stitches.config';
 
+export const EditorWrapper = styled('div', {
+  flex: 'auto',
+  position: 'relative',
+  resize: 'vertical',
+  // zIndex: -1,
+});
+
 export const EditorContainer = styled('div', {
   display: 'flex',
   position: 'relative',
@@ -320,18 +327,9 @@ export const EditorInner = styled('div', {
       textAlign: 'start',
     },
     '& .editor-tableCellSelected': {
-      /*background-color: #c9dbf0;*/
       backgroundColor: '#c9dbf0',
     },
     '& .editor-tableCellPrimarySelected': {
-      /*border: 2px solid rgb(60, 132, 244);
-  display: block;
-  height: calc(100% - 2px);
-  position: absolute;
-  width: calc(100% - 2px);
-  left: -1px;
-  top: -1px;
-  z-index: 2;*/
       border: '2px solid $primary',
       display: 'block',
       height: 'calc(100% - 2px)',

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
+import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import TextInput from './TextInput';
 import { styled } from '../../../styles/stitches.config';
+import Input from '../../Input/Input';
 
 interface ColorPickerProps {
   color: string;
@@ -80,13 +80,16 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
     [selfColor.hsv],
   );
 
-  const onSetHex = (hex: string) => {
-    setInputColor(hex);
-    if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
-      const newColor = transformColor('hex', hex);
-      setSelfColor(newColor);
+  const onSetHex: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+    const hex = event.target.value;
+    if (hex) {
+      setInputColor(hex);
+      if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
+        const newColor = transformColor('hex', hex);
+        setSelfColor(newColor);
+      }
     }
-  };
+  }, []);
 
   const onMoveSaturation = ({ x, y }: Position) => {
     const newHsv = {
@@ -124,7 +127,7 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
 
   return (
     <ColorPickerWrapper style={{ width: WIDTH }} ref={innerDivRef}>
-      <TextInput label="Hex" onChange={onSetHex} value={inputColor} />
+      <Input id="Hex" label="Hex" onChange={onSetHex} value={inputColor} />
       <ColorPickerBasicColor>
         {basicColors.map((basicColor) => (
           <button
@@ -143,9 +146,9 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
         style={{ backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)` }}
         onChange={onMoveSaturation}
       >
-        <div
-          className="cursor"
-          style={{
+        <MoveWrapperCursor
+          type="saturation"
+          css={{
             backgroundColor: selfColor.hex,
             left: saturationPosition.x,
             top: saturationPosition.y,
@@ -153,9 +156,9 @@ export default function ColorPicker({ color, onChange }: Readonly<ColorPickerPro
         />
       </MoveWrapper>
       <MoveWrapper type="hue" onChange={onMoveHue}>
-        <div
-          className="cursor"
-          style={{
+        <MoveWrapperCursor
+          type="hue"
+          css={{
             backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`,
             left: huePosition.x,
           }}
@@ -178,16 +181,30 @@ interface MoveWrapperProps {
   children: JSX.Element;
 }
 
-const MoveWrapperComponent = styled('div', {
-  '& .cursor': {
-    position: 'absolute',
-    width: '20px',
-    height: '20px',
-    borderRadius: '50%',
-    border: '2px solid $white',
-    boxSizing: 'border-box',
-  },
+const MoveWrapperCursor = styled('div', {
+  position: 'absolute',
+  width: '20px',
+  height: '20px',
+  borderRadius: '50%',
+  border: '2px solid $white',
+  boxSizing: 'border-box',
 
+  variants: {
+    type: {
+      hue: {
+        boxShadow: '#0003 0 0 0 0.5px',
+        transform: 'translate(-10px, -4px)',
+      },
+
+      saturation: {
+        boxShadow: '0 0 15px #00000026',
+        transform: 'translate(-10px, -10px)',
+      },
+    },
+  },
+});
+
+const MoveWrapperComponent = styled('div', {
   variants: {
     type: {
       hue: {
@@ -207,10 +224,6 @@ const MoveWrapperComponent = styled('div', {
         )`,
         userSelect: 'none',
         borderRadius: '12px',
-        '& .cursor': {
-          boxShadow: '#0003 0 0 0 0.5px',
-          transform: 'translate(-10px, -4px)',
-        },
       },
 
       saturation: {
@@ -220,10 +233,6 @@ const MoveWrapperComponent = styled('div', {
         height: '150px',
         backgroundImage: `linear-gradient(transparent, black), linear-gradient(to right, white, transparent)`,
         userSelect: 'none',
-        '& .cursor': {
-          boxShadow: '0 0 15px #00000026',
-          transform: 'translate(-10px, -10px)',
-        },
       },
     },
   },
@@ -385,15 +394,11 @@ function transformColor<M extends keyof Color, C extends Color[M]>(format: M, co
     rgb = hex2rgb(hex);
     hsv = rgb2hsv(rgb);
   } else if (format === 'rgb') {
-    const value = color as Color['rgb'];
-
-    rgb = value;
+    rgb = color as Color['rgb'];
     hex = rgb2hex(rgb);
     hsv = rgb2hsv(rgb);
   } else if (format === 'hsv') {
-    const value = color as Color['hsv'];
-
-    hsv = value;
+    hsv = color as Color['hsv'];
     rgb = hsv2rgb(hsv);
     hex = rgb2hex(rgb);
   }

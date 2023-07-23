@@ -35,10 +35,17 @@ import {
 import * as React from 'react';
 import { ReactPortal, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import invariant from 'shared/invariant';
 
 import useModal from '../../hooks/useModal';
 import ColorPicker from '../../ui/ColorPicker';
+import invariant from '../../../../utils/functions/invariant';
+import { DropdownMenuRoot } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuRoot';
+import {
+  TableActionMenuDropdown,
+  TableCellActionButton,
+  TableCellActionButtonContainer,
+} from './componentsTableActionMenu';
+import { BiChevronDown } from 'react-icons/bi';
 
 function computeSelectionCount(selection: GridSelection): {
   columns: number;
@@ -468,8 +475,7 @@ function TableActionMenu({
   }
 
   return createPortal(
-    <div
-      className="dropdown"
+    <TableActionMenuDropdown
       ref={dropDownRef}
       onClick={(e) => {
         e.stopPropagation();
@@ -563,7 +569,7 @@ function TableActionMenu({
           column header
         </span>
       </button>
-    </div>,
+    </TableActionMenuDropdown>,
     document.body,
   );
 }
@@ -668,10 +674,13 @@ function TableCellActionMenuContainer({
   }, [prevTableCellDOM, tableCellNode]);
 
   return (
-    <div className="table-cell-action-button-container" ref={menuButtonRef}>
+    <TableCellActionButtonContainer
+      className="table-cell-action-button-container"
+      ref={menuButtonRef}
+    >
       {tableCellNode != null && (
         <>
-          <button
+          <TableCellActionButton
             className="table-cell-action-button chevron-down"
             onClick={(e) => {
               e.stopPropagation();
@@ -679,8 +688,8 @@ function TableCellActionMenuContainer({
             }}
             ref={menuRootRef}
           >
-            <i className="chevron-down" />
-          </button>
+            <BiChevronDown />
+          </TableCellActionButton>
           {colorPickerModal}
           {isMenuOpen && (
             <TableActionMenu
@@ -694,7 +703,7 @@ function TableCellActionMenuContainer({
           )}
         </>
       )}
-    </div>
+    </TableCellActionButtonContainer>
   );
 }
 
@@ -706,6 +715,8 @@ export default function TableActionMenuPlugin({
   cellMerge?: boolean;
 }): null | ReactPortal {
   const isEditable = useLexicalEditable();
+  console.log('TableActionMenuPlugin', { isEditable, anchorElem, cellMerge });
+
   return createPortal(
     isEditable ? (
       <TableCellActionMenuContainer anchorElem={anchorElem} cellMerge={cellMerge} />
