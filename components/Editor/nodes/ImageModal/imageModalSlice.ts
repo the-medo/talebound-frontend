@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InlineImagePayload } from '../InlineImageNode/InlineImageNode';
+import { ImagePosition, InlineImagePayload } from '../InlineImageNode/InlineImageNode';
 import { ImageVariant } from '../../../../utils/images/image_utils';
 
 export interface ImageModalSliceState {
@@ -11,7 +11,7 @@ const initialState: ImageModalSliceState = {
   inlineImagePayload: {
     altText: '',
     src: '',
-    position: 'left',
+    position: ImagePosition.Left,
   },
   selectedVariant: undefined,
 };

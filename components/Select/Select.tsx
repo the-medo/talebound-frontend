@@ -1,6 +1,5 @@
-import { styled } from '../../styles/stitches.config';
 import React, { useMemo } from 'react';
-import Stitches, { CSSProperties } from '@stitches/react';
+import { CSSProperties } from '@stitches/react';
 import { Col, Flex } from '../Flex/Flex';
 import { Label } from '../Typography/Label';
 import { Text } from '../Typography/Text';
@@ -22,15 +21,14 @@ import { SelectPortal } from '../../components-radix-ui/Select/SelectPortal';
 import { SelectValue } from '../../components-radix-ui/Select/SelectValue';
 import { SelectRoot } from '../../components-radix-ui/Select/SelectRoot';
 import { SelectOptions } from '../../components-radix-ui/Select/selectLib';
+import { HelperType } from '../../utils/form/helperTypes';
 
-export interface SelectProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    SelectTriggerVariants {
+export interface SelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, SelectTriggerVariants {
   id: string;
   label?: string;
   labelDirection?: 'row' | 'column';
   helperText?: string;
-  helperType?: 'danger' | 'warning' | 'info';
+  helperType?: HelperType;
   placeholder?: string;
   options: SelectOptions;
 

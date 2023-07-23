@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { useCallback, useMemo } from 'react';
 import Layout from '../components/Layout/Layout';
-import { HelperType } from '../utils/form/nextUiTypes';
+import { HelperMessage } from '../utils/form/helperTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
@@ -30,7 +30,7 @@ const MiddleContainer = styled('div', {
 
 export default function ResetPassword() {
   const { value: emailValue, onChange: onChangeEmail } = useInput('');
-  const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
+  const helperEmail: HelperMessage = useMemo(() => validateEmail(emailValue), [emailValue]);
 
   const resetPasswordSendCode = useResetPassword();
 

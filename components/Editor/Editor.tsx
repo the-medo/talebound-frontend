@@ -39,6 +39,7 @@ import { Text } from '../Typography/Text';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -345,6 +346,7 @@ const Editor: React.FC<EditorProps> = ({
             <AutoLinkPlugin />
             <MarkdownPlugin />
             <InlineImagePlugin />
+            <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
             <ListMaxIndentLevelPlugin maxDepth={7} />
           </EditorInner>
         </EditorContainer>

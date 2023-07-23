@@ -7,23 +7,22 @@ import {
   DropdownItemIcon,
   DropdownItemText,
 } from './componentsDropdown';
-import useModal from '../../hooks/useModal';
 
 interface InsertDropdownListProps {
   editor: LexicalEditor;
   toolbarRef: React.RefObject<HTMLDivElement>;
   setShowOtherOptionsDropDown: React.Dispatch<React.SetStateAction<boolean>>;
   setShowImageModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowTableModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const InsertDropdownList = ({
-  editor,
   toolbarRef,
   setShowOtherOptionsDropDown,
   setShowImageModal,
+  setShowTableModal,
 }: InsertDropdownListProps): JSX.Element => {
   const dropDownRef = useRef<HTMLDivElement>(null);
-  const [modal, showModal] = useModal();
 
   useEffect(() => {
     const toolbar = toolbarRef.current;
@@ -59,7 +58,12 @@ const InsertDropdownList = ({
 
   return (
     <DropdownContainer ref={dropDownRef}>
-      <DropdownItem active={false} aria-label="Table" small={true}>
+      <DropdownItem
+        active={false}
+        onClick={() => setShowTableModal(true)}
+        aria-label="Table"
+        small={true}
+      >
         <DropdownItemIcon>
           <BsTable />
         </DropdownItemIcon>
@@ -77,8 +81,6 @@ const InsertDropdownList = ({
         </DropdownItemIcon>
         <DropdownItemText>Image</DropdownItemText>
       </DropdownItem>
-
-      {modal}
     </DropdownContainer>
   );
 };

@@ -7,6 +7,7 @@ import { IconWrapper } from './ToolbarBlockType';
 import { styled } from '../../../../styles/stitches.config';
 import InsertDropdownList from './InsertDropdownList';
 import ImageModal from '../../nodes/ImageModal/ImageModal';
+import TableModal from '../../nodes/TableModal/TableModal';
 
 const ChevronWrapper = styled(IconWrapper, {
   width: '14px',
@@ -36,6 +37,7 @@ interface ToolbarInsertProps {
 const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, editor }) => {
   const [showInsertDropDown, setShowInsertDropDown] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showTableModal, setShowTableModal] = useState(false);
 
   const showInsertDropdownListCallback = useCallback(() => setShowInsertDropDown((p) => !p), []);
 
@@ -60,6 +62,7 @@ const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, edi
               toolbarRef={toolbarRef}
               setShowOtherOptionsDropDown={setShowInsertDropDown}
               setShowImageModal={setShowImageModal}
+              setShowTableModal={setShowTableModal}
             />,
             document.body,
           )}
@@ -67,6 +70,12 @@ const ToolbarInsert: React.FC<ToolbarInsertProps> = ({ disabled, toolbarRef, edi
       <ImageModal
         open={showImageModal}
         setOpen={setShowImageModal}
+        editor={editor}
+        trigger={null}
+      />
+      <TableModal
+        open={showTableModal}
+        setOpen={setShowTableModal}
         editor={editor}
         trigger={null}
       />

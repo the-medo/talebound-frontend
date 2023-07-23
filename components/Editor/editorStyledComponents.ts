@@ -1,4 +1,4 @@
-import { styled } from '../../styles/stitches.config';
+import { keyframes, styled } from '../../styles/stitches.config';
 
 export const EditorContainer = styled('div', {
   display: 'flex',
@@ -24,6 +24,11 @@ export const EditorContainer = styled('div', {
       },
     },
   },
+});
+
+const tableControls = keyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1 },
 });
 
 export const EditorInner = styled('div', {
@@ -261,6 +266,172 @@ export const EditorInner = styled('div', {
 
   '& span[data-info="image-node"]': {
     fontWeight: '400',
+  },
+
+  '& .editor-table': {
+    borderCollapse: 'collapse',
+    borderSpacing: '0',
+    overflowY: 'scroll',
+    overflowX: 'scroll',
+    tableLayout: 'fixed',
+    width: 'max-content',
+    margin: '30px 0',
+
+    '& .editor-tableSelection *::selection': {
+      backgroundColor: 'transparent',
+    },
+
+    '& .editor-tableSelected': {
+      outline: '2px solid $primary',
+    },
+
+    '& .editor-tableCell': {
+      border: '1px solid $primary900',
+      width: '75px',
+      minWidth: '75px',
+      verticalAlign: 'top',
+      textAlign: 'start',
+      padding: '6px 8px',
+      position: 'relative',
+      outline: 'none',
+    },
+
+    '& .editor-tableCellSortedIndicator': {
+      display: 'block',
+      opacity: '0.5',
+      position: 'absolute',
+      bottom: '0',
+      left: '0',
+      width: '100%',
+      height: '4px',
+      backgroundColor: '#999',
+    },
+    '& .editor-tableCellResizer': {
+      position: 'absolute',
+      right: '-4px',
+      height: '100%',
+      width: '8px',
+      cursor: 'ew-resize',
+      zIndex: '10',
+      top: '0',
+    },
+    '& .editor-tableCellHeader': {
+      backgroundColor: '$primary200',
+      textAlign: 'start',
+    },
+    '& .editor-tableCellSelected': {
+      /*background-color: #c9dbf0;*/
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableCellPrimarySelected': {
+      /*border: 2px solid rgb(60, 132, 244);
+  display: block;
+  height: calc(100% - 2px);
+  position: absolute;
+  width: calc(100% - 2px);
+  left: -1px;
+  top: -1px;
+  z-index: 2;*/
+      border: '2px solid $primary',
+      display: 'block',
+      height: 'calc(100% - 2px)',
+      position: 'absolute',
+      width: 'calc(100% - 2px)',
+      left: '-1px',
+      top: '-1px',
+      zIndex: '2',
+    },
+    '& .editor-tableCellEditing': {
+      boxShadow: '0 0 5px rgba(0, 0, 0, 0.4)',
+      borderRadius: '3px',
+    },
+    '& .editor-tableAddColumns': {
+      position: 'absolute',
+      top: '0',
+      width: '20px',
+      backgroundColor: '#eee',
+      height: '100%',
+      right: '0',
+      animation: 'table-controls 0.2s ease',
+      border: '0',
+      cursor: 'pointer',
+    },
+    '& .editor-tableAddColumns::after': {
+      backgroundImage: 'url(../images/icons/plus.svg)',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      display: 'block',
+      content: ' ',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      opacity: '0.4',
+    },
+    '& .editor-tableAddColumns::hover': {
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableAddRows': {
+      position: 'absolute',
+      bottom: '-25px',
+      width: 'calc(100% - 25px)',
+      backgroundColor: '#eee',
+      height: '20px',
+      left: '0',
+      animation: 'table-controls 0.2s ease',
+      border: '0',
+      cursor: 'pointer',
+    },
+    '& .editor-tableAddRows:after': {
+      backgroundImage:
+        'url(https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/bbf5d630-1ad8-48a0-1971-214dfc18bd00/30x30)',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      display: 'block',
+      content: ' ',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      opacity: '0.4',
+    },
+    '& .editor-tableAddRows:hover': {
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableCellResizeRuler': {
+      display: 'block',
+      position: 'absolute',
+      width: '1px',
+      backgroundColor: '$primary',
+      height: '100%',
+      top: '0',
+    },
+    '& .editor-tableCellActionButtonContainer': {
+      display: 'block',
+      right: '5px',
+      top: '6px',
+      position: 'absolute',
+      zIndex: '4',
+      width: '20px',
+      height: '20px',
+    },
+    '& .editor-tableCellActionButton': {
+      backgroundColor: '#eee',
+      display: 'block',
+      border: '0',
+      borderRadius: '20px',
+      width: '20px',
+      height: '20px',
+      color: '#222',
+      cursor: 'pointer',
+    },
+    '& .editor-tableCellActionButton:hover': {
+      backgroundColor: '#ddd',
+    },
   },
 
   variants: {

@@ -4,6 +4,7 @@ import Stitches from '@stitches/react';
 import { Col, Flex } from '../Flex/Flex';
 import { Label } from '../Typography/Label';
 import { Text } from '../Typography/Text';
+import { HelperType } from '../../utils/form/helperTypes';
 
 export const StyledInput = styled('input', {
   fontFamily: '$heading',
@@ -60,7 +61,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
   label?: string;
   labelDirection?: 'row' | 'column';
   helperText?: string;
-  helperType?: 'danger' | 'warning' | 'info';
+  helperType?: HelperType;
 }
 
 const Input: React.FC<InputProps> = ({
