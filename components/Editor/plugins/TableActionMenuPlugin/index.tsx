@@ -215,6 +215,7 @@ function TableActionMenu({
       const menuButtonRect = menuButtonElement.getBoundingClientRect();
       dropDownElement.style.opacity = '1';
       const dropDownElementRect = dropDownElement.getBoundingClientRect();
+
       const margin = 5;
       let leftPosition = menuButtonRect.right + margin;
       if (
@@ -222,16 +223,16 @@ function TableActionMenu({
         leftPosition + dropDownElementRect.width > rootEleRect.right
       ) {
         const position = menuButtonRect.left - dropDownElementRect.width - margin;
-        leftPosition = (position < 0 ? margin : position) + window.pageXOffset;
+        leftPosition = (position < 0 ? margin : position) + window.scrollX;
       }
-      dropDownElement.style.left = `${leftPosition + window.pageXOffset}px`;
+      dropDownElement.style.left = `${leftPosition + window.scrollX}px`;
 
       let topPosition = menuButtonRect.top;
       if (topPosition + dropDownElementRect.height > window.innerHeight) {
         const position = menuButtonRect.bottom - dropDownElementRect.height;
-        topPosition = (position < 0 ? margin : position) + window.pageYOffset;
+        topPosition = position < 0 ? margin : position;
       }
-      dropDownElement.style.top = `${topPosition + +window.pageYOffset}px`;
+      dropDownElement.style.top = `${topPosition + +window.scrollY}px`;
     }
   }, [contextRef, dropDownRef, editor]);
 
@@ -675,13 +676,13 @@ function TableCellActionMenuContainer({
 
   return (
     <TableCellActionButtonContainer
-      className="table-cell-action-button-container"
+      // className="table-cell-action-button-container"
       ref={menuButtonRef}
     >
       {tableCellNode != null && (
         <>
           <TableCellActionButton
-            className="table-cell-action-button chevron-down"
+            // className="table-cell-action-button chevron-down"
             onClick={(e) => {
               e.stopPropagation();
               setIsMenuOpen(!isMenuOpen);
@@ -715,7 +716,6 @@ export default function TableActionMenuPlugin({
   cellMerge?: boolean;
 }): null | ReactPortal {
   const isEditable = useLexicalEditable();
-  console.log('TableActionMenuPlugin', { isEditable, anchorElem, cellMerge });
 
   return createPortal(
     isEditable ? (

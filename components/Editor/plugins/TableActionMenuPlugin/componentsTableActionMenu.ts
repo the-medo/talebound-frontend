@@ -3,7 +3,7 @@ import { styled } from '../../../../styles/stitches.config';
 export const TableActionMenuDropdown = styled('div', {
   zIndex: '10',
   display: 'block',
-  position: 'fixed',
+  position: 'absolute',
   boxShadow: '0 12px 28px #0003,0 2px 4px #0000001a,inset 0 0 0 1px #ffffff80',
   borderRadius: '8px',
   minHeight: '40px',
@@ -88,14 +88,19 @@ export const TableCellActionButtonContainer = styled('div', {
 });
 
 export const TableCellActionButton = styled('div', {
-  backgroundColor: 'none',
-  // display: 'flex',
+  backgroundColor: '$primary200',
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   border: '0',
   position: 'relative',
   borderRadius: '15px',
   color: '#222',
-  display: 'inline-block',
   cursor: 'pointer',
+  width: '16px',
+  height: '16px',
+
+  '&:hover': {
+    backgroundColor: '$primary300',
+  },
 });
