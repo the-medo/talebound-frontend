@@ -19,10 +19,6 @@ const TableModalContent: React.FC<TableModalContentProps> = ({ editor, setOpen }
   const { value: rows, onChange: onChangeRows } = useInput<number>(5);
 
   const handleSubmit = useCallback(() => {
-    console.log('DISPATCHING INSERT_TABLE_COMMAND', {
-      columns: columns.toString(),
-      rows: rows.toString(),
-    });
     editor.dispatchCommand(INSERT_TABLE_COMMAND, {
       columns: columns.toString(),
       rows: rows.toString(),

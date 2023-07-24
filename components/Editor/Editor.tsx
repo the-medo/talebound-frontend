@@ -16,6 +16,8 @@ import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalCompos
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
+
 import { MarkNode } from '@lexical/mark';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
@@ -30,7 +32,6 @@ import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/CodeHighlightPlug
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin/ListMaxIndentLevelPlugin';
 import AutoLinkPlugin from './plugins/AutoLinkPlugin/AutoLinkPlugin';
 import MarkdownPlugin from './plugins/MarkdownPlugin/MarkdownPlugin';
-import { TableNode as NewTableNode } from './nodes/TableNode';
 import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
 
 import { Button } from '../Button/Button';
@@ -39,8 +40,7 @@ import { Text } from '../Typography/Text';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
-import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
-import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin';
+import TableCellActionMenuPlugin from './plugins/TableCellActionMenuPlugin/TableCellActionMenuPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -60,7 +60,6 @@ const editorConfig: InitialConfigType = {
     CodeNode,
     CodeHighlightNode,
     TableNode,
-    NewTableNode,
     TableCellNode,
     TableRowNode,
     AutoLinkNode,

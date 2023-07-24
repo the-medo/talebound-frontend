@@ -275,6 +275,10 @@ export const EditorInner = styled('div', {
     fontWeight: '400',
   },
 
+  '& .editor-table-selection *::selection': {
+    backgroundColor: 'transparent',
+  },
+
   '& .editor-table': {
     borderCollapse: 'collapse',
     borderSpacing: '0',
@@ -283,10 +287,6 @@ export const EditorInner = styled('div', {
     tableLayout: 'fixed',
     width: 'max-content',
     margin: '30px 0',
-
-    '& .editor-tableSelection *::selection': {
-      backgroundColor: 'transparent',
-    },
 
     '& .editor-tableSelected': {
       outline: '2px solid $primary',
