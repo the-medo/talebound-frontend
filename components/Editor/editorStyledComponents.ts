@@ -1,10 +1,40 @@
 import { keyframes, styled } from '../../styles/stitches.config';
 
+export const EditorScroller = styled('div', {
+  minHeight: '150px',
+  border: '0',
+  display: 'flex',
+  position: 'relative',
+  outline: '0',
+  zIndex: '0',
+  overflow: 'auto',
+
+  variants: {
+    editable: {
+      true: {
+        resize: 'vertical',
+      },
+      false: {
+        resize: 'none',
+      },
+    },
+  },
+});
+
 export const EditorWrapper = styled('div', {
   flex: 'auto',
   position: 'relative',
-  resize: 'vertical',
-  // zIndex: -1,
+
+  variants: {
+    editable: {
+      true: {
+        resize: 'vertical',
+      },
+      false: {
+        resize: 'none',
+      },
+    },
+  },
 });
 
 export const EditorContainer = styled('div', {
@@ -82,7 +112,10 @@ export const EditorInner = styled('div', {
     position: 'relative',
     tabSize: '2',
     outline: '0',
-    padding: '15px 10px',
+    paddingTop: '15px',
+    paddingBottom: '15px',
+    paddingLeft: '24px',
+    paddingRight: '8px',
     caretColor: '#444',
   },
 
@@ -445,6 +478,15 @@ export const EditorInner = styled('div', {
       600: {
         '& span[data-info="image-node"]': {
           maxWidth: '600px',
+        },
+      },
+    },
+
+    editable: {
+      false: {
+        '& .editor-input': {
+          paddingLeft: '16px',
+          paddingRight: '16px',
         },
       },
     },

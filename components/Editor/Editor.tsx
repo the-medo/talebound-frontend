@@ -25,7 +25,13 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 
-import { EditorContainer, EditorInner, EditorWrapper, Placeholder } from './editorStyledComponents';
+import {
+  EditorContainer,
+  EditorInner,
+  EditorScroller,
+  EditorWrapper,
+  Placeholder,
+} from './editorStyledComponents';
 import ExampleTheme from './themes/EditorTheme';
 import ToolbarPlugin from './plugins/ToolbarPlugin/ToolbarPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/CodeHighlightPlugin';
@@ -42,6 +48,7 @@ import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
 import TableCellActionMenuPlugin from './plugins/TableCellActionMenuPlugin/TableCellActionMenuPlugin';
 import TableCellResizerPlugin from './plugins/TableCellResizer/TableCellResizerPlugin';
+import DraggableBlockPlugin from './plugins/DraggableBlockPlugin/DraggableBlockPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -146,14 +153,6 @@ const Editor: React.FC<EditorProps> = ({
     }
   };
 
-  const contentEditable = useMemo(
-    () => (
-      <EditorWrapper className="editor" ref={onRef}>
-        <ContentEditable className="editor-input" />
-      </EditorWrapper>
-    ),
-    [],
-  );
   const [lastSavedEditorState, setLastSavedEditorState] = useState<string | EditorState>(
     editorState ?? EMPTY_EDITOR_STATE,
   );
@@ -165,6 +164,17 @@ const Editor: React.FC<EditorProps> = ({
   const [contentSaved, setContentSaved] = useState(true);
   const [postViewType, setPostViewType] = useState(defaultPostViewType);
   const [actionInProgress, setActionInProgress] = useState<EditorAction>(EditorAction.IDLE);
+
+  const contentEditable = useMemo(
+    () => (
+      <EditorScroller className="editor-scroll" editable={postViewType === PostViewType.EDIT}>
+        <EditorWrapper className="editor" editable={postViewType === PostViewType.EDIT} ref={onRef}>
+          <ContentEditable className="editor-input" />
+        </EditorWrapper>
+      </EditorScroller>
+    ),
+    [postViewType],
+  );
 
   const initialConfig = useMemo(() => {
     return {
@@ -347,7 +357,10 @@ const Editor: React.FC<EditorProps> = ({
       <LexicalComposer initialConfig={initialConfig}>
         <EditorContainer postView={postViewType === PostViewType.POST} loading={loading}>
           {postViewType === PostViewType.EDIT && <ToolbarPlugin disabled={disabled} />}
-          <EditorInner postView={postViewType === PostViewType.POST}>
+          <EditorInner
+            postView={postViewType === PostViewType.POST}
+            editable={postViewType === PostViewType.EDIT}
+          >
             <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={contentEditable}
@@ -366,6 +379,7 @@ const Editor: React.FC<EditorProps> = ({
             <TableCellResizerPlugin />
             {floatingAnchorElem && (
               <>
+                <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
                 <TableCellActionMenuPlugin cellMerge={true} anchorElem={floatingAnchorElem} />
               </>
             )}
