@@ -32,7 +32,10 @@ const HEIGHT = 150;
 
 const ColorPickerWrapper = styled('div', {
   padding: '20px',
+  width: `${WIDTH}px`,
+  boxSizing: 'initial',
 });
+
 const ColorPickerBasicColor = styled('div', {
   display: 'flex',
   flexWrap: 'wrap',
@@ -53,6 +56,7 @@ const ColorPickerBasicColor = styled('div', {
     },
   },
 });
+
 const ColorPickerColor = styled('div', {
   border: '1px solid #ccc',
   marginTop: '15px',

@@ -13,7 +13,16 @@ const TableModal: React.FC<TableModalProps> = ({ trigger, open, setOpen, ...cont
     [contentProps, setOpen],
   );
 
-  return <Modal open={open} onOpenChange={setOpen} size="md" trigger={trigger} content={content} />;
+  return (
+    <Modal
+      title="Insert table"
+      open={open}
+      onOpenChange={setOpen}
+      size="fitContent"
+      trigger={trigger}
+      content={content}
+    />
+  );
 };
 
 export default TableModal;

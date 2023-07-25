@@ -15,8 +15,6 @@ export const ModalContent = styled(DialogRadix.Content, {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '90vw',
-  minWidth: '450px',
   minHeight: '200px',
   maxHeight: '85vh',
   overflowY: 'scroll',
@@ -28,6 +26,9 @@ export const ModalContent = styled(DialogRadix.Content, {
 
   variants: {
     size: {
+      fitContent: {
+        width: 'fit-content',
+      },
       full: {
         width: '90vw',
         minWidth: '450px',

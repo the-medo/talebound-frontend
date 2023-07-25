@@ -32,7 +32,6 @@ import { DropdownMenuRoot } from '../../../../components-radix-ui/DropdownMenu/D
 import { DropdownMenuTrigger } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuTrigger';
 import { DropdownMenuPortal } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuPortal';
 import { DropdownMenuContent } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuContent';
-import ColorPicker from '../../ui/ColorPicker';
 import { DropdownMenuSeparator } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuSeparator';
 import {
   $canUnmerge,
@@ -42,11 +41,12 @@ import {
   currentCellBackgroundColor,
   isGridSelectionRectangular,
 } from './tableCellActionMenuLib';
+import ColorPickerModal from './ColorPickerModal';
 
 interface TableCellActionMenuProps {
   trigger: React.ReactNode;
   contextRef: { current: null | HTMLElement };
-  showColorPickerModal: (title: string, showModal: (onClose: () => void) => JSX.Element) => void;
+  // showColorPickerModal: (title: string, showModal: (onClose: () => void) => JSX.Element) => void;
   tableCellNode: TableCellNode;
   cellMerge: boolean;
 }
@@ -56,7 +56,7 @@ const TableCellActionMenu: React.FC<TableCellActionMenuProps> = ({
   tableCellNode: _tableCellNode,
   contextRef,
   cellMerge,
-  showColorPickerModal,
+  // showColorPickerModal,
 }) => {
   const [editor] = useLexicalComposerContext();
   const dropDownRef = useRef<HTMLDivElement | null>(null);
@@ -70,6 +70,7 @@ const TableCellActionMenu: React.FC<TableCellActionMenuProps> = ({
   const [backgroundColor, setBackgroundColor] = useState(
     () => currentCellBackgroundColor(editor) || '',
   );
+  const [showColorPickerModal, setShowColorPickerModal] = useState(false);
 
   useEffect(() => {
     return editor.registerMutationListener(TableCellNode, (nodeMutations) => {
@@ -356,58 +357,69 @@ const TableCellActionMenu: React.FC<TableCellActionMenuProps> = ({
     unmergeTableCellsAtSelection,
   ]);
 
+  const openColorPickerModal = useCallback(() => {
+    setShowColorPickerModal(true);
+  }, []);
+
   return (
-    <DropdownMenuRoot modal={false} onOpenChange={checkPossibleActions}>
-      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuPortal>
-        <DropdownMenuContent side="right" sideOffset={5}>
-          {mergeCellButton}
-          <DropdownMenuItem
-            onSelect={() =>
-              showColorPickerModal('Cell background color', () => (
-                <ColorPicker color={backgroundColor} onChange={handleCellBackgroundColor} />
-              ))
-            }
-          >
-            Background color
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => insertTableRowAtSelection(false)}>
-            Insert {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`} above
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => insertTableRowAtSelection(true)}>
-            Insert {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`} below
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => insertTableColumnAtSelection(false)}>
-            Insert {selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`}{' '}
-            left
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => insertTableColumnAtSelection(true)}>
-            Insert {selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`}{' '}
-            right
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={deleteTableColumnAtSelection}>Delete column</DropdownMenuItem>
-          <DropdownMenuItem onSelect={deleteTableRowAtSelection}>Delete row</DropdownMenuItem>
-          <DropdownMenuItem onSelect={deleteTableAtSelection}>Delete table</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={toggleTableRowIsHeader}>
-            {(tableCellNode.__headerState & TableCellHeaderStates.ROW) === TableCellHeaderStates.ROW
-              ? 'Remove'
-              : 'Add'}{' '}
-            row header
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={toggleTableColumnIsHeader}>
-            {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
-            TableCellHeaderStates.COLUMN
-              ? 'Remove'
-              : 'Add'}{' '}
-            column header
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenuPortal>
-    </DropdownMenuRoot>
+    <>
+      <DropdownMenuRoot modal={false} onOpenChange={checkPossibleActions}>
+        <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuContent side="right" sideOffset={5}>
+            {mergeCellButton}
+            <DropdownMenuItem onSelect={openColorPickerModal}>Background color</DropdownMenuItem>
+            {/*<ColorPicker color={backgroundColor} onChange={handleCellBackgroundColor} />*/}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => insertTableRowAtSelection(false)}>
+              Insert {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`} above
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => insertTableRowAtSelection(true)}>
+              Insert {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`} below
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => insertTableColumnAtSelection(false)}>
+              Insert{' '}
+              {selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`} left
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => insertTableColumnAtSelection(true)}>
+              Insert{' '}
+              {selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`}{' '}
+              right
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={deleteTableColumnAtSelection}>
+              Delete column
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={deleteTableRowAtSelection}>Delete row</DropdownMenuItem>
+            <DropdownMenuItem onSelect={deleteTableAtSelection}>Delete table</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={toggleTableRowIsHeader}>
+              {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
+              TableCellHeaderStates.ROW
+                ? 'Remove'
+                : 'Add'}{' '}
+              row header
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={toggleTableColumnIsHeader}>
+              {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
+              TableCellHeaderStates.COLUMN
+                ? 'Remove'
+                : 'Add'}{' '}
+              column header
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenuPortal>
+      </DropdownMenuRoot>
+      <ColorPickerModal
+        title="Cell background color"
+        trigger={null}
+        open={showColorPickerModal}
+        setOpen={setShowColorPickerModal}
+        color={backgroundColor}
+        onChange={handleCellBackgroundColor}
+      />
+    </>
   );
 };
 

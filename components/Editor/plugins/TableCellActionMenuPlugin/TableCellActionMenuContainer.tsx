@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import useModal from '../../hooks/useModal';
 import { $getSelection, $isRangeSelection } from 'lexical';
 import { TableCellActionButton, TableCellActionButtonContainer } from './componentsTableActionMenu';
 import { BiChevronDown } from 'react-icons/bi';
@@ -22,8 +21,6 @@ const TableCellActionMenuContainer: React.FC<TableCellActionMenuContainerProps> 
   const menuRootRef = useRef(null);
 
   const [tableCellNode, setTableMenuCellNode] = useState<TableCellNode | null>(null);
-
-  const [colorPickerModal, showColorPickerModal] = useModal();
 
   const moveMenu = useCallback(() => {
     const menu = menuButtonRef.current;
@@ -106,20 +103,16 @@ const TableCellActionMenuContainer: React.FC<TableCellActionMenuContainerProps> 
   return (
     <TableCellActionButtonContainer ref={menuButtonRef}>
       {tableCellNode != null && (
-        <>
-          {colorPickerModal}
-          <TableCellActionMenu
-            trigger={
-              <TableCellActionButton ref={menuRootRef}>
-                <BiChevronDown />
-              </TableCellActionButton>
-            }
-            contextRef={menuRootRef}
-            tableCellNode={tableCellNode}
-            cellMerge={cellMerge}
-            showColorPickerModal={showColorPickerModal}
-          />
-        </>
+        <TableCellActionMenu
+          trigger={
+            <TableCellActionButton ref={menuRootRef}>
+              <BiChevronDown />
+            </TableCellActionButton>
+          }
+          contextRef={menuRootRef}
+          tableCellNode={tableCellNode}
+          cellMerge={cellMerge}
+        />
       )}
     </TableCellActionButtonContainer>
   );
