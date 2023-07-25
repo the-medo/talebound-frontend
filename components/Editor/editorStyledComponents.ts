@@ -73,6 +73,15 @@ export const EditorInner = styled('div', {
   position: 'relative',
   height: '100%',
 
+  '& hr': {
+    border: '1px solid $primary200',
+    backgroundColor: '$primary200',
+    height: '1px',
+    borderRadius: '5px',
+    marginTop: '10px',
+    marginBottom: '5px',
+  },
+
   '& .other h2': {
     // fontSize: '18px',
     color: '$primary800',

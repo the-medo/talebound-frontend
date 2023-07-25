@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { LexicalEditor } from 'lexical';
 import { BsImage, BsTable } from 'react-icons/bs';
 import {
@@ -7,6 +7,8 @@ import {
   DropdownItemIcon,
   DropdownItemText,
 } from './componentsDropdown';
+
+import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 
 interface InsertDropdownListProps {
   editor: LexicalEditor;
@@ -17,6 +19,7 @@ interface InsertDropdownListProps {
 }
 
 const InsertDropdownList = ({
+  editor,
   toolbarRef,
   setShowOtherOptionsDropDown,
   setShowImageModal,
@@ -56,6 +59,10 @@ const InsertDropdownList = ({
     }
   }, [dropDownRef, setShowOtherOptionsDropDown, toolbarRef]);
 
+  const insertHorizontalRule = useCallback(() => {
+    editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined);
+  }, [editor]);
+
   return (
     <DropdownContainer ref={dropDownRef}>
       <DropdownItem
@@ -80,6 +87,18 @@ const InsertDropdownList = ({
           <BsImage />
         </DropdownItemIcon>
         <DropdownItemText>Image</DropdownItemText>
+      </DropdownItem>
+
+      <DropdownItem
+        active={false}
+        onClick={insertHorizontalRule}
+        aria-label="Horizontal line"
+        small={true}
+      >
+        <DropdownItemIcon>
+          <BsImage />
+        </DropdownItemIcon>
+        <DropdownItemText>Horizontal line</DropdownItemText>
       </DropdownItem>
     </DropdownContainer>
   );

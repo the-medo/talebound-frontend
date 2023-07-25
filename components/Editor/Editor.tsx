@@ -17,6 +17,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
+import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
 
 import { MarkNode } from '@lexical/mark';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
@@ -375,6 +376,7 @@ const Editor: React.FC<EditorProps> = ({
             <AutoLinkPlugin />
             <MarkdownPlugin />
             <InlineImagePlugin />
+            <HorizontalRulePlugin />
             <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
             <TableCellResizerPlugin />
             {floatingAnchorElem && (
