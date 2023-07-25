@@ -41,6 +41,7 @@ import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import InlineImagePlugin from './plugins/InlineImagePlugin';
 import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
 import TableCellActionMenuPlugin from './plugins/TableCellActionMenuPlugin/TableCellActionMenuPlugin';
+import TableCellResizerPlugin from './plugins/TableCellResizer/TableCellResizerPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -362,6 +363,7 @@ const Editor: React.FC<EditorProps> = ({
             <MarkdownPlugin />
             <InlineImagePlugin />
             <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
+            <TableCellResizerPlugin />
             {floatingAnchorElem && (
               <>
                 <TableCellActionMenuPlugin cellMerge={true} anchorElem={floatingAnchorElem} />
