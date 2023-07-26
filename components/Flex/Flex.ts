@@ -145,6 +145,12 @@ export const Flex = styled('div', {
         flexWrap: 'wrap',
       },
     },
+
+    circle: {
+      true: {
+        borderRadius: '50%',
+      },
+    },
   },
 
   defaultVariants: {

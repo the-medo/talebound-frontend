@@ -149,6 +149,19 @@ const StyledButton = styled('button', {
           outline: '1px solid currentColor',
         },
       },
+      semiGhost: {
+        background: '$transparent50',
+        border: '1px solid $transparent50',
+        color: 'inherit',
+
+        '&:hover': {
+          background: '$transparent80',
+        },
+
+        '&:focus': {
+          outline: '1px solid currentColor',
+        },
+      },
     },
 
     size: {
