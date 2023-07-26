@@ -9,6 +9,7 @@ import {
 } from './componentsDropdown';
 
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
+import { TbSpacingVertical } from 'react-icons/tb';
 
 interface InsertDropdownListProps {
   editor: LexicalEditor;
@@ -96,7 +97,7 @@ const InsertDropdownList = ({
         small={true}
       >
         <DropdownItemIcon>
-          <BsImage />
+          <TbSpacingVertical />
         </DropdownItemIcon>
         <DropdownItemText>Horizontal line</DropdownItemText>
       </DropdownItem>
