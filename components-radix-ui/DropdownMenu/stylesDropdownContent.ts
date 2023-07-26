@@ -13,7 +13,7 @@ const closeScale = keyframes({
 });
 
 export const stylesDropdownContent = {
-  minWidth: 220,
+  minWidth: 140,
   backgroundColor: 'white',
   borderRadius: 6,
   padding: 5,

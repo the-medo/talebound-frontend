@@ -18,7 +18,6 @@ import { $isListNode, ListNode } from '@lexical/list';
 import { createPortal } from 'react-dom';
 import { $isHeadingNode } from '@lexical/rich-text';
 import { $isCodeNode, getDefaultCodeLanguage } from '@lexical/code';
-import { getSelectedNode } from './getSelectedNode';
 import FloatingLinkEditor from './FloatingLinkEditor';
 import {
   BsArrowClockwise,
@@ -28,11 +27,12 @@ import {
   BsTypeUnderline,
 } from 'react-icons/bs';
 import { Divider, Toolbar, ToolbarItemButton } from './componentsToolbar';
-import ToolbarBlockType, { BlockType } from './ToolbarBlockType';
+import ToolbarButtonBlockType, { BlockType } from './ToolbarButtonBlockType';
 import SelectCodeLanguage from './SelectCodeLanguage';
-import ToolbarAlignType from './ToolbarAlignType';
-import ToolbarOtherOptions from './ToolbarOtherOptions';
-import ToolbarInsert from './ToolbarInsert';
+import ToolbarButtonAlignType from './ToolbarButtonAlignType';
+import ToolbarButtonFormattingText from './ToolbarButtonFormattingText';
+import ToolbarButtonInsert from './ToolbarButtonInsert';
+import { getSelectedNode } from './toolbarLib';
 
 export const LOW_PRIORITY = 1;
 
@@ -167,12 +167,7 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
         <BsArrowClockwise />
       </ToolbarItemButton>
       <Divider />
-      <ToolbarBlockType
-        disabled={disabled}
-        blockType={blockType}
-        editor={editor}
-        toolbarRef={toolbarRef}
-      />
+      <ToolbarButtonBlockType disabled={disabled} blockType={blockType} editor={editor} />
       {blockType === 'code' ? (
         <SelectCodeLanguage
           disabled={disabled}
@@ -206,23 +201,18 @@ const ToolbarPlugin: React.FC<ToolbarPluginProps> = ({ disabled = false }) => {
           >
             <BsTypeUnderline />
           </ToolbarItemButton>
-          <ToolbarOtherOptions
+          <ToolbarButtonFormattingText
             disabled={disabled}
             editor={editor}
-            toolbarRef={toolbarRef}
             isStrikethrough={isStrikethrough}
             isCode={isCode}
             isLink={isLink}
           />
+          <Divider />
+          <ToolbarButtonAlignType disabled={disabled} alignType={alignType} editor={editor} />
+          <Divider />
+          <ToolbarButtonInsert disabled={disabled} editor={editor} />
           {isLink && createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
-          <Divider />{' '}
-          <ToolbarAlignType
-            disabled={disabled}
-            alignType={alignType}
-            editor={editor}
-            toolbarRef={toolbarRef}
-          />
-          <Divider /> <ToolbarInsert disabled={disabled} editor={editor} toolbarRef={toolbarRef} />
         </>
       )}
     </Toolbar>

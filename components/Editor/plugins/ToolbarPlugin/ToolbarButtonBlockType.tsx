@@ -11,7 +11,7 @@ import {
   BsTypeH3,
 } from 'react-icons/bs';
 import { createPortal } from 'react-dom';
-import BlockOptionsDropdownList from './BlockOptionsDropdownList';
+import ToolbarDropdownBlockType from './ToolbarDropdownBlockType';
 import { Divider, ToolbarItemButton } from './componentsToolbar';
 import { LexicalEditor } from 'lexical';
 import { styled } from '../../../../styles/stitches.config';
@@ -113,53 +113,35 @@ const blockTypeToBlockName: Record<BlockType, BlockTypeInfo> = {
   },
 };
 
-interface ToolbarBlockControlsProps {
+interface ToolbarButtonBlockTypeProps {
   disabled?: boolean;
   blockType: BlockType;
-  toolbarRef: React.RefObject<HTMLDivElement>;
   editor: LexicalEditor;
 }
 
-const ToolbarBlockType: React.FC<ToolbarBlockControlsProps> = ({
+const ToolbarButtonBlockType: React.FC<ToolbarButtonBlockTypeProps> = ({
   disabled,
   blockType,
-  toolbarRef,
   editor,
 }) => {
-  const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] = useState(false);
-
-  const showBlockOptionsDropdownListCallback = useCallback(
-    () => setShowBlockOptionsDropDown((p) => !p),
-    [],
-  );
-  if (!supportedBlockTypes.has(blockType)) return null;
-
   return (
     <>
-      <ToolbarItemButton
-        disabled={disabled}
-        onClick={showBlockOptionsDropdownListCallback}
-        aria-label="Formatting Options"
-      >
-        <IconWrapper>{blockTypeToBlockName[blockType].iconName}</IconWrapper>
-        <TextWrapper>{blockTypeToBlockName[blockType].name}</TextWrapper>
-        <ChevronWrapper>
-          <BsChevronDown />
-        </ChevronWrapper>
-      </ToolbarItemButton>
-      {showBlockOptionsDropDown &&
-        createPortal(
-          <BlockOptionsDropdownList
-            editor={editor}
-            blockType={blockType}
-            toolbarRef={toolbarRef}
-            setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
-          />,
-          document.body,
-        )}
+      <ToolbarDropdownBlockType
+        trigger={
+          <ToolbarItemButton disabled={disabled} aria-label="Formatting Options">
+            <IconWrapper>{blockTypeToBlockName[blockType].iconName}</IconWrapper>
+            <TextWrapper>{blockTypeToBlockName[blockType].name}</TextWrapper>
+            <ChevronWrapper>
+              <BsChevronDown />
+            </ChevronWrapper>
+          </ToolbarItemButton>
+        }
+        editor={editor}
+        blockType={blockType}
+      />
       <Divider />
     </>
   );
 };
 
-export default ToolbarBlockType;
+export default ToolbarButtonBlockType;

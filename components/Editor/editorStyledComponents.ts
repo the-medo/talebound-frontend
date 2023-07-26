@@ -1,4 +1,4 @@
-import { keyframes, styled } from '../../styles/stitches.config';
+import { styled } from '../../styles/stitches.config';
 
 export const EditorScroller = styled('div', {
   minHeight: '150px',
@@ -61,11 +61,6 @@ export const EditorContainer = styled('div', {
       },
     },
   },
-});
-
-const tableControls = keyframes({
-  '0%': { opacity: 0 },
-  '100%': { opacity: 1 },
 });
 
 export const EditorInner = styled('div', {
