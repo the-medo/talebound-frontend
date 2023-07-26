@@ -126,6 +126,9 @@ export const Flex = styled('div', {
       baseline: {
         alignSelf: 'baseline',
       },
+      between: {
+        alignSelf: 'space-between',
+      },
     },
 
     direction: {

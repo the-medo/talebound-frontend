@@ -44,14 +44,18 @@ const UserDropdown: React.FC = () => {
 
       <DropdownMenuPortal>
         <DropdownMenuContent align={'end'} sideOffset={15}>
-          <DropdownMenuItem onSelect={openProfile}>
+          <DropdownMenuItem padding="sm" onSelect={openProfile}>
             Signed in as&nbsp;<strong>{user?.username}</strong>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={openSettings}>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Help & Feedback</DropdownMenuItem>
+          <DropdownMenuItem padding="sm" onSelect={openSettings}>
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem padding="sm">Help & Feedback</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
+          <DropdownMenuItem padding="sm" onSelect={handleLogout}>
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenuRoot>

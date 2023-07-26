@@ -1,5 +1,42 @@
 import { styled } from '../../styles/stitches.config';
 
+export const EditorScroller = styled('div', {
+  minHeight: '150px',
+  border: '0',
+  display: 'flex',
+  position: 'relative',
+  outline: '0',
+  zIndex: '0',
+  overflow: 'auto',
+
+  variants: {
+    editable: {
+      true: {
+        resize: 'vertical',
+      },
+      false: {
+        resize: 'none',
+      },
+    },
+  },
+});
+
+export const EditorWrapper = styled('div', {
+  flex: 'auto',
+  position: 'relative',
+
+  variants: {
+    editable: {
+      true: {
+        resize: 'vertical',
+      },
+      false: {
+        resize: 'none',
+      },
+    },
+  },
+});
+
 export const EditorContainer = styled('div', {
   display: 'flex',
   position: 'relative',
@@ -31,9 +68,18 @@ export const EditorInner = styled('div', {
   position: 'relative',
   height: '100%',
 
+  '& hr': {
+    border: '1px solid $primary200',
+    backgroundColor: '$primary200',
+    height: '1px',
+    borderRadius: '5px',
+    marginTop: '10px',
+    marginBottom: '5px',
+  },
+
   '& .other h2': {
-    fontSize: '18px',
-    color: '#444',
+    // fontSize: '18px',
+    color: '$primary800',
     marginBottom: '7px',
   },
 
@@ -50,8 +96,8 @@ export const EditorInner = styled('div', {
   },
 
   '& h1': {
-    fontSize: '24px',
-    color: '#333',
+    // fontSize: '24px',
+    color: '$primary800',
   },
 
   '& .ltr ': {
@@ -70,7 +116,10 @@ export const EditorInner = styled('div', {
     position: 'relative',
     tabSize: '2',
     outline: '0',
-    padding: '15px 10px',
+    paddingTop: '15px',
+    paddingBottom: '15px',
+    paddingLeft: '24px',
+    paddingRight: '8px',
     caretColor: '#444',
   },
 
@@ -187,20 +236,18 @@ export const EditorInner = styled('div', {
   },
 
   '& .editor-heading-h1': {
-    fontSize: '24px',
-    color: 'rgb(5, 5, 5)',
-    fontWeight: '400',
+    color: '$primary800',
+    fontSize: '$xl',
     margin: '0 0 12px',
     padding: '0',
   },
 
   '& .editor-heading-h2': {
-    fontSize: '15px',
-    color: 'rgb(101, 103, 107)',
-    fontWeight: '700',
+    color: '$primary800',
+    fontSize: '$md',
+    textDecoration: 'underline',
     margin: '10px 0 0',
     padding: '0',
-    textTransform: 'uppercase',
   },
 
   '& .editor-quote': {
@@ -223,6 +270,27 @@ export const EditorInner = styled('div', {
     margin: '0 0 0 16px',
   },
 
+  '& .inline-editor-image': {
+    cursor: 'default',
+    display: 'inline-block',
+    position: 'relative',
+    zIndex: '1',
+    marginBottom: '$sm',
+
+    '&.position-left': {
+      float: 'left',
+      marginRight: '$sm',
+    },
+    '&.position-right': {
+      float: 'right',
+      marginLeft: '$sm',
+    },
+    '&.position-full': {
+      marginLeft: '$sm',
+      width: '100%',
+    },
+  },
+
   '& .editor-listitem': {
     margin: '8px 32px 8px 32px',
   },
@@ -240,6 +308,167 @@ export const EditorInner = styled('div', {
     background: '#999',
   },
 
+  '& span[data-info="image-node"]': {
+    fontWeight: '400',
+  },
+
+  '& .editor-table-selection *::selection': {
+    backgroundColor: 'transparent',
+  },
+
+  '& .editor-table': {
+    borderCollapse: 'collapse',
+    borderSpacing: '0',
+    overflowY: 'scroll',
+    overflowX: 'scroll',
+    tableLayout: 'fixed',
+    width: 'max-content',
+    margin: '30px 0',
+
+    '& .editor-tableSelected': {
+      outline: '2px solid $primary',
+    },
+
+    '& .editor-tableCell': {
+      border: '1px solid $primary900',
+      width: '75px',
+      minWidth: '75px',
+      verticalAlign: 'top',
+      textAlign: 'start',
+      padding: '6px 8px',
+      position: 'relative',
+      outline: 'none',
+    },
+
+    '& .editor-tableCellSortedIndicator': {
+      display: 'block',
+      opacity: '0.5',
+      position: 'absolute',
+      bottom: '0',
+      left: '0',
+      width: '100%',
+      height: '4px',
+      backgroundColor: '#999',
+    },
+    '& .editor-tableCellResizer': {
+      position: 'absolute',
+      right: '-4px',
+      height: '100%',
+      width: '8px',
+      cursor: 'ew-resize',
+      zIndex: '10',
+      top: '0',
+    },
+    '& .editor-tableCellHeader': {
+      backgroundColor: '$primary200',
+      textAlign: 'start',
+    },
+    '& .editor-tableCellSelected': {
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableCellPrimarySelected': {
+      border: '2px solid $primary',
+      display: 'block',
+      height: 'calc(100% - 2px)',
+      position: 'absolute',
+      width: 'calc(100% - 2px)',
+      left: '-1px',
+      top: '-1px',
+      zIndex: '2',
+    },
+    '& .editor-tableCellEditing': {
+      boxShadow: '0 0 5px rgba(0, 0, 0, 0.4)',
+      borderRadius: '3px',
+    },
+    '& .editor-tableAddColumns': {
+      position: 'absolute',
+      top: '0',
+      width: '20px',
+      backgroundColor: '#eee',
+      height: '100%',
+      right: '0',
+      animation: 'table-controls 0.2s ease',
+      border: '0',
+      cursor: 'pointer',
+    },
+    '& .editor-tableAddColumns::after': {
+      backgroundImage: 'url(../images/icons/plus.svg)',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      display: 'block',
+      content: ' ',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      opacity: '0.4',
+    },
+    '& .editor-tableAddColumns::hover': {
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableAddRows': {
+      position: 'absolute',
+      bottom: '-25px',
+      width: 'calc(100% - 25px)',
+      backgroundColor: '#eee',
+      height: '20px',
+      left: '0',
+      animation: 'table-controls 0.2s ease',
+      border: '0',
+      cursor: 'pointer',
+    },
+    '& .editor-tableAddRows:after': {
+      backgroundImage:
+        'url(https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/bbf5d630-1ad8-48a0-1971-214dfc18bd00/30x30)',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      display: 'block',
+      content: ' ',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      opacity: '0.4',
+    },
+    '& .editor-tableAddRows:hover': {
+      backgroundColor: '#c9dbf0',
+    },
+    '& .editor-tableCellResizeRuler': {
+      display: 'block',
+      position: 'absolute',
+      width: '1px',
+      backgroundColor: '$primary',
+      height: '100%',
+      top: '0',
+    },
+    '& .editor-tableCellActionButtonContainer': {
+      display: 'block',
+      right: '5px',
+      top: '6px',
+      position: 'absolute',
+      zIndex: '4',
+      width: '20px',
+      height: '20px',
+    },
+    '& .editor-tableCellActionButton': {
+      backgroundColor: '#eee',
+      display: 'block',
+      border: '0',
+      borderRadius: '20px',
+      width: '20px',
+      height: '20px',
+      color: '#222',
+      cursor: 'pointer',
+    },
+    '& .editor-tableCellActionButton:hover': {
+      backgroundColor: '#ddd',
+    },
+  },
+
   variants: {
     postView: {
       true: {
@@ -248,6 +477,27 @@ export const EditorInner = styled('div', {
         },
       },
     },
+
+    maxImageWidth: {
+      600: {
+        '& span[data-info="image-node"]': {
+          maxWidth: '600px',
+        },
+      },
+    },
+
+    editable: {
+      false: {
+        '& .editor-input': {
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        },
+      },
+    },
+  },
+
+  defaultVariants: {
+    maxImageWidth: '600',
   },
 });
 

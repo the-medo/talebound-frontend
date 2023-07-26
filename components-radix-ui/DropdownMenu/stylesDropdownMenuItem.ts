@@ -7,8 +7,8 @@ export const stylesDropdownMenuItem = {
   alignItems: 'center',
   height: 36,
   padding: '0 5px',
+  paddingRight: 16,
   position: 'relative',
-  paddingLeft: 25,
   userSelect: 'none',
 
   variants: {
@@ -38,10 +38,29 @@ export const stylesDropdownMenuItem = {
         },
       },
     },
+
+    active: {
+      true: {
+        backgroundColor: '$primary200',
+      },
+    },
+
+    padding: {
+      default: {
+        paddingLeft: 25,
+      },
+      sm: {
+        paddingLeft: '$md',
+      },
+      lg: {
+        paddingLeft: '$xl',
+      },
+    },
   },
 
   defaultVariants: {
     color: 'default',
+    padding: 'default',
   },
 
   '&[data-disabled]': {

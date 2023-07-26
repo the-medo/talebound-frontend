@@ -4,6 +4,7 @@ import Stitches from '@stitches/react';
 import { Col, Flex } from '../Flex/Flex';
 import { Label } from '../Typography/Label';
 import { Text } from '../Typography/Text';
+import { HelperType } from '../../utils/form/helperTypes';
 
 export const StyledInput = styled('input', {
   fontFamily: '$heading',
@@ -12,14 +13,12 @@ export const StyledInput = styled('input', {
   cursor: 'pointer',
   fontSize: '$md',
   transition: 'all 0.2s ease-in-out',
-  border: '1px solid transparent',
   color: '$primary900',
-  backgroundColor: '$white700',
+  border: '1px solid transparent',
 
   '&:focus': {
     outline: 'none',
     boxShadow: '$md',
-    border: '1px solid $white900',
   },
 
   variants: {
@@ -28,13 +27,30 @@ export const StyledInput = styled('input', {
         width: '100%',
       },
     },
-    transparent: {
-      true: {
+
+    mode: {
+      transparent: {
         background: '$transparent40',
         '&:hover': { backgroundColor: '$transparent70' },
         '&:focus': { backgroundColor: '$transparent70' },
       },
+      grey: {
+        backgroundColor: '$white700',
+        '&:focus': { border: '1px solid $white900' },
+      },
+      white: {
+        borderColor: '$primary300',
+        backgroundColor: '$white200',
+        '&:focus': {
+          border: '1px solid $primary500',
+          backgroundColor: '$white100',
+        },
+      },
     },
+  },
+
+  defaultVariants: {
+    mode: 'white',
   },
 });
 
@@ -45,7 +61,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
   label?: string;
   labelDirection?: 'row' | 'column';
   helperText?: string;
-  helperType?: 'danger' | 'warning' | 'info';
+  helperType?: HelperType;
 }
 
 const Input: React.FC<InputProps> = ({

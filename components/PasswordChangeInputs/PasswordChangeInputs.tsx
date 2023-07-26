@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { HelperType } from '../../utils/form/nextUiTypes';
+import { HelperMessage } from '../../utils/form/helperTypes';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
 import { useInput } from '../../hooks/useInput';
 import Input from '../Input/Input';
@@ -29,11 +29,11 @@ const PasswordChangeInputs: React.FC<PasswordChangeInputsProps> = ({
   const { value: password1Value, onChange: onChangePassword1 } = useInput<string>('');
   const { value: password2Value, onChange: onChangePassword2 } = useInput<string>('');
 
-  const helperPassword1: HelperType = useMemo(
+  const helperPassword1: HelperMessage = useMemo(
     () => validatePassword(password1Value),
     [password1Value],
   );
-  const helperPassword2: HelperType = useMemo(
+  const helperPassword2: HelperMessage = useMemo(
     () => validatePasswordAgain(password1Value, password2Value),
     [password1Value, password2Value],
   );

@@ -1,37 +1,55 @@
-import { LexicalEditor } from 'lexical';
-import { EditorState } from 'lexical';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { EditorContainer, EditorInner, Placeholder } from './editorStyledComponents';
-import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer';
-import ExampleTheme from './themes/EditorTheme';
-import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { ListItemNode, ListNode } from '@lexical/list';
-import { CodeHighlightNode, CodeNode } from '@lexical/code';
-import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { MarkNode } from '@lexical/mark';
+
+import { RxCross1 } from 'react-icons/rx';
+import { AiOutlineSend } from 'react-icons/ai';
+import { RiDraftLine } from 'react-icons/ri';
+import debounce from 'lodash.debounce';
+
+import { LexicalEditor, EditorState } from 'lexical';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import debounce from 'lodash.debounce';
+import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
+import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
+import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
+
+import { MarkNode } from '@lexical/mark';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { ListItemNode, ListNode } from '@lexical/list';
+import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { AutoLinkNode, LinkNode } from '@lexical/link';
+
+import {
+  EditorContainer,
+  EditorInner,
+  EditorScroller,
+  EditorWrapper,
+  Placeholder,
+} from './editorStyledComponents';
+import ExampleTheme from './themes/EditorTheme';
 import ToolbarPlugin from './plugins/ToolbarPlugin/ToolbarPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/CodeHighlightPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin/ListMaxIndentLevelPlugin';
 import AutoLinkPlugin from './plugins/AutoLinkPlugin/AutoLinkPlugin';
 import MarkdownPlugin from './plugins/MarkdownPlugin/MarkdownPlugin';
-import { TableNode as NewTableNode } from './nodes/TableNode';
-import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
+import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
+
 import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
-import { RxCross1 } from 'react-icons/rx';
-import { EMPTY_EDITOR_STATE } from './utils/emptyEditorState';
-import { AiOutlineSend } from 'react-icons/ai';
-import { RiDraftLine } from 'react-icons/ri';
+import { useSharedHistoryContext } from './context/SharedHistoryContext';
+import InlineImagePlugin from './plugins/InlineImagePlugin';
+import { InlineImageNode } from './nodes/InlineImageNode/InlineImageNode';
+import TableCellActionMenuPlugin from './plugins/TableCellActionMenuPlugin/TableCellActionMenuPlugin';
+import TableCellResizerPlugin from './plugins/TableCellResizer/TableCellResizerPlugin';
+import DraggableBlockPlugin from './plugins/DraggableBlockPlugin/DraggableBlockPlugin';
 
 const editorConfig: InitialConfigType = {
   // The editor theme
@@ -51,13 +69,13 @@ const editorConfig: InitialConfigType = {
     CodeNode,
     CodeHighlightNode,
     TableNode,
-    NewTableNode,
     TableCellNode,
     TableRowNode,
     AutoLinkNode,
     LinkNode,
     MarkNode,
     HorizontalRuleNode,
+    InlineImageNode,
   ],
 };
 
@@ -70,24 +88,6 @@ export type EditorOnSaveAction = (
   _settleAction?: () => void,
 ) => void;
 
-interface EditorProps {
-  onChange?: (_editorState: EditorState, _editor: LexicalEditor) => void;
-  editorState?: string;
-  onSaveAction?: EditorOnSaveAction;
-  actionLabel?: 'Save' | 'Post';
-  draftable?: boolean;
-  isDraft?: boolean;
-  alreadyExists?: boolean;
-  disabled?: boolean;
-  postView?: boolean;
-  closeEditor?: () => void;
-  loading?: boolean;
-  error?: string;
-  resetError?: () => void;
-  debounceTime?: number;
-  saveOnDebounce?: boolean;
-}
-
 enum EditorAction {
   IDLE = 0,
   SAVE = 1,
@@ -96,16 +96,44 @@ enum EditorAction {
   SAVE_AS_DRAFT = 4,
 }
 
+export enum PostViewType {
+  POST = 0,
+  EDIT = 1,
+}
+
+interface EditorProps {
+  onChange?: (_editorState: EditorState, _editor: LexicalEditor) => void;
+  hasRightToEdit?: boolean;
+  defaultPostViewType?: PostViewType;
+  editorState?: string;
+  onSaveAction?: EditorOnSaveAction;
+  actionLabel?: 'Save' | 'Post';
+  draftable?: boolean;
+  editable?: boolean;
+  isDraft?: boolean;
+  alreadyExists?: boolean;
+  disabled?: boolean;
+  // postView?: boolean;
+  closeEditor?: () => void;
+  loading?: boolean;
+  error?: string;
+  resetError?: () => void;
+  debounceTime?: number;
+  saveOnDebounce?: boolean;
+}
+
 const Editor: React.FC<EditorProps> = ({
   onChange,
+  hasRightToEdit = false,
+  defaultPostViewType = PostViewType.POST,
   editorState,
   onSaveAction,
   actionLabel = 'Post',
   draftable,
+  editable = true,
   isDraft = false,
   alreadyExists,
   disabled = false,
-  postView,
   closeEditor,
   loading,
   error,
@@ -113,32 +141,66 @@ const Editor: React.FC<EditorProps> = ({
   debounceTime = 0,
   saveOnDebounce,
 }) => {
-  const finalDisabled = useMemo(() => (postView ? true : disabled), [postView, disabled]);
+  const { historyState } = useSharedHistoryContext();
   const finalActionLabel = useMemo(
     () => (alreadyExists ? 'Save' : actionLabel),
     [actionLabel, alreadyExists],
   );
-  const contentEditable = useMemo(() => <ContentEditable className="editor-input" />, []);
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  };
+
+  const [lastSavedEditorState, setLastSavedEditorState] = useState<string | EditorState>(
+    editorState ?? EMPTY_EDITOR_STATE,
+  );
 
   const editorStateRef = useRef<EditorState>();
   const editorRef = useRef<LexicalEditor>();
   const placeholder = useMemo(() => <Placeholder>No content yet</Placeholder>, []);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [contentSaved, setContentSaved] = useState(true);
+  const [postViewType, setPostViewType] = useState(defaultPostViewType);
   const [actionInProgress, setActionInProgress] = useState<EditorAction>(EditorAction.IDLE);
+
+  const contentEditable = useMemo(
+    () => (
+      <EditorScroller className="editor-scroll" editable={postViewType === PostViewType.EDIT}>
+        <EditorWrapper className="editor" editable={postViewType === PostViewType.EDIT} ref={onRef}>
+          <ContentEditable className="editor-input" />
+        </EditorWrapper>
+      </EditorScroller>
+    ),
+    [postViewType],
+  );
 
   const initialConfig = useMemo(() => {
     return {
       ...editorConfig,
-      editorState: editorState ?? EMPTY_EDITOR_STATE,
-      editable: !finalDisabled,
+      editorState: lastSavedEditorState,
+      editable: postViewType === PostViewType.EDIT,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); //, editorState
 
   useEffect(() => {
-    editorRef.current?.setEditable(!finalDisabled);
-  }, [finalDisabled]);
+    const postViewTypeToSet = !hasRightToEdit || !editable ? PostViewType.POST : postViewType;
+    setPostViewType(postViewTypeToSet);
+
+    editorRef.current?.setEditable(
+      !disabled && hasRightToEdit && editable && postViewTypeToSet === PostViewType.EDIT,
+    );
+  }, [disabled, editable, hasRightToEdit, postViewType]);
+
+  useEffect(() => {
+    if (contentSaved) {
+      const editorState = editorRef.current?.getEditorState();
+      if (editorState) setLastSavedEditorState(editorState);
+    }
+  }, [contentSaved]);
 
   useEffect(() => {
     window.onbeforeunload = contentSaved
@@ -163,7 +225,9 @@ const Editor: React.FC<EditorProps> = ({
       editorStateRef.current = editorState;
       editorRef.current = editor;
       if (onChange) onChange(editorState, editor);
-      if (debounceTime > 0 && saveOnDebounce) setContentSaved(true);
+      if (debounceTime > 0 && saveOnDebounce) {
+        setContentSaved(true);
+      }
     }, debounceTime),
     [onChange, debounceTime, saveOnDebounce],
   );
@@ -186,38 +250,45 @@ const Editor: React.FC<EditorProps> = ({
 
   const closeEditorHandler = useCallback(() => {
     if (closeEditor) closeEditor();
+    setPostViewType(PostViewType.POST);
   }, [closeEditor]);
+
+  const openEditorHandler = useCallback(() => {
+    setPostViewType(PostViewType.EDIT);
+  }, []);
 
   const discardChangesHandler = useCallback(() => {
     if (editorRef.current && !contentSaved) {
       editorRef.current?.setEditorState(
-        editorRef.current?.parseEditorState(initialConfig.editorState ?? EMPTY_EDITOR_STATE),
+        typeof lastSavedEditorState === 'string'
+          ? editorRef.current?.parseEditorState(lastSavedEditorState)
+          : lastSavedEditorState,
       );
       setContentSaved(true);
     }
     closeEditorHandler();
     if (resetError) resetError();
-  }, [closeEditorHandler, contentSaved, initialConfig.editorState, resetError]);
+  }, [closeEditorHandler, contentSaved, lastSavedEditorState, resetError]);
 
   const saveActionHandler = useCallback(() => {
-      if (onSaveAction && editorStateRef.current && editorRef.current) {
-        setActionInProgress(EditorAction.SAVE);
-        onSaveAction(
-          editorStateRef.current,
-          editorRef.current,
-          isDraft,
-          () => {
-            setContentSaved(true);
-          },
-          () => {
-            /* no error action */
-          },
-          () => {
-            closeEditorHandler();
-            setActionInProgress(EditorAction.IDLE);
-          },
-        );
-      }
+    if (onSaveAction && editorStateRef.current && editorRef.current) {
+      setActionInProgress(EditorAction.SAVE);
+      onSaveAction(
+        editorStateRef.current,
+        editorRef.current,
+        isDraft,
+        () => {
+          setContentSaved(true);
+        },
+        () => {
+          /* no error action */
+        },
+        () => {
+          closeEditorHandler();
+          setActionInProgress(EditorAction.IDLE);
+        },
+      );
+    }
   }, [closeEditorHandler, isDraft, onSaveAction]);
 
   const saveAndPublishActionHandler = useCallback(() => {
@@ -285,9 +356,13 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <Col fullWidth gap="sm">
       <LexicalComposer initialConfig={initialConfig}>
-        <EditorContainer postView={postView} loading={loading}>
-          {!postView && <ToolbarPlugin />}
-          <EditorInner postView={postView}>
+        <EditorContainer postView={postViewType === PostViewType.POST} loading={loading}>
+          {postViewType === PostViewType.EDIT && <ToolbarPlugin disabled={disabled} />}
+          <EditorInner
+            postView={postViewType === PostViewType.POST}
+            editable={postViewType === PostViewType.EDIT}
+          >
+            <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={contentEditable}
               placeholder={placeholder}
@@ -300,12 +375,23 @@ const Editor: React.FC<EditorProps> = ({
             <LinkPlugin />
             <AutoLinkPlugin />
             <MarkdownPlugin />
+            <InlineImagePlugin />
+            <HorizontalRulePlugin />
+            <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
+            <TableCellResizerPlugin />
+            {floatingAnchorElem && (
+              <>
+                <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+                <TableCellActionMenuPlugin cellMerge={true} anchorElem={floatingAnchorElem} />
+              </>
+            )}
+
             <ListMaxIndentLevelPlugin maxDepth={7} />
           </EditorInner>
         </EditorContainer>
       </LexicalComposer>
       <Col gap="sm">
-        {!postView && (
+        {postViewType === PostViewType.EDIT && (
           <Row gap="sm">
             {!contentSaved && (
               <>
@@ -378,6 +464,28 @@ const Editor: React.FC<EditorProps> = ({
                   <RxCross1 size="0.8em" />
                 </Button>
               </>
+            )}
+          </Row>
+        )}
+        {postViewType === PostViewType.POST && hasRightToEdit && (
+          <Row gap="sm">
+            <Button
+              disabled={actionInProgress !== EditorAction.IDLE}
+              color="secondaryFill"
+              onClick={openEditorHandler}
+            >
+              <Text>Edit</Text>
+            </Button>
+            {draftable && isDraft && (
+              <Button
+                disabled={actionInProgress !== EditorAction.IDLE}
+                loading={actionInProgress === EditorAction.SAVE_AND_PUBLISH}
+                color="secondaryFill"
+                onClick={saveAndPublishActionHandler}
+              >
+                <Text>Publish</Text>
+                <AiOutlineSend size="0.8em" />
+              </Button>
             )}
           </Row>
         )}

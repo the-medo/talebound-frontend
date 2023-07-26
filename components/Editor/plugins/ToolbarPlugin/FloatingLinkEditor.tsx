@@ -10,7 +10,6 @@ import {
 } from 'lexical';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
-import { getSelectedNode } from './getSelectedNode';
 import { LOW_PRIORITY } from './ToolbarPlugin';
 import {
   LinkEditIcon,
@@ -20,6 +19,7 @@ import {
   LinkEditorLink,
 } from './componentsLinkEditor';
 import { BsPencil } from 'react-icons/bs';
+import { getSelectedNode } from './toolbarLib';
 
 function positionEditorElement(editor: HTMLDivElement, rect: DOMRect | null) {
   if (rect === null) {

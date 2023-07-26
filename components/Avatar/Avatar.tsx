@@ -3,7 +3,7 @@ import { AvatarRoot } from '../../components-radix-ui/Avatar/AvatarRoot';
 import { AvatarImage } from '../../components-radix-ui/Avatar/AvatarImage';
 import { AvatarFallback } from '../../components-radix-ui/Avatar/AvatarFallback';
 import { AvatarSize, AvatarType, emptyUrlByType } from './avatarLib';
-import { ImageVariant, modifyImageVariant } from '../../utils/images/image_utils';
+import { ImageVariant, imageModifyVariant } from '../../utils/images/image_utils';
 
 interface AvatarProps {
   url?: string;
@@ -19,13 +19,13 @@ const Avatar: React.FC<AvatarProps> = ({ url, type = 'unknown', size = 'lg', fal
     switch (size) {
       case 'xs':
       case 'sm':
-        return modifyImageVariant(url, ImageVariant['30x30']);
+        return imageModifyVariant(url, ImageVariant['30x30']);
       case 'md':
       case 'lg':
       case 'xl':
-        return modifyImageVariant(url, ImageVariant['100x100']);
+        return imageModifyVariant(url, ImageVariant['100x100']);
       case '2xl':
-        return modifyImageVariant(url, ImageVariant['200x200']);
+        return imageModifyVariant(url, ImageVariant['200x200']);
     }
   }, [url, size]);
 

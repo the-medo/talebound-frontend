@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
-import { HelperType } from '../../utils/form/nextUiTypes';
+import { HelperMessage } from '../../utils/form/helperTypes';
 import { validateEmail } from '../../utils/form/validateEmail';
 import { validateUsername } from '../../utils/form/validateUsername';
 import { validatePassword, validatePasswordAgain } from '../../utils/form/validatePassword';
@@ -85,16 +85,16 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
   const { value: password1Value, onChange: onChangePassword1 } = useInput('');
   const { value: password2Value, onChange: onChangePassword2 } = useInput('');
 
-  const helperUsername: HelperType = useMemo(
+  const helperUsername: HelperMessage = useMemo(
     () => validateUsername(usernameValue),
     [usernameValue],
   );
-  const helperEmail: HelperType = useMemo(() => validateEmail(emailValue), [emailValue]);
-  const helperPassword1: HelperType = useMemo(
+  const helperEmail: HelperMessage = useMemo(() => validateEmail(emailValue), [emailValue]);
+  const helperPassword1: HelperMessage = useMemo(
     () => validatePassword(password1Value),
     [password1Value],
   );
-  const helperPassword2: HelperType = useMemo(
+  const helperPassword2: HelperMessage = useMemo(
     () => validatePasswordAgain(password1Value, password2Value),
     [password1Value, password2Value],
   );
@@ -156,7 +156,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 required
                 helperText={helperUsername.text}
                 helperType={helperUsername.type}
-                transparent
+                mode="transparent"
               />
               <Input
                 label="Email"
@@ -167,7 +167,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 required
                 helperText={helperEmail.text}
                 helperType={helperEmail.type}
-                transparent
+                mode="transparent"
               />
               <Input
                 label="Password"
@@ -178,7 +178,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 required
                 helperText={helperPassword1.text}
                 helperType={helperPassword1.type}
-                transparent
+                mode="transparent"
               />
               <Input
                 label="Password again"
@@ -189,13 +189,13 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
                 required
                 helperText={helperPassword2.text}
                 helperType={helperPassword2.type}
-                transparent
+                mode="transparent"
               />
               <Checkbox
                 id="req_checkbox"
                 checked={checked}
                 onCheckedChange={handleCheckbox}
-                transparent
+                mode="transparent"
               >
                 <Text size="xs" color="white">
                   I agree to the{' '}

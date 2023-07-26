@@ -6,9 +6,9 @@ import { Users } from '../generated/api-types/Users';
 import { Verify } from '../generated/api-types/Verify';
 import { getApiUrl } from '../utils/functions/config';
 import { Evaluations } from '../generated/api-types/Evaluations';
-import { Files } from '../generated/api-types/Files';
 import { Posts } from '../generated/api-types/Posts';
 import { PostTypes } from '../generated/api-types/PostTypes';
+import { Images } from '../generated/api-types/Images';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -29,6 +29,6 @@ export const ChatCollection = new Chat(API);
 export const UsersCollection = new Users(API);
 export const VerifyCollection = new Verify(API);
 export const EvaluationsCollection = new Evaluations(API);
-export const FilesCollection = new Files(API);
+export const ImagesCollection = new Images(API);
 export const PostsCollection = new Posts(API);
 export const PostTypesCollection = new PostTypes(API);

@@ -20,6 +20,7 @@ const editorTheme = {
     listitem: 'editor-listitem',
   },
   image: 'editor-image',
+  inlineImage: 'inline-editor-image',
   link: 'editor-link',
   text: {
     bold: 'editor-text-bold',
@@ -64,6 +65,21 @@ const editorTheme = {
     url: 'editor-tokenOperator',
     variable: 'editor-tokenVariable',
   },
+  table: 'editor-table',
+  tableAddColumns: 'editor-tableAddColumns',
+  tableAddRows: 'editor-tableAddRows',
+  tableCell: 'editor-tableCell',
+  tableCellActionButton: 'editor-tableCellActionButton',
+  tableCellActionButtonContainer: 'editor-tableCellActionButtonContainer',
+  tableCellEditing: 'editor-tableCellEditing',
+  tableCellHeader: 'editor-tableCellHeader',
+  tableCellPrimarySelected: 'editor-tableCellPrimarySelected',
+  tableCellResizer: 'editor-tableCellResizer',
+  tableCellSelected: 'editor-tableCellSelected',
+  tableCellSortedIndicator: 'editor-tableCellSortedIndicator',
+  tableResizeRuler: 'editor-tableCellResizeRuler',
+  tableSelected: 'editor-tableSelected',
+  tableSelection: 'editor-tableSelection',
 };
 
 export default editorTheme;

@@ -1,5 +1,5 @@
 import { styled } from '../../styles/stitches.config';
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { MutableRefObject, PropsWithChildren, useMemo } from 'react';
 import Stitches from '@stitches/react';
 import Loading from '../Loading/Loading';
 
@@ -254,15 +254,17 @@ export interface ButtonProps extends PropsWithChildren, ButtonVariants {
   loading?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  ref?: MutableRefObject<HTMLButtonElement | null>;
+  css?: Stitches.CSS;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   loading = false,
   disabled = false,
+  css,
   ...rest
 }) => {
-  console.log('rest', rest);
   const loadingColor = useMemo(() => {
     switch (rest.color) {
       case 'primaryFill':
@@ -282,7 +284,7 @@ export const Button: React.FC<ButtonProps> = ({
   }, [rest.color]);
 
   return (
-    <StyledButton loading={loading} disabled={disabled} {...rest}>
+    <StyledButton loading={loading} disabled={disabled} css={css} {...rest}>
       {children}
       {loading && (
         <LoadingOverlay>

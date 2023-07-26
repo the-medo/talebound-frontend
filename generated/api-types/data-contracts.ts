@@ -201,6 +201,12 @@ export interface PbGetEvaluationsByTypeResponse {
   evaluation?: PbEvaluation[];
 }
 
+export interface PbGetImagesResponse {
+  images?: PbImage[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
 export interface PbGetPostHistoryResponse {
   historyPosts?: PbHistoryPost[];
 }
@@ -320,14 +326,6 @@ export interface PbUploadImageRequest {
   filename?: string;
   /** @format byte */
   data?: string;
-}
-
-export interface PbUploadImageResponse {
-  id?: string;
-  filename?: string;
-  variants?: string[];
-  /** @format date-time */
-  uploadedAt?: string;
 }
 
 export interface PbUploadUserAvatarResponse {
