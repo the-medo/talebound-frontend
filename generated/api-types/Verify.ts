@@ -20,7 +20,7 @@ export class Verify<SecurityDataType = unknown> {
   }
 
   /**
-   * @description Verify user email
+   * @description verify user email
    *
    * @tags Talebound
    * @name TaleboundVerifyEmail

@@ -20,7 +20,7 @@ export class PostTypes<SecurityDataType = unknown> {
   }
 
   /**
-   * @description Get post types with info (draftable, privatable)
+   * @description get post types with info (draftable, privatable)
    *
    * @tags Talebound
    * @name TaleboundGetPostTypes

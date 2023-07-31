@@ -9,6 +9,7 @@ import { Evaluations } from '../generated/api-types/Evaluations';
 import { Posts } from '../generated/api-types/Posts';
 import { PostTypes } from '../generated/api-types/PostTypes';
 import { Images } from '../generated/api-types/Images';
+import { Worlds } from '../generated/api-types/Worlds';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -32,3 +33,4 @@ export const EvaluationsCollection = new Evaluations(API);
 export const ImagesCollection = new Images(API);
 export const PostsCollection = new Posts(API);
 export const PostTypesCollection = new PostTypes(API);
+export const WorldsCollection = new Worlds(API);

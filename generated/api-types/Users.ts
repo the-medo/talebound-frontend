@@ -75,7 +75,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Use this API to create a new user
+   * @description use this API to create a new user
    *
    * @tags Talebound
    * @name TaleboundCreateUser
@@ -94,7 +94,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Use this API to update user
+   * @description use this API to update user
    *
    * @tags Talebound
    * @name TaleboundUpdateUser
@@ -130,7 +130,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Login user - get user object and set HttpOnly cookies
+   * @description login user - get user object and set HttpOnly cookies
    *
    * @tags Talebound
    * @name TaleboundLoginUser
@@ -149,7 +149,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Logout user - it clears HttpOnly cookies - no request data required
+   * @description logout user - it clears HttpOnly cookies - no request data required
    *
    * @tags Talebound
    * @name TaleboundLogoutUser
@@ -168,7 +168,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description In case a user forgot their password, they can request a password reset using this endpoint
+   * @description in case a user forgot their password, they can request a password reset using this endpoint
    *
    * @tags Talebound
    * @name TaleboundResetPasswordSendCode
@@ -190,7 +190,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description In case a user forgot their password, they can confirm the password reset using this endpoint
+   * @description in case a user forgot their password, they can confirm the password reset using this endpoint
    *
    * @tags Talebound
    * @name TaleboundResetPasswordVerifyCode
@@ -212,7 +212,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Validate reset password secret code
+   * @description validate reset password secret code
    *
    * @tags Talebound
    * @name TaleboundResetPasswordVerifyCodeValidity
@@ -304,7 +304,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get evaluation votes by user id
+   * @description get evaluation votes by user id
    *
    * @tags Talebound
    * @name TaleboundGetEvaluationVotesByUserId
@@ -321,7 +321,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Create or update evaluation vote
+   * @description create or update evaluation vote
    *
    * @tags Talebound
    * @name TaleboundCreateOrUpdateEvaluationVote
@@ -351,7 +351,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get average user evaluation by type
+   * @description get average user evaluation by type
    *
    * @tags Talebound
    * @name TaleboundGetAverageUserEvaluationsByType
@@ -372,7 +372,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get evaluation votes by user id and voter
+   * @description get evaluation votes by user id and voter
    *
    * @tags Talebound
    * @name TaleboundGetEvaluationVotesByUserIdAndVoter
@@ -393,7 +393,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Delete evaluation vote
+   * @description delete evaluation vote
    *
    * @tags Talebound
    * @name TaleboundDeleteEvaluationVote
@@ -415,7 +415,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get images of user by userID - filterable by image type
+   * @description get images of user by userID - filterable by image type
    *
    * @tags Talebound
    * @name TaleboundGetUserImages
@@ -444,7 +444,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Use this API to update user introduction
+   * @description use this API to update user introduction
    *
    * @tags Talebound
    * @name TaleboundUpdateUserIntroduction
@@ -470,7 +470,7 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get posts of user by userID
+   * @description get posts of user by userID
    *
    * @tags Talebound
    * @name TaleboundGetUserPosts
@@ -516,18 +516,18 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get list of worlds that the creator is part of
+   * @description gets list of worlds that the creator is part of
    *
    * @tags Talebound
    * @name TaleboundGetWorldsOfCreator
    * @summary Get creator's worlds
-   * @request GET:/users/{userId}/worlds_creator
+   * @request GET:/users/{userId}/worlds
    * @response `200` `PbGetWorldsOfCreatorResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundGetWorldsOfCreator = (userId: string, params: RequestParams = {}) =>
     this.http.request<PbGetWorldsOfCreatorResponse, RpcStatus>({
-      path: `/users/${userId}/worlds_creator`,
+      path: `/users/${userId}/worlds`,
       method: 'GET',
       format: 'json',
       ...params,

@@ -52,6 +52,10 @@ export interface PbChatMessage {
   createdAt?: string;
 }
 
+export interface PbCreateAvailableWorldTagRequest {
+  tag?: string;
+}
+
 export interface PbCreateOrUpdateEvaluationVoteResponse {
   evaluationVote?: PbEvaluationVote;
 }
@@ -77,7 +81,8 @@ export interface PbCreateUserResponse {
 
 export interface PbCreateWorldRequest {
   name?: string;
-  description?: string;
+  shortDescription?: string;
+  basedOn?: string;
 }
 
 export interface PbDataHistoryPost {
@@ -177,6 +182,10 @@ export interface PbEvaluationVote {
   createdAt?: string;
 }
 
+export interface PbGetAvailableWorldTagsResponse {
+  tags?: PbTag[];
+}
+
 export interface PbGetAverageUserEvaluationsByTypeResponse {
   averageEvaluationVote?: PbAverageEvaluationVote[];
 }
@@ -227,8 +236,20 @@ export interface PbGetUsersResponse {
   users?: PbUser[];
 }
 
+export interface PbGetWorldDailyActivityResponse {
+  activity?: PbWorldActivity[];
+}
+
+export interface PbGetWorldMonthlyActivityResponse {
+  activity?: PbWorldActivity[];
+}
+
 export interface PbGetWorldsOfCreatorResponse {
   worlds?: PbWorldOfCreatorResponse[];
+}
+
+export interface PbGetWorldsResponse {
+  worlds?: PbWorld[];
 }
 
 export interface PbHistoryPost {
@@ -304,6 +325,12 @@ export interface PbRole {
   id?: number;
   name?: string;
   description?: string;
+}
+
+export interface PbTag {
+  /** @format int32 */
+  id?: number;
+  tag?: string;
 }
 
 export interface PbUpdateUserRequest {
@@ -388,18 +415,51 @@ export interface PbWorld {
   public?: boolean;
   /** @format date-time */
   createdAt?: string;
-  description?: string;
+  basedOn?: string;
+  shortDescription?: string;
   imageAvatar?: string;
+  imageThumbnail?: string;
   imageHeader?: string;
   /** @format int32 */
-  rating?: number;
+  descriptionPostId?: number;
+  tags?: string[];
   /** @format int32 */
-  activity?: number;
+  activityPostCount?: number;
+  /** @format int32 */
+  activityQuestCount?: number;
+  /** @format int32 */
+  activityResourceCount?: number;
+}
+
+export interface PbWorldActivity {
+  /** @format int32 */
+  worldId?: number;
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  activityPostCount?: number;
+  /** @format int32 */
+  activityQuestCount?: number;
+  /** @format int32 */
+  activityResourceCount?: number;
+}
+
+export interface PbWorldAdmin {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  userId?: number;
+  /** @format date-time */
+  createdAt?: string;
+  superAdmin?: boolean;
+  /** @format int32 */
+  approved?: number;
+  motivationalLetter?: string;
 }
 
 export interface PbWorldOfCreatorResponse {
   world?: PbWorld;
-  isMain?: boolean;
+  superAdmin?: boolean;
 }
 
 export interface ProtobufAny {

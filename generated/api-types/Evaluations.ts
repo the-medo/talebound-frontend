@@ -24,7 +24,7 @@ export class Evaluations<SecurityDataType = unknown> {
   }
 
   /**
-   * @description Get evaluation by id
+   * @description get evaluation by id
    *
    * @tags Talebound
    * @name TaleboundGetEvaluationById
@@ -41,7 +41,7 @@ export class Evaluations<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get evaluations by type
+   * @description get evaluations by type
    *
    * @tags Talebound
    * @name TaleboundGetEvaluationsByType

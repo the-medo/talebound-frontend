@@ -20,7 +20,7 @@ export class Images<SecurityDataType = unknown> {
   }
 
   /**
-   * @description Get images - paginated, filterable by user and image type
+   * @description get images - paginated, filterable by user and image type
    *
    * @tags Talebound
    * @name TaleboundGetImages

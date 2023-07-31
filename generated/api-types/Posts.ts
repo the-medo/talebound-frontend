@@ -27,7 +27,7 @@ export class Posts<SecurityDataType = unknown> {
   }
 
   /**
-   * @description Create completely new post
+   * @description create completely new post
    *
    * @tags Talebound
    * @name TaleboundCreatePost
@@ -46,7 +46,7 @@ export class Posts<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get content of post by its ID
+   * @description get content of post by its ID
    *
    * @tags Talebound
    * @name TaleboundGetPostById
@@ -63,7 +63,7 @@ export class Posts<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Deletes post
+   * @description deletes post
    *
    * @tags Talebound
    * @name TaleboundDeletePost
@@ -80,7 +80,7 @@ export class Posts<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Update title or content of the post
+   * @description update title or content of the post
    *
    * @tags Talebound
    * @name TaleboundUpdatePost
@@ -110,7 +110,7 @@ export class Posts<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get list of history changes of post by its ID - without content
+   * @description get list of history changes of post by its ID - without content
    *
    * @tags Talebound
    * @name TaleboundGetPostHistory
@@ -127,7 +127,7 @@ export class Posts<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description Get content of single update iteration of post
+   * @description get content of single update iteration of post
    *
    * @tags Talebound
    * @name TaleboundGetPostHistoryById
