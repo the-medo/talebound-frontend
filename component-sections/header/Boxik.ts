@@ -1,6 +1,6 @@
 import { styled } from '../../styles/stitches.config';
 
-const BOXIK_SIZE = 110;
+const BOXIK_SIZE = 125;
 const SQUARE_SIZE = 250;
 const GAP_SIZE = SQUARE_SIZE / 2 - BOXIK_SIZE;
 const MENU_HEIGHT = 50;
@@ -12,6 +12,7 @@ export const Boxik = styled('div', {
   flexWrap: 'wrap',
   position: 'absolute',
   backgroundColor: '$transparent40',
+  border: '1px solid $primary500',
 
   padding: '$sm',
 

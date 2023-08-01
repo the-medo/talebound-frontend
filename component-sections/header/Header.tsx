@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Menu from './Menu';
 import { styled } from '../../styles/stitches.config';
 import { HeaderTransparentSection } from '../../components/HeaderTransparentSection/HeaderTransparentSection';
@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { LuCompass, LuComponent, LuGlobe2, LuUsers } from 'react-icons/lu';
 import { Boxik } from './Boxik';
 import { BoxikIcon } from './BoxicIcon';
+import MenuMarker from './MenuMarker';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -47,83 +48,99 @@ const A = styled('div', {
   },
 });
 
-const IMG_SIZE = 25;
-const SUB_ICON_SIZE = Math.sqrt(2 * IMG_SIZE ** 2);
-const MARGIN = 7;
-
-const SubIconWrapper = styled('div', {
-  width: `${IMG_SIZE}px`,
-  height: `${IMG_SIZE}px`,
-  transform: 'rotate(45deg)',
-  // border: '2px solid red',
-  margin: `${MARGIN}px`,
-
-  overflow: 'hidden',
-});
-
-const SubIcon = styled('img', {
-  width: `${SUB_ICON_SIZE}px`,
-  height: `${SUB_ICON_SIZE}px`,
-  transform: ' rotate(-45deg)',
-  margin: `-${MARGIN}px`,
-  opacity: 0.9,
-});
+interface BoxikData {
+  marker: {
+    imgIdx: number;
+  }[];
+}
 
 const Header: React.FC = () => {
   const { user } = useAuth();
+
+  const generateBoxikData = useCallback(() => {
+    const randNumber = Math.floor(Math.random() * 4) + 1;
+    const boxikData: BoxikData = {
+      marker: [],
+    };
+    for (let i = 0; i < randNumber; i++) {
+      boxikData.marker.push({
+        imgIdx: Math.floor(Math.random() * 10),
+      });
+    }
+
+    return boxikData;
+  }, []);
+
+  const [questData, setQuestData] = useState<BoxikData>(generateBoxikData());
+  const [worldData, setWorldData] = useState<BoxikData>(generateBoxikData());
+  const [characterData, setCharacterData] = useState<BoxikData>(generateBoxikData());
+  const [playModeData, setPlayModeData] = useState<BoxikData>(generateBoxikData());
 
   return (
     <BaseHeader>
       <Menu />
       <HeaderTransparentSection position="left">
         <Boxik x="left" y="top">
-          <SubIconWrapper>
-            <SubIcon
-              src={
-                'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/100x100'
-              }
-              alt={'World icon'}
+          {questData.marker.map((marker, idx) => (
+            <MenuMarker
+              key={idx}
+              imgIdx={marker.imgIdx}
+              totalCount={questData.marker.length}
+              index={idx + 1}
+              x="left"
+              y="top"
             />
-          </SubIconWrapper>
-          <SubIconWrapper>
-            <SubIcon
-              src={
-                'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/100x100'
-              }
-              alt={'World icon'}
-            />
-          </SubIconWrapper>
-          <SubIconWrapper>
-            <SubIcon
-              src={
-                'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/100x100'
-              }
-              alt={'World icon'}
-            />
-          </SubIconWrapper>
+          ))}
         </Boxik>
         <Boxik x="right" y="top">
-          Worlds
+          {worldData.marker.map((marker, idx) => (
+            <MenuMarker
+              key={idx}
+              imgIdx={marker.imgIdx}
+              totalCount={worldData.marker.length}
+              index={idx + 1}
+              x="right"
+              y="top"
+            />
+          ))}
         </Boxik>
 
         <Boxik x="left" y="bottom">
-          Characters
+          {characterData.marker.map((marker, idx) => (
+            <MenuMarker
+              key={idx}
+              imgIdx={marker.imgIdx}
+              totalCount={characterData.marker.length}
+              index={idx + 1}
+              x="left"
+              y="bottom"
+            />
+          ))}
         </Boxik>
 
         <Boxik x="right" y="bottom">
-          Play modes
+          {playModeData.marker.map((marker, idx) => (
+            <MenuMarker
+              key={idx}
+              imgIdx={marker.imgIdx}
+              totalCount={playModeData.marker.length}
+              index={idx + 1}
+              x="right"
+              y="bottom"
+            />
+          ))}
         </Boxik>
 
-        <BoxikIcon x="left" y="top">
+        <BoxikIcon x="left" y="top" onClick={() => setQuestData(generateBoxikData())}>
           <LuCompass size={20} />
         </BoxikIcon>
-        <BoxikIcon x="right" y="top">
+        <BoxikIcon x="right" y="top" onClick={() => setWorldData(generateBoxikData())}>
           <LuGlobe2 size={20} />
         </BoxikIcon>
-        <BoxikIcon x="left" y="bottom">
+        <BoxikIcon x="left" y="bottom" onClick={() => setCharacterData(generateBoxikData())}>
           <LuUsers size={20} />
         </BoxikIcon>
-        <BoxikIcon x="right" y="bottom">
+        <BoxikIcon x="right" y="bottom" onClick={() => setPlayModeData(generateBoxikData())}>
           <LuComponent size={20} />
         </BoxikIcon>
 
