@@ -6,7 +6,9 @@ const Section = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  padding: '$sm',
+  padding: '$xs',
+  paddingLeft: '$sm',
+  paddingRight: '$sm',
   alignItems: 'center',
   justifyContent: 'center',
 });
@@ -18,7 +20,7 @@ const SectionContent = styled('div', {
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  padding: '$sm',
+  padding: '$xs',
   borderRadius: '10px',
   backgroundColor: '$transparent40',
 

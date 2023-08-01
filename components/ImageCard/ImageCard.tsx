@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '../../styles/stitches.config';
-import { TitleH1, TitleH2 } from '../Typography/Title';
+import { TitleH2 } from '../Typography/Title';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import { Button } from '../Button/Button';
