@@ -16,7 +16,6 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<PbUser | undefined>) => {
       setItem(LSKey.USER, action.payload);
-      console.log('setUser action.payload', action.payload);
       state.user = action.payload;
     },
     updateUser: (state, action: PayloadAction<PbUser>) => {
@@ -26,7 +25,6 @@ export const userSlice = createSlice({
         state.user = action.payload;
       }
       setItem(LSKey.USER, state.user);
-      console.log('updateUser action.payload', action.payload);
     },
   },
 });

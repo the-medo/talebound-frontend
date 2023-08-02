@@ -24,8 +24,6 @@ API.instance.interceptors.request.use(
   },
 );
 
-console.log(API.instance.defaults.withCredentials, 'API.instance.defaults.withCredentials');
-
 export const ChatCollection = new Chat(API);
 export const UsersCollection = new Users(API);
 export const VerifyCollection = new Verify(API);

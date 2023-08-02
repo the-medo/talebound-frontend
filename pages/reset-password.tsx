@@ -34,8 +34,6 @@ export default function ResetPassword() {
 
   const resetPasswordSendCode = useResetPassword();
 
-  console.log('process.env.RECAPTCHA_SITE_KEY', process.env.RECAPTCHA_SITE_KEY);
-
   const buttonDisabled = false;
 
   const submitResetPassword = useCallback(() => {

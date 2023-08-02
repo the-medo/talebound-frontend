@@ -124,7 +124,6 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
       password: password1Value,
     });
 
-    console.log('submitNewUser', usernameValue, emailValue, password1Value, password2Value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buttonDisabled, usernameValue, emailValue, password1Value, password2Value]);
 

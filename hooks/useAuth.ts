@@ -15,8 +15,6 @@ export function useAuth(): Auth {
   const dispatch = useDispatch();
   const [cookies] = useCookies<string, CookieMap>(['access_token_present']);
 
-  console.log('COOKIE: access_token_present', cookies);
-
   const user = useSelector((state: ReduxState) => state.auth.user);
   const isLoggedIn = cookies.access_token_present === 'true';
 

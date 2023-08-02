@@ -36,7 +36,6 @@ export const useUpdateUserIntroduction = createMutation({
     const postQueryKey = useGetPostById.getKey(data.data.post?.id);
     if (data.data.post?.id) {
       queryClient.setQueryData<inferData<typeof useGetPostById>>(postQueryKey, () => {
-        console.log('setting post data to data.data', data.data, postQueryKey);
         return data.data;
       });
     }

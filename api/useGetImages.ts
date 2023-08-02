@@ -20,13 +20,10 @@ export const useGetImages = createInfiniteQuery<
       offset,
     });
 
-    console.log('[_primaryKey, variables]', [_primaryKey, variables]);
-
     return expandDataForInfiniteQuery(data, offset, PAGE_SIZE, data.totalCount);
   },
 
   getNextPageParam: (lastPage, _pages) => {
-    console.log('lastPage', lastPage, '_pages', _pages);
     return lastPage.newOffset;
   },
 });

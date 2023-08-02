@@ -178,14 +178,11 @@ export default function InlineImageComponent({
 
   const onEscape = useCallback(
     (event: KeyboardEvent) => {
-      console.log('activeEditorRef.current', activeEditorRef.current);
       if (activeEditorRef.current === caption || buttonRef.current === event.target) {
-        console.log('====== here ======');
         $setSelection(null);
         editor.update(() => {
           setSelected(true);
           const parentRootElement = editor.getRootElement();
-          console.log('parentRootElement', parentRootElement);
           if (parentRootElement !== null) {
             parentRootElement.focus();
           }

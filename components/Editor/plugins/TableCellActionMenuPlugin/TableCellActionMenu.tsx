@@ -94,7 +94,6 @@ const TableCellActionMenu: React.FC<TableCellActionMenuProps> = ({
         // Merge cells
         if (DEPRECATED_$isGridSelection(selection)) {
           const currentSelectionCounts = computeSelectionCount(selection);
-          console.log('currentSelectionCounts', currentSelectionCounts);
           updateSelectionCounts(computeSelectionCount(selection));
           setCanMergeCells(
             isGridSelectionRectangular(selection) &&

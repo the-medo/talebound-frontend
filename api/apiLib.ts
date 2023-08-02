@@ -6,10 +6,8 @@ export const expandDataForInfiniteQuery = <T>(
   pageSize: number,
   totalCount?: number,
 ): InfiniteResponse<T> => {
-  console.log('data', data, 'offset', offset, 'pageSize', pageSize, 'totalCount', totalCount);
   const newOffset = offset + pageSize;
   const total = totalCount ?? 0;
-  console.log('newOffset', newOffset, 'total', total);
 
   return {
     ...data,

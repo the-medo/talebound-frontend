@@ -43,8 +43,6 @@ export const useUploadImage = createMutation({
 
     queryKeys.push(useGetImages.getKey({}));
 
-    console.log('queryKeys', queryKeys);
-
     queryKeys.forEach((queryKey) => {
       queryClient.setQueryData<inferData<typeof useGetImages>>(queryKey, (oldData) => {
         const newData = oldData
@@ -75,7 +73,6 @@ export const useUploadImage = createMutation({
               ],
               pageParams: [undefined],
             };
-        console.log('newData xxx', newData);
         return newData;
       });
     });
