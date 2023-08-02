@@ -1,13 +1,15 @@
-import { styled } from '../../styles/stitches.config';
+import { styled } from '../../../styles/stitches.config';
 
 const ICON_SIZE = 25;
 const PADDING_SIZE = 3;
 const MENU_HEIGHT = 50;
 
-export const BoxikIcon = styled('div', {
+export const AspectBoxIcon = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   position: 'absolute',
+  color: '$primary700',
+  opacity: 0.5,
 
   alignItems: 'center',
   justifyContent: 'center',
@@ -28,7 +30,7 @@ export const BoxikIcon = styled('div', {
     },
     y: {
       top: {
-        top: `${MENU_HEIGHT + PADDING_SIZE}px`,
+        top: `${PADDING_SIZE}px`,
       },
       bottom: {
         bottom: `${PADDING_SIZE}px`,

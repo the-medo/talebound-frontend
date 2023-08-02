@@ -1,18 +1,18 @@
-import { styled } from '../../styles/stitches.config';
+import { styled } from '../../../styles/stitches.config';
+import { AspectBoxIcon } from './AspectBoxIcon';
 
-const BOXIK_SIZE = 125;
+const BOXIK_SIZE = 115;
 const SQUARE_SIZE = 250;
 const GAP_SIZE = SQUARE_SIZE / 2 - BOXIK_SIZE;
 const MENU_HEIGHT = 50;
 const BORDER_RADIUS = '75%';
 
-export const Boxik = styled('div', {
+export const AspectBox = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
   position: 'absolute',
-  backgroundColor: '$transparent40',
-  border: '1px solid $primary500',
+  backgroundColor: '$transparent0',
 
   padding: '$sm',
 
@@ -28,6 +28,10 @@ export const Boxik = styled('div', {
     borderRadius: '0px',
     width: `${BOXIK_SIZE + GAP_SIZE}px`,
     height: `${BOXIK_SIZE + GAP_SIZE}px`,
+
+    [`& ${AspectBoxIcon}`]: {
+      opacity: 1,
+    },
   },
 
   variants: {

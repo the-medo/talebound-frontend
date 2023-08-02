@@ -13,8 +13,8 @@ export const HeaderTransparentSection = styled('div', {
   alignItems: 'center',
 
   ['span']: {
-    fontSize: '$lg',
-    fontWeight: '$bold',
+    // fontSize: '$lg',
+    // fontWeight: '$bold',
   },
 
   variants: {

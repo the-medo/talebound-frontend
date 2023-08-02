@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Menu from './Menu';
 import { styled } from '../../styles/stitches.config';
 import { HeaderTransparentSection } from '../../components/HeaderTransparentSection/HeaderTransparentSection';
@@ -6,9 +6,12 @@ import { Button } from '../../components/Button/Button';
 import { BsPlus } from 'react-icons/bs';
 import { useAuth } from '../../hooks/useAuth';
 import { LuCompass, LuComponent, LuGlobe2, LuUsers } from 'react-icons/lu';
-import { Boxik } from './Boxik';
-import { BoxikIcon } from './BoxicIcon';
-import MenuMarker from './MenuMarker';
+import { AspectBox } from './ControlPanel/AspectBox';
+import { AspectBoxIcon } from './ControlPanel/AspectBoxIcon';
+import AspectDiamond from './ControlPanel/AspectDiamond';
+import { AspectData, generateAspectData } from './ControlPanel/utilsAspectBox';
+import { UserDiamond } from './ControlPanel/UserDiamond';
+import { Text } from '../../components/Typography/Text';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -21,68 +24,25 @@ const BaseHeader = styled('div', {
   position: 'relative',
 });
 
-const WorldIconWrapper = styled('div', {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  alignItems: 'center',
-
-  ['img']: {
-    borderRadius: '50%',
-  },
-});
-
-const A = styled('div', {
-  display: 'flex',
-  position: 'absolute',
-  top: 'calc(50% + 25px)',
-  left: '50%',
-  transform: 'translate(-50%, -50%) rotate(45deg)',
-  borderRadius: '50%',
-
-  ['img']: {
-    // borderRadius: '50%',
-    width: '75px',
-    height: '75px',
-    outline: '2px solid $primary500',
-  },
-});
-
-interface BoxikData {
-  marker: {
-    imgIdx: number;
-  }[];
-}
-
 const Header: React.FC = () => {
   const { user } = useAuth();
 
-  const generateBoxikData = useCallback(() => {
-    const randNumber = Math.floor(Math.random() * 4) + 1;
-    const boxikData: BoxikData = {
-      marker: [],
-    };
-    for (let i = 0; i < randNumber; i++) {
-      boxikData.marker.push({
-        imgIdx: Math.floor(Math.random() * 10),
-      });
-    }
-
-    return boxikData;
-  }, []);
-
-  const [questData, setQuestData] = useState<BoxikData>(generateBoxikData());
-  const [worldData, setWorldData] = useState<BoxikData>(generateBoxikData());
-  const [characterData, setCharacterData] = useState<BoxikData>(generateBoxikData());
-  const [playModeData, setPlayModeData] = useState<BoxikData>(generateBoxikData());
+  const [questData, setQuestData] = useState<AspectData>(generateAspectData());
+  const [worldData, setWorldData] = useState<AspectData>(generateAspectData());
+  const [characterData, setCharacterData] = useState<AspectData>(generateAspectData());
+  const [playModeData, setPlayModeData] = useState<AspectData>(generateAspectData());
 
   return (
     <BaseHeader>
       <Menu />
       <HeaderTransparentSection position="left">
-        <Boxik x="left" y="top">
+        <AspectBox x="left" y="top">
+          <AspectBoxIcon x="left" y="top" onClick={() => setQuestData(generateAspectData())}>
+            <LuCompass size={20} />
+          </AspectBoxIcon>
+          {questData.marker.length === 0 && <Text size="xs">No quests</Text>}
           {questData.marker.map((marker, idx) => (
-            <MenuMarker
+            <AspectDiamond
               key={idx}
               imgIdx={marker.imgIdx}
               totalCount={questData.marker.length}
@@ -91,10 +51,14 @@ const Header: React.FC = () => {
               y="top"
             />
           ))}
-        </Boxik>
-        <Boxik x="right" y="top">
+        </AspectBox>
+        <AspectBox x="right" y="top">
+          <AspectBoxIcon x="right" y="top" onClick={() => setWorldData(generateAspectData())}>
+            <LuGlobe2 size={20} />
+          </AspectBoxIcon>
+          {worldData.marker.length === 0 && <Text size="xs">No worlds</Text>}
           {worldData.marker.map((marker, idx) => (
-            <MenuMarker
+            <AspectDiamond
               key={idx}
               imgIdx={marker.imgIdx}
               totalCount={worldData.marker.length}
@@ -103,11 +67,15 @@ const Header: React.FC = () => {
               y="top"
             />
           ))}
-        </Boxik>
+        </AspectBox>
 
-        <Boxik x="left" y="bottom">
+        <AspectBox x="left" y="bottom">
+          <AspectBoxIcon x="left" y="bottom" onClick={() => setCharacterData(generateAspectData())}>
+            <LuUsers size={20} />
+          </AspectBoxIcon>
+          {characterData.marker.length === 0 && <Text size="xs">No characters</Text>}
           {characterData.marker.map((marker, idx) => (
-            <MenuMarker
+            <AspectDiamond
               key={idx}
               imgIdx={marker.imgIdx}
               totalCount={characterData.marker.length}
@@ -116,11 +84,16 @@ const Header: React.FC = () => {
               y="bottom"
             />
           ))}
-        </Boxik>
+        </AspectBox>
 
-        <Boxik x="right" y="bottom">
+        <AspectBox x="right" y="bottom">
+          <AspectBoxIcon x="right" y="bottom" onClick={() => setPlayModeData(generateAspectData())}>
+            <LuComponent size={20} />
+          </AspectBoxIcon>
+
+          {playModeData.marker.length === 0 && <Text size="xs">No play modes</Text>}
           {playModeData.marker.map((marker, idx) => (
-            <MenuMarker
+            <AspectDiamond
               key={idx}
               imgIdx={marker.imgIdx}
               totalCount={playModeData.marker.length}
@@ -129,51 +102,11 @@ const Header: React.FC = () => {
               y="bottom"
             />
           ))}
-        </Boxik>
+        </AspectBox>
 
-        <BoxikIcon x="left" y="top" onClick={() => setQuestData(generateBoxikData())}>
-          <LuCompass size={20} />
-        </BoxikIcon>
-        <BoxikIcon x="right" y="top" onClick={() => setWorldData(generateBoxikData())}>
-          <LuGlobe2 size={20} />
-        </BoxikIcon>
-        <BoxikIcon x="left" y="bottom" onClick={() => setCharacterData(generateBoxikData())}>
-          <LuUsers size={20} />
-        </BoxikIcon>
-        <BoxikIcon x="right" y="bottom" onClick={() => setPlayModeData(generateBoxikData())}>
-          <LuComponent size={20} />
-        </BoxikIcon>
-
-        <A>
+        <UserDiamond>
           <img src={user?.img?.url} alt={'World icon'} />
-        </A>
-        {/*<InfoSection linkTitle={'Browse worlds'} linkHref={'/worlds'}>
-          No characters
-        </InfoSection>
-        <InfoSection linkTitle={'Browse quests'} linkHref={'/quests'}>
-          No quests
-        </InfoSection>
-        <InfoSection linkTitle={'Browse worlds'} linkHref={'/quests'}>
-          No worlds
-        </InfoSection>*/}
-        {/*<WorldIconWrapper>
-          <img
-            src={
-              'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/100x100'
-            }
-            alt={'World icon'}
-            width={50}
-            height={50}
-          />
-          <img
-            src={
-              'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/b5bca192-5a78-49d3-869d-e259f1b75400/public'
-            }
-            alt={'World icon'}
-            width={50}
-            height={50}
-          />
-        </WorldIconWrapper>*/}
+        </UserDiamond>
       </HeaderTransparentSection>
       <HeaderTransparentSection position="right">
         <Button size="xl" color="semiGhost">
