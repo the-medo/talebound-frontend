@@ -11,7 +11,7 @@ import { AspectBoxIcon } from './ControlPanel/AspectBoxIcon';
 import AspectDiamond from './ControlPanel/AspectDiamond';
 import { AspectData, generateAspectData } from './ControlPanel/utilsAspectBox';
 import { UserDiamond } from './ControlPanel/UserDiamond';
-import { Text } from '../../components/Typography/Text';
+import Link from 'next/link';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -27,10 +27,10 @@ const BaseHeader = styled('div', {
 const Header: React.FC = () => {
   const { user } = useAuth();
 
-  const [questData, setQuestData] = useState<AspectData>(generateAspectData());
-  const [worldData, setWorldData] = useState<AspectData>(generateAspectData());
-  const [characterData, setCharacterData] = useState<AspectData>(generateAspectData());
-  const [playModeData, setPlayModeData] = useState<AspectData>(generateAspectData());
+  const [questData, setQuestData] = useState<AspectData>({ marker: [] });
+  const [worldData, setWorldData] = useState<AspectData>({ marker: [] });
+  const [characterData, setCharacterData] = useState<AspectData>({ marker: [] });
+  const [playModeData, setPlayModeData] = useState<AspectData>({ marker: [] });
 
   return (
     <BaseHeader>
@@ -145,10 +145,12 @@ const Header: React.FC = () => {
         </UserDiamond>
       </HeaderTransparentSection>
       <HeaderTransparentSection position="right">
-        <Button size="xl" color="semiGhost">
-          <BsPlus />
-          Create world
-        </Button>
+        <Link href={'/worlds/create'}>
+          <Button size="xl" color="semiGhost">
+            <BsPlus />
+            Create world
+          </Button>
+        </Link>
       </HeaderTransparentSection>
     </BaseHeader>
   );

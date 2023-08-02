@@ -34,7 +34,7 @@ const ImageBackground = styled(Col, {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     background: '',
-    zIndex: -1,
+    zIndex: 0,
     borderRadius: '$lg',
   },
 
