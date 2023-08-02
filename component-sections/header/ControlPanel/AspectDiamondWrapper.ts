@@ -83,8 +83,8 @@ export const AspectDiamondWrapper = styled('div', {
 
     text: {
       true: {
-        width: `${IMG_SIZE * BIG_IMG_COEF * 1.5}px`,
-        height: `${IMG_SIZE * BIG_IMG_COEF * 1.5}px`,
+        width: `${IMG_SIZE * BIG_IMG_COEF * 1.3}px`,
+        height: `${IMG_SIZE * BIG_IMG_COEF * 1.3}px`,
         border: '1px solid $transparent60',
         backgroundColor: '$transparent30',
       },

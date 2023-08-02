@@ -40,7 +40,16 @@ const Header: React.FC = () => {
           <AspectBoxIcon x="left" y="top" onClick={() => setQuestData(generateAspectData())}>
             <LuCompass size={20} />
           </AspectBoxIcon>
-          {questData.marker.length === 0 && <Text size="xs">No quests</Text>}
+          {questData.marker.length === 0 && (
+            <AspectDiamond
+              imgIdx={0}
+              totalCount={0}
+              index={0}
+              x="left"
+              y="top"
+              text={'No quests'}
+            />
+          )}
           {questData.marker.map((marker, idx) => (
             <AspectDiamond
               key={idx}
@@ -56,7 +65,16 @@ const Header: React.FC = () => {
           <AspectBoxIcon x="right" y="top" onClick={() => setWorldData(generateAspectData())}>
             <LuGlobe2 size={20} />
           </AspectBoxIcon>
-          {worldData.marker.length === 0 && <Text size="xs">No worlds</Text>}
+          {worldData.marker.length === 0 && (
+            <AspectDiamond
+              imgIdx={0}
+              totalCount={0}
+              index={0}
+              x="right"
+              y="top"
+              text={'No worlds'}
+            />
+          )}
           {worldData.marker.map((marker, idx) => (
             <AspectDiamond
               key={idx}
@@ -73,7 +91,16 @@ const Header: React.FC = () => {
           <AspectBoxIcon x="left" y="bottom" onClick={() => setCharacterData(generateAspectData())}>
             <LuUsers size={20} />
           </AspectBoxIcon>
-          {characterData.marker.length === 0 && <Text size="xs">No characters</Text>}
+          {characterData.marker.length === 0 && (
+            <AspectDiamond
+              imgIdx={0}
+              totalCount={0}
+              index={0}
+              x="left"
+              y="bottom"
+              text={'No characters'}
+            />
+          )}
           {characterData.marker.map((marker, idx) => (
             <AspectDiamond
               key={idx}
@@ -91,7 +118,16 @@ const Header: React.FC = () => {
             <LuComponent size={20} />
           </AspectBoxIcon>
 
-          {playModeData.marker.length === 0 && <Text size="xs">No play modes</Text>}
+          {playModeData.marker.length === 0 && (
+            <AspectDiamond
+              imgIdx={0}
+              totalCount={0}
+              index={0}
+              x="right"
+              y="bottom"
+              text={'No play modes'}
+            />
+          )}
           {playModeData.marker.map((marker, idx) => (
             <AspectDiamond
               key={idx}

@@ -1,23 +1,19 @@
 import { styled } from '../../../styles/stitches.config';
-import { BIG_IMG_COEF, IMG_SIZE } from './utilsAspectDiamond';
 
-export const AspectDiamondText = styled('span', {
+export const AspectDiamondText = styled('div', {
+  textAlign: 'center',
+
   position: 'absolute',
-  left: '50%',
+  width: '100%',
+  left: 0,
   top: '50%',
-  transform: ' translate(-50%, -50%) rotate(-45deg)',
+  transform: ' translate(-2px, -50%) rotate(-45deg)',
   opacity: 0.9,
+  fontSize: '$xs',
+  color: '$primary800',
+  fontStyle: 'italic',
 
   '&:hover': {
     opacity: 1,
-  },
-
-  variants: {
-    large: {
-      true: {
-        width: `${IMG_SIZE * BIG_IMG_COEF}px`,
-        height: `${IMG_SIZE * BIG_IMG_COEF}px`,
-      },
-    },
   },
 });
