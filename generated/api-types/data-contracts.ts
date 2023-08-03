@@ -250,6 +250,8 @@ export interface PbGetWorldsOfCreatorResponse {
 
 export interface PbGetWorldsResponse {
   worlds?: PbWorld[];
+  /** @format int32 */
+  totalCount?: number;
 }
 
 export interface PbHistoryPost {

@@ -7,31 +7,21 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import { useInput } from '../../../hooks/useInput';
 import { HelperMessage, HelperType } from '../../../utils/form/helperTypes';
 import { validateString } from '../../../utils/form/validatePassword';
-import { styled } from '../../../styles/stitches.config';
 import ImageCard from '../../../components/ImageCard/ImageCard';
-import { TitleH2 } from '../../../components/Typography/Title';
+import { TitleH2, TitleH3 } from '../../../components/Typography/Title';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/Button/Button';
-import { LuGlobe2 } from 'react-icons/lu';
-import { useCreateWorld } from '../../../api/worlds/useCreateWorld';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import DescriptionImage from '../../../components/DescriptionImage/DescriptionImage';
+import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 
-const InputDescription = styled('div', {
-  borderRadius: '$md',
-  padding: '$md',
-  display: 'flex',
-  flexDirection: 'column',
-  fontSize: '$sm',
+interface EditWorldProps {
+  worldId: number;
+}
 
-  'div li': {
-    listStyleType: 'none',
-    paddingLeft: '$md',
-  },
-});
-
-const CreateWorld: React.FC = () => {
-  const createWorldMutation = useCreateWorld();
+const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
+  const updateWorldMutation = useUpdateWorld();
   const { value: nameValue, onChange: onChangeName } = useInput<string>('');
   const { value: basedOnValue, onChange: onChangeBasedOn } = useInput<string>('');
   const { value: shortDescriptionValue, onChange: onChangeShortDescription } = useInput<string>('');
@@ -49,17 +39,15 @@ const CreateWorld: React.FC = () => {
   const onSubmit = useCallback(() => {
     console.log('submit: ', nameValue, basedOnValue, shortDescriptionValue);
 
-    createWorldMutation.mutate(
-      {
+    updateWorldMutation.mutate({
+      worldId: worldId,
+      body: {
         name: nameValue,
         basedOn: basedOnValue,
         shortDescription: shortDescriptionValue,
       },
-      {
-        // onSuccess: createWorldSuccessCallback, //TODO: redirect to /worlds/:id/edit
-      },
-    );
-  }, [nameValue, basedOnValue, shortDescriptionValue, createWorldMutation]);
+    });
+  }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation]);
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -79,20 +67,6 @@ const CreateWorld: React.FC = () => {
                 helperText={helperNameMessage.text}
                 helperType={helperNameMessage.type}
               />
-              <InputDescription>
-                Name of the universe or the world. Some examples would be:
-                <div>
-                  <li>
-                    - <i>Middle Earth</i> for The Lord of the Rings
-                  </li>
-                  <li>
-                    - <i>Tamriel</i> for The Elder Scrolls franchise
-                  </li>
-                  <li>
-                    - <i>Alagaezia</i> for the Inheritance Cycle (Eragon)
-                  </li>
-                </div>
-              </InputDescription>
               <Flex>
                 <Input
                   id="world-based-on"
@@ -104,21 +78,6 @@ const CreateWorld: React.FC = () => {
                   helperText="(up to 100 characters, empty for original world)"
                 />
               </Flex>
-              <InputDescription>
-                If the world or universe is based on some other work, you can provide the name of
-                the original work here. Some examples would be:
-                <div>
-                  <li>
-                    - <i>books by J.R.R.Tolkien</i> for The Lord of the Rings
-                  </li>
-                  <li>
-                    - <i>The Elder Scrolls franchise</i>
-                  </li>
-                  <li>
-                    - <i>Avatar movies</i>
-                  </li>
-                </div>
-              </InputDescription>
               <Flex>
                 <Input
                   id="world-based-on"
@@ -130,11 +89,15 @@ const CreateWorld: React.FC = () => {
                   helperText="(up to 1000 characters)"
                 />
               </Flex>
-              <InputDescription>
-                Will be displayed when viewing just basic information about the world. Maybe some
-                introduction, style, setting, etc. Great to provide if it is your own universe, but
-                not necessary.
-              </InputDescription>
+              <Button
+                loading={updateWorldMutation.isLoading}
+                disabled={buttonDisabled}
+                size="md"
+                color="primaryFill"
+                onClick={onSubmit}
+              >
+                Update world
+              </Button>
             </Col>
             <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
               <Col gap="md" alignItems="center">
@@ -151,17 +114,7 @@ const CreateWorld: React.FC = () => {
                 <Text i size="sm">
                   Note: You will be able to change image and tags later.
                 </Text>
-                <Button
-                  loading={createWorldMutation.isLoading}
-                  disabled={buttonDisabled}
-                  size="xl"
-                  color="primaryFill"
-                  onClick={onSubmit}
-                >
-                  Create world
-                  <LuGlobe2 />
-                </Button>
-                <ErrorText error={createWorldMutation.error} />
+                <ErrorText error={updateWorldMutation.error} />
               </Col>
             </Col>
           </ContentSection>
@@ -175,4 +128,4 @@ const CreateWorld: React.FC = () => {
   );
 };
 
-export default CreateWorld;
+export default EditWorld;

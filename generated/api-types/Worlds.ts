@@ -212,6 +212,23 @@ export class Worlds<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description gets world by ID
+   *
+   * @tags Talebound
+   * @name TaleboundGetWorldById
+   * @summary Get world by ID
+   * @request GET:/worlds/{worldId}
+   * @response `200` `PbWorld` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetWorldById = (worldId: number, params: RequestParams = {}) =>
+    this.http.request<PbWorld, RpcStatus>({
+      path: `/worlds/${worldId}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description updates world properties (NO images or stats!)
    *
    * @tags Talebound
