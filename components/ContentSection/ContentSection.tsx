@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { CSSProperties } from '@stitches/react';
-import { TitleH4 } from '../Typography/Title';
+import { TitleH2 } from '../Typography/Title';
 import { styled } from '../../styles/stitches.config';
 
 const StyledSection = styled('section', {
@@ -54,7 +54,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 }) => {
   return (
     <StyledSection>
-      {header && <TitleH4>{header}</TitleH4>}
+      {header && <TitleH2 marginBottom="md">{header}</TitleH2>}
       <StyledSectionContent
         direction={direction}
         css={{

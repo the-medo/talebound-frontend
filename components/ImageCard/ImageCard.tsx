@@ -117,9 +117,9 @@ const ImageCard: React.FC<ImageCardProps> = ({
       }}
     >
       <Col gap="xs" alignItems="center">
-        <TitleH2>{title}</TitleH2>
+        <TitleH2>{title === '' || !title ? ' * empty * ' : title}</TitleH2>
         <Text size="sm" i>
-          (based on {basedOn})
+          {basedOn.length > 0 ? `(based on ${basedOn})` : 'original'}
         </Text>
       </Col>
       <div style={{ height: '100px' }}></div>
