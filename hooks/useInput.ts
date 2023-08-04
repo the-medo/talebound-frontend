@@ -5,6 +5,7 @@ type ValueType = string | number;
 interface UseInputResponse<T extends ValueType> {
   value: T;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: React.Dispatch<React.SetStateAction<T>>;
 }
 
 export const useInput = <T extends ValueType>(initialValue: T): UseInputResponse<T> => {
@@ -21,5 +22,6 @@ export const useInput = <T extends ValueType>(initialValue: T): UseInputResponse
   return {
     value,
     onChange,
+    setValue,
   };
 };

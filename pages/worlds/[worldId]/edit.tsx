@@ -4,7 +4,7 @@ import EditWorld from '../../../screens/worlds/EditWorld/EditWorld';
 import useNumericParam from '../../../hooks/useNumericParam';
 
 const Worlds: React.FC = () => {
-  const worldId = useNumericParam('userId');
+  const worldId = useNumericParam('worldId');
 
   return (
     <>

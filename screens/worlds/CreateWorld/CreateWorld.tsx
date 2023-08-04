@@ -16,6 +16,7 @@ import { LuGlobe2 } from 'react-icons/lu';
 import { useCreateWorld } from '../../../api/worlds/useCreateWorld';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
+import { useRouter } from 'next/router';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -31,6 +32,7 @@ const InputDescription = styled('div', {
 });
 
 const CreateWorld: React.FC = () => {
+  const router = useRouter();
   const createWorldMutation = useCreateWorld();
   const { value: nameValue, onChange: onChangeName } = useInput<string>('');
   const { value: basedOnValue, onChange: onChangeBasedOn } = useInput<string>('');
@@ -56,7 +58,7 @@ const CreateWorld: React.FC = () => {
         shortDescription: shortDescriptionValue,
       },
       {
-        // onSuccess: createWorldSuccessCallback, //TODO: redirect to /worlds/:id/edit
+        onSuccess: (data) => router.push(`/worlds/${data.data.id}/edit`), //TODO: redirect to /worlds/:id/edit
       },
     );
   }, [nameValue, basedOnValue, shortDescriptionValue, createWorldMutation]);
