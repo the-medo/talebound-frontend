@@ -1,19 +1,14 @@
 import React, { useEffect } from 'react';
-import { LexicalEditor } from 'lexical';
 import { useInput } from '../../../../hooks/useInput';
 import Input from '../../../Input/Input';
 import { Row } from '../../../Flex/Flex';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateInlineImagePayload } from './imageModalSlice';
+import { updateInlineImagePayload } from './editorImageModalSlice';
 import { ReduxState } from '../../../../store';
 
-interface ImageModalTabUrlProps {
-  editor: LexicalEditor;
-}
-
-const ImageModalTabUrl: React.FC<ImageModalTabUrlProps> = () => {
+const EditorImageModalTabUrl: React.FC = () => {
   const dispatch = useDispatch();
-  const src = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload.src);
+  const src = useSelector((state: ReduxState) => state.editorImageModal.inlineImagePayload.src);
   const { value: urlValue, onChange: onChangeUrl } = useInput<string>(src);
 
   useEffect(() => {
@@ -38,4 +33,4 @@ const ImageModalTabUrl: React.FC<ImageModalTabUrlProps> = () => {
   );
 };
 
-export default ImageModalTabUrl;
+export default EditorImageModalTabUrl;

@@ -1,25 +1,27 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { LexicalEditor } from 'lexical';
-import { ExpandedUploadImageRequest, useUploadImage } from '../../../../api/useUploadImage';
-import { fileInputChanged } from '../../../../utils/functions/fileInputChanged';
-import InputFile from '../../../InputFile/InputFile';
-import { Button } from '../../../Button/Button';
-import Loading from '../../../Loading/Loading';
-import { Col, Row } from '../../../Flex/Flex';
-import { useDispatch } from 'react-redux';
-import { updateInlineImagePayload } from './imageModalSlice';
-import ErrorText from '../../../ErrorText/ErrorText';
-import { useAuth } from '../../../../hooks/useAuth';
+import { ExpandedUploadImageRequest, useUploadImage } from '../../api/useUploadImage';
+import { fileInputChanged } from '../../utils/functions/fileInputChanged';
+import InputFile from '../InputFile/InputFile';
+import { Button } from '../Button/Button';
+import Loading from '../Loading/Loading';
+import { Col, Row } from '../Flex/Flex';
+import ErrorText from '../ErrorText/ErrorText';
+import { useAuth } from '../../hooks/useAuth';
 import { AxiosResponse } from 'axios';
-import { PbImage } from '../../../../generated/api-types/data-contracts';
+import { PbImage } from '../../generated/api-types/data-contracts';
 
 interface ImageModalTabUploadProps {
-  editor: LexicalEditor;
+  filename: string;
+  imageTypeId: number;
+  onUpload: (data: AxiosResponse<PbImage>) => void;
 }
 
-const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
+const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = ({
+  filename,
+  imageTypeId,
+  onUpload,
+}) => {
   const { user } = useAuth();
-  const dispatch = useDispatch();
   const doUploadImage = useUploadImage();
 
   const [uploadArgs, setUploadArgs] = useState<ExpandedUploadImageRequest>();
@@ -29,39 +31,26 @@ const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = () => {
     async (event) =>
       fileInputChanged(event, (base64Data) =>
         setUploadArgs({
-          filename: 'post-image',
+          filename,
           data: base64Data,
           userId: user?.id ?? 0,
-          imageTypeId: 100,
+          imageTypeId,
         }),
       ),
-    [user?.id],
-  );
-
-  const uploadImageSuccessCallback = useCallback(
-    (data: AxiosResponse<PbImage>) => {
-      if (data) {
-        dispatch(
-          updateInlineImagePayload({
-            src: data.data.url,
-          }),
-        );
-      }
-    },
-    [dispatch],
+    [user?.id, filename, imageTypeId],
   );
 
   const handleUpload = useCallback(() => {
     if (!uploadArgs) return;
     doUploadImage.mutate(uploadArgs, {
-      onSuccess: uploadImageSuccessCallback,
+      onSuccess: onUpload,
     });
 
     setUploadArgs(undefined);
     if (inputRef.current) {
       inputRef.current.value = '';
     }
-  }, [doUploadImage, uploadArgs, uploadImageSuccessCallback]);
+  }, [doUploadImage, uploadArgs, onUpload]);
 
   return (
     <Col gap="md">

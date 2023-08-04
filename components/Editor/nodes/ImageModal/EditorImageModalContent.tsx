@@ -2,13 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import { $getNodeByKey, LexicalEditor, NodeKey } from 'lexical';
 import { Col, Row } from '../../../Flex/Flex';
 import { Button } from '../../../Button/Button';
-import ImageModalTabUrl from './ImageModalTabUrl';
-import ImageModalTabUpload from './ImageModalTabUpload';
-import ImageModalTabYourImages from './ImageModalTabYourImages';
+import EditorImageModalTabUrl from './EditorImageModalTabUrl';
+import ImageModalTabUpload from '../../../ImageModal/ImageModalTabUpload';
+import ImageModalTabYourImages from '../../../ImageModal/ImageModalTabYourImages';
 import { INSERT_INLINE_IMAGE_COMMAND } from '../../plugins/InlineImagePlugin';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
-import ImageAttributes from './ImageAttributes';
+import EditorImageAttributes from './EditorImageAttributes';
 import { styled } from '../../../../styles/stitches.config';
 import {
   imageModifyVariant,
@@ -19,11 +19,13 @@ import { TitleH4 } from '../../../Typography/Title';
 import ImageVariantButtons from '../../../ImageVariantButtons/ImageVariantButtons';
 import {
   resetInlineImagePayload,
-  setSelectedVariant,
+  setSelectedVariantInEditor,
   updateInlineImagePayload,
-} from './imageModalSlice';
-import { ImageModalAction, ImageModalMode } from './imageModalLib';
+} from './editorImageModalSlice';
+import { EditorImageModalAction, EditorImageModalMode } from './editorImageModalLib';
 import { InlineImageNode } from '../InlineImageNode/InlineImageNode';
+import { AxiosResponse } from 'axios';
+import { PbImage } from '../../../../generated/api-types/data-contracts';
 
 enum ImageModalTabs {
   Url,
@@ -31,9 +33,9 @@ enum ImageModalTabs {
   YourImages,
 }
 
-export interface ImageModalContentProps {
+export interface EditorImageModalContentProps {
   editor: LexicalEditor;
-  mode?: ImageModalMode;
+  mode?: EditorImageModalMode;
   nodeKey?: NodeKey;
   setOpen: (v: boolean) => void;
 }
@@ -42,15 +44,15 @@ const PreviewImage = styled('img', {
   maxWidth: '1000px',
 });
 
-const ImageModalContent: React.FC<ImageModalContentProps> = ({
+const EditorImageModalContent: React.FC<EditorImageModalContentProps> = ({
   editor,
-  mode = ImageModalMode.Insert,
+  mode = EditorImageModalMode.Insert,
   nodeKey,
   setOpen,
 }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(ImageModalTabs.Url);
-  const payload = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload);
+  const payload = useSelector((state: ReduxState) => state.editorImageModal.inlineImagePayload);
   const selectedVariant = useSelector((state: ReduxState) => state.imageModal.selectedVariant);
   const [isCloudflareImage, setIsCloudflareImage] = React.useState(false);
 
@@ -73,7 +75,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
   );
 
   const handleSubmit = useCallback(() => {
-    if (mode === ImageModalMode.Update) {
+    if (mode === EditorImageModalMode.Update) {
       if (nodeKey) {
         const node = editor.getEditorState().read(() => $getNodeByKey(nodeKey) as InlineImageNode);
         if (node) {
@@ -82,7 +84,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
           });
         }
       }
-    } else if (mode === ImageModalMode.Insert) {
+    } else if (mode === EditorImageModalMode.Insert) {
       editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
     }
     dispatch(resetInlineImagePayload());
@@ -91,7 +93,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
 
   const handleVariantChange = useCallback(
     (variant: ImageVariant) => {
-      dispatch(setSelectedVariant(variant));
+      dispatch(setSelectedVariantInEditor(variant));
     },
     [dispatch],
   );
@@ -102,6 +104,30 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
       dispatch(updateInlineImagePayload({ src: newUrl }));
     }
   }, [selectedVariant, payload.src, dispatch]);
+
+  const uploadImageSuccessCallback = useCallback(
+    (data: AxiosResponse<PbImage>) => {
+      if (data) {
+        dispatch(
+          updateInlineImagePayload({
+            src: data.data.url,
+          }),
+        );
+      }
+    },
+    [dispatch],
+  );
+
+  const yourImageClickedHandler = useCallback(
+    (image: PbImage) => {
+      dispatch(
+        updateInlineImagePayload({
+          src: image.url,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
   return (
     <Col gap="md" css={{ flexGrow: 1 }} onClick={(e) => e.stopPropagation()}>
@@ -127,11 +153,22 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
       </Row>
       <hr />
       <Row gap="md" justifyContent="between" alignItems="start">
-        {activeTab === ImageModalTabs.Url && <ImageModalTabUrl editor={editor} />}
-        {activeTab === ImageModalTabs.Upload && <ImageModalTabUpload editor={editor} />}
-        {activeTab === ImageModalTabs.YourImages && <ImageModalTabYourImages editor={editor} />}
+        {activeTab === ImageModalTabs.Url && <EditorImageModalTabUrl />}
+        {activeTab === ImageModalTabs.Upload && (
+          <ImageModalTabUpload
+            onUpload={uploadImageSuccessCallback}
+            filename="post-image"
+            imageTypeId={100}
+          />
+        )}
+        {activeTab === ImageModalTabs.YourImages && (
+          <ImageModalTabYourImages
+            onClick={yourImageClickedHandler}
+            selectedImageByUrl={payload.src}
+          />
+        )}
         <Col gap="md">
-          <ImageAttributes />
+          <EditorImageAttributes />
         </Col>
       </Row>
       <hr />
@@ -151,10 +188,10 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
         </Col>
       )}
       <Row gap="md" alignSelf="end">
-        <Button onClick={handleSubmit}>{ImageModalAction[mode]} image</Button>
+        <Button onClick={handleSubmit}>{EditorImageModalAction[mode]} image</Button>
       </Row>
     </Col>
   );
 };
 
-export default ImageModalContent;
+export default EditorImageModalContent;

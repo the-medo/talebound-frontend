@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Flex, Row } from '../../../components/Flex/Flex';
@@ -9,12 +9,14 @@ import { HelperMessage, HelperType } from '../../../utils/form/helperTypes';
 import { validateString } from '../../../utils/form/validatePassword';
 import ImageCard from '../../../components/ImageCard/ImageCard';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
+import ImageModal from '../../../components/ImageModal/ImageModal';
+import { PbImage } from '../../../generated/api-types/data-contracts';
+import { ImageVariant } from '../../../utils/images/image_utils';
 
 interface EditWorldProps {
   worldId: number;
@@ -24,6 +26,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const updateWorldMutation = useUpdateWorld();
 
+  const [showImageModal, setShowImageModal] = useState(false);
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
 
   const {
@@ -72,6 +75,10 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
       },
     });
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
+
+  const changeThumbnail = useCallback((image: PbImage, variant: ImageVariant) => {
+    console.log('changeThumbnail', image, variant);
+  }, []);
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -140,6 +147,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                 />
                 <ErrorText error={updateWorldMutation.error} />
               </Col>
+              <Button onClick={() => setShowImageModal(true)}>Thumbnail</Button>
             </Col>
           </ContentSection>
         </Col>
@@ -148,6 +156,15 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           <ArticleJourneyOfWorldCrafting />
         </Col>
       </Row>
+
+      <ImageModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        trigger={null}
+        onSubmit={changeThumbnail}
+        uploadedFilename={'world-thumbnail'}
+        uploadedImageTypeId={100}
+      />
     </Layout>
   );
 };

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useInput } from '../../../../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
-import { updateInlineImagePayload } from './imageModalSlice';
+import { updateInlineImagePayload } from './editorImageModalSlice';
 import { Col } from '../../../Flex/Flex';
 import Input from '../../../Input/Input';
 import Checkbox from '../../../Checkbox/Checkbox';
@@ -19,12 +19,14 @@ const options: SelectOptions = {
   ],
 };
 
-const ImageAttributes: React.FC = () => {
+const EditorImageAttributes: React.FC = () => {
   const dispatch = useDispatch();
   const showCaption = useSelector(
-    (state: ReduxState) => state.imageModal.inlineImagePayload.showCaption,
+    (state: ReduxState) => state.editorImageModal.inlineImagePayload.showCaption,
   );
-  const position = useSelector((state: ReduxState) => state.imageModal.inlineImagePayload.position);
+  const position = useSelector(
+    (state: ReduxState) => state.editorImageModal.inlineImagePayload.position,
+  );
   const { value: altValue, onChange: onChangeAlt } = useInput<string>('');
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const ImageAttributes: React.FC = () => {
         altText: altValue,
       }),
     );
-  }, [altValue]);
+  }, [altValue, dispatch]);
 
   const onChangeShowCaption = useCallback(
     (value: boolean) => {
@@ -79,4 +81,4 @@ const ImageAttributes: React.FC = () => {
   );
 };
 
-export default ImageAttributes;
+export default EditorImageAttributes;

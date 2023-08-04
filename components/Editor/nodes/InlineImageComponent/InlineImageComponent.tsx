@@ -33,10 +33,10 @@ import { LazyImage } from './LazyImage';
 import ImageResizer from '../../ui/ImageResizer';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { useSharedHistoryContext } from '../../context/SharedHistoryContext';
-import ImageModal from '../ImageModal/ImageModal';
-import { updateInlineImagePayload } from '../ImageModal/imageModalSlice';
+import EditorImageModal from '../ImageModal/EditorImageModal';
+import { updateInlineImagePayload } from '../ImageModal/editorImageModalSlice';
 import { useDispatch } from 'react-redux';
-import { ImageModalMode } from '../ImageModal/imageModalLib';
+import { EditorImageModalMode } from '../ImageModal/editorImageModalLib';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 
 const InlineImageNodeContentEditable = styled(ContentEditable, {
@@ -360,10 +360,10 @@ export default function InlineImageComponent({
           />
         )}
       </>
-      <ImageModal
+      <EditorImageModal
         open={showImageModal}
         setOpen={setShowImageModal}
-        mode={ImageModalMode.Update}
+        mode={EditorImageModalMode.Update}
         editor={editor}
         trigger={null}
         nodeKey={nodeKey}

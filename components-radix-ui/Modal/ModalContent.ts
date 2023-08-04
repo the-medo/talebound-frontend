@@ -8,8 +8,8 @@ const contentShow = keyframes({
 });
 
 export const ModalContent = styled(DialogRadix.Content, {
-  backgroundColor: '$white',
-  borderRadius: 6,
+  backgroundColor: 'white',
+  // borderRadius: 6,
   boxShadow: '$lg',
   position: 'fixed',
   top: '50%',
@@ -17,7 +17,7 @@ export const ModalContent = styled(DialogRadix.Content, {
   transform: 'translate(-50%, -50%)',
   minHeight: '200px',
   maxHeight: '85vh',
-  overflowY: 'scroll',
+  overflowY: 'auto',
 
   padding: 25,
   zIndex: 10,
