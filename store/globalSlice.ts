@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-const DEFAULT_HEADER_IMAGE =
-  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/efaae215-d5c5-4070-e61d-949f10521200/original';
-const DEFAULT_MENU_IMAGE =
-  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/59e16593-a12d-4c38-2394-64f0412cc700/250x50';
+import { IMAGE_DEFAULT_HEADER, IMAGE_DEFAULT_MENU } from '../utils/images/image_default_urls';
 
 export interface GlobalSliceState {
   headerImage?: string;
@@ -11,8 +7,8 @@ export interface GlobalSliceState {
 }
 
 const initialState: GlobalSliceState = {
-  headerImage: DEFAULT_HEADER_IMAGE,
-  menuImage: DEFAULT_MENU_IMAGE,
+  headerImage: IMAGE_DEFAULT_HEADER,
+  menuImage: IMAGE_DEFAULT_MENU,
 };
 
 export const globalSlice = createSlice({

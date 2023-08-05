@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Flex, Row } from '../../../components/Flex/Flex';
@@ -14,11 +14,7 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
-import ImageModal from '../../../components/ImageModal/ImageModal';
-import { PbImage } from '../../../generated/api-types/data-contracts';
-import { ImageVariant } from '../../../utils/images/image_utils';
-import { useDispatch } from 'react-redux';
-import { setMenuImage } from '../../../store/globalSlice';
+import WorldImages from './WorldImages';
 
 interface EditWorldProps {
   worldId: number;
@@ -27,9 +23,7 @@ interface EditWorldProps {
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const updateWorldMutation = useUpdateWorld();
-  const dispatch = useDispatch();
 
-  const [showImageModal, setShowImageModal] = useState(false);
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
 
   const {
@@ -79,21 +73,13 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
     });
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
 
-  const changeThumbnail = useCallback(
-    (image: PbImage, variant: ImageVariant) => {
-      console.log('changeThumbnail', image, variant);
-      dispatch(setMenuImage(image.baseUrl + '/250x50'));
-    },
-    [dispatch],
-  );
-
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
           <ContentSection flexWrap="wrap" direction="row">
             <Col css={{ width: '400px' }}>
-              <TitleH2 marginBottom="md">New world</TitleH2>
+              <TitleH2 marginBottom="md">Edit world</TitleH2>
               <Input
                 id="world-name"
                 label="World name"
@@ -139,6 +125,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
               >
                 Update world
               </Button>
+              <WorldImages worldId={worldId} />
             </Col>
             <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
               <Col gap="md" alignItems="center">
@@ -149,12 +136,14 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   questCount={3}
                   activityCount={12}
                   playModeCount={2}
-                  src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400"
+                  src={
+                    worldData?.imageThumbnail ??
+                    'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'
+                  }
                   tags={['fantasy', 'magic', 'dragons', 'books']}
                 />
                 <ErrorText error={updateWorldMutation.error} />
               </Col>
-              <Button onClick={() => setShowImageModal(true)}>Thumbnail</Button>
             </Col>
           </ContentSection>
         </Col>
@@ -163,15 +152,6 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           <ArticleJourneyOfWorldCrafting />
         </Col>
       </Row>
-
-      <ImageModal
-        open={showImageModal}
-        setOpen={setShowImageModal}
-        trigger={null}
-        onSubmit={changeThumbnail}
-        uploadedFilename={'world-thumbnail'}
-        uploadedImageTypeId={100}
-      />
     </Layout>
   );
 };

@@ -4,13 +4,18 @@ import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
+import WorldOpened from '../../../screens/worlds/WorldOpened';
+import useNumericParam from '../../../hooks/useNumericParam';
 
 const Worlds: React.FC = () => {
+  const worldId = useNumericParam('worldId');
+
   return (
     <>
       <Head>
         <title>Worlds</title>
       </Head>
+      {worldId && <WorldOpened worldId={worldId} />}
       <Layout vertical={true} navbar={<LeftNavbar />}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>

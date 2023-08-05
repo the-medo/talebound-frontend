@@ -355,6 +355,8 @@ export interface PbUploadImageRequest {
   filename?: string;
   /** @format byte */
   data?: string;
+  /** @format int32 */
+  imageTypeId?: number;
 }
 
 export interface PbUploadUserAvatarResponse {

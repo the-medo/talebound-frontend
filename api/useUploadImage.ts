@@ -1,12 +1,11 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { ImagesCollection } from './collections';
-import { PbUploadImageRequest } from '../generated/api-types/data-contracts';
 import { queryClient } from '../pages/_app';
 import { useGetImages } from './useGetImages';
+import { PbUploadImageRequest } from '../generated/api-types/data-contracts';
 
 export interface ExpandedUploadImageRequest extends PbUploadImageRequest {
   userId?: number;
-  imageTypeId?: number;
 }
 
 export const useUploadImage = createMutation({

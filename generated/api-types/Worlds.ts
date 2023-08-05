@@ -247,6 +247,12 @@ export class Worlds<SecurityDataType = unknown> {
       basedOn?: string;
       /** @format int32 */
       descriptionPostId?: number;
+      /** @format int32 */
+      imageAvatarId?: number;
+      /** @format int32 */
+      imageThumbnailId?: number;
+      /** @format int32 */
+      imageHeaderId?: number;
     },
     params: RequestParams = {},
   ) =>

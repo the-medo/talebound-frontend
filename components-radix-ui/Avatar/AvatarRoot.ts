@@ -11,6 +11,7 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
   borderRadius: '100%',
   border: '1px solid $primary500',
   backgroundColor: 'rgba(0,0,0,.04)',
+  cursor: 'pointer',
 
   variants: {
     size: {

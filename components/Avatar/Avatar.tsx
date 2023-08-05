@@ -10,9 +10,16 @@ interface AvatarProps {
   type?: AvatarType;
   size?: AvatarSize;
   fallbackText?: string;
+  onClick?: () => void;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ url, type = 'unknown', size = 'lg', fallbackText }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  url,
+  type = 'unknown',
+  size = 'lg',
+  fallbackText,
+  onClick,
+}) => {
   const optimizedUrl = useMemo(() => {
     if (!url) return undefined;
 
@@ -22,15 +29,16 @@ const Avatar: React.FC<AvatarProps> = ({ url, type = 'unknown', size = 'lg', fal
         return imageModifyVariant(url, ImageVariant['30x30']);
       case 'md':
       case 'lg':
-      case 'xl':
         return imageModifyVariant(url, ImageVariant['100x100']);
+      case 'xl':
+        return imageModifyVariant(url, ImageVariant['150x150']);
       case '2xl':
         return imageModifyVariant(url, ImageVariant['200x200']);
     }
   }, [url, size]);
 
   return (
-    <AvatarRoot size={size}>
+    <AvatarRoot onClick={onClick} size={size}>
       <AvatarImage src={optimizedUrl ?? emptyUrlByType[type]} alt={`Avatar ${fallbackText}`} />
       {fallbackText && <AvatarFallback delayMs={600}>{fallbackText}</AvatarFallback>}
     </AvatarRoot>
