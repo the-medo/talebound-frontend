@@ -12,12 +12,12 @@ import AspectDiamond from './ControlPanel/AspectDiamond';
 import { AspectData, generateAspectData } from './ControlPanel/utilsAspectBox';
 import { UserDiamond } from './ControlPanel/UserDiamond';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../../store';
 
 const BaseHeader = styled('div', {
   width: '100%',
   height: '300px',
-  backgroundImage:
-    'url("https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/efaae215-d5c5-4070-e61d-949f10521200/original")',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
@@ -26,6 +26,7 @@ const BaseHeader = styled('div', {
 
 const Header: React.FC = () => {
   const { user } = useAuth();
+  const image = useSelector((state: ReduxState) => state.global.headerImage);
 
   const [questData, setQuestData] = useState<AspectData>({ marker: [] });
   const [worldData, setWorldData] = useState<AspectData>({ marker: [] });
@@ -33,7 +34,7 @@ const Header: React.FC = () => {
   const [playModeData, setPlayModeData] = useState<AspectData>({ marker: [] });
 
   return (
-    <BaseHeader>
+    <BaseHeader css={{ backgroundImage: `url("${image}")` }}>
       <Menu />
       <HeaderTransparentSection position="left">
         <AspectBox x="left" y="top">

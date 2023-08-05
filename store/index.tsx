@@ -7,10 +7,12 @@ import {
   editorImageModalSlice,
 } from '../components/Editor/nodes/ImageModal/editorImageModalSlice';
 import { imageModalReducer, imageModalSlice } from '../components/ImageModal/imageModalSlice';
+import { globalReducer, globalSlice } from './globalSlice';
 
 export const store = configureStore({
   reducer: {
     [userSlice.name]: userReducer,
+    [globalSlice.name]: globalReducer,
     [imageModalSlice.name]: imageModalReducer,
     [editorImageModalSlice.name]: editorImageModalReducer,
   },

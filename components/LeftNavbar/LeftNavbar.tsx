@@ -1,6 +1,7 @@
 import React from 'react';
 import { default as NextLink } from 'next/link';
 import { styled } from '../../styles/stitches.config';
+import NavbarHeader from './NavbarHeader';
 
 const Navbar = styled('nav', {
   display: 'flex',
@@ -56,54 +57,10 @@ const NavbarItem = styled(NextLink, {
   },
 });
 
-const NavbarHeader = styled('div', {
-  position: 'relative',
-  width: '100%',
-  height: '50px',
-  color: '$primary100',
-
-  ['& .bg']: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: 'url("../../assets/menu/menu-bg-3.png")',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    opacity: 0.25,
-    zIndex: 1,
-  },
-  ['& .content']: {
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 2,
-    fontSize: '$4xl',
-    fontFamily: '$decorative',
-    backgroundImage: 'url("../../assets/menu/menu-bg-3.png")',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundClip: 'text',
-    color: 'transparent',
-  },
-});
-
 const LeftNavbar: React.FC = () => {
   return (
     <Navbar>
-      <NavbarHeader>
-        <div className="bg" />
-        <div className="content">explore</div>
-      </NavbarHeader>
+      <NavbarHeader title="explore" />
       <NavbarItem href="/explore/news">
         News <NavbarItemImg src="../../assets/images/img12.png" />
       </NavbarItem>
@@ -114,10 +71,7 @@ const LeftNavbar: React.FC = () => {
         Quests <NavbarItemImg src="../../assets/images/img28.png" />
       </NavbarItem>
 
-      <NavbarHeader>
-        <div className="bg" />
-        <div className="content">content</div>
-      </NavbarHeader>
+      <NavbarHeader title="content" />
       <NavbarItem href="/content/images">
         Images <NavbarItemImg src="../../assets/images/img35.png" />
       </NavbarItem>
@@ -125,10 +79,7 @@ const LeftNavbar: React.FC = () => {
         Posts <NavbarItemImg src="../../assets/images/img14.png" />
       </NavbarItem>
 
-      <NavbarHeader>
-        <div className="bg" />
-        <div className="content">guides</div>
-      </NavbarHeader>
+      <NavbarHeader title="guides" />
       <NavbarItem href="/guides/playing">
         Playing <NavbarItemImg src="../../assets/images/img33.png" />
       </NavbarItem>

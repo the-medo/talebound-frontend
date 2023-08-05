@@ -17,6 +17,8 @@ import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import ImageModal from '../../../components/ImageModal/ImageModal';
 import { PbImage } from '../../../generated/api-types/data-contracts';
 import { ImageVariant } from '../../../utils/images/image_utils';
+import { useDispatch } from 'react-redux';
+import { setMenuImage } from '../../../store/globalSlice';
 
 interface EditWorldProps {
   worldId: number;
@@ -25,6 +27,7 @@ interface EditWorldProps {
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const updateWorldMutation = useUpdateWorld();
+  const dispatch = useDispatch();
 
   const [showImageModal, setShowImageModal] = useState(false);
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
@@ -76,9 +79,13 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
     });
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
 
-  const changeThumbnail = useCallback((image: PbImage, variant: ImageVariant) => {
-    console.log('changeThumbnail', image, variant);
-  }, []);
+  const changeThumbnail = useCallback(
+    (image: PbImage, variant: ImageVariant) => {
+      console.log('changeThumbnail', image, variant);
+      dispatch(setMenuImage(image.baseUrl + '/250x50'));
+    },
+    [dispatch],
+  );
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
