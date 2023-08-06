@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { ImageVariant } from '../../utils/images/image_utils';
+import { ImageVariant } from '../../utils/images/imageUtils';
 import { Button } from '../Button/Button';
 
 interface ImageVariantButtonsProps {

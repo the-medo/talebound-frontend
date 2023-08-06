@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { PbImage } from '../../generated/api-types/data-contracts';
-import { ImageVariant } from '../../utils/images/image_utils';
+import { ImageVariant } from '../../utils/images/imageUtils';
 import { styled } from '../../styles/stitches.config';
 
 const StyledImage = styled('img', {

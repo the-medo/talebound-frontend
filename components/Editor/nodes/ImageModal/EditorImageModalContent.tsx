@@ -14,7 +14,7 @@ import {
   imageModifyVariant,
   ImageVariant,
   isTaleboundCloudflareImage,
-} from '../../../../utils/images/image_utils';
+} from '../../../../utils/images/imageUtils';
 import { TitleH4 } from '../../../Typography/Title';
 import ImageVariantButtons from '../../../ImageVariantButtons/ImageVariantButtons';
 import {

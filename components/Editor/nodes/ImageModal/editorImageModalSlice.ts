@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ImagePosition, InlineImagePayload } from '../InlineImageNode/InlineImageNode';
-import { ImageVariant } from '../../../../utils/images/image_utils';
+import { ImageVariant } from '../../../../utils/images/imageUtils';
 
 export interface EditorImageModalSliceState {
   inlineImagePayload: Omit<InlineImagePayload, 'caption'>;

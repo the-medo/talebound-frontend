@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useGetWorldById } from '../../api/worlds/useGetWorldById';
 import { useDispatch } from 'react-redux';
 import { setHeaderImage } from '../../store/globalSlice';
-import { imageModifyVariant, ImageVariant } from '../../utils/images/image_utils';
+import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
 
 interface WorldOpenedProps {
   worldId: number;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageVariant, imageVariantArray } from '../../utils/images/image_utils';
+import { ImageVariant, imageVariantArray } from '../../utils/images/imageUtils';
 import { Row } from '../Flex/Flex';
 import ImageVariantButton from './ImageVariantButton';
 

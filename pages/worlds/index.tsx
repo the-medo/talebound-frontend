@@ -1,12 +1,10 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Layout from '../../components/Layout/Layout';
 import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../components/Flex/Flex';
 import ImageCard from '../../components/ImageCard/ImageCard';
 import ContentSection from '../../components/ContentSection/ContentSection';
-import Loading from '../../components/Loading/Loading';
-import UserIntroduction from '../../component-sections/UserProfile/UserIntroduction';
 
 const Worlds: React.FC = () => {
   return (

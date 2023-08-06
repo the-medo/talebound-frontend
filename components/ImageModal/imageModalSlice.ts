@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PbImage } from '../../generated/api-types/data-contracts';
-import { ImageVariant } from '../../utils/images/image_utils';
+import { ImageVariant } from '../../utils/images/imageUtils';
 
 export interface EditorImageModalSliceState {
   selectedImage?: PbImage;

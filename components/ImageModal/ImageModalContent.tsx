@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { PbImage } from '../../generated/api-types/data-contracts';
 import { styled } from '../../styles/stitches.config';
 import { ReduxState } from '../../store';
-import { ImageVariant, isTaleboundCloudflareImage } from '../../utils/images/image_utils';
+import { ImageVariant, isTaleboundCloudflareImage } from '../../utils/images/imageUtils';
 import { Button } from '../Button/Button';
 import { Col, Row } from '../Flex/Flex';
 import ImageModalTabUpload from './ImageModalTabUpload';

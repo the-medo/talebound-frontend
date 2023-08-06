@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import ImageModalContent, { ImageModalContentProps } from './ImageModalContent';
 import Modal from '../Modal/Modal';
 import { PbImage } from '../../generated/api-types/data-contracts';
-import { ImageVariant } from '../../utils/images/image_utils';
+import { ImageVariant } from '../../utils/images/imageUtils';
 import { useDispatch } from 'react-redux';
 import { resetImageModalState, setSelectedImage, setSelectedVariant } from './imageModalSlice';
 

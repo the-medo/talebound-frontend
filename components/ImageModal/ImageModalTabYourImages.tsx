@@ -4,7 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Spin } from 'antd';
 import { Row } from '../Flex/Flex';
 import InfiniteScrollObserver from '../InfiniteScrollObserver/InfiniteScrollObserver';
-import { imageUrlWithoutVariant, ImageVariant } from '../../utils/images/image_utils';
+import { imageUrlWithoutVariant, ImageVariant } from '../../utils/images/imageUtils';
 import Image from '../Image/Image';
 import { PbImage } from '../../generated/api-types/data-contracts';
 

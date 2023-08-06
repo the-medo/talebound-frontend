@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PbUser } from '../../generated/api-types/data-contracts';
 import { getItem, LSKey, setItem } from '../../store/localStore';
+import { UserRole } from './userUtils';
 
 export interface UserState {
   user: PbUser | undefined;
+  role: UserRole | undefined;
 }
 
 const initialState: UserState = {
   user: getItem(LSKey.USER),
+  role: undefined,
 };
 
 export const userSlice = createSlice({
@@ -26,9 +29,12 @@ export const userSlice = createSlice({
       }
       setItem(LSKey.USER, state.user);
     },
+    setUserRole: (state, action: PayloadAction<UserRole | undefined>) => {
+      state.role = action.payload;
+    },
   },
 });
 
-export const { setUser, updateUser } = userSlice.actions;
+export const { setUser, updateUser, setUserRole } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

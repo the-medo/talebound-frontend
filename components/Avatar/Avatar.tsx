@@ -3,7 +3,7 @@ import { AvatarRoot } from '../../components-radix-ui/Avatar/AvatarRoot';
 import { AvatarImage } from '../../components-radix-ui/Avatar/AvatarImage';
 import { AvatarFallback } from '../../components-radix-ui/Avatar/AvatarFallback';
 import { AvatarSize, AvatarType, emptyUrlByType } from './avatarLib';
-import { ImageVariant, imageModifyVariant } from '../../utils/images/image_utils';
+import { ImageVariant, imageModifyVariant } from '../../utils/images/imageUtils';
 
 interface AvatarProps {
   url?: string;

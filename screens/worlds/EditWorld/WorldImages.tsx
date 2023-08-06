@@ -12,7 +12,7 @@ import {
   IMAGE_DEFAULT_WORLD_AVATAR,
   IMAGE_DEFAULT_WORLD_HEADER,
   IMAGE_DEFAULT_WORLD_THUMBNAIL,
-} from '../../../utils/images/image_default_urls';
+} from '../../../utils/images/imageDefaultUrls';
 
 interface WorldImagesProps {
   worldId: number;

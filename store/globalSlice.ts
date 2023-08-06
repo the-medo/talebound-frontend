@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMAGE_DEFAULT_HEADER, IMAGE_DEFAULT_MENU } from '../utils/images/image_default_urls';
+import { IMAGE_DEFAULT_HEADER, IMAGE_DEFAULT_MENU } from '../utils/images/imageDefaultUrls';
 
 export interface GlobalSliceState {
   headerImage?: string;
