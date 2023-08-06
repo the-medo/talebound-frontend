@@ -10,9 +10,7 @@
  */
 
 import {
-  PbCreateAvailableWorldTagRequest,
   PbCreateWorldRequest,
-  PbGetAvailableWorldTagsResponse,
   PbGetWorldDailyActivityResponse,
   PbGetWorldMonthlyActivityResponse,
   PbGetWorldsResponse,
@@ -127,87 +125,6 @@ export class Worlds<SecurityDataType = unknown> {
       path: `/worlds/activity/monthly`,
       method: 'GET',
       query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description gets list of tags, that are usable for worlds
-   *
-   * @tags Talebound
-   * @name TaleboundGetAvailableWorldTags
-   * @summary Get available world tags
-   * @request GET:/worlds/tags
-   * @response `200` `PbGetAvailableWorldTagsResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  taleboundGetAvailableWorldTags = (params: RequestParams = {}) =>
-    this.http.request<PbGetAvailableWorldTagsResponse, RpcStatus>({
-      path: `/worlds/tags`,
-      method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description creates new tag, that can be assigned to worlds
-   *
-   * @tags Talebound
-   * @name TaleboundCreateAvailableWorldTag
-   * @summary Create available world tag
-   * @request POST:/worlds/tags
-   * @response `200` `PbTag` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  taleboundCreateAvailableWorldTag = (
-    body: PbCreateAvailableWorldTagRequest,
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbTag, RpcStatus>({
-      path: `/worlds/tags`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description deletes available world tag and removes all its assignments
-   *
-   * @tags Talebound
-   * @name TaleboundDeleteAvailableWorldTag
-   * @summary Delete available world tag
-   * @request DELETE:/worlds/tags/{tagId}
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  taleboundDeleteAvailableWorldTag = (tagId: number, params: RequestParams = {}) =>
-    this.http.request<object, RpcStatus>({
-      path: `/worlds/tags/${tagId}`,
-      method: 'DELETE',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description updates world-assignable tag
-   *
-   * @tags Talebound
-   * @name TaleboundUpdateAvailableWorldTag
-   * @summary Update available world tag
-   * @request PATCH:/worlds/tags/{tagId}
-   * @response `200` `PbTag` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  taleboundUpdateAvailableWorldTag = (
-    tagId: number,
-    body: {
-      newTag?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbTag, RpcStatus>({
-      path: `/worlds/tags/${tagId}`,
-      method: 'PATCH',
-      body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });
