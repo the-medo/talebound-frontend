@@ -16,7 +16,7 @@ const AlertDialogDemo: React.FC = () => {
 
   return (
     <AlertDialogRoot open={open}>
-      <AlertDialogTrigger onClick={() => setOpen(true)} asChild>
+      <AlertDialogTrigger asChild onClick={() => setOpen(true)}>
         <Button color="dangerOutline">Delete account</Button>
       </AlertDialogTrigger>
       <AlertDialogPortal>

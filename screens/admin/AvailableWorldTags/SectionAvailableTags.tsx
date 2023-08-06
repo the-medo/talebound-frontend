@@ -11,6 +11,7 @@ import { useUpdateAvailableWorldTag } from '../../../api/tags/useUpdateAvailable
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useDeleteAvailableWorldTag } from '../../../api/tags/useDeleteAvailableWorldTag';
 import { Text } from '../../../components/Typography/Text';
+import AlertDialog from '../../../components/AlertDialog/AlertDialog';
 
 const SectionAvailableTags: React.FC = () => {
   const { data: tag = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
@@ -107,14 +108,15 @@ const SectionAvailableTags: React.FC = () => {
             <Button disabled={!selectedTag} loading={isLoading} onClick={handleNewTag}>
               Update
             </Button>
-            <Button
-              color="dangerOutline"
-              disabled={!selectedTag}
-              loading={isLoading}
-              onClick={handleDeleteTag}
-            >
-              Delete
-            </Button>
+            <AlertDialog
+              triggerButtonDisabled={!selectedTag}
+              triggerButtonLoading={isLoading}
+              triggerButtonText="Delete"
+              title={`Delete tag "${selectedTag?.tag}"`}
+              description="Deleting this tag will remove it from all worlds, that have it assigned."
+              dangerButtonText="Delete"
+              submitAction={handleDeleteTag}
+            />
           </Row>
           <Text size="sm" i>
             (Select a tag to perform action)
