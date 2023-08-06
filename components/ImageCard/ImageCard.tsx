@@ -4,6 +4,7 @@ import { TitleH2 } from '../Typography/Title';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import { Button } from '../Button/Button';
+import TagRow from '../TagRow/TagRow';
 
 const CardWrapper = styled(Col, {
   padding: '$md',
@@ -17,7 +18,10 @@ const ImageBackground = styled(Col, {
   // backgroundPosition: 'center center',
   // backgroundSize: 'cover',
   // backgroundRepeat: 'no-repeat',
-  padding: '$md',
+  paddingTop: '$md',
+  paddingBottom: '$md',
+  paddingLeft: '$sm',
+  paddingRight: '$sm',
   border: '1px solid $primary200',
 
   borderRadius: '$lg',
@@ -41,22 +45,10 @@ const ImageBackground = styled(Col, {
   variants: {
     size: {
       large: {
-        width: '24.5rem',
+        width: '400px',
       },
     },
   },
-});
-
-const CardDescription = styled('div', {
-  padding: '$sm',
-  paddingLeft: 0,
-  paddingRight: 0,
-  // height: '90px',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  display: '-webkit-box',
-  '-webkit-line-clamp': '4',
-  '-webkit-box-orient': 'vertical',
 });
 
 const RatingWrapper = styled(Col, {
@@ -138,24 +130,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         </RatingWrapper>
       </Row>
       <div style={{ height: '0px' }}></div>
-      <Row justifyContent="center" gap="xs">
-        {tags.map((tag) => (
-          <Button key={tag} size="sm" color="semiGhost">
-            {tag}
-          </Button>
-        ))}
-      </Row>
-      {/*<CardDescription>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in massa tempor.
-        Aliquam ultrices sagittis orci a scelerisque purus semper eget duis. Morbi enim nunc
-        faucibus a pellentesque sit amet. Pulvinar mattis nunc sed blandit libero volutpat sed cras
-        ornare. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Egestas erat
-        imperdiet sed euismod nisi porta lorem mollis aliquam. Amet tellus cras adipiscing enim. Dis
-        parturient montes nascetur ridiculus mus. Faucibus turpis in eu mi bibendum neque egestas.
-        Aliquet eget sit amet tellus cras adipiscing enim eu. Sagittis id consectetur purus ut
-        faucibus pulvinar elementum integer enim. Lorem ipsum dolor sit amet consectetur adipiscing.
-      </CardDescription>*/}
+      <TagRow tags={tags} width={370} />
     </ImageBackground>
   );
 };

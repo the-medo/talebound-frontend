@@ -3,7 +3,7 @@ import Head from 'next/head';
 import AdminLayout from '../../components/Layout/AdminLayout';
 import AvailableWorldTags from '../../screens/admin/AvailableWorldTags/AvailableWorldTags';
 
-const PageWorldTags: React.FC = () => {
+const PageAdminWorldTags: React.FC = () => {
   return (
     <>
       <Head>
@@ -16,4 +16,4 @@ const PageWorldTags: React.FC = () => {
   );
 };
 
-export default PageWorldTags;
+export default PageAdminWorldTags;

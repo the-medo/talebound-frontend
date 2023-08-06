@@ -269,6 +269,7 @@ export interface ButtonProps extends PropsWithChildren, ButtonVariants {
   onClick?: () => void;
   ref?: MutableRefObject<HTMLButtonElement | null>;
   css?: Stitches.CSS;
+  title?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

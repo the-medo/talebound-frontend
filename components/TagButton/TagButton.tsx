@@ -2,32 +2,42 @@ import React, { useCallback } from 'react';
 import { Button, ButtonVariants } from '../Button/Button';
 import { PbTag } from '../../generated/api-types/data-contracts';
 
-interface TagButtonProps {
-  tag: PbTag;
+type TagButtonProps<T extends PbTag | string> = {
+  tag: T;
   count?: number;
-  onSelect?: (tag: PbTag) => void;
+  onSelect?: (tag: T) => void;
   active?: boolean;
   colorNonactive?: ButtonVariants['color'];
   colorActive?: ButtonVariants['color'];
-}
+  disabled?: boolean;
+  tooltip?: string;
+};
 
-const TagButton: React.FC<TagButtonProps> = ({
-  tag: { id, tag },
+const TagButton = <T extends PbTag | string>({
+  tag,
   count,
   onSelect,
-  active,
+  active = false,
   colorNonactive = 'primaryOutline',
   colorActive = 'primaryFill',
-}) => {
+  disabled = false,
+  tooltip,
+}: TagButtonProps<T>) => {
   const onClick = useCallback(() => {
     if (onSelect) {
-      onSelect({ id, tag });
+      onSelect(tag as T);
     }
-  }, [id, onSelect, tag]);
+  }, [onSelect, tag]);
 
   return (
-    <Button size="sm" onClick={onClick} color={active ? colorActive : colorNonactive}>
-      {tag}
+    <Button
+      disabled={disabled}
+      size="sm"
+      onClick={onClick}
+      color={active ? colorActive : colorNonactive}
+      title={tooltip}
+    >
+      {typeof tag === 'string' ? tag : tag.tag}
       {count !== undefined && ` (${count})`}
     </Button>
   );

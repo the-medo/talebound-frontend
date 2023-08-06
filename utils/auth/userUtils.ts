@@ -7,3 +7,6 @@ export enum UserRole {
 const userRoleArray = Object.values(UserRole) as Array<UserRole>;
 
 export const isUserRole = (role: number): role is UserRole => userRoleArray.includes(role);
+
+export const isAtLeastModerator = (role: UserRole) =>
+  role === UserRole.Moderator || role === UserRole.Admin;

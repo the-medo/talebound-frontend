@@ -6,7 +6,11 @@ const LeftNavbarAdmin: React.FC = () => {
   return (
     <Navbar>
       <NavbarHeader title="admin" />
-      <NavbarItem href="/explore/news">
+      <NavbarItem href="/admin">
+        Dashboard <NavbarItemImg src="../../assets/images/img12.png" />
+      </NavbarItem>
+      <NavbarHeader title="tags" />
+      <NavbarItem href="/admin/world-tags">
         World tags <NavbarItemImg src="../../assets/images/img12.png" />
       </NavbarItem>
     </Navbar>
