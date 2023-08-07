@@ -15,6 +15,7 @@ import {
   PbGetWorldMonthlyActivityResponse,
   PbGetWorldsResponse,
   PbImage,
+  PbPost,
   PbTag,
   PbWorld,
   PbWorldAdmin,
@@ -284,6 +285,31 @@ export class Worlds<SecurityDataType = unknown> {
     this.http.request<PbImage, RpcStatus>({
       path: `/worlds/${worldId}/images`,
       method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description creates/updates world introduction
+   *
+   * @tags Talebound
+   * @name TaleboundUpdateWorldIntroduction
+   * @summary Update world introduction
+   * @request PATCH:/worlds/{worldId}/introduction
+   * @response `200` `PbPost` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundUpdateWorldIntroduction = (
+    worldId: number,
+    body: {
+      content?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbPost, RpcStatus>({
+      path: `/worlds/${worldId}/introduction`,
+      method: 'PATCH',
       body: body,
       type: ContentType.Json,
       format: 'json',

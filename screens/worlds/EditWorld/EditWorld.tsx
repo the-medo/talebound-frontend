@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Flex, Row } from '../../../components/Flex/Flex';
@@ -12,10 +12,12 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
-import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import WorldImages from './WorldImages';
 import WorldTags from './WorldTags';
+import Loading from '../../../components/Loading/Loading';
+
+const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
 interface EditWorldProps {
   worldId: number;
@@ -151,7 +153,11 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
         </Col>
 
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ArticleJourneyOfWorldCrafting />
+          <ContentSection direction="column" header="Introduction">
+            <Suspense fallback={<Loading />}>
+              <WorldIntroduction worldId={worldId} postViewOnly={false} />
+            </Suspense>
+          </ContentSection>
         </Col>
       </Row>
     </Layout>
