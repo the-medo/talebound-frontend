@@ -12,11 +12,15 @@ export const Navbar = styled('nav', {
   opacity: 1,
 });
 
-export const NavbarItemImg = styled('img', {
-  width: '2.25rem',
-  height: '2.25rem',
-  borderRadius: '50%',
+export const NavbarSquare = styled('div', {
+  margin: '0.25rem',
+  width: '1.25rem',
+  height: '1.25rem',
+  borderRadius: '0',
+  backgroundColor: '$black',
+  border: '2px solid $primary200',
   transition: 'all 0.3s ease-in-out',
+  transform: 'rotate(45deg)',
 });
 
 export const NavbarItem = styled(NextLink, {
@@ -32,12 +36,15 @@ export const NavbarItem = styled(NextLink, {
   borderRadius: '$md',
   transition: 'all 0.3s ease-in-out',
   textDecoration: 'none',
-  opacity: 0.7,
 
   '&:hover': {
     backgroundColor: '#3e4747',
-    opacity: 1,
     paddingLeft: '$md',
+
+    [`& ${NavbarSquare}`]: {
+      backgroundColor: '$primary200',
+      // transform: 'rotate(45deg) translate(0.25rem, -0.25rem)',
+    },
   },
 
   variants: {
@@ -47,8 +54,9 @@ export const NavbarItem = styled(NextLink, {
         fontWeight: '$bold',
         opacity: 0.9,
         paddingLeft: '$lg',
-        [`& ${NavbarItemImg}`]: {
-          border: '2px solid currentColor',
+
+        [`& ${NavbarSquare}`]: {
+          backgroundColor: '$primary200',
         },
       },
     },
