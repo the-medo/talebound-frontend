@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Row } from '../Flex/Flex';
-import { Button } from '../Button/Button';
 import TagButton from '../TagButton/TagButton';
 
 const FONT_WIDTH = 6;
@@ -25,7 +24,6 @@ const TagRow: React.FC<TagRowProps> = ({ tags, width }) => {
 
     tags.forEach((tag, i) => {
       if (done) {
-        console.log('Pushing to hidden: ', tag);
         tagsHidden.push(tag);
         return;
       }
@@ -34,43 +32,14 @@ const TagRow: React.FC<TagRowProps> = ({ tags, width }) => {
       const tagsMoreWidth = tagsMoreText.length * FONT_WIDTH + PADDING_WIDTH + GAP_WIDTH; //18px for padding + border, 2px gap
 
       if (widthLeft - tagLengths[i] - tagsMoreWidth > 0) {
-        console.log('====Pushing to tags 1: ', tag, '====');
-        console.log(
-          'widthLeft - tagLengths[i] - tagsMoreWidth',
-          widthLeft - tagLengths[i] - tagsMoreWidth,
-          'widthLeft',
-          widthLeft,
-          'tagLengths[i]',
-          tagLengths[i],
-          'tagsMoreWidth',
-          tagsMoreWidth,
-        );
-        console.log('tagsLeft', tagsLeft);
-
         tagsToDisplay.push(tag);
         widthLeft = widthLeft - tagLengths[i];
-        console.log('new widthLeft', widthLeft);
-        console.log('=====================');
       } else if (widthLeft - tagsMoreWidth > 0) {
-        console.log('====Pushing to tags 2: ', tag, '====');
-        console.log(
-          'widthLeft - tagsMoreWidth',
-          widthLeft - tagsMoreWidth,
-          'widthLeft',
-          widthLeft,
-          'tagsMoreWidth',
-          tagsMoreWidth,
-        );
-        console.log('tagsLeft', tagsLeft);
-
         tagsToDisplay.push(tagsMoreText);
         tagsHidden.push(tag);
         widthLeft = widthLeft - tagsMoreWidth;
         done = true;
-        console.log('new widthLeft', widthLeft);
-        console.log('=======DONE=========');
       } else {
-        console.log('====More tag doesnt fit, popping last: ', tag, '====');
         //remove last tag if it doesn't fit
         tagsToDisplay.pop();
         tagsToDisplay.push(tagsMoreText);
@@ -81,8 +50,6 @@ const TagRow: React.FC<TagRowProps> = ({ tags, width }) => {
 
     return [tagsToDisplay, tagsHidden];
   }, [tags, width]);
-
-  console.log('hiddenTags', hiddenTags);
 
   return (
     <Row justifyContent="center" gap="xs">

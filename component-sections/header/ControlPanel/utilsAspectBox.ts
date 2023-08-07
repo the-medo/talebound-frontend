@@ -1,6 +1,10 @@
 export interface AspectData {
   marker: {
-    imgIdx: number;
+    imgIdx?: number;
+    entityId?: number;
+    name?: string;
+    avatarUrl?: string;
+    linkUrl?: string;
   }[];
 }
 

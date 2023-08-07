@@ -18,7 +18,8 @@ const LoadingOverlay = styled('div', {
 
 const StyledButton = styled('button', {
   position: 'relative',
-  display: 'flex',
+  display: 'inline-flex',
+  whiteSpace: 'nowrap',
   alignItems: 'center',
   justifyContent: 'center',
   gap: '$sm',

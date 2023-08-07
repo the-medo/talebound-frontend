@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Menu from './Menu';
 import { styled } from '../../styles/stitches.config';
 import { HeaderTransparentSection } from '../../components/HeaderTransparentSection/HeaderTransparentSection';
@@ -14,6 +14,7 @@ import { UserDiamond } from './ControlPanel/UserDiamond';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../store';
+import { useMyWorlds } from '../../hooks/useWorldsOfUser';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -29,9 +30,12 @@ const Header: React.FC = () => {
   const image = useSelector((state: ReduxState) => state.global.headerImage);
 
   const [questData, setQuestData] = useState<AspectData>({ marker: [] });
-  const [worldData, setWorldData] = useState<AspectData>({ marker: [] });
   const [characterData, setCharacterData] = useState<AspectData>({ marker: [] });
   const [playModeData, setPlayModeData] = useState<AspectData>({ marker: [] });
+
+  const myWorlds = useMyWorlds();
+
+  const worlds = useMemo(() => Object.entries(myWorlds), [myWorlds]);
 
   return (
     <BaseHeader css={{ backgroundImage: `url("${image}")` }}>
@@ -63,10 +67,10 @@ const Header: React.FC = () => {
           ))}
         </AspectBox>
         <AspectBox x="right" y="top">
-          <AspectBoxIcon x="right" y="top" onClick={() => setWorldData(generateAspectData())}>
+          <AspectBoxIcon x="right" y="top">
             <LuGlobe2 size={20} />
           </AspectBoxIcon>
-          {worldData.marker.length === 0 && (
+          {worlds.length === 0 && (
             <AspectDiamond
               imgIdx={0}
               totalCount={0}
@@ -76,11 +80,15 @@ const Header: React.FC = () => {
               text={'No worlds'}
             />
           )}
-          {worldData.marker.map((marker, idx) => (
+          {worlds.map(([worldId, data], idx) => (
             <AspectDiamond
-              key={idx}
-              imgIdx={marker.imgIdx}
-              totalCount={worldData.marker.length}
+              key={worldId}
+              imgIdx={0}
+              totalCount={worlds.length}
+              avatarUrl={data?.world.imageAvatar}
+              linkUrl={`/worlds/${worldId}/detail`}
+              name={data?.world.name}
+              entityId={data?.world.id}
               index={idx + 1}
               x="right"
               y="top"

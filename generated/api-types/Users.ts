@@ -525,7 +525,7 @@ export class Users<SecurityDataType = unknown> {
    * @response `200` `PbGetWorldsOfCreatorResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetWorldsOfCreator = (userId: string, params: RequestParams = {}) =>
+  taleboundGetWorldsOfCreator = (userId: number, params: RequestParams = {}) =>
     this.http.request<PbGetWorldsOfCreatorResponse, RpcStatus>({
       path: `/users/${userId}/worlds`,
       method: 'GET',
