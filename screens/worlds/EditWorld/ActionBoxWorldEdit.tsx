@@ -23,7 +23,7 @@ const ActionBoxWorldEdit: React.FC<ActionBoxWorldEditProps> = ({
             Edit world
           </Button>
         </Link>
-        <Link href={`/worlds/${worldId}/edit/collaborators`}>
+        <Link href={`/worlds/${worldId}/collaborators`}>
           <Button
             size="md"
             color={activeButton === 'collaborators' ? 'primaryOutline' : 'semiGhost'}

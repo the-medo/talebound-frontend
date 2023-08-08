@@ -457,6 +457,7 @@ export interface PbWorldAdmin {
   worldId?: number;
   /** @format int32 */
   userId?: number;
+  user?: PbViewUser;
   /** @format date-time */
   createdAt?: string;
   superAdmin?: boolean;
