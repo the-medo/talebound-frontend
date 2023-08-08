@@ -236,6 +236,10 @@ export interface PbGetUsersResponse {
   users?: PbUser[];
 }
 
+export interface PbGetWorldAdminsResponse {
+  worldAdmins?: PbWorldAdmin[];
+}
+
 export interface PbGetWorldDailyActivityResponse {
   activity?: PbWorldActivity[];
 }

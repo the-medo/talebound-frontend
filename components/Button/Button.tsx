@@ -268,7 +268,6 @@ export interface ButtonProps extends PropsWithChildren, ButtonVariants {
   loading?: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  ref?: MutableRefObject<HTMLButtonElement | null>;
   css?: Stitches.CSS;
   title?: string;
 }

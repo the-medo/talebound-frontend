@@ -11,6 +11,7 @@
 
 import {
   PbCreateWorldRequest,
+  PbGetWorldAdminsResponse,
   PbGetWorldDailyActivityResponse,
   PbGetWorldMonthlyActivityResponse,
   PbGetWorldsResponse,
@@ -179,6 +180,23 @@ export class Worlds<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description returns admins and admin requests for world
+   *
+   * @tags Talebound
+   * @name TaleboundGetWorldAdmins
+   * @summary Get world admins
+   * @request GET:/worlds/{worldId}/admin
+   * @response `200` `PbGetWorldAdminsResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetWorldAdmins = (worldId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetWorldAdminsResponse, RpcStatus>({
+      path: `/worlds/${worldId}/admin`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
