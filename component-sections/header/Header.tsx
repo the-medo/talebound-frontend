@@ -153,14 +153,7 @@ const Header: React.FC = () => {
           <img src={user?.img?.url} alt={'World icon'} />
         </UserDiamond>
       </HeaderTransparentSection>
-      <HeaderTransparentSection position="right">
-        <Link href={'/worlds/create'}>
-          <Button size="xl" color="semiGhost">
-            <BsPlus />
-            Create world
-          </Button>
-        </Link>
-      </HeaderTransparentSection>
+      <HeaderTransparentSection position="right" id="action-box" />
     </BaseHeader>
   );
 };
