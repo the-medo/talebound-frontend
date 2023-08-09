@@ -4,15 +4,19 @@ import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import Layout from '../../../components/Layout/Layout';
 import { Col, Row } from '../../../components/Flex/Flex';
 import CollaboratorsApproved from './CollaboratorsApproved/CollaboratorsApproved';
-import CollaboratorsRequests from './CollaboratorsRequests/CollaboratorsRequests';
 import NewCollaboratorRequest from './NewCollaboratorRequest/NewCollaboratorRequest';
 import ArticleWorldCollaboration from '../../../articles/Worlds/ArticleWorldCollaboration';
+import { useAuth } from '../../../hooks/useAuth';
+import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
+import CollaboratorsRequests from './CollaboratorsRequests/CollaboratorsRequests';
 
 interface WorldCollaboratorsProps {
   worldId: number;
 }
 
 const WorldCollaborators: React.FC<WorldCollaboratorsProps> = ({ worldId }) => {
+  const { isLoggedIn } = useAuth();
+
   return (
     <>
       <ActionBoxWorldEdit worldId={worldId} activeButton="collaborators" />

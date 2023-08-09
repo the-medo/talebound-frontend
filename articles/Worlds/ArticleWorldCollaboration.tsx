@@ -7,11 +7,19 @@ const ArticleWorldCollaboration: React.FC = () => {
   return (
     <ContentSection direction="column" header="World Collaboration - what does it mean?">
       <p>
-        Embarking on your world creation journey is as simple as <b>naming your realm</b>. With just
-        that, you&apos;ve taken your first step! However, why stop there? Unleash your creativity
-        and bring forth a world as immense as the universe itself, teeming with complex ecosystems,
-        intricate technologies, mystical magics, captivating religions, and enthralling intrigues.
-        The possibilities are limitless.
+        There are 2 types of collaborators - <strong>collaborator</strong> and{' '}
+        <strong>super collaborator</strong>. Both of them can edit the world, but super collaborator
+        has more rights.
+      </p>
+
+      <TitleH3>
+        <TbShield size={30} /> Collaborator
+      </TitleH3>
+
+      <p>
+        <li>edit introduction post</li>
+        <li>rearrange categories in menu</li>
+        <li>create new post and assign them to categories</li>
       </p>
 
       <TitleH3 color="warning">
@@ -19,18 +27,10 @@ const ArticleWorldCollaboration: React.FC = () => {
       </TitleH3>
 
       <p>
-        All it takes to spark life into your world is a name. Along with this, you may choose to
-        share a glimpse of its unique allure through a short description or a tantalizing tale about
-        its origins.
-      </p>
-      <TitleH3>
-        <TbShield size={30} /> Collaborator
-      </TitleH3>
-
-      <p>
-        Just naming your world doesn&apos;t quite do it justice, especially if you want it to
-        captivate other adventurers. Talebound equips you with a wide array of customization options
-        to sculpt a world that is as compelling as it is unique.
+        <li>change name, &quot;based on&quot; and short description</li>
+        <li>change tags</li>
+        <li>change images - header, avatar and thumbnail</li>
+        <li>approve other collaborators, make them super collaborators or remove them</li>
       </p>
     </ContentSection>
   );

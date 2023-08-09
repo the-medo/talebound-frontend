@@ -15,6 +15,8 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../store';
 import { useMyWorlds } from '../../hooks/useWorldsOfUser';
+import Avatar from '../../components/Avatar/Avatar';
+import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -150,7 +152,9 @@ const Header: React.FC = () => {
         </AspectBox>
 
         <UserDiamond>
-          <img src={user?.img?.url} alt={'World icon'} />
+          <Link href={`/user/${user?.id}/profile`}>
+            <img src={user?.img?.url ?? DEFAULT_AVATAR_URL} alt="User avatar" />
+          </Link>
         </UserDiamond>
       </HeaderTransparentSection>
       <HeaderTransparentSection position="right" id="action-box" />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useGetWorldAdmins } from '../../../../api/worlds/useGetWorldAdmins';
 import CollaboratorRowApproved from './CollaboratorRowApproved';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
@@ -12,9 +12,14 @@ const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }
     variables: worldId,
   });
 
+  const worldAdminApproved = useMemo(
+    () => worldAdmins.filter((wa) => wa.approved === 1),
+    [worldAdmins],
+  );
+
   return (
     <ContentSection flexWrap="wrap" direction="column" header="Collaborators">
-      {worldAdmins.map((worldAdmin) => (
+      {worldAdminApproved.map((worldAdmin) => (
         <CollaboratorRowApproved data={worldAdmin} key={worldAdmin.userId} />
       ))}
     </ContentSection>

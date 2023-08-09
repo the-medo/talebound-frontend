@@ -8,6 +8,7 @@ import { TbShield, TbShieldOff, TbShieldStar } from 'react-icons/tb';
 import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
+import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
 
 interface CollaboratorRowApprovedProps {
   data: PbWorldAdmin;
@@ -17,6 +18,7 @@ interface CollaboratorRowApprovedProps {
 
 const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({ data }) => {
   data.superAdmin = true;
+  const role = useMyWorldRole(data.worldId ?? 0);
 
   const profileLink = `/user/${data.user?.id}/profile`;
 
@@ -36,16 +38,18 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({ data 
           from: {formatDate(data.createdAt, false, 'week')}
         </Text>
       </Col>
-      <Row gap="md">
-        <Button size="sm">
-          <TbShieldStar />
-          Make super
-        </Button>
-        <Button color="dangerOutline" size="sm">
-          <TbShieldOff />
-          Remove from collaborators
-        </Button>
-      </Row>
+      {role === WorldAdminRole.SUPER_COLLABORATOR && (
+        <Row gap="md">
+          <Button size="sm">
+            <TbShieldStar />
+            Make super
+          </Button>
+          <Button color="dangerOutline" size="sm">
+            <TbShieldOff />
+            Remove from collaborators
+          </Button>
+        </Row>
+      )}
     </Row>
   );
 };
