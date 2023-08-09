@@ -30,10 +30,11 @@ export function useMyWorldRole(worldId: number): WorldAdminRole {
     switch (myAdmin.approved) {
       case 2:
         return WorldAdminRole.REQUESTED;
-      case 0:
-        return WorldAdminRole.DENIED;
       case 1:
         return myAdmin.superAdmin ? WorldAdminRole.SUPER_COLLABORATOR : WorldAdminRole.COLLABORATOR;
+      case 0:
+      case undefined:
+        return WorldAdminRole.DENIED;
     }
   }
   return WorldAdminRole.NONE;

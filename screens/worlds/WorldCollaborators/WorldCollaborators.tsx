@@ -15,8 +15,6 @@ interface WorldCollaboratorsProps {
 }
 
 const WorldCollaborators: React.FC<WorldCollaboratorsProps> = ({ worldId }) => {
-  const { isLoggedIn } = useAuth();
-
   return (
     <>
       <ActionBoxWorldEdit worldId={worldId} activeButton="collaborators" />

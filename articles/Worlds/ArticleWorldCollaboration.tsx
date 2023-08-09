@@ -2,6 +2,7 @@ import React from 'react';
 import { TitleH3 } from '../../components/Typography/Title';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { TbShield, TbShieldStar } from 'react-icons/tb';
+import { Row } from '../../components/Flex/Flex';
 
 const ArticleWorldCollaboration: React.FC = () => {
   return (
@@ -12,8 +13,10 @@ const ArticleWorldCollaboration: React.FC = () => {
         has more rights.
       </p>
 
-      <TitleH3>
-        <TbShield size={30} /> Collaborator
+      <TitleH3 underline={false}>
+        <Row gap="sm">
+          <TbShield size={30} /> Collaborator
+        </Row>
       </TitleH3>
 
       <p>
@@ -22,8 +25,10 @@ const ArticleWorldCollaboration: React.FC = () => {
         <li>create new post and assign them to categories</li>
       </p>
 
-      <TitleH3 color="warning">
-        <TbShieldStar size={30} /> Super collaborator
+      <TitleH3 color="warning" underline={false}>
+        <Row gap="sm">
+          <TbShieldStar size={30} /> Super collaborator
+        </Row>
       </TitleH3>
 
       <p>

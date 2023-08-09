@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { PbWorldAdmin } from '../../../../generated/api-types/data-contracts';
 import Avatar from '../../../../components/Avatar/Avatar';
 import { TitleH4 } from '../../../../components/Typography/Title';
@@ -9,18 +9,87 @@ import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
 import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
+import { useUpdateWorldAdmin } from '../../../../api/worlds/useUpdateWorldAdmin';
+import { useDeleteWorldAdmin } from '../../../../api/worlds/useDeleteWorldAdmin';
+import AlertDialog from '../../../../components/AlertDialog/AlertDialog';
+import ErrorText from '../../../../components/ErrorText/ErrorText';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../../../../store';
 
 interface CollaboratorRowApprovedProps {
   data: PbWorldAdmin;
+  canLeave?: boolean;
 }
 
 //Make super - gold button color? css={{ backgroundColor: '$warning' }}
 
-const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({ data }) => {
-  data.superAdmin = true;
+const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
+                                                                           data,
+                                                                           canLeave = true,
+                                                                         }) => {
   const role = useMyWorldRole(data.worldId ?? 0);
-
+  const userId = useSelector((state: ReduxState) => state.auth.user?.id);
+  const isMyRow = data.user?.id === userId;
   const profileLink = `/user/${data.user?.id}/profile`;
+
+  const {
+    mutate: updateWorldAdmin,
+    isLoading: isLoadingUpdate,
+    error: errorUpdate,
+  } = useUpdateWorldAdmin();
+
+  const {
+    mutate: deleteWorldAdmin,
+    isLoading: isLoadingDelete,
+    error: errorDelete,
+  } = useDeleteWorldAdmin();
+
+  const doRequest = useCallback(
+    (superAdmin: boolean) => {
+      if (data.worldId && data.userId) {
+        updateWorldAdmin({
+          worldId: data.worldId,
+          body: {
+            userId: data.userId,
+            superAdmin,
+          },
+        });
+      }
+    },
+    [data.userId, data.worldId, updateWorldAdmin],
+  );
+
+  const makeSuperCollaborator = useCallback(() => doRequest(true), [doRequest]);
+  const makeBasicCollaborator = useCallback(() => doRequest(false), [doRequest]);
+
+  const deleteSuperCollaborator = useCallback(() => {
+    if (data.worldId && data.userId) {
+      deleteWorldAdmin({
+        worldId: data.worldId,
+        userId: data.userId,
+      });
+    }
+  }, [data.userId, data.worldId, deleteWorldAdmin]);
+
+  const deleteButton = useMemo(
+    () => (
+      <Button color="dangerOutline" size="sm" loading={isLoadingDelete}>
+        <TbShieldOff />
+        Remove from collaborators
+      </Button>
+    ),
+    [isLoadingDelete],
+  );
+
+  const leaveButton = useMemo(
+    () => (
+      <Button color="dangerOutline" size="sm" loading={isLoadingDelete}>
+        <TbShieldOff />
+        Leave world
+      </Button>
+    ),
+    [isLoadingDelete],
+  );
 
   return (
     <Row gap="md">
@@ -38,18 +107,40 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({ data 
           from: {formatDate(data.createdAt, false, 'week')}
         </Text>
       </Col>
-      {role === WorldAdminRole.SUPER_COLLABORATOR && (
-        <Row gap="md">
-          <Button size="sm">
-            <TbShieldStar />
-            Make super
-          </Button>
-          <Button color="dangerOutline" size="sm">
-            <TbShieldOff />
-            Remove from collaborators
-          </Button>
-        </Row>
-      )}
+      <Row gap="md">
+        {role === WorldAdminRole.SUPER_COLLABORATOR && !isMyRow && (
+          <>
+            {data.superAdmin ? (
+              <Button size="sm" onClick={makeBasicCollaborator} loading={isLoadingUpdate}>
+                <TbShield />
+                Make basic
+              </Button>
+            ) : (
+              <Button size="sm" onClick={makeSuperCollaborator} loading={isLoadingUpdate}>
+                <TbShieldStar />
+                Make super
+              </Button>
+            )}
+            <AlertDialog
+              triggerElement={deleteButton}
+              title={`Remove "${data.user?.username}" from collaborators?`}
+              description="User will no longer be able to edit this world, but can send request for collaboration again."
+              dangerButtonText="Remove collaborator"
+              submitAction={deleteSuperCollaborator}
+            />
+          </>
+        )}
+        {(canLeave || role !== WorldAdminRole.SUPER_COLLABORATOR) && isMyRow && (
+          <AlertDialog
+            triggerElement={leaveButton}
+            title={`Leave world`}
+            description="You will no longer be able to edit this world. You can send request to be collaborator again."
+            dangerButtonText="Leave world"
+            submitAction={deleteSuperCollaborator}
+          />
+        )}
+        <ErrorText error={errorUpdate ?? errorDelete} />
+      </Row>
     </Row>
   );
 };

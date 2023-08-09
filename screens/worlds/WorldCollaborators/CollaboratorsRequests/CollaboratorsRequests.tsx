@@ -24,7 +24,7 @@ const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }
   );
 
   const worldAdminRequestsDenied = useMemo(
-    () => worldAdmins.filter((wa) => wa.approved === 0),
+    () => worldAdmins.filter((wa) => wa.approved === 0 || !wa.approved),
     [worldAdmins],
   );
 
@@ -36,11 +36,9 @@ const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }
     return null;
   }
 
-  const totalCount = worldAdminRequestsWaiting.length + worldAdminRequestsDenied.length;
-
   return (
     <ContentSection loading={isLoading} flexWrap="wrap" direction="column" header="Requests">
-      {totalCount === 0 && <p>No pending collaboration requests</p>}
+      {worldAdminRequestsWaiting.length === 0 && <p>No pending collaboration requests</p>}
       {worldAdminRequestsWaiting.map((wa) => (
         <CollaboratorRowRequest data={wa} key={wa.userId} />
       ))}

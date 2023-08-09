@@ -8,19 +8,24 @@ interface CollaboratorsApprovedProps {
 }
 
 const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }) => {
-  const { data: worldAdmins = [], isLoading: isLoadingWorldAdmins } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
     variables: worldId,
   });
 
   const worldAdminApproved = useMemo(
-    () => worldAdmins.filter((wa) => wa.approved === 1),
+    () =>
+      worldAdmins
+        .filter((wa) => wa.approved === 1)
+        .sort((a, b) => (a.createdAt ?? '').localeCompare(b.createdAt ?? '')),
     [worldAdmins],
   );
 
+  const canLeave = worldAdminApproved.filter((wa) => wa.superAdmin).length > 1;
+
   return (
-    <ContentSection flexWrap="wrap" direction="column" header="Collaborators">
+    <ContentSection loading={isLoading} flexWrap="wrap" direction="column" header="Collaborators">
       {worldAdminApproved.map((worldAdmin) => (
-        <CollaboratorRowApproved data={worldAdmin} key={worldAdmin.userId} />
+        <CollaboratorRowApproved data={worldAdmin} key={worldAdmin.userId} canLeave={canLeave} />
       ))}
     </ContentSection>
   );

@@ -9,6 +9,7 @@ import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins
 import { TbShieldOff, TbShieldQuestion } from 'react-icons/tb';
 import { Row } from '../../../../components/Flex/Flex';
 import { Text } from '../../../../components/Typography/Text';
+import { useAuth } from '../../../../hooks/useAuth';
 
 interface NewCollaboratorRequestProps {
   worldId: number;
@@ -19,6 +20,7 @@ const textareaPlaceholder =
 
 const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
+  const { isLoggedIn } = useAuth();
   const { mutate: createWorldAdmin, isLoading, error } = useCreateWorldAdmin();
   const { value: motivation, onChange } = useInput<string, HTMLTextAreaElement>('');
 
@@ -34,6 +36,9 @@ const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ worldId
     case WorldAdminRole.COLLABORATOR:
       return null;
     case WorldAdminRole.NONE:
+      if (!isLoggedIn) {
+        return null;
+      }
       return (
         <ContentSection flexWrap="wrap" direction="column" header="Become a collaborator">
           <Textarea

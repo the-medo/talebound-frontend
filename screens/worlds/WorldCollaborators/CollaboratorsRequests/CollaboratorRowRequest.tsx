@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { PbWorldAdmin } from '../../../../generated/api-types/data-contracts';
 import Avatar from '../../../../components/Avatar/Avatar';
 import { TitleH4 } from '../../../../components/Typography/Title';
@@ -8,6 +8,8 @@ import { TbShieldCheck, TbShieldOff, TbShieldQuestion } from 'react-icons/tb';
 import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
+import { useUpdateWorldAdmin } from '../../../../api/worlds/useUpdateWorldAdmin';
+import ErrorText from '../../../../components/ErrorText/ErrorText';
 
 interface PropsByApprovedState {
   color: 'danger' | 'secondary';
@@ -39,7 +41,34 @@ interface CollaboratorRowRequestProps {
 }
 
 const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data }) => {
-  data.superAdmin = true;
+  const {
+    mutate: updateWorldAdmin,
+    isLoading: isLoadingUpdate,
+    error: errorUpdate,
+  } = useUpdateWorldAdmin();
+
+  const doRequest = useCallback(
+    (approved: number) => {
+      if (data.worldId && data.userId) {
+        updateWorldAdmin({
+          worldId: data.worldId,
+          body: {
+            userId: data.userId,
+            approved,
+          },
+        });
+      }
+    },
+    [data.userId, data.worldId, updateWorldAdmin],
+  );
+
+  const approveRequest = useCallback(() => {
+    doRequest(1);
+  }, [doRequest]);
+
+  const denyRequest = useCallback(() => {
+    doRequest(0);
+  }, [doRequest]);
 
   const profileLink = `/user/${data.user?.id}/profile`;
   const props = propsByApprovedState[data.approved === 2 ? 'requested' : 'denied'];
@@ -64,16 +93,17 @@ const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data })
         </Text>
       </Col>
       <Row gap="md">
-        <Button size="sm">
+        <Button size="sm" onClick={approveRequest} loading={isLoadingUpdate}>
           <TbShieldCheck />
           Approve
         </Button>
         {props.showDenyButton && (
-          <Button color="dangerOutline" size="sm">
+          <Button color="dangerOutline" size="sm" onClick={denyRequest} loading={isLoadingUpdate}>
             <TbShieldOff />
             Deny
           </Button>
         )}
+        <ErrorText error={errorUpdate} />
       </Row>
     </Row>
   );
