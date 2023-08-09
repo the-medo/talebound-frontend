@@ -32,9 +32,13 @@ export const userSlice = createSlice({
     setUserRole: (state, action: PayloadAction<UserRole | undefined>) => {
       state.role = action.payload;
     },
+    resetAuth: () => {
+      setUser(undefined);
+      setUserRole(undefined);
+    },
   },
 });
 
-export const { setUser, updateUser, setUserRole } = userSlice.actions;
+export const { setUser, updateUser, setUserRole, resetAuth } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

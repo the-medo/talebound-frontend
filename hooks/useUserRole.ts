@@ -16,7 +16,10 @@ export function useUserRole(): UserRole {
   });
 
   useEffect(() => {
-    if (!roles) return;
+    if (!roles || !userId) {
+      dispatch(setUserRole(undefined));
+      return;
+    }
     if (roles.length === 0) {
       //no special role was found
       dispatch(setUserRole(UserRole.User));
@@ -32,7 +35,7 @@ export function useUserRole(): UserRole {
     } else {
       throw new Error('Multiple roles not supported.');
     }
-  }, [dispatch, roles]);
+  }, [dispatch, roles, userId]);
 
   return useMemo(() => userRole ?? UserRole.User, [userRole]);
 }
