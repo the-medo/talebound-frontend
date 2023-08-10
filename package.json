@@ -5,7 +5,7 @@
     "dev": "next dev --port 4000",
     "start": "next start",
     "lint": "eslint .",
-    "prettier": "yarn prettier --write .",
+    "pretty": "yarn prettier --write .",
     "generate": "sta -p http://dev.talebound.net:8080/swagger/talebound.swagger.json -o generated/api-types --modular --axios --single-http-client --clean-output --responses",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

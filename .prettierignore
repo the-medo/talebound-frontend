@@ -8,5 +8,4 @@ dist/
 
 
 # yarn v3
-.yarn/cache
-.yarn/install-state.gz
+.yarn
