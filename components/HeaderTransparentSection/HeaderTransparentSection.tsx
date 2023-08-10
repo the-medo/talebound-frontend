@@ -5,11 +5,14 @@ export const HeaderTransparentSection = styled('div', {
   backgroundColor: '$transparent40',
   top: 0,
   bottom: 0,
-  paddingTop: '50px',
+  paddingTop: 'calc(50px + $sm)',
+  paddingBottom: '$md',
+  paddingLeft: '$md',
+  paddingRight: '$md',
   display: 'flex',
   gap: '$xs',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
 
   ['span']: {

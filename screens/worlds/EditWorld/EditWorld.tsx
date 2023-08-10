@@ -16,7 +16,8 @@ import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import WorldImages from './WorldImages';
 import WorldTags from './WorldTags';
 import Loading from '../../../components/Loading/Loading';
-import ActionBoxWorldEdit from './ActionBoxWorldEdit';
+import ActionBoxWorld from '../ActionBoxWorld';
+import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -26,7 +27,9 @@ interface EditWorldProps {
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
+  const role = useMyWorldRole(worldId);
   const updateWorldMutation = useUpdateWorld();
+  const disabled = useMemo(() => role !== WorldAdminRole.SUPER_COLLABORATOR, [role]);
 
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
 
@@ -85,6 +88,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                 <Col css={{ width: '400px' }}>
                   <TitleH2 marginBottom="md">Edit world</TitleH2>
                   <Input
+                    disabled={disabled}
                     id="world-name"
                     label="World name"
                     type="text"
@@ -98,6 +102,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   />
                   <Flex>
                     <Input
+                      disabled={disabled}
                       id="world-based-on"
                       label="Based on"
                       type="text"
@@ -110,6 +115,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   </Flex>
                   <Flex>
                     <Input
+                      disabled={disabled}
                       id="world-based-on"
                       label="Short description"
                       type="text"
@@ -122,14 +128,14 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   </Flex>
                   <Button
                     loading={updateWorldMutation.isLoading}
-                    disabled={buttonDisabled}
+                    disabled={disabled || buttonDisabled}
                     size="md"
                     color="primaryFill"
                     onClick={onSubmit}
                   >
                     Update world
                   </Button>
-                  <WorldImages worldId={worldId} />
+                  <WorldImages worldId={worldId} disabled={disabled} />
                 </Col>
                 <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
                   <Col gap="md" alignItems="center">
@@ -150,7 +156,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   </Col>
                 </Col>{' '}
               </Row>
-              <WorldTags worldId={worldId} />
+              <WorldTags worldId={worldId} disabled={disabled} />
             </ContentSection>
           </Col>
 
@@ -163,7 +169,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           </Col>
         </Row>
       </Layout>
-      <ActionBoxWorldEdit worldId={worldId} activeButton="edit" />
+      <ActionBoxWorld worldId={worldId} activeButton="edit" />
     </>
   );
 };

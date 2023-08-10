@@ -11,17 +11,17 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface WorldTagsProps {
   worldId: number;
+  disabled?: boolean;
 }
 
-const WorldTags: React.FC<WorldTagsProps> = ({ worldId }) => {
+const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
   const { data: availableTags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
   const { data: worldData } = useGetWorldById({ variables: worldId });
 
-  const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
-
   const { mutate: addTag, isLoading: isLoadingAdd, error: errorAdd } = useAddWorldTag();
-
   const { mutate: removeTag, isLoading: isLoadingRemove, error: errorRemove } = useRemoveWorldTag();
+
+  const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
 
   const onTagSelect = useCallback(
     (tag: PbTag) => {
@@ -45,7 +45,7 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId }) => {
       <Row wrap css={{ width: '100%' }} gap="sm">
         {availableTags.map((t) => (
           <TagButton
-            disabled={isLoading}
+            disabled={disabled || isLoading}
             tag={t}
             key={t.id}
             onSelect={onTagSelect}

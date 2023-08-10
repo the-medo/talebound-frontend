@@ -16,6 +16,7 @@ import {
 
 interface WorldImagesProps {
   worldId: number;
+  disabled?: boolean;
 }
 
 const WorldImagesWrapper = styled(Row, {
@@ -61,7 +62,7 @@ const imageTypeInfo: Record<WorldImageType, ImageTypeInfo> = {
   },
 };
 
-const WorldImages: React.FC<WorldImagesProps> = ({ worldId }) => {
+const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalType, setModalType] = useState<WorldImageType>(WorldImageType.imageThumbnail);
@@ -80,10 +81,15 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId }) => {
     [modalType, updateWorldMutation, worldId],
   );
 
-  const openModal = useCallback((imageType: WorldImageType) => {
-    setModalType(imageType);
-    setShowImageModal(true);
-  }, []);
+  const openModal = useCallback(
+    (imageType: WorldImageType) => {
+      if (!disabled) {
+        setModalType(imageType);
+        setShowImageModal(true);
+      }
+    },
+    [disabled],
+  );
 
   const openModalThumbnail = useCallback(
     () => openModal(WorldImageType.imageThumbnail),

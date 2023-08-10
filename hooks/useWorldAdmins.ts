@@ -39,3 +39,7 @@ export function useMyWorldRole(worldId: number): WorldAdminRole {
   }
   return WorldAdminRole.NONE;
 }
+
+export const isWorldCollaborator = (role: WorldAdminRole): boolean => {
+  return role === WorldAdminRole.COLLABORATOR || role === WorldAdminRole.SUPER_COLLABORATOR;
+};

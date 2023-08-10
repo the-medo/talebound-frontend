@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { PostTypeEnum, usePostType } from '../../../hooks/usePostType';
 import { parseError } from '../../../utils/types/error';
 import Editor, { EditorOnSaveAction, PostViewType } from '../../../components/Editor/Editor';
 import { Col } from '../../../components/Flex/Flex';
@@ -10,7 +9,7 @@ import {
 } from '../../../api/worlds/useUpdateWorldIntroduction';
 import { useGetPostById } from '../../../api/useGetPostById';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
-import { useMyWorldAdmin } from '../../../hooks/useWorldsOfUser';
+import { isWorldCollaborator, useMyWorldRole } from '../../../hooks/useWorldAdmins';
 
 type WorldIntroductionProps = {
   worldId: number;
@@ -18,8 +17,8 @@ type WorldIntroductionProps = {
 };
 
 const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postViewOnly = false }) => {
-  const isMyPost = useMyWorldAdmin(worldId).isAdmin;
-  const postType = usePostType(PostTypeEnum.WorldDescription);
+  const role = useMyWorldRole(worldId);
+  const hasRightToEdit = isWorldCollaborator(role);
 
   const { data: worldData, isLoading: isLoadingWorld } = useGetWorldById({
     variables: worldId,
@@ -85,7 +84,7 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
     <Col fullWidth>
       <Editor
         loading={updateWorldIntroduction.isLoading}
-        hasRightToEdit={isMyPost}
+        hasRightToEdit={hasRightToEdit}
         editorState={editorState}
         disabled={false}
         editable={!postViewOnly}

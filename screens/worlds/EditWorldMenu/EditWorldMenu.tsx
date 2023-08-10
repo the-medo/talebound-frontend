@@ -1,5 +1,5 @@
 import React from 'react';
-import ActionBoxWorldEdit from '../EditWorld/ActionBoxWorldEdit';
+import ActionBoxWorld from '../ActionBoxWorld';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -21,7 +21,7 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
           </Col>
         </Row>
       </Layout>
-      <ActionBoxWorldEdit worldId={worldId} activeButton="menu" />
+      <ActionBoxWorld worldId={worldId} activeButton="menu" />
     </>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import useNumericParam from '../../../hooks/useNumericParam';
 import WorldOpened from '../../../screens/worlds/WorldOpened';
-import DetailWorld from '../../../screens/worlds/DetailWorld';
+import DetailWorld from '../../../screens/worlds/DetailWorld/DetailWorld';
 
 const Worlds: React.FC = () => {
   const worldId = useNumericParam('worldId');
