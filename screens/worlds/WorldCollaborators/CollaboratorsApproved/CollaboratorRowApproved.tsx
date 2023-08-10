@@ -24,9 +24,9 @@ interface CollaboratorRowApprovedProps {
 //Make super - gold button color? css={{ backgroundColor: '$warning' }}
 
 const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
-                                                                           data,
-                                                                           canLeave = true,
-                                                                         }) => {
+  data,
+  canLeave = true,
+}) => {
   const role = useMyWorldRole(data.worldId ?? 0);
   const userId = useSelector((state: ReduxState) => state.auth.user?.id);
   const isMyRow = data.user?.id === userId;
