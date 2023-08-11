@@ -216,6 +216,14 @@ export interface PbGetImagesResponse {
   totalCount?: number;
 }
 
+export interface PbGetMenuItemPostsResponse {
+  menuItemPosts?: PbMenuItemPost[];
+}
+
+export interface PbGetMenuItemsResponse {
+  menuItems?: PbMenuItem[];
+}
+
 export interface PbGetPostHistoryResponse {
   historyPosts?: PbHistoryPost[];
 }
@@ -290,6 +298,37 @@ export interface PbLoginUserResponse {
   accessTokenExpiresAt?: string;
   /** @format date-time */
   refreshTokenExpiresAt?: string;
+}
+
+export interface PbMenu {
+  /** @format int32 */
+  id?: number;
+  code?: string;
+  /** @format int32 */
+  headerImageId?: number;
+}
+
+export interface PbMenuItem {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  menuId?: number;
+  code?: string;
+  name?: string;
+  /** @format int32 */
+  position?: number;
+  /** @format int32 */
+  parentItemId?: number;
+  /** @format int32 */
+  descriptionPostId?: number;
+}
+
+export interface PbMenuItemPost {
+  /** @format int32 */
+  menuItemId?: number;
+  /** @format int32 */
+  postId?: number;
+  post?: PbDataPost;
 }
 
 export interface PbPost {
@@ -437,6 +476,8 @@ export interface PbWorld {
   activityQuestCount?: number;
   /** @format int32 */
   activityResourceCount?: number;
+  /** @format int32 */
+  worldMenuId?: number;
 }
 
 export interface PbWorldActivity {

@@ -11,6 +11,7 @@ import { PostTypes } from '../generated/api-types/PostTypes';
 import { Images } from '../generated/api-types/Images';
 import { Worlds } from '../generated/api-types/Worlds';
 import { Tags } from '../generated/api-types/Tags';
+import { Menus } from '../generated/api-types/Menus';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -25,12 +26,13 @@ API.instance.interceptors.request.use(
   },
 );
 
-export const ChatCollection = new Chat(API);
-export const UsersCollection = new Users(API);
-export const VerifyCollection = new Verify(API);
 export const EvaluationsCollection = new Evaluations(API);
+export const ChatCollection = new Chat(API);
 export const ImagesCollection = new Images(API);
+export const MenusCollection = new Menus(API);
 export const PostsCollection = new Posts(API);
 export const PostTypesCollection = new PostTypes(API);
-export const WorldsCollection = new Worlds(API);
 export const TagsCollection = new Tags(API);
+export const UsersCollection = new Users(API);
+export const VerifyCollection = new Verify(API);
+export const WorldsCollection = new Worlds(API);
