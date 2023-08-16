@@ -1,6 +1,5 @@
 import { useGetWorldAdmins } from '../api/worlds/useGetWorldAdmins';
 import { PbWorldAdmin } from '../generated/api-types/data-contracts';
-import { ReduxState } from '../store';
 import { useSelector } from 'react-redux';
 
 export enum WorldAdminRole {
@@ -21,7 +20,7 @@ export function useWorldAdmins(worldId: number): PbWorldAdmin[] {
 }
 
 export function useMyWorldRole(worldId: number): WorldAdminRole {
-  const userId = useSelector((state: ReduxState) => state.auth.user?.id);
+  const userId = useSelector((state) => state.auth.user?.id);
   const worldAdmins = useWorldAdmins(worldId);
 
   const myAdmin = worldAdmins.find((worldAdmin) => worldAdmin.userId === userId);
