@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ActionBoxWorld from '../ActionBoxWorld';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
+import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
+import { useGetMenuById } from '../../../api/menus/useGetMenuById';
 
 interface EditWorldMenuProps {
   worldId: number;
 }
 
 const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
+  const { data: worldData } = useGetWorldById({ variables: worldId });
+
+  const menuId = worldData?.worldMenuId ?? 0;
+  const { data: menuData } = useGetMenuById({ variables: menuId, enabled: menuId > 0 });
+
   return (
     <>
       <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -17,6 +24,7 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             <ContentSection flexWrap="wrap" direction="column">
               <div>EditWorldMenu</div>
+              {JSON.stringify(menuData)}
             </ContentSection>
           </Col>
         </Row>
