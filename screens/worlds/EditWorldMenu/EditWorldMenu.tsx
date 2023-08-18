@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ActionBoxWorld from '../ActionBoxWorld';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
@@ -6,6 +6,7 @@ import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { useGetMenuById } from '../../../api/menus/useGetMenuById';
+import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 
 interface EditWorldMenuProps {
   worldId: number;
@@ -13,9 +14,9 @@ interface EditWorldMenuProps {
 
 const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
-
   const menuId = worldData?.worldMenuId ?? 0;
   const { data: menuData } = useGetMenuById({ variables: menuId, enabled: menuId > 0 });
+  const { data: menuItemsData } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
 
   return (
     <>
@@ -25,6 +26,7 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
             <ContentSection flexWrap="wrap" direction="column">
               <div>EditWorldMenu</div>
               {JSON.stringify(menuData)}
+              {JSON.stringify(menuItemsData)}
             </ContentSection>
           </Col>
         </Row>
