@@ -71,6 +71,30 @@ export class Menus<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description move menu item group up
+   *
+   * @tags Talebound
+   * @name TaleboundUpdateMenuItemMoveGroupUp
+   * @summary Move menu item group up
+   * @request PATCH:/menus/{menuId}/groups/{menuItemId}
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundUpdateMenuItemMoveGroupUp = (
+    menuId: number,
+    menuItemId: number,
+    body: object,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<object, RpcStatus>({
+      path: `/menus/${menuId}/groups/${menuItemId}`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description gets list of menu items
    *
    * @tags Talebound
@@ -104,8 +128,7 @@ export class Menus<SecurityDataType = unknown> {
       name?: string;
       /** @format int32 */
       position?: number;
-      /** @format int32 */
-      parentItemId?: number;
+      isMain?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -152,8 +175,7 @@ export class Menus<SecurityDataType = unknown> {
       name?: string;
       /** @format int32 */
       position?: number;
-      /** @format int32 */
-      parentItemId?: number;
+      isMain?: boolean;
       /** @format int32 */
       descriptionPostId?: number;
     },

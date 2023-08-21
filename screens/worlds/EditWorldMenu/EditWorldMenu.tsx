@@ -5,8 +5,7 @@ import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
-import { useGetMenuById } from '../../../api/menus/useGetMenuById';
-import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
+import MenuAdministration from '../../menus/MenuAdministration/MenuAdministration';
 
 interface EditWorldMenuProps {
   worldId: number;
@@ -15,8 +14,6 @@ interface EditWorldMenuProps {
 const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const menuId = worldData?.worldMenuId ?? 0;
-  const { data: menuData } = useGetMenuById({ variables: menuId, enabled: menuId > 0 });
-  const { data: menuItemsData } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
 
   return (
     <>
@@ -25,8 +22,7 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             <ContentSection flexWrap="wrap" direction="column">
               <div>EditWorldMenu</div>
-              {JSON.stringify(menuData)}
-              {JSON.stringify(menuItemsData)}
+              {menuId > 0 && <MenuAdministration menuId={menuId} />}
             </ContentSection>
           </Col>
         </Row>

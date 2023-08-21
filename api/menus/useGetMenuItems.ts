@@ -7,6 +7,6 @@ export const useGetMenuItems = createQuery<PbMenuItem[], number, TaleboundError>
   primaryKey: 'useGetMenuItems',
   queryFn: async ({ queryKey: [, variables] }) => {
     const { data } = await MenusCollection.taleboundGetMenuItems(variables);
-    return data?.menuItems ?? [];
+    return data?.menuItems?.sort((a, b) => (a?.position ?? 0) - (b?.position ?? 0)) ?? [];
   },
 });

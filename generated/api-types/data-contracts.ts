@@ -317,8 +317,7 @@ export interface PbMenuItem {
   name?: string;
   /** @format int32 */
   position?: number;
-  /** @format int32 */
-  parentItemId?: number;
+  isMain?: boolean;
   /** @format int32 */
   descriptionPostId?: number;
 }
