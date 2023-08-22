@@ -12,10 +12,10 @@ export const useUpdateMenu = createMutation({
   mutationFn: async (variables: UpdateMenuParams) =>
     MenusCollection.taleboundUpdateMenu(variables.MenuId, variables.body),
   onSuccess: (data) => {
-    const MenuId = data.data.id;
-    if (MenuId) {
-      const MenuQueryKey = useGetMenuById.getKey(MenuId);
-      queryClient.setQueryData<inferData<typeof useGetMenuById>>(MenuQueryKey, () => {
+    const menuId = data.data.id;
+    if (menuId) {
+      const menuQueryKey = useGetMenuById.getKey(menuId);
+      queryClient.setQueryData<inferData<typeof useGetMenuById>>(menuQueryKey, () => {
         return data.data;
       });
     }

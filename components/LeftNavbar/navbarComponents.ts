@@ -4,10 +4,10 @@ import { default as NextLink } from 'next/link';
 export const Navbar = styled('nav', {
   display: 'flex',
   flexDirection: 'column',
-  width: '250px',
-  minWidth: '250px',
+  width: '$navbarWidth',
+  minWidth: '$navbarWidth',
   flexGrow: 0,
-  backgroundColor: '#2f3738',
+  backgroundColor: '$navbarBackground',
   gap: '$sm',
   opacity: 1,
 });
