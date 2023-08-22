@@ -4,7 +4,7 @@ import { queryClient } from '../../pages/_app';
 import { useGetMenuItems } from './useGetMenuItems';
 import { sortByPosition } from '../../utils/functions/sortByPosition';
 
-type UpdateMenuItemParams = {
+export type UpdateMenuItemParams = {
   menuId: number;
   menuItemId: number;
   body: Parameters<typeof MenusCollection.taleboundUpdateMenuItem>[2];
@@ -13,6 +13,23 @@ type UpdateMenuItemParams = {
 export const useUpdateMenuItem = createMutation({
   mutationFn: async (variables: UpdateMenuItemParams) =>
     MenusCollection.taleboundUpdateMenuItem(variables.menuId, variables.menuItemId, variables.body),
+  onMutate: async (variables) => {
+    const getMenuItemsQueryKey = useGetMenuItems.getKey(variables.menuId);
+    const previousData = queryClient.getQueryData(getMenuItemsQueryKey) as inferData<
+      typeof useGetMenuItems
+    >;
+    return { previousData, getMenuItemsQueryKey };
+  },
+  onError: (_err, _variables, context) => {
+    if (context?.previousData) {
+      // reset the menu items to empty array, to return its positioning to the previous state
+      queryClient.setQueryData<inferData<typeof useGetMenuItems>>(context.getMenuItemsQueryKey, []);
+      // reset the menu items to the previous data
+      queryClient.setQueryData<inferData<typeof useGetMenuItems>>(context.getMenuItemsQueryKey, [
+        ...context.previousData,
+      ]);
+    }
+  },
   onSuccess: (data, variables) => {
     const { menuId, menuItemId } = variables;
     const updatedMenuItem = data.data;
