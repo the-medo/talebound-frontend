@@ -83,14 +83,11 @@ export class Menus<SecurityDataType = unknown> {
   taleboundUpdateMenuItemMoveGroupUp = (
     menuId: number,
     menuItemId: number,
-    body: object,
     params: RequestParams = {},
   ) =>
     this.http.request<object, RpcStatus>({
       path: `/menus/${menuId}/groups/${menuItemId}`,
       method: 'PATCH',
-      body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });

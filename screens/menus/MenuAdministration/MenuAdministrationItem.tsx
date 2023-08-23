@@ -4,13 +4,17 @@ import { Reorder, useDragControls } from 'framer-motion';
 import { styled } from '../../../styles/stitches.config';
 import NavbarHeader from '../../../components/LeftNavbar/NavbarHeader';
 import { NavbarItem, NavbarSquare } from '../../../components/LeftNavbar/navbarComponents';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdArrowDropDown, MdArrowDropUp, MdDragIndicator } from 'react-icons/md';
 import { UpdateMenuItemParams, useUpdateMenuItem } from '../../../api/menus/useUpdateMenuItem';
 import { useInput } from '../../../hooks/useInput';
 import Input from '../../../components/Input/Input';
 import debounce from 'lodash.debounce';
 import { simplifyString } from '../../../utils/functions/simplifyString';
 import Checkbox from '../../../components/Checkbox/Checkbox';
+import { Button } from '../../../components/Button/Button';
+import { Row } from '../../../components/Flex/Flex';
+import { TaleboundError } from '../../../utils/types/error';
+import { useUpdateMenuItemMoveGroupUp } from '../../../api/menus/useUpdateMenuItemMoveGroupUp';
 
 const NavbarWrapper = styled('div', {
   width: '$navbarWidth',
@@ -69,12 +73,18 @@ interface MenuAdministrationItemProps {
   data: PbMenuItem;
   currentIndex: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  groupMovableUp?: boolean;
+  groupMovableDown?: boolean;
+  nextGroupItemId?: number;
 }
 
 const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
   data,
   currentIndex,
   setLoading,
+  groupMovableUp,
+  groupMovableDown,
+  nextGroupItemId,
 }) => {
   const controls = useDragControls();
   const [dragging, setDragging] = React.useState(false);
@@ -95,6 +105,17 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
     isError: isErrorUpdate,
     error: errorUpdate,
   } = useUpdateMenuItem({
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+
+  const {
+    mutate: updateMenuItemMoveGroupUp,
+    isLoading: isLoadingUpdateMoveGroupUp,
+    isError: isErrorUpdateMoveGroupUp,
+    error: errorUpdateMoveGroupUp,
+  } = useUpdateMenuItemMoveGroupUp({
     onSettled: () => {
       setLoading(false);
     },
@@ -166,6 +187,29 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
     setNameValue(data.name ?? '');
   }, [isErrorUpdate, data.name, setNameValue]);
 
+  const moveGroupUp = useCallback(
+    (itemId: number) => {
+      console.log('Moving group up', itemId);
+      if (data.menuId) {
+        updateMenuItemMoveGroupUp({
+          menuId: data.menuId,
+          menuItemId: itemId,
+        });
+      }
+    },
+    [data.menuId],
+  );
+
+  const moveThisGroupUp = useCallback(() => {
+    console.log('Moving group up', data.id);
+    if (data.id) moveGroupUp(data.id);
+  }, [data.id, moveGroupUp]);
+
+  const moveNextGroupDown = useCallback(() => {
+    console.log('Moving group down, so moving the next group up', nextGroupItemId);
+    if (nextGroupItemId) moveGroupUp(nextGroupItemId);
+  }, [moveGroupUp, nextGroupItemId]);
+
   return (
     <Reorder.Item
       as="div"
@@ -210,6 +254,27 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
               required
               displayHelpers={false}
             />
+          )}
+          {data.isMain && (
+            <Row gap="sm">
+              Move group:
+              <Button
+                icon
+                disabled={!groupMovableUp}
+                color={groupMovableUp ? 'primaryFill' : 'primaryOutline'}
+                onClick={moveThisGroupUp}
+              >
+                <MdArrowDropUp />
+              </Button>
+              <Button
+                icon
+                disabled={!groupMovableDown}
+                color={groupMovableDown ? 'primaryFill' : 'primaryOutline'}
+                onClick={moveNextGroupDown}
+              >
+                <MdArrowDropDown />
+              </Button>
+            </Row>
           )}
         </InputWrapper>
         <Checkbox

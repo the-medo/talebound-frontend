@@ -69,8 +69,9 @@ export const useUpdateMenuItem = createMutation({
                   .sort(sortByPosition);
               }
             }
+            oldData[index] = { ...updatedMenuItem };
 
-            oldData[index] = updatedMenuItem;
+            return [...oldData];
           }
           return oldData;
         },

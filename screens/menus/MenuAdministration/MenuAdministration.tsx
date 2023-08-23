@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 import MenuAdministrationItem from './MenuAdministrationItem';
 import { Reorder } from 'framer-motion';
@@ -21,6 +21,8 @@ interface MenuAdministrationProps {
   menuId: number;
 }
 
+let groupCounter = 0;
+
 const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
@@ -35,17 +37,28 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
     setItems(x);
   }, []);
 
+  const groups = items.filter((x) => x.isMain);
+  const groupCount = groups.length;
+
   return (
     <ReorderGroupWrapper loading={loading}>
       <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
-        {items.map((item, i) => (
-          <MenuAdministrationItem
-            key={item.id}
-            currentIndex={i + 1}
-            data={item}
-            setLoading={setLoading}
-          />
-        ))}
+        {items.map((item, i) => {
+          if (i === 0) groupCounter = 0;
+          if (item.isMain) groupCounter++;
+
+          return (
+            <MenuAdministrationItem
+              key={item.id}
+              currentIndex={i + 1}
+              data={item}
+              setLoading={setLoading}
+              groupMovableUp={item.isMain && groupCounter > 1}
+              groupMovableDown={item.isMain && groupCounter < groupCount}
+              nextGroupItemId={groups[groupCounter]?.id}
+            />
+          );
+        })}
       </Reorder.Group>
     </ReorderGroupWrapper>
   );
