@@ -18,14 +18,7 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
   return (
     <>
       <Layout vertical={true} navbar={<LeftNavbar />}>
-        <Row gap="md" alignItems="start" wrap>
-          <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-            <ContentSection flexWrap="wrap" direction="column">
-              <div>EditWorldMenu</div>
-              {menuId > 0 && <MenuAdministration menuId={menuId} />}
-            </ContentSection>
-          </Col>
-        </Row>
+        {menuId > 0 && <MenuAdministration menuId={menuId} />}
       </Layout>
       <ActionBoxWorld worldId={worldId} activeButton="menu" />
     </>

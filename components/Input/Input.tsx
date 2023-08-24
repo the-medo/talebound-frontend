@@ -15,10 +15,12 @@ export const StyledInput = styled('input', {
   transition: 'all 0.2s ease-in-out',
   color: '$primary900',
   border: '1px solid transparent',
+  backgroundColor: '$white200',
 
   '&:focus': {
     outline: 'none',
     boxShadow: '$md',
+    backgroundColor: '$white100',
   },
 
   '&:disabled': {
@@ -46,10 +48,22 @@ export const StyledInput = styled('input', {
       },
       white: {
         borderColor: '$primary300',
-        backgroundColor: '$white200',
         '&:focus': {
           border: '1px solid $primary500',
-          backgroundColor: '$white100',
+        },
+      },
+      info: {
+        borderColor: '$info400',
+        color: '$info700',
+        '&:focus': {
+          border: '1px solid $info500',
+        },
+      },
+      error: {
+        borderColor: '$danger400',
+        color: '$danger700',
+        '&:focus': {
+          border: '1px solid $danger500',
         },
       },
     },

@@ -213,6 +213,12 @@ const StyledButton = styled('button', {
         color: 'transparent',
       },
     },
+
+    invisible: {
+      true: {
+        visibility: 'hidden',
+      },
+    },
   },
 
   compoundVariants: [

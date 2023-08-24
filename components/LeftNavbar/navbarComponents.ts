@@ -10,6 +10,19 @@ export const Navbar = styled('nav', {
   backgroundColor: '$navbarBackground',
   gap: '$sm',
   opacity: 1,
+  zIndex: 2,
+
+  transition: 'all 0.3s ease-in-out',
+
+  '@media (max-width: 1024px)': {
+    transform: 'translateX(calc(-100% + 50px))',
+    marginRight: '-200px',
+
+    '&:hover, &:focus-within': {
+      transform: 'translateX(0)',
+      // marginRight: '0',
+    },
+  },
 });
 
 export const NavbarSquare = styled('div', {

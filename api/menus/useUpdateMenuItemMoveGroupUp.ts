@@ -38,67 +38,62 @@ export const useUpdateMenuItemMoveGroupUp = createMutation({
       // Assuming oldData is sorted by position.
 
       if (oldData) {
-        const data = oldData.sort(sortByPosition);
+        const sortedData = oldData.sort(sortByPosition);
+        const mainItemPositions = sortedData.filter((i) => i.isMain).map((i) => i.position ?? -1);
 
         // 1. Find the target group and previous group.
-        const targetGroupStart = data.find((item) => item.id === menuItemId);
-        if (!targetGroupStart?.position) return data;
+        const targetGroupStartItem = sortedData.find((item) => item.id === menuItemId);
+        const targetGroupStartPosition = targetGroupStartItem?.position ?? 0;
+        if (!targetGroupStartItem || !mainItemPositions.includes(targetGroupStartPosition))
+          return sortedData;
 
-        const targetGroupStartIdx = targetGroupStart.position;
-
-        let targetGroupEndIdx = targetGroupStartIdx;
-
-        for (let i = targetGroupStartIdx; i <= data.length && !data[i].isMain; i++) {
-          targetGroupEndIdx = i;
+        let targetGroupEndPosition =
+          mainItemPositions.find((p) => p > targetGroupStartPosition) ?? 0;
+        if (!targetGroupEndPosition) {
+          targetGroupEndPosition = sortedData.length;
+        } else {
+          targetGroupEndPosition--;
         }
 
-        const prevGroupEndIdx = targetGroupStartIdx - 1;
-        let prevGroupStartIdx = prevGroupEndIdx;
-        for (let i = prevGroupEndIdx - 1; i > 0 && !data[i].isMain; i--) {
-          prevGroupStartIdx = i;
-        }
-
-        console.log(
-          'prevGroupStartIdx',
-          prevGroupStartIdx,
-          'prevGroupEndIdx',
-          prevGroupEndIdx,
-          'targetGroupStartIdx',
-          targetGroupStartIdx,
-          'targetGroupEndIdx',
-          targetGroupEndIdx,
-        );
+        // 2. Find the previous group.
+        const prevGroupStartPosition = mainItemPositions
+          .filter((p) => p < targetGroupStartPosition)
+          .reverse()[0];
+        const prevGroupEndPosition = targetGroupStartPosition - 1;
+        if (!prevGroupStartPosition) return sortedData;
 
         // If no previous group, don't do anything.
-        if (prevGroupStartIdx <= 0 || prevGroupEndIdx <= 0 || !data[prevGroupStartIdx]?.isMain) {
-          return data;
+        if (
+          prevGroupStartPosition <= 0 ||
+          prevGroupEndPosition <= 0 ||
+          targetGroupStartPosition <= 0 ||
+          targetGroupEndPosition <= 0
+        ) {
+          return sortedData;
         }
 
-        return data.map((item) => {
-          const p = item.position ?? 0;
-          if (p < prevGroupStartIdx) {
-            return item;
-          } else if (p > targetGroupEndIdx) {
-            return item;
-          } else if (p >= prevGroupStartIdx && p <= prevGroupEndIdx) {
-            return {
-              ...item,
-              position: p + targetGroupEndIdx - targetGroupStartIdx + 1,
-            };
-          } else if (p >= targetGroupStartIdx && p <= targetGroupEndIdx) {
-            return {
-              ...item,
-              position: p - (targetGroupEndIdx - targetGroupStartIdx + 1),
-            };
-          }
-        });
+        const targetGroupSize = targetGroupEndPosition - targetGroupStartPosition + 1;
+        const prevGroupSize = prevGroupEndPosition - prevGroupStartPosition + 1;
 
-        // return [
-        //   ...oldData.slice(0, prevGroupStartIdx),
-        //   ...oldData.slice(targetGroupStartIdx, targetGroupEndIdx + 1),
-        //   ...oldData.slice(prevGroupStartIdx, targetGroupStartIdx),
-        //   ...oldData.slice(targetGroupEndIdx + 1),
-        // ];
+        return sortedData
+          .map((item) => {
+            const p = item.position ?? 0;
+            if (p >= prevGroupStartPosition && p <= prevGroupEndPosition) {
+              return {
+                ...item,
+                position: p + targetGroupSize,
+              };
+            } else if (p >= targetGroupStartPosition && p <= targetGroupEndPosition) {
+              return {
+                ...item,
+                position: p - prevGroupSize,
+              };
+            } else {
+              //p < prevGroupStartPosition || p > targetGroupEndPosition
+              return item;
+            }
+          })
+          .sort(sortByPosition);
       }
       return oldData;
     });

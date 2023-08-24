@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { PbMenuItem } from '../../../generated/api-types/data-contracts';
 import { Reorder, useDragControls } from 'framer-motion';
-import { styled } from '../../../styles/stitches.config';
 import NavbarHeader from '../../../components/LeftNavbar/NavbarHeader';
 import { NavbarItem, NavbarSquare } from '../../../components/LeftNavbar/navbarComponents';
 import { MdArrowDropDown, MdArrowDropUp, MdDragIndicator } from 'react-icons/md';
@@ -13,61 +12,8 @@ import { simplifyString } from '../../../utils/functions/simplifyString';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import { Button } from '../../../components/Button/Button';
 import { Row } from '../../../components/Flex/Flex';
-import { TaleboundError } from '../../../utils/types/error';
 import { useUpdateMenuItemMoveGroupUp } from '../../../api/menus/useUpdateMenuItemMoveGroupUp';
-
-const NavbarWrapper = styled('div', {
-  width: '$navbarWidth',
-  backgroundColor: '$navbarBackground',
-  padding: '0.25rem',
-  transition: 'opacity 0.2s ease-in-out',
-
-  variants: {
-    main: {
-      true: {
-        padding: '0rem',
-      },
-    },
-  },
-});
-
-const InputWrapper = styled('div', {
-  width: '200px',
-  padding: '0.25rem',
-});
-
-const Item = styled('div', {
-  display: 'flex',
-  flexDirection: 'row',
-  userSelect: 'none',
-  transition: 'opacity 0.2s ease-in-out',
-
-  variants: {
-    dragging: {
-      true: {
-        opacity: 0.5,
-        outline: '2px solid red',
-      },
-    },
-  },
-});
-
-const DragHandle = styled('div', {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '0.25rem',
-  cursor: 'grab',
-
-  variants: {
-    dragging: {
-      true: {
-        cursor: 'grabbing',
-      },
-    },
-  },
-});
+import { DragHandle, InputWrapper, Item, NavbarWrapper } from './menuAdministrationComponents';
 
 interface MenuAdministrationItemProps {
   data: PbMenuItem;
@@ -122,10 +68,10 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
   });
 
   useEffect(() => {
-    if (isLoadingUpdate) {
+    if (isLoadingUpdate || isLoadingUpdateMoveGroupUp) {
       setLoading(true);
     }
-  }, [setLoading, isLoadingUpdate]);
+  }, [setLoading, isLoadingUpdate, isLoadingUpdateMoveGroupUp]);
 
   const onDragStart = useCallback(() => {
     setDragging(true);
@@ -197,7 +143,7 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
         });
       }
     },
-    [data.menuId],
+    [data.menuId, updateMenuItemMoveGroupUp],
   );
 
   const moveThisGroupUp = useCallback(() => {
@@ -219,10 +165,37 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
     >
-      <Item dragging={dragging}>
-        <DragHandle dragging={dragging} onPointerDown={(e) => controls.start(e)}>
-          <MdDragIndicator size={20} />
-        </DragHandle>
+      <Item wrap gap="xs" dragging={dragging}>
+        <Row gap="sm">
+          <DragHandle dragging={dragging} onPointerDown={(e) => controls.start(e)}>
+            <MdDragIndicator size={20} />
+          </DragHandle>
+          <Checkbox
+            id={`menu-item-is-main-${data.id}`}
+            checked={data.isMain}
+            childrenRender="after"
+            onCheckedChange={(x) => sendPayload({ isMain: !!x })}
+            // mode="transparent"
+          />
+          <Button
+            icon
+            invisible={!data.isMain || !groupMovableUp}
+            color={groupMovableUp ? 'primaryFill' : 'primaryOutline'}
+            onClick={moveThisGroupUp}
+            title="Move group up"
+          >
+            <MdArrowDropUp />
+          </Button>
+          <Button
+            icon
+            invisible={!data.isMain || !groupMovableDown}
+            color={groupMovableDown ? 'primaryFill' : 'primaryOutline'}
+            onClick={moveNextGroupDown}
+            title="Move group down"
+          >
+            <MdArrowDropDown />
+          </Button>
+        </Row>
         <NavbarWrapper main={data.isMain}>
           {data.isMain && <NavbarHeader title={data.name ?? ''} />}
           {!data.isMain && (
@@ -232,60 +205,33 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
             </NavbarItem>
           )}
         </NavbarWrapper>
-        <InputWrapper>
-          <Input
-            id={`menu-item-title-${data.id}`}
-            value={nameValue}
-            onChange={onChangeName}
-            aria-labelledby="Menu item label"
-            placeholder="Title"
-            required
-            displayHelpers={false}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          {!data.isMain && (
+        <Row gap="sm">
+          <InputWrapper>
             <Input
-              id={`menu-item-code-${data.id}`}
-              value={codeValue}
-              onChange={onChangeCode}
-              aria-labelledby="Menu item code"
-              placeholder="Code"
+              id={`menu-item-title-${data.id}`}
+              value={nameValue}
+              onChange={onChangeName}
+              aria-labelledby="Menu item label"
+              placeholder="Title"
               required
               displayHelpers={false}
             />
-          )}
-          {data.isMain && (
-            <Row gap="sm">
-              Move group:
-              <Button
-                icon
-                disabled={!groupMovableUp}
-                color={groupMovableUp ? 'primaryFill' : 'primaryOutline'}
-                onClick={moveThisGroupUp}
-              >
-                <MdArrowDropUp />
-              </Button>
-              <Button
-                icon
-                disabled={!groupMovableDown}
-                color={groupMovableDown ? 'primaryFill' : 'primaryOutline'}
-                onClick={moveNextGroupDown}
-              >
-                <MdArrowDropDown />
-              </Button>
-            </Row>
-          )}
-        </InputWrapper>
-        <Checkbox
-          id={`menu-item-is-main-${data.id}`}
-          checked={data.isMain}
-          childrenRender="before"
-          onCheckedChange={(x) => sendPayload({ isMain: !!x })}
-          // mode="transparent"
-        >
-          Is header:
-        </Checkbox>
+          </InputWrapper>
+          <InputWrapper>
+            {!data.isMain && (
+              <Input
+                id={`menu-item-code-${data.id}`}
+                value={codeValue}
+                onChange={onChangeCode}
+                aria-labelledby="Menu item code"
+                placeholder="Code"
+                required
+                displayHelpers={false}
+                mode="info"
+              />
+            )}
+          </InputWrapper>
+        </Row>
       </Item>
     </Reorder.Item>
   );
