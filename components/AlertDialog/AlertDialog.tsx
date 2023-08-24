@@ -5,13 +5,17 @@ import { AlertDialogRoot } from '../../components-radix-ui/AlertDialog/AlertDial
 import { AlertDialogTrigger } from '../../components-radix-ui/AlertDialog/AlertDialogTrigger';
 import { AlertDialogPortal } from '../../components-radix-ui/AlertDialog/AlertDialogPortal';
 import { AlertDialogOverlay } from '../../components-radix-ui/AlertDialog/AlertDialogOverlay';
-import { AlertDialogContent } from '../../components-radix-ui/AlertDialog/AlertDialogContent';
+import {
+  AlertDialogContent,
+  AlertDialogContentVariants,
+} from '../../components-radix-ui/AlertDialog/AlertDialogContent';
 import { AlertDialogTitle } from '../../components-radix-ui/AlertDialog/AlertDialogTitle';
 import { AlertDialogDescription } from '../../components-radix-ui/AlertDialog/AlertDialogDescription';
 import { AlertDialogCancel } from '../../components-radix-ui/AlertDialog/AlertDialogCancel';
 import { AlertDialogAction } from '../../components-radix-ui/AlertDialog/AlertDialogAction';
 
 interface AlertDialogProps {
+  dialogSize?: AlertDialogContentVariants['size'];
   triggerElement?: React.ReactNode;
   triggerButtonText?: string;
   triggerButtonColor?: ButtonVariants['color'];
@@ -28,6 +32,7 @@ interface AlertDialogProps {
 }
 
 const AlertDialog: React.FC<AlertDialogProps> = ({
+  dialogSize = 'sm',
   triggerElement,
   triggerButtonText,
   triggerButtonColor = 'dangerOutline',
@@ -81,7 +86,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
       )}
       <AlertDialogPortal>
         <AlertDialogOverlay onClick={() => setOpenInternal(false)} />
-        <AlertDialogContent size="sm">
+        <AlertDialogContent size={dialogSize}>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           {description.length > 0 && <AlertDialogDescription>{description}</AlertDialogDescription>}
           <Row gap="md" justifyContent="end">

@@ -36,7 +36,7 @@ const HeaderInputWrapper = styled(InputWrapper, {
   fontWeight: 'bold',
 });
 
-const MenuAdministrationHeader: React.FC = () => {
+const MenuHeader: React.FC = () => {
   return (
     <>
       <HeaderInfo i>
@@ -52,4 +52,4 @@ const MenuAdministrationHeader: React.FC = () => {
   );
 };
 
-export default MenuAdministrationHeader;
+export default MenuHeader;

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
-import MenuAdministrationItem from './MenuAdministrationItem';
+import MenuItem from './MenuItem';
 import { Reorder } from 'framer-motion';
 import { PbMenuItem } from '../../../generated/api-types/data-contracts';
 import { styled } from '../../../styles/stitches.config';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ArticleMenuAdministration from '../../../articles/Admin/ArticleMenuAdministration';
-import MenuAdministrationHeader from './MenuAdministrationHeader';
+import MenuHeader from './MenuHeader';
+import { findDuplicates } from '../../../utils/functions/findDuplicates';
+import NewMenuItem from './NewMenuItem';
 
 const ReorderGroupWrapper = styled('div', {
   transition: 'opacity 0.2s ease-in-out',
@@ -23,11 +25,12 @@ const ReorderGroupWrapper = styled('div', {
 
 interface MenuAdministrationProps {
   menuId: number;
+  reservedCodes?: string[];
 }
 
 let groupCounter = 0;
 
-const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
+const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId, reservedCodes }) => {
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const [loading, setLoading] = useState(false);
@@ -44,11 +47,13 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
   const groups = items.filter((x) => x.isMain);
   const groupCount = groups.length;
 
+  const duplicates = findDuplicates(items.filter((x) => !x.isMain).map((x) => x.code ?? ''));
+
   return (
     <Row gap="md" alignItems="start" wrap>
       <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-        <ContentSection flexWrap="wrap" direction="column" header="Menu administration">
-          <MenuAdministrationHeader />
+        <ContentSection flexWrap="wrap" direction="column" header="Menu items">
+          <MenuHeader />
           <ReorderGroupWrapper loading={loading}>
             <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
               {items.map((item, i) => {
@@ -56,7 +61,7 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
                 if (item.isMain) groupCounter++;
 
                 return (
-                  <MenuAdministrationItem
+                  <MenuItem
                     key={item.id}
                     currentIndex={i + 1}
                     data={item}
@@ -64,15 +69,20 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId }) => {
                     groupMovableUp={item.isMain && groupCounter > 1}
                     groupMovableDown={item.isMain && groupCounter < groupCount}
                     nextGroupItemId={groups[groupCounter]?.id}
+                    notUniqueCode={duplicates.includes(item.code ?? '')}
+                    reservedCodes={reservedCodes}
                   />
                 );
               })}
             </Reorder.Group>
           </ReorderGroupWrapper>
         </ContentSection>
-        <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ArticleMenuAdministration />
-        </Col>
+        <ContentSection flexWrap="wrap" direction="column" header="New menu item">
+          <NewMenuItem menuId={menuId} />
+        </ContentSection>
+      </Col>
+      <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
+        <ArticleMenuAdministration />
       </Col>
     </Row>
   );

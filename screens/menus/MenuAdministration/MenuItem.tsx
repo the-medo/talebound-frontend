@@ -3,7 +3,7 @@ import { PbMenuItem } from '../../../generated/api-types/data-contracts';
 import { Reorder, useDragControls } from 'framer-motion';
 import NavbarHeader from '../../../components/LeftNavbar/NavbarHeader';
 import { NavbarItem, NavbarSquare } from '../../../components/LeftNavbar/navbarComponents';
-import { MdArrowDropDown, MdArrowDropUp, MdDragIndicator } from 'react-icons/md';
+import { MdArrowDropDown, MdArrowDropUp, MdDelete, MdDragIndicator } from 'react-icons/md';
 import { UpdateMenuItemParams, useUpdateMenuItem } from '../../../api/menus/useUpdateMenuItem';
 import { useInput } from '../../../hooks/useInput';
 import Input from '../../../components/Input/Input';
@@ -14,6 +14,7 @@ import { Button } from '../../../components/Button/Button';
 import { Row } from '../../../components/Flex/Flex';
 import { useUpdateMenuItemMoveGroupUp } from '../../../api/menus/useUpdateMenuItemMoveGroupUp';
 import { DragHandle, InputWrapper, Item, NavbarWrapper } from './menuAdministrationComponents';
+import AlertDialog from '../../../components/AlertDialog/AlertDialog';
 
 interface MenuAdministrationItemProps {
   data: PbMenuItem;
@@ -22,15 +23,19 @@ interface MenuAdministrationItemProps {
   groupMovableUp?: boolean;
   groupMovableDown?: boolean;
   nextGroupItemId?: number;
+  notUniqueCode?: boolean;
+  reservedCodes?: string[];
 }
 
-const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
+const MenuItem: React.FC<MenuAdministrationItemProps> = ({
   data,
   currentIndex,
   setLoading,
   groupMovableUp,
   groupMovableDown,
   nextGroupItemId,
+  notUniqueCode = false,
+  reservedCodes = [],
 }) => {
   const controls = useDragControls();
   const [dragging, setDragging] = React.useState(false);
@@ -156,6 +161,14 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
     if (nextGroupItemId) moveGroupUp(nextGroupItemId);
   }, [moveGroupUp, nextGroupItemId]);
 
+  const codeInputMode = notUniqueCode
+    ? 'error'
+    : reservedCodes.includes(codeValue)
+    ? 'info'
+    : undefined;
+
+  const deleteItem = useCallback(() => {}, []);
+
   return (
     <Reorder.Item
       as="div"
@@ -227,14 +240,31 @@ const MenuAdministrationItem: React.FC<MenuAdministrationItemProps> = ({
                 placeholder="Code"
                 required
                 displayHelpers={false}
-                mode="info"
+                mode={codeInputMode}
               />
             )}
           </InputWrapper>
+          <AlertDialog
+            dialogSize="md"
+            triggerElement={
+              <Button
+                css={{ marginRight: '$sm' }}
+                icon
+                color={'dangerOutline'}
+                onClick={deleteItem}
+                title="Delete menu item"
+              >
+                <MdDelete />
+              </Button>
+            }
+            title={`Delete menu item "${data.name}"`}
+            description="All assigned posts will be unassigned and if this menu item is a header, all its children will be merged to group above."
+            submitAction={deleteItem}
+          />
         </Row>
       </Item>
     </Reorder.Item>
   );
 };
 
-export default MenuAdministrationItem;
+export default MenuItem;

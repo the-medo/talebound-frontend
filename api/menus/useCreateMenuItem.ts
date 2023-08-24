@@ -9,8 +9,17 @@ interface CreateMenuItemParams {
 }
 
 export const useCreateMenuItem = createMutation({
-  mutationFn: async (variables: CreateMenuItemParams) =>
-    MenusCollection.taleboundCreateMenuItem(variables.menuId, variables.body),
+  mutationFn: async (variables: CreateMenuItemParams) => {
+    if (!variables.body.position) {
+      const menuItemsQueryKey = useGetMenuItems.getKey(variables.menuId);
+      const currentData = queryClient.getQueryData(menuItemsQueryKey) as inferData<
+        typeof useGetMenuItems
+      >;
+      variables.body.position = currentData?.length + 1 ?? 1;
+    }
+
+    return MenusCollection.taleboundCreateMenuItem(variables.menuId, variables.body);
+  },
   onSuccess: (data, variables) => {
     const { menuId } = variables;
     const newItem = data.data;

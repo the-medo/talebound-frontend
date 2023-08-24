@@ -39,7 +39,13 @@ export const InputWrapper = styled('div', {
 export const Item = styled(Row, {
   marginTop: '-2px',
   userSelect: 'none',
-  transition: 'opacity 0.2s ease-in-out',
+  transition: 'opacity 0.3s ease-in-out',
+  zIndex: 1,
+
+  '&:hover': {
+    backgroundColor: '$white',
+    zIndex: 0,
+  },
 
   [MENU_ADMINISTRATION_BREAKPOINT_MAX]: {
     margin: '0.5rem',
@@ -52,7 +58,7 @@ export const Item = styled(Row, {
     dragging: {
       true: {
         opacity: 0.5,
-        outline: '2px solid red',
+        outline: '2px solid $primary200',
       },
     },
   },

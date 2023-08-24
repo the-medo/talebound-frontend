@@ -1,5 +1,5 @@
 import { styled } from '../../styles/stitches.config';
-import React, { forwardRef, MutableRefObject, PropsWithChildren, useMemo } from 'react';
+import React, { forwardRef, PropsWithChildren, useMemo } from 'react';
 import Stitches from '@stitches/react';
 import Loading from '../Loading/Loading';
 
