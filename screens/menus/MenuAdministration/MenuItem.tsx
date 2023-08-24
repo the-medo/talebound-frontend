@@ -15,6 +15,7 @@ import { Row } from '../../../components/Flex/Flex';
 import { useUpdateMenuItemMoveGroupUp } from '../../../api/menus/useUpdateMenuItemMoveGroupUp';
 import { DragHandle, InputWrapper, Item, NavbarWrapper } from './menuAdministrationComponents';
 import AlertDialog from '../../../components/AlertDialog/AlertDialog';
+import { useDeleteMenuItem } from '../../../api/menus/useDeleteMenuItem';
 
 interface MenuAdministrationItemProps {
   data: PbMenuItem;
@@ -25,6 +26,7 @@ interface MenuAdministrationItemProps {
   nextGroupItemId?: number;
   notUniqueCode?: boolean;
   reservedCodes?: string[];
+  setError: React.Dispatch<unknown>;
 }
 
 const MenuItem: React.FC<MenuAdministrationItemProps> = ({
@@ -36,6 +38,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
   nextGroupItemId,
   notUniqueCode = false,
   reservedCodes = [],
+  setError,
 }) => {
   const controls = useDragControls();
   const [dragging, setDragging] = React.useState(false);
@@ -44,11 +47,17 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
     onChange: onChangeName,
     setValue: setNameValue,
   } = useInput(data.name ?? '');
+
   const {
     value: codeValue,
     onChange: onChangeCode,
     setValue: setCodeValue,
   } = useInput(data.code ?? '');
+
+  const onSettled = useCallback(() => {
+    setLoading(false);
+    setError(undefined);
+  }, [setLoading, setError]);
 
   const {
     mutate: updateMenuItem,
@@ -56,27 +65,38 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
     isError: isErrorUpdate,
     error: errorUpdate,
   } = useUpdateMenuItem({
-    onSettled: () => {
-      setLoading(false);
-    },
+    onSettled,
   });
 
   const {
     mutate: updateMenuItemMoveGroupUp,
     isLoading: isLoadingUpdateMoveGroupUp,
-    isError: isErrorUpdateMoveGroupUp,
+    // isError: isErrorUpdateMoveGroupUp,
     error: errorUpdateMoveGroupUp,
   } = useUpdateMenuItemMoveGroupUp({
-    onSettled: () => {
-      setLoading(false);
-    },
+    onSettled,
+  });
+
+  const {
+    mutate: deleteMenuItem,
+    isLoading: isLoadingDelete,
+    // isError: isErrorDelete,
+    error: errorDelete,
+  } = useDeleteMenuItem({
+    onSettled,
   });
 
   useEffect(() => {
-    if (isLoadingUpdate || isLoadingUpdateMoveGroupUp) {
+    if (errorUpdate || errorUpdateMoveGroupUp || errorDelete) {
+      setError(errorUpdate ?? errorUpdateMoveGroupUp ?? errorDelete);
+    }
+  }, [errorUpdate, errorUpdateMoveGroupUp, errorDelete, setError]);
+
+  useEffect(() => {
+    if (isLoadingUpdate || isLoadingUpdateMoveGroupUp || isLoadingDelete) {
       setLoading(true);
     }
-  }, [setLoading, isLoadingUpdate, isLoadingUpdateMoveGroupUp]);
+  }, [setLoading, isLoadingUpdate, isLoadingUpdateMoveGroupUp, isLoadingDelete]);
 
   const onDragStart = useCallback(() => {
     setDragging(true);
@@ -167,7 +187,14 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
     ? 'info'
     : undefined;
 
-  const deleteItem = useCallback(() => {}, []);
+  const deleteItem = useCallback(() => {
+    if (data.menuId && data.id) {
+      deleteMenuItem({
+        menuId: data.menuId,
+        menuItemId: data.id,
+      });
+    }
+  }, [data.id, data.menuId, deleteMenuItem]);
 
   return (
     <Reorder.Item
@@ -236,6 +263,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
                 id={`menu-item-code-${data.id}`}
                 value={codeValue}
                 onChange={onChangeCode}
+                // onBlur={}
                 aria-labelledby="Menu item code"
                 placeholder="Code"
                 required
@@ -250,8 +278,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
               <Button
                 css={{ marginRight: '$sm' }}
                 icon
-                color={'dangerOutline'}
-                onClick={deleteItem}
+                color="dangerOutline"
                 title="Delete menu item"
               >
                 <MdDelete />

@@ -10,6 +10,7 @@ import ArticleMenuAdministration from '../../../articles/Admin/ArticleMenuAdmini
 import MenuHeader from './MenuHeader';
 import { findDuplicates } from '../../../utils/functions/findDuplicates';
 import NewMenuItem from './NewMenuItem';
+import ErrorText from '../../../components/ErrorText/ErrorText';
 
 const ReorderGroupWrapper = styled('div', {
   transition: 'opacity 0.2s ease-in-out',
@@ -35,6 +36,7 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId, reserve
 
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<PbMenuItem[]>([]);
+  const [error, setError] = useState<unknown>();
 
   useEffect(() => {
     setItems(menuItemsData);
@@ -71,11 +73,13 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId, reserve
                     nextGroupItemId={groups[groupCounter]?.id}
                     notUniqueCode={duplicates.includes(item.code ?? '')}
                     reservedCodes={reservedCodes}
+                    setError={setError}
                   />
                 );
               })}
             </Reorder.Group>
           </ReorderGroupWrapper>
+          <ErrorText error={error} />
         </ContentSection>
         <ContentSection flexWrap="wrap" direction="column" header="New menu item">
           <NewMenuItem menuId={menuId} />
