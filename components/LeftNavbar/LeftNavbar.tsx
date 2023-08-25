@@ -1,10 +1,10 @@
 import React from 'react';
 import NavbarHeader from './NavbarHeader';
-import { Navbar, NavbarItem, NavbarSquare } from './navbarComponents';
+import { NavbarWrapper, NavbarItem, NavbarSquare } from './navbarComponents';
 
 const LeftNavbar: React.FC = () => {
   return (
-    <Navbar>
+    <NavbarWrapper>
       <NavbarHeader title="explore" />
       <NavbarItem href="/news">
         News <NavbarSquare />
@@ -31,7 +31,7 @@ const LeftNavbar: React.FC = () => {
       <NavbarItem href="/guides/world-creation">
         World creation <NavbarSquare />
       </NavbarItem>
-    </Navbar>
+    </NavbarWrapper>
   );
 };
 

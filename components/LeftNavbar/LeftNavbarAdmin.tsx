@@ -1,10 +1,10 @@
 import React from 'react';
 import NavbarHeader from './NavbarHeader';
-import { Navbar, NavbarItem, NavbarSquare } from './navbarComponents';
+import { NavbarWrapper, NavbarItem, NavbarSquare } from './navbarComponents';
 
 const LeftNavbarAdmin: React.FC = () => {
   return (
-    <Navbar>
+    <NavbarWrapper>
       <NavbarHeader title="admin" />
       <NavbarItem href="/admin">
         Dashboard <NavbarSquare />
@@ -13,7 +13,7 @@ const LeftNavbarAdmin: React.FC = () => {
       <NavbarItem href="/admin/world-tags">
         World tags <NavbarSquare />
       </NavbarItem>
-    </Navbar>
+    </NavbarWrapper>
   );
 };
 

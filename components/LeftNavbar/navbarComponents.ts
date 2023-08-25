@@ -1,7 +1,7 @@
 import { styled } from '../../styles/stitches.config';
 import { default as NextLink } from 'next/link';
 
-export const Navbar = styled('nav', {
+export const NavbarWrapper = styled('nav', {
   display: 'flex',
   flexDirection: 'column',
   width: '$navbarWidth',

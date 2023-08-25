@@ -6,6 +6,7 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useInput } from '../../../hooks/useInput';
 import { useCreateMenuItem } from '../../../api/menus/useCreateMenuItem';
 import { simplifyString } from '../../../utils/functions/simplifyString';
+import { Text } from '../../../components/Typography/Text';
 
 interface NewMenuItemProps {
   menuId: number;
@@ -74,9 +75,7 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
         </Button>
       </Row>
       <ErrorText error={error} />
-      <ul>
-        <li>item will be added at the end of the menu</li>
-      </ul>
+      <Text>Item will be added at the end of the menu</Text>
     </>
   );
 };
