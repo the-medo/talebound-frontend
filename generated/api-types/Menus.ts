@@ -12,9 +12,9 @@
 import {
   PbGetMenuItemPostsResponse,
   PbGetMenuItemsResponse,
-  PbMenu,
   PbMenuItem,
   PbMenuItemPost,
+  PbViewMenu,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -33,11 +33,11 @@ export class Menus<SecurityDataType = unknown> {
    * @name TaleboundGetMenu
    * @summary Get menu by ID
    * @request GET:/menus/{menuId}
-   * @response `200` `PbMenu` A successful response.
+   * @response `200` `PbViewMenu` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundGetMenu = (menuId: number, params: RequestParams = {}) =>
-    this.http.request<PbMenu, RpcStatus>({
+    this.http.request<PbViewMenu, RpcStatus>({
       path: `/menus/${menuId}`,
       method: 'GET',
       format: 'json',
@@ -50,7 +50,7 @@ export class Menus<SecurityDataType = unknown> {
    * @name TaleboundUpdateMenu
    * @summary Update Menu
    * @request PATCH:/menus/{menuId}
-   * @response `200` `PbMenu` A successful response.
+   * @response `200` `PbViewMenu` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundUpdateMenu = (
@@ -62,7 +62,7 @@ export class Menus<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbMenu, RpcStatus>({
+    this.http.request<PbViewMenu, RpcStatus>({
       path: `/menus/${menuId}`,
       method: 'PATCH',
       body: body,

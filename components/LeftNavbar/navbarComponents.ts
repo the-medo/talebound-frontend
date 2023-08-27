@@ -14,7 +14,7 @@ export const NavbarWrapper = styled('nav', {
 
   transition: 'all 0.3s ease-in-out',
 
-  '@media (max-width: 1024px)': {
+  '@media (max-width: 1066px)': {
     transform: 'translateX(calc(-100% + 50px))',
     marginRight: '-200px',
 

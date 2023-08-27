@@ -4,6 +4,8 @@ import Layout from '../../../components/Layout/Layout';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import MenuAdministration from '../../menus/MenuAdministration/MenuAdministration';
 import LeftNavbarWorld from '../../../components/LeftNavbar/LeftNavbarWorld';
+import { isWorldCollaborator, useMyWorldRole } from '../../../hooks/useWorldAdmins';
+import { Text } from '../../../components/Typography/Text';
 
 const RESERVED_MENU_ITEM_CODES = ['maps'];
 
@@ -12,6 +14,7 @@ interface EditWorldMenuProps {
 }
 
 const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
+  const role = useMyWorldRole(worldId);
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const menuId = worldData?.worldMenuId ?? 0;
 
@@ -20,8 +23,11 @@ const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
   return (
     <>
       <Layout vertical={true} navbar={navbar}>
-        {menuId > 0 && (
+        {menuId > 0 && isWorldCollaborator(role) && (
           <MenuAdministration menuId={menuId} reservedCodes={RESERVED_MENU_ITEM_CODES} />
+        )}
+        {!isWorldCollaborator(role) && (
+          <Text>This page is accessible only for world collaborators</Text>
         )}
       </Layout>
       <ActionBoxWorld worldId={worldId} activeButton="menu" />

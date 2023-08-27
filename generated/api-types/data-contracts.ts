@@ -300,14 +300,6 @@ export interface PbLoginUserResponse {
   refreshTokenExpiresAt?: string;
 }
 
-export interface PbMenu {
-  /** @format int32 */
-  id?: number;
-  code?: string;
-  /** @format int32 */
-  headerImageId?: number;
-}
-
 export interface PbMenuItem {
   /** @format int32 */
   id?: number;
@@ -432,6 +424,15 @@ export interface PbVerifyEmailRequest {
 
 export interface PbVerifyEmailResponse {
   isVerified?: boolean;
+}
+
+export interface PbViewMenu {
+  /** @format int32 */
+  id?: number;
+  code?: string;
+  /** @format int32 */
+  headerImageId?: number;
+  headerImageUrl?: string;
 }
 
 export interface PbViewUser {

@@ -1,6 +1,7 @@
 import { useGetWorldAdmins } from '../api/worlds/useGetWorldAdmins';
 import { PbWorldAdmin } from '../generated/api-types/data-contracts';
 import { useSelector } from 'react-redux';
+import { UserRole } from '../utils/auth/userUtils';
 
 export enum WorldAdminRole {
   NONE = 'NONE',
@@ -21,9 +22,14 @@ export function useWorldAdmins(worldId: number): PbWorldAdmin[] {
 
 export function useMyWorldRole(worldId: number): WorldAdminRole {
   const userId = useSelector((state) => state.auth.user?.id);
+  const userRole = useSelector((state) => state.auth.role);
   const worldAdmins = useWorldAdmins(worldId);
 
   const myAdmin = worldAdmins.find((worldAdmin) => worldAdmin.userId === userId);
+
+  if (userRole === UserRole.Admin) {
+    return WorldAdminRole.SUPER_COLLABORATOR;
+  }
 
   if (myAdmin) {
     switch (myAdmin.approved) {

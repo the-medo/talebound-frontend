@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import ActionBoxWorld from '../ActionBoxWorld';
-import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import Layout from '../../../components/Layout/Layout';
 import { Col, Row } from '../../../components/Flex/Flex';
 import CollaboratorsApproved from './CollaboratorsApproved/CollaboratorsApproved';

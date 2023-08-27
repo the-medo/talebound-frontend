@@ -75,7 +75,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton =
             ))}
           </Row>
         </Col>
-        <Row gap="md" alignSelf="center">
+        <Row gap="md" wrap={true} alignSelf="center">
           {isWorldCollaborator(role) && (
             <Link href={`/worlds/${worldId}/edit`}>
               <Button size="md" color={activeButton === 'edit' ? 'primaryOutline' : 'semiGhost'}>

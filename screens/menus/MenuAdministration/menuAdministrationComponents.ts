@@ -1,7 +1,7 @@
 import { styled } from '../../../styles/stitches.config';
 import { Row } from '../../../components/Flex/Flex';
 
-const BREAKPOINT = 822;
+const BREAKPOINT = 866;
 const BREAKPOINT_SMALL = 553;
 
 export const MENU_ADMINISTRATION_BREAKPOINT_MAX = `@media (max-width: ${BREAKPOINT}px)`; // inputs are wrapper

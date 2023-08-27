@@ -44,15 +44,16 @@ const NavbarHeaderContent = styled('div', {
 
 interface NavbarHeaderProps {
   title: string;
+  customImage?: string;
 }
 
-const NavbarHeader: React.FC<NavbarHeaderProps> = ({ title }) => {
+const NavbarHeader: React.FC<NavbarHeaderProps> = ({ title, customImage }) => {
   const image = useSelector((state: ReduxState) => state.global.menuImage);
 
   return (
     <NavbarHeaderComponent>
-      <NavbarHeaderBg css={{ backgroundImage: `url("${image}")` }} />
-      <NavbarHeaderContent css={{ backgroundImage: `url("${image}")` }}>
+      <NavbarHeaderBg css={{ backgroundImage: `url("${customImage ?? image}")` }} />
+      <NavbarHeaderContent css={{ backgroundImage: `url("${customImage ?? image}")` }}>
         {title}
       </NavbarHeaderContent>
     </NavbarHeaderComponent>

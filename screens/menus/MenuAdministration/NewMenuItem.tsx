@@ -7,6 +7,7 @@ import { useInput } from '../../../hooks/useInput';
 import { useCreateMenuItem } from '../../../api/menus/useCreateMenuItem';
 import { simplifyString } from '../../../utils/functions/simplifyString';
 import { Text } from '../../../components/Typography/Text';
+import ContentSection from '../../../components/ContentSection/ContentSection';
 
 interface NewMenuItemProps {
   menuId: number;
@@ -21,12 +22,6 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
   } = useInput<string>('');
 
   const { mutate: createMenuItem, isLoading, error } = useCreateMenuItem();
-
-  // code?: string;
-  // name?: string;
-  // /** @format int32 */
-  // position?: number;
-  // isMain?: boolean;
 
   useEffect(() => {
     if (!isLoading) {
@@ -58,7 +53,7 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
   );
 
   return (
-    <>
+    <ContentSection flexWrap="wrap" direction="column" header="New menu item">
       <Row gap="md" css={{ width: '300px' }}>
         <Input
           disabled={isLoading}
@@ -76,7 +71,7 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
       </Row>
       <ErrorText error={error} />
       <Text>Item will be added at the end of the menu</Text>
-    </>
+    </ContentSection>
   );
 };
 

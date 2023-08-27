@@ -11,6 +11,7 @@ import MenuHeader from './MenuHeader';
 import { findDuplicates } from '../../../utils/functions/findDuplicates';
 import NewMenuItem from './NewMenuItem';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import MenuHeaderImage from './MenuHeaderImage';
 
 const ReorderGroupWrapper = styled('div', {
   transition: 'opacity 0.2s ease-in-out',
@@ -81,9 +82,8 @@ const MenuAdministration: React.FC<MenuAdministrationProps> = ({ menuId, reserve
           </ReorderGroupWrapper>
           <ErrorText error={error} />
         </ContentSection>
-        <ContentSection flexWrap="wrap" direction="column" header="New menu item">
-          <NewMenuItem menuId={menuId} />
-        </ContentSection>
+        <NewMenuItem menuId={menuId} />
+        <MenuHeaderImage menuId={menuId} />
       </Col>
       <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
         <ArticleMenuAdministration />
