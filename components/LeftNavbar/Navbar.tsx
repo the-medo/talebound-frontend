@@ -5,6 +5,7 @@ import { useGetMenuItems } from '../../api/menus/useGetMenuItems';
 import { useGetMenuById } from '../../api/menus/useGetMenuById';
 import { useDispatch } from 'react-redux';
 import { setMenuImage } from '../../store/globalSlice';
+import { IMAGE_DEFAULT_MENU } from '../../utils/images/imageDefaultUrls';
 
 interface NavbarProps {
   menuId: number;
@@ -17,10 +18,14 @@ const Navbar: React.FC<NavbarProps> = ({ menuId, urlPrefix }) => {
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
 
   useEffect(() => {
-    if (menuData?.headerImageUrl) {
-      console.log('menuData', menuData);
-      console.log('menuDataHeader', menuData?.headerImageUrl);
-      dispatch(setMenuImage(menuData?.headerImageUrl));
+    if (menuData) {
+      if (menuData.headerImageUrl) {
+        console.log('menuData', menuData);
+        console.log('menuDataHeader', menuData?.headerImageUrl);
+        dispatch(setMenuImage(menuData?.headerImageUrl));
+      } else {
+        dispatch(setMenuImage(IMAGE_DEFAULT_MENU));
+      }
     }
   }, [dispatch, menuData, menuData?.headerImageUrl]);
 

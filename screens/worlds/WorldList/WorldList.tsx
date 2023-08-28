@@ -1,12 +1,26 @@
 import React from 'react';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
-import ImageCard from '../../../components/ImageCard/ImageCard';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import Layout from '../../../components/Layout/Layout';
 import ActionBoxWorldList from './ActionBoxWorldList';
+import { useGetWorlds } from '../../../api/worlds/useGetWorlds';
+import WorldCard from '../../../components/WorldCard/WorldCard';
+import LoadingText from '../../../components/Loading/LoadingText';
+import InfiniteScrollObserver from '../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
 
 const WorldList: React.FC = () => {
+  const {
+    data: worldsData,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetWorlds({
+    variables: {
+      public: false,
+    },
+  });
+
   return (
     <>
       <ActionBoxWorldList />
@@ -14,43 +28,14 @@ const WorldList: React.FC = () => {
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             <Row gap="md" alignItems="start" wrap>
-              <ImageCard
-                title="Alagaezia"
-                basedOn={`Eragon "trilogy"`}
-                questCount={3}
-                activityCount={12}
-                playModeCount={2}
-                src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/public"
-                tags={['fantasy', 'magic', 'dragons', 'books']}
-              />
-              <ImageCard
-                title="The Discworld"
-                basedOn="books by Terry Pratchett"
-                playModeCount={1}
-                questCount={4}
-                activityCount={2.3}
-                src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/b5bca192-5a78-49d3-869d-e259f1b75400/public"
-                tags={['fantasy', 'magic', 'books', 'humor', 'satire']}
-              />
-              <ImageCard
-                title="Alagaezia"
-                basedOn={`Eragon "trilogy"`}
-                questCount={3}
-                activityCount={12}
-                playModeCount={2}
-                src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/86a41b17-730a-49ea-3cab-fd42467f7100/public"
-                tags={['fantasy', 'magic', 'dragons', 'books']}
-              />
-              <ImageCard
-                title="The Discworld"
-                basedOn="books by Terry Pratchett"
-                playModeCount={1}
-                questCount={4}
-                activityCount={2.3}
-                src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/b5bca192-5a78-49d3-869d-e259f1b75400/public"
-                tags={['fantasy', 'magic', 'books', 'humor', 'satire']}
-              />
+              {worldsData?.pages.map(
+                (page) => page.worlds?.map((world) => <WorldCard key={world.id} world={world} />),
+              )}
+              {hasNextPage && !isFetching && (
+                <InfiniteScrollObserver runOnObserve={fetchNextPage} />
+              )}
             </Row>
+            {isFetching && <LoadingText />}
           </Col>
 
           <Col css={{ flexGrow: 0, flexBasis: '600px' }}>

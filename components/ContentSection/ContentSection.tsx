@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { CSSProperties } from '@stitches/react';
 import { TitleH2 } from '../Typography/Title';
 import { styled } from '../../styles/stitches.config';
@@ -26,7 +26,48 @@ const StyledSection = styled('section', {
         overflow: 'hidden',
         backgroundPosition: 'top right, top right',
         backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
+        backgroundSize: '600px 400px',
+      },
+    },
+    cornerImageSize: {
+      w100: {
+        backgroundSize: '100px 67px',
+      },
+      w200: {
+        backgroundSize: '200px 134px',
+      },
+      w300: {
+        backgroundSize: '300px 200px',
+      },
+      w400: {
+        backgroundSize: '400px 267px',
+      },
+      w500: {
+        backgroundSize: '500px 334px',
+      },
+      w600: {
+        backgroundSize: '600px 400px',
+      },
+      w900: {
+        backgroundSize: '900px 600px',
+      },
+      h100: {
+        backgroundSize: '67px 100px',
+      },
+      h200: {
+        backgroundSize: '134px 200px',
+      },
+      h300: {
+        backgroundSize: '200px 300px',
+      },
+      h400: {
+        backgroundSize: '267px 400px',
+      },
+      h600: {
+        backgroundSize: '400px 600px',
+      },
+      h900: {
+        backgroundSize: '600px 900px',
       },
     },
   },
@@ -89,7 +130,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   loading,
   cornerImage,
 }) => {
-  const cornerImageCss = cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined;
+  const cornerImageCss = useMemo(
+    () => (cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined),
+    [cornerImage],
+  );
 
   return (
     <StyledSection cornerImage={!!cornerImage} css={cornerImageCss}>

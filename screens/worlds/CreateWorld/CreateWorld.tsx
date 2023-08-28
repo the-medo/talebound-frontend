@@ -147,8 +147,9 @@ const CreateWorld: React.FC = () => {
                   questCount={3}
                   activityCount={12}
                   playModeCount={2}
-                  src="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400"
+                  imgSrc="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400"
                   tags={['fantasy', 'magic', 'dragons', 'books']}
+                  href="#"
                 />
                 <Text i size="sm">
                   Note: You will be able to change image and tags later.

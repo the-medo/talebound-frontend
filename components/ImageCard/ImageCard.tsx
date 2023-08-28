@@ -5,6 +5,7 @@ import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import TagRow from '../TagRow/TagRow';
 import MiniStatistic from '../MiniStatistic/MiniStatistic';
+import Link from 'next/link';
 
 const ImageBackground = styled(Col, {
   // backgroundPosition: 'center center',
@@ -44,7 +45,8 @@ const ImageBackground = styled(Col, {
 });
 
 interface ImageCardProps {
-  src: string;
+  imgSrc: string;
+  href: string;
   title: string;
   basedOn: string;
   playModeCount: number;
@@ -54,7 +56,8 @@ interface ImageCardProps {
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({
-  src,
+  imgSrc,
+  href,
   title,
   basedOn,
   playModeCount,
@@ -75,12 +78,14 @@ const ImageCard: React.FC<ImageCardProps> = ({
             rgba(255, 255, 255, 0) 170px,
             rgba(255, 255, 255, 0) 350px,
             rgba(255, 255, 255, 1) 351px 
-            ), url(${src})`,
+            ), url(${imgSrc})`,
         },
       }}
     >
       <Col gap="xs" alignItems="center">
-        <TitleH2>{title === '' || !title ? ' * empty * ' : title}</TitleH2>
+        <Link href={href}>
+          <TitleH2>{title === '' || !title ? ' * empty * ' : title}</TitleH2>
+        </Link>
         <Text size="sm" i>
           {basedOn.length > 0 ? `(based on ${basedOn})` : 'original'}
         </Text>
