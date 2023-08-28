@@ -64,7 +64,8 @@ export const EditorContainer = styled('div', {
 });
 
 export const EditorInner = styled('div', {
-  background: '$white100',
+  // background: '$white100',
+  background: 'transparent',
   position: 'relative',
   height: '100%',
 

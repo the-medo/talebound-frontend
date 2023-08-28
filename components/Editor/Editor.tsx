@@ -158,6 +158,13 @@ const Editor: React.FC<EditorProps> = ({
     editorState ?? EMPTY_EDITOR_STATE,
   );
 
+  // useEffect(() => {
+  //   if (refetchState && setRefetchState) {
+  //     editorStateRef.current = refetchState;
+  //     setRefetchState(undefined);
+  //   }
+  // }, [refetchState, setRefetchState]);
+
   const editorStateRef = useRef<EditorState>();
   const editorRef = useRef<LexicalEditor>();
   const placeholder = useMemo(() => <Placeholder>No content yet</Placeholder>, []);

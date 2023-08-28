@@ -3,16 +3,8 @@ import { styled } from '../../styles/stitches.config';
 import { TitleH2 } from '../Typography/Title';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
-import { Button } from '../Button/Button';
 import TagRow from '../TagRow/TagRow';
-
-const CardWrapper = styled(Col, {
-  padding: '$md',
-  paddingTop: '$md',
-  boxShadow: '$md',
-  borderRadius: '$lg',
-  border: '1px solid $primary200',
-});
+import MiniStatistic from '../MiniStatistic/MiniStatistic';
 
 const ImageBackground = styled(Col, {
   // backgroundPosition: 'center center',
@@ -49,27 +41,6 @@ const ImageBackground = styled(Col, {
       },
     },
   },
-});
-
-const RatingWrapper = styled(Col, {
-  padding: '$sm',
-  backgroundColor: '$transparent60',
-  borderRadius: '$md',
-  fontSize: '$md',
-
-  width: '100px',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
-
-const Rating = styled(Col, {
-  padding: '$sm',
-  fontSize: '$2xl',
-  backgroundColor: '$transparent60',
-  width: '60px',
-  height: '60px',
-  alignItems: 'center',
-  justifyContent: 'center',
 });
 
 interface ImageCardProps {
@@ -116,18 +87,9 @@ const ImageCard: React.FC<ImageCardProps> = ({
       </Col>
       <div style={{ height: '100px' }}></div>
       <Row justifyContent="around">
-        <RatingWrapper gap="sm">
-          <Text>Play modes</Text>
-          <Rating circle>{playModeCount}</Rating>
-        </RatingWrapper>
-        <RatingWrapper gap="sm">
-          <Text>Quests</Text>
-          <Rating circle>{questCount}</Rating>
-        </RatingWrapper>
-        <RatingWrapper gap="sm">
-          <Text>Activity</Text>
-          <Rating circle>{activityCount}</Rating>
-        </RatingWrapper>
+        <MiniStatistic title="Play modes" value={playModeCount} />
+        <MiniStatistic title="Quests" value={questCount} />
+        <MiniStatistic title="Activity" value={activityCount} />
       </Row>
       <div style={{ height: '0px' }}></div>
       <TagRow tags={tags} width={370} />

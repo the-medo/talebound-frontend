@@ -5,6 +5,10 @@ import { styled } from '../../styles/stitches.config';
 import Loading from '../Loading/Loading';
 import { Text } from '../Typography/Text';
 
+export const SECTION_CORNER_IMAGE = (url: string) => ({
+  backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.5) 25%, rgba(255,255,255,1) 50%), url('${url}')`,
+});
+
 const StyledSection = styled('section', {
   display: 'flex',
   position: 'relative',
@@ -15,6 +19,17 @@ const StyledSection = styled('section', {
   margin: '$sm',
   gap: '$sm',
   justifyContent: 'flex-start',
+
+  variants: {
+    cornerImage: {
+      true: {
+        overflow: 'hidden',
+        backgroundPosition: 'top right, top right',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+      },
+    },
+  },
 });
 
 const LoadingOverlay = styled('section', {
@@ -60,6 +75,7 @@ interface ContentSectionProps extends PropsWithChildren {
   flexBasis?: CSSProperties['flexBasis'];
   flexWrap?: CSSProperties['flexWrap'];
   loading?: boolean;
+  cornerImage?: string;
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
@@ -71,9 +87,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   flexBasis,
   flexWrap,
   loading,
+  cornerImage,
 }) => {
+  const cornerImageCss = cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined;
+
   return (
-    <StyledSection>
+    <StyledSection cornerImage={!!cornerImage} css={cornerImageCss}>
       {header && <TitleH2 marginBottom="md">{header}</TitleH2>}
       <StyledSectionContent
         direction={direction}

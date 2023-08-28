@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Row } from '../Flex/Flex';
 import TagButton from '../TagButton/TagButton';
+import { ButtonVariants } from '../Button/Button';
 
 const FONT_WIDTH = 6;
 const PADDING_WIDTH = 18;
@@ -9,9 +10,10 @@ const GAP_WIDTH = 2;
 interface TagRowProps {
   tags: string[];
   width: number;
+  colorNonactive?: ButtonVariants['color'];
 }
 
-const TagRow: React.FC<TagRowProps> = ({ tags, width }) => {
+const TagRow: React.FC<TagRowProps> = ({ tags, width, colorNonactive = 'semiGhost' }) => {
   const [displayedTags, hiddenTags] = useMemo(() => {
     let widthLeft = width;
     const tagLengths = tags.map((tag) => tag.length * FONT_WIDTH + PADDING_WIDTH + GAP_WIDTH); //18px for padding + border, 2px gap
@@ -62,7 +64,7 @@ const TagRow: React.FC<TagRowProps> = ({ tags, width }) => {
               ? hiddenTags.join(', ')
               : undefined
           }
-          colorNonactive="semiGhost"
+          colorNonactive={colorNonactive}
         />
       ))}
     </Row>

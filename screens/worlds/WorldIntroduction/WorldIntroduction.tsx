@@ -83,6 +83,7 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
   return (
     <Col fullWidth>
       <Editor
+        key={postId}
         loading={updateWorldIntroduction.isLoading}
         hasRightToEdit={hasRightToEdit}
         editorState={editorState}
