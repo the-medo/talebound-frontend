@@ -94,10 +94,13 @@ export class Posts<SecurityDataType = unknown> {
     body: {
       title?: string;
       content?: string;
+      description?: string;
       /** @format int32 */
       postTypeId?: number;
       isDraft?: boolean;
       isPrivate?: boolean;
+      /** @format int32 */
+      imageThumbnailId?: number;
     },
     params: RequestParams = {},
   ) =>

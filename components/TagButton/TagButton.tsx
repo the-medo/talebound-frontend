@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { Button, ButtonVariants } from '../Button/Button';
-import { PbTag } from '../../generated/api-types/data-contracts';
+import { PbTag, PbViewTag } from '../../generated/api-types/data-contracts';
 
-type TagButtonProps<T extends PbTag | string> = {
+type TagButtonProps<T extends PbTag | PbViewTag | string> = {
   tag: T;
-  count?: number;
+  displayCount?: boolean;
   onSelect?: (tag: T) => void;
   active?: boolean;
   colorNonactive?: ButtonVariants['color'];
@@ -13,9 +13,14 @@ type TagButtonProps<T extends PbTag | string> = {
   tooltip?: string;
 };
 
-const TagButton = <T extends PbTag | string>({
+// This is a type guard function
+function isPbViewTag(object: object): object is PbViewTag {
+  return 'count' in object;
+}
+
+const TagButton = <T extends PbTag | PbViewTag | string>({
   tag,
-  count,
+  displayCount = false,
   onSelect,
   active = false,
   colorNonactive = 'primaryOutline',
@@ -29,6 +34,8 @@ const TagButton = <T extends PbTag | string>({
     }
   }, [onSelect, tag]);
 
+  const count = typeof tag === 'string' ? undefined : isPbViewTag(tag) ? tag.count : undefined;
+
   return (
     <Button
       disabled={disabled}
@@ -38,7 +45,7 @@ const TagButton = <T extends PbTag | string>({
       title={tooltip}
     >
       {typeof tag === 'string' ? tag : tag.tag}
-      {count !== undefined && ` (${count})`}
+      {displayCount && count !== undefined && ` (${count})`}
     </Button>
   );
 };

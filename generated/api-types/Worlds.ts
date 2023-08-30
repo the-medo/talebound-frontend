@@ -44,6 +44,7 @@ export class Worlds<SecurityDataType = unknown> {
   taleboundGetWorlds = (
     query?: {
       public?: boolean;
+      tags?: string[];
       orderBy?: string;
       /** @format int32 */
       limit?: number;

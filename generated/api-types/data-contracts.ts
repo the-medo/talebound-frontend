@@ -96,6 +96,7 @@ export interface PbDataHistoryPost {
   userId?: number;
   title?: string;
   content?: string;
+  description?: string;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -109,6 +110,8 @@ export interface PbDataHistoryPost {
   postTypeName?: string;
   postTypeDraftable?: boolean;
   postTypePrivatable?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
 }
 
 export interface PbDataPost {
@@ -120,6 +123,7 @@ export interface PbDataPost {
   userId?: number;
   title?: string;
   content?: string;
+  description?: string;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -130,6 +134,9 @@ export interface PbDataPost {
   lastUpdatedUserId?: number;
   isDraft?: boolean;
   isPrivate?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
+  imageThumbnailUrl?: string;
 }
 
 export interface PbDataPostType {
@@ -183,7 +190,7 @@ export interface PbEvaluationVote {
 }
 
 export interface PbGetAvailableWorldTagsResponse {
-  tags?: PbTag[];
+  tags?: PbViewTag[];
 }
 
 export interface PbGetAverageUserEvaluationsByTypeResponse {
@@ -433,6 +440,14 @@ export interface PbViewMenu {
   /** @format int32 */
   headerImageId?: number;
   headerImageUrl?: string;
+}
+
+export interface PbViewTag {
+  /** @format int32 */
+  id?: number;
+  tag?: string;
+  /** @format int32 */
+  count?: number;
 }
 
 export interface PbViewUser {

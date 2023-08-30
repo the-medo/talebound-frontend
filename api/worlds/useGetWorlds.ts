@@ -13,9 +13,12 @@ export const useGetWorlds = createInfiniteQuery<
 >({
   primaryKey: 'useWorldsGetWorlds',
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
+    const tags = (variables.tags?.length ?? 0) > 0 ? variables.tags : undefined;
+
     const { data } = await WorldsCollection.taleboundGetWorlds({
-      public: variables?.public,
+      public: variables.public,
       orderBy: variables.orderBy,
+      tags,
       limit: PAGE_SIZE,
       offset,
     });

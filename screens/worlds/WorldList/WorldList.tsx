@@ -8,8 +8,14 @@ import { useGetWorlds } from '../../../api/worlds/useGetWorlds';
 import WorldCard from '../../../components/WorldCard/WorldCard';
 import LoadingText from '../../../components/Loading/LoadingText';
 import InfiniteScrollObserver from '../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
+import { useGetAvailableWorldTags } from '../../../api/tags/useGetAvailableWorldTags';
+import { PbViewTag } from '../../../generated/api-types/data-contracts';
+import TagButtonBox from '../../../components/TagButtonBox/TagButtonBox';
 
 const WorldList: React.FC = () => {
+  const { data: tags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
+  const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
+
   const {
     data: worldsData,
     isFetching,
@@ -18,6 +24,7 @@ const WorldList: React.FC = () => {
   } = useGetWorlds({
     variables: {
       public: false,
+      tags: selectedTags.map((t) => t.tag ?? ''),
     },
   });
 
@@ -27,6 +34,21 @@ const WorldList: React.FC = () => {
       <Layout vertical={true} navbar={<LeftNavbar />}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
+            <ContentSection
+              loading={isLoadingGet}
+              flexWrap="wrap"
+              direction="column"
+              header="Filters"
+            >
+              <TagButtonBox
+                tags={tags}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+                displayCount={true}
+                showZeroCountToggle={true}
+              />
+            </ContentSection>
+
             <Row gap="md" alignItems="start" wrap>
               {worldsData?.pages.map(
                 (page) => page.worlds?.map((world) => <WorldCard key={world.id} world={world} />),

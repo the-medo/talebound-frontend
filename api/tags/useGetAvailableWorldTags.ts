@@ -1,8 +1,8 @@
 import { createQuery } from 'react-query-kit';
 import { TagsCollection } from '../collections';
-import { PbTag } from '../../generated/api-types/data-contracts';
+import { PbViewTag } from '../../generated/api-types/data-contracts';
 
-export const useGetAvailableWorldTags = createQuery<PbTag[], void>({
+export const useGetAvailableWorldTags = createQuery<PbViewTag[], void>({
   primaryKey: 'useGetAvailableWorldTags',
   queryFn: async () => {
     const { data } = await TagsCollection.taleboundGetAvailableWorldTags();

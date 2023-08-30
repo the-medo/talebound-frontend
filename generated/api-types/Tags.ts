@@ -12,7 +12,7 @@
 import {
   PbCreateAvailableWorldTagRequest,
   PbGetAvailableWorldTagsResponse,
-  PbTag,
+  PbViewTag,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -48,14 +48,14 @@ export class Tags<SecurityDataType = unknown> {
    * @name TaleboundCreateAvailableWorldTag
    * @summary Create available world tag
    * @request POST:/tags/worlds
-   * @response `200` `PbTag` A successful response.
+   * @response `200` `PbViewTag` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundCreateAvailableWorldTag = (
     body: PbCreateAvailableWorldTagRequest,
     params: RequestParams = {},
   ) =>
-    this.http.request<PbTag, RpcStatus>({
+    this.http.request<PbViewTag, RpcStatus>({
       path: `/tags/worlds`,
       method: 'POST',
       body: body,
@@ -87,7 +87,7 @@ export class Tags<SecurityDataType = unknown> {
    * @name TaleboundUpdateAvailableWorldTag
    * @summary Update available world tag
    * @request PATCH:/tags/worlds/{tagId}
-   * @response `200` `PbTag` A successful response.
+   * @response `200` `PbViewTag` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundUpdateAvailableWorldTag = (
@@ -97,7 +97,7 @@ export class Tags<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbTag, RpcStatus>({
+    this.http.request<PbViewTag, RpcStatus>({
       path: `/tags/worlds/${tagId}`,
       method: 'PATCH',
       body: body,
