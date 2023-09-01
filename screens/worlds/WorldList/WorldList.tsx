@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
@@ -11,10 +11,13 @@ import InfiniteScrollObserver from '../../../components/InfiniteScrollObserver/I
 import { useGetAvailableWorldTags } from '../../../api/tags/useGetAvailableWorldTags';
 import { PbViewTag } from '../../../generated/api-types/data-contracts';
 import TagButtonBox from '../../../components/TagButtonBox/TagButtonBox';
+import { TitleH2 } from '../../../components/Typography/Title';
+import Checkbox from '../../../components/Checkbox/Checkbox';
 
 const WorldList: React.FC = () => {
   const { data: tags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
   const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
+  const [showOnlyPublic, setShowOnlyPublic] = React.useState<boolean>(false);
 
   const {
     data: worldsData,
@@ -23,10 +26,14 @@ const WorldList: React.FC = () => {
     hasNextPage,
   } = useGetWorlds({
     variables: {
-      public: false,
+      public: showOnlyPublic,
       tags: selectedTags.map((t) => t.tag ?? ''),
     },
   });
+
+  const onChangeShowOnlyPublic = useCallback((value: boolean) => {
+    setShowOnlyPublic(value);
+  }, []);
 
   return (
     <>
@@ -34,12 +41,19 @@ const WorldList: React.FC = () => {
       <Layout vertical={true} navbar={<LeftNavbar />}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-            <ContentSection
-              loading={isLoadingGet}
-              flexWrap="wrap"
-              direction="column"
-              header="Filters"
-            >
+            <ContentSection loading={isLoadingGet} flexWrap="wrap" direction="column">
+              <Row gap="md" fullWidth justifyContent="between">
+                <TitleH2>Filters</TitleH2>
+                <Row>
+                  <Checkbox
+                    id="show-only-public"
+                    defaultChecked={showOnlyPublic}
+                    onCheckedChange={onChangeShowOnlyPublic}
+                  >
+                    Show only public
+                  </Checkbox>
+                </Row>
+              </Row>
               <TagButtonBox
                 tags={tags}
                 selectedTags={selectedTags}

@@ -8,7 +8,7 @@ export const IMAGE_DEFAULT_WORLD_AVATAR =
   'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800';
 
 export const IMAGE_DEFAULT_WORLD_THUMBNAIL =
-  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800';
+  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400';
 
 export const IMAGE_DEFAULT_WORLD_HEADER =
-  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800';
+  'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/1920x300';

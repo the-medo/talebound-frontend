@@ -45,7 +45,7 @@ const Menu: React.FC = () => {
 
   return (
     <StyledNavbar>
-      <Link href="/">
+      <Link href="/home">
         <Row justifyContent="center" gap="sm" css={{ width: '250px' }}>
           <Logo size="2.5rem" />
           <DecorativeTitle>Talebound</DecorativeTitle>

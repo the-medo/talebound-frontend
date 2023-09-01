@@ -37,8 +37,11 @@ const ImageBackground = styled(Col, {
 
   variants: {
     size: {
-      large: {
+      medium: {
         width: '400px',
+      },
+      large: {
+        width: '500px',
       },
     },
   },

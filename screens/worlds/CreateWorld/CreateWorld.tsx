@@ -17,6 +17,7 @@ import { useCreateWorld } from '../../../api/worlds/useCreateWorld';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 import { useRouter } from 'next/router';
+import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../../utils/images/imageDefaultUrls';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -147,7 +148,7 @@ const CreateWorld: React.FC = () => {
                   questCount={3}
                   activityCount={12}
                   playModeCount={2}
-                  imgSrc="https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400"
+                  imgSrc={IMAGE_DEFAULT_WORLD_THUMBNAIL}
                   tags={['fantasy', 'magic', 'dragons', 'books']}
                   href="#"
                 />

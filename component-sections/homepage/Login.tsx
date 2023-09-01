@@ -94,7 +94,7 @@ const Login: React.FC = () => {
   const login = useLogin({
     onSuccess: (data) => {
       dispatch(setUser(data.data.user));
-      void router.push('/logged-in');
+      void router.push('/home');
     },
   });
 
