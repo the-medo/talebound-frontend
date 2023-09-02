@@ -326,6 +326,8 @@ export interface PbMenuItemPost {
   menuItemId?: number;
   /** @format int32 */
   postId?: number;
+  /** @format int32 */
+  position?: number;
   post?: PbDataPost;
 }
 

@@ -1,6 +1,6 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { WorldsCollection } from '../collections';
-import { useGetPostById } from '../useGetPostById';
+import { useGetPostById } from '../posts/useGetPostById';
 import { queryClient } from '../../pages/_app';
 import { useGetWorldById } from './useGetWorldById';
 import { store } from '../../store';

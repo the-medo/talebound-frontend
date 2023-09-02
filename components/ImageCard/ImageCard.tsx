@@ -8,14 +8,13 @@ import MiniStatistic from '../MiniStatistic/MiniStatistic';
 import Link from 'next/link';
 
 const ImageBackground = styled(Col, {
-  // backgroundPosition: 'center center',
-  // backgroundSize: 'cover',
-  // backgroundRepeat: 'no-repeat',
   paddingTop: '$md',
   paddingBottom: '$md',
   paddingLeft: '$sm',
   paddingRight: '$sm',
   border: '1px solid $primary200',
+  flexGrow: 1,
+  flexBasis: '350px',
 
   borderRadius: '$lg',
 
@@ -26,24 +25,12 @@ const ImageBackground = styled(Col, {
     left: 0,
     right: 0,
     bottom: 0,
-    // height: '350px',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     background: '',
     zIndex: 0,
     borderRadius: '$lg',
-  },
-
-  variants: {
-    size: {
-      medium: {
-        width: '400px',
-      },
-      large: {
-        width: '500px',
-      },
-    },
   },
 });
 
@@ -70,8 +57,6 @@ const ImageCard: React.FC<ImageCardProps> = ({
 }) => {
   return (
     <ImageBackground
-      // justifyContent="end"
-      size="large"
       gap="sm"
       css={{
         '&::before': {
@@ -100,7 +85,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         <MiniStatistic title="Activity" value={activityCount} />
       </Row>
       <div style={{ height: '0px' }}></div>
-      <TagRow tags={tags} width={370} />
+      <TagRow tags={tags} width={330} />
     </ImageBackground>
   );
 };

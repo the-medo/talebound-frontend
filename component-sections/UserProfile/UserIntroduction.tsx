@@ -3,7 +3,7 @@ import { Col } from '../../components/Flex/Flex';
 import { useGetUserById } from '../../api/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';
 import { UserProfileProps } from './UserProfile';
-import { useGetPostById } from '../../api/useGetPostById';
+import { useGetPostById } from '../../api/posts/useGetPostById';
 import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,

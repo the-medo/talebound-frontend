@@ -221,6 +221,7 @@ export class Menus<SecurityDataType = unknown> {
       postId?: number;
       /** @format int32 */
       position?: number;
+      isMenuItemDescriptionPost?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -261,7 +262,7 @@ export class Menus<SecurityDataType = unknown> {
    * @name TaleboundUpdateMenuItemPost
    * @summary Update menu item post
    * @request PATCH:/menus/{menuId}/items/{menuItemId}/posts/{postId}
-   * @response `200` `PbMenuItemPost` A successful response.
+   * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   taleboundUpdateMenuItemPost = (
@@ -274,7 +275,7 @@ export class Menus<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbMenuItemPost, RpcStatus>({
+    this.http.request<object, RpcStatus>({
       path: `/menus/${menuId}/items/${menuItemId}/posts/${postId}`,
       method: 'PATCH',
       body: body,

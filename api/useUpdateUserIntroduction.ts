@@ -1,6 +1,6 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { UsersCollection } from './collections';
-import { useGetPostById } from './useGetPostById';
+import { useGetPostById } from './posts/useGetPostById';
 import { queryClient } from '../pages/_app';
 import { useGetUserById } from './useGetUserById';
 

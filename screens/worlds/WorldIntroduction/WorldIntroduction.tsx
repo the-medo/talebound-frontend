@@ -7,7 +7,7 @@ import {
   UpdateWorldIntroductionRequest,
   useUpdateWorldIntroduction,
 } from '../../../api/worlds/useUpdateWorldIntroduction';
-import { useGetPostById } from '../../../api/useGetPostById';
+import { useGetPostById } from '../../../api/posts/useGetPostById';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { isWorldCollaborator, useMyWorldRole } from '../../../hooks/useWorldAdmins';
 

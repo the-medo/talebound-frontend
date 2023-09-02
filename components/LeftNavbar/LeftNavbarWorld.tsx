@@ -10,7 +10,7 @@ const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const menuId = worldData?.worldMenuId ?? 0;
 
-  return <Navbar menuId={menuId} urlPrefix={`/worlds/${worldId}`} />;
+  return <Navbar menuId={menuId} urlPrefix={`/worlds/${worldId}/c`} />;
 };
 
 export default LeftNavbarWorld;
