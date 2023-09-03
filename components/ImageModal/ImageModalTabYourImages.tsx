@@ -30,7 +30,6 @@ const ImageModalTabYourImages: React.FC<ImageModalTabYourImagesProps> = ({
     enabled: !!user?.id,
     variables: {
       userId: user?.id,
-      imageTypeId: 100,
     },
   });
 

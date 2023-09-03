@@ -6,7 +6,7 @@ import Loading from '../Loading/Loading';
 import { Text } from '../Typography/Text';
 
 export const SECTION_CORNER_IMAGE = (url: string) => ({
-  backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.5) 25%, rgba(255,255,255,1) 50%), url('${url}')`,
+  backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.65) 25%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,1) 50%), url('${url}')`,
 });
 
 const StyledSection = styled('section', {

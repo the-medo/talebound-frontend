@@ -7,6 +7,7 @@ import { ImageVariant, imageModifyVariant } from '../../utils/images/imageUtils'
 
 interface AvatarProps {
   url?: string;
+  loading?: boolean;
   type?: AvatarType;
   size?: AvatarSize;
   fallbackText?: string;
@@ -15,6 +16,7 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({
   url,
+  loading,
   type = 'unknown',
   size = 'lg',
   fallbackText,
@@ -38,7 +40,7 @@ const Avatar: React.FC<AvatarProps> = ({
   }, [url, size]);
 
   return (
-    <AvatarRoot onClick={onClick} size={size}>
+    <AvatarRoot onClick={onClick} size={size} loading={loading}>
       <AvatarImage src={optimizedUrl ?? emptyUrlByType[type]} alt={`Avatar ${fallbackText}`} />
       {fallbackText && <AvatarFallback delayMs={600}>{fallbackText}</AvatarFallback>}
     </AvatarRoot>

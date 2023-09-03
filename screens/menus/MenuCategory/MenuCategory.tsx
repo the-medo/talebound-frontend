@@ -1,12 +1,10 @@
 import React, { Suspense, useCallback, useMemo } from 'react';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 import { useMenuIdWorld } from '../../../hooks/useMenuIdWorld';
-import ActionBoxWorld from '../../worlds/ActionBoxWorld';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { Text } from '../../../components/Typography/Text';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
-import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import { useCreateMenuItemPost } from '../../../api/menus/useCreateMenuItemPost';
 import Loading from '../../../components/Loading/Loading';
@@ -43,30 +41,30 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ menuItemCode, worldId }) =>
     });
   }, [createMenuItemPost, menuId, menuItem?.id]);
 
+  const canEdit = true;
+
   if (!menuItem) {
     return <div>404 - not found!</div>;
   }
 
   return (
     <>
-      <ActionBoxWorld worldId={worldId} activeButton="edit" />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection
-            flexWrap="wrap"
-            direction="column"
-            cornerImage={worldData?.imageThumbnail}
-          >
-            <TitleH2>{menuItem.name}</TitleH2>
-            {descriptionPostId === 0 && (
+          {descriptionPostId === 0 && (
+            <ContentSection
+              flexWrap="wrap"
+              direction="column"
+              cornerImage={worldData?.imageThumbnail}
+            >
               <Button onClick={handleCreateDescriptionPost}>Create description post</Button>
-            )}
-            {descriptionPostId > 0 && (
-              <Suspense fallback={<Loading />}>
-                <Post postId={descriptionPostId} postViewOnly={false} />
-              </Suspense>
-            )}
-          </ContentSection>
+            </ContentSection>
+          )}
+          {descriptionPostId > 0 && (
+            <Suspense fallback={<Loading />}>
+              <Post customTitle={menuItem.name} postId={descriptionPostId} canEdit={canEdit} />
+            </Suspense>
+          )}
         </Col>
 
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
@@ -80,7 +78,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({ menuItemCode, worldId }) =>
           </ContentSection>
         </Col>
       </Row>
-      MenuCategory - {menuItemCode} {JSON.stringify(menuItemsData)}
     </>
   );
 };

@@ -40,6 +40,12 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
         height: 200,
       },
     },
+
+    loading: {
+      true: {
+        opacity: 0.5,
+      },
+    },
   },
 
   defaultVariants: {
