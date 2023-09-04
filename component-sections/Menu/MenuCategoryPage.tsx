@@ -6,9 +6,10 @@ interface MenuCategoryProps {
   menuId: number;
   postId?: number;
   linkPrefix: string;
+  canEdit?: boolean;
 }
 
-const MenuCategoryPage: React.FC<MenuCategoryProps> = ({ postId, linkPrefix, menuId }) => {
+const MenuCategoryPage: React.FC<MenuCategoryProps> = ({ postId, linkPrefix, menuId, canEdit }) => {
   const router = useRouter();
 
   const m = router.query['menuCategory'];
@@ -23,6 +24,7 @@ const MenuCategoryPage: React.FC<MenuCategoryProps> = ({ postId, linkPrefix, men
       menuId={menuId}
       postId={postId}
       linkPrefix={`${linkPrefix}/c/${menuItemCode}`}
+      canEdit={canEdit}
     />
   );
 };

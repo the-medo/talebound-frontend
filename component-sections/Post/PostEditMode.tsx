@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { TitleH3 } from '../../components/Typography/Title';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import Textarea from '../../components/Textarea/Textarea';
 import { useGetPostById } from '../../api/posts/useGetPostById';
@@ -11,7 +10,7 @@ import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUr
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
 import { PbImage } from '../../generated/api-types/data-contracts';
-import { useUpdatePost } from '../../api/posts/useUpdatePost';
+import { UpdatePostCacheHelper, useUpdatePost } from '../../api/posts/useUpdatePost';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 
@@ -20,6 +19,7 @@ const textareaPlaceholder =
 
 interface PostEditModeProps {
   postId: number;
+  cacheHelper?: UpdatePostCacheHelper;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
@@ -27,6 +27,7 @@ interface PostEditModeProps {
 
 const PostEditMode: React.FC<PostEditModeProps> = ({
   postId,
+  cacheHelper,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
@@ -52,24 +53,26 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
       if (canChangeThumbnail) {
         updatePost({
           postId,
+          cacheHelper,
           body: {
             imageThumbnailId: image.id,
           },
         });
       }
     },
-    [canChangeThumbnail, postId, updatePost],
+    [cacheHelper, canChangeThumbnail, postId, updatePost],
   );
 
   const updatePostHandler = useCallback(() => {
     updatePost({
       postId,
+      cacheHelper,
       body: {
         title: canChangeTitle ? title : undefined,
         description: canChangeDescription ? description : undefined,
       },
     });
-  }, [canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
+  }, [cacheHelper, canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
 
   const loading = isLoadingPost || isLoading;
 

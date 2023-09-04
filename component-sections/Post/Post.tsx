@@ -1,6 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useGetPostById } from '../../api/posts/useGetPostById';
-import { UpdatePostRequest, useUpdatePost } from '../../api/posts/useUpdatePost';
+import {
+  UpdatePostCacheHelper,
+  UpdatePostRequest,
+  useUpdatePost,
+} from '../../api/posts/useUpdatePost';
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { Col, Row } from '../../components/Flex/Flex';
 import { parseError } from '../../utils/types/error';
@@ -8,7 +12,7 @@ import { Client } from 'react-hydration-provider';
 import LoadingText from '../../components/Loading/LoadingText';
 import { TitleH2 } from '../../components/Typography/Title';
 import { Button } from '../../components/Button/Button';
-import { TbPencil, TbPencilOff } from 'react-icons/tb';
+import { TbAlignBoxLeftTop, TbPencil } from 'react-icons/tb';
 import PostEditMode from './PostEditMode';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
@@ -16,6 +20,7 @@ import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils'
 interface PostProps {
   postId: number;
   canEdit: boolean;
+  cacheHelper?: UpdatePostCacheHelper;
   customTitle?: string;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
@@ -25,12 +30,14 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({
   postId,
   canEdit,
+  cacheHelper,
   customTitle,
   canChangeTitle,
   canChangeDescription,
   canChangeThumbnail,
 }) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editModeDetails, setEditModeDetails] = useState(false);
+  const [editModeContent, setEditModeContent] = useState(false);
   const { data: postData, isLoading: isLoadingPost } = useGetPostById({
     enabled: postId > 0,
     variables: postId,
@@ -42,6 +49,7 @@ const Post: React.FC<PostProps> = ({
     (editorState, _editor, _draft, successAction, errorAction, settleAction) => {
       const props: UpdatePostRequest = {
         postId: postId,
+        cacheHelper,
         body: {
           content: JSON.stringify(editorState),
         },
@@ -49,6 +57,7 @@ const Post: React.FC<PostProps> = ({
 
       updatePost.mutate(props, {
         onSuccess: () => {
+          console.log('TEST1');
           if (successAction) successAction();
         },
         onError: () => {
@@ -59,7 +68,7 @@ const Post: React.FC<PostProps> = ({
         },
       });
     },
-    [postId, updatePost],
+    [cacheHelper, postId, updatePost],
   );
 
   const editorState = useMemo(() => {
@@ -74,8 +83,12 @@ const Post: React.FC<PostProps> = ({
     updatePost.reset();
   }, [updatePost]);
 
-  const toggleEditMode = useCallback(() => {
-    setEditMode((p) => !p);
+  const toggleEditModeDetails = useCallback(() => {
+    setEditModeDetails((p) => !p);
+  }, []);
+
+  const toggleEditModeContent = useCallback(() => {
+    setEditModeContent((p) => !p);
   }, []);
 
   const thumbnailImage = useMemo(() => {
@@ -93,15 +106,29 @@ const Post: React.FC<PostProps> = ({
           <Row gap="md" fullWidth justifyContent="between" wrap>
             <TitleH2>{customTitle ?? postData?.post?.title}</TitleH2>
             {canEdit && (
-              <Button color="semiGhost" onClick={toggleEditMode}>
-                {editMode ? <TbPencilOff /> : <TbPencil />}
-                Edit mode
-              </Button>
+              <Row gap="md">
+                <Button
+                  color={editModeDetails ? 'primaryFill' : 'semiGhost'}
+                  onClick={toggleEditModeDetails}
+                >
+                  <TbPencil />
+                  Edit details
+                </Button>
+                <Button
+                  color={editModeContent ? 'primaryFill' : 'semiGhost'}
+                  onClick={toggleEditModeContent}
+                >
+                  <TbAlignBoxLeftTop />
+                  Edit content
+                </Button>
+              </Row>
             )}
           </Row>
-          {editMode && (
+          {editModeDetails && (
             <PostEditMode
+              key={`post-edit-mode-${postId}`}
               postId={postId}
+              cacheHelper={cacheHelper}
               canChangeTitle={canChangeTitle}
               canChangeDescription={canChangeDescription}
               canChangeThumbnail={canChangeThumbnail}
@@ -110,11 +137,13 @@ const Post: React.FC<PostProps> = ({
           <Editor
             key={postId}
             loading={updatePost.isLoading}
-            editable={editMode && canEdit}
-            hasRightToEdit={editMode && canEdit}
+            editable={editModeContent && canEdit}
+            hasRightToEdit={editModeContent && canEdit}
             editorState={editorState}
             disabled={false}
             defaultPostViewType={PostViewType.POST}
+            changedPostViewType={editModeContent ? PostViewType.EDIT : undefined}
+            closeEditor={toggleEditModeContent}
             alreadyExists={postId !== undefined}
             draftable={false}
             isDraft={false}

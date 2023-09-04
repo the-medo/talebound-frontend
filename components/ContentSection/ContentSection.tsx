@@ -5,9 +5,13 @@ import { styled } from '../../styles/stitches.config';
 import Loading from '../Loading/Loading';
 import { Text } from '../Typography/Text';
 import Link from 'next/link';
+import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
 
 export const SECTION_CORNER_IMAGE = (url: string) => ({
-  backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.65) 25%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,1) 50%), url('${url}')`,
+  backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.65) 25%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,1) 50%), url('${imageModifyVariant(
+    url,
+    ImageVariant['600x400'],
+  )}')`,
 });
 
 const StyledSection = styled('section', {
@@ -20,8 +24,15 @@ const StyledSection = styled('section', {
   margin: '$sm',
   gap: '$sm',
   justifyContent: 'flex-start',
+  transition: 'opacity 0.3s ease-in-out',
 
   variants: {
+    highlighted: {
+      true: {
+        outline: '2px solid $primary',
+        opacity: 0.8,
+      },
+    },
     cornerImage: {
       true: {
         overflow: 'hidden',
@@ -119,6 +130,7 @@ interface ContentSectionProps extends PropsWithChildren {
   loading?: boolean;
   cornerImage?: string;
   href?: string;
+  highlighted?: boolean;
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
@@ -132,31 +144,36 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   loading,
   cornerImage,
   href,
+  highlighted,
 }) => {
   const cornerImageCss = useMemo(
     () => (cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined),
     [cornerImage],
   );
 
+  const hasChildren = !!children;
+
   return (
-    <StyledSection cornerImage={!!cornerImage} css={cornerImageCss}>
+    <StyledSection highlighted={highlighted} cornerImage={!!cornerImage} css={cornerImageCss}>
       {header && href && (
         <Link href={href}>
-          <TitleH2 marginBottom="md">{header}</TitleH2>
+          <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>
         </Link>
       )}
-      {header && !href && <TitleH2 marginBottom="md">{header}</TitleH2>}
-      <StyledSectionContent
-        direction={direction}
-        css={{
-          $$alignItems: alignItems,
-          $$justifyContent: justifyContent,
-          $$flexBasis: flexBasis,
-          $$flexWrap: flexWrap,
-        }}
-      >
-        {children}
-      </StyledSectionContent>
+      {header && !href && <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>}
+      {hasChildren && (
+        <StyledSectionContent
+          direction={direction}
+          css={{
+            $$alignItems: alignItems,
+            $$justifyContent: justifyContent,
+            $$flexBasis: flexBasis,
+            $$flexWrap: flexWrap,
+          }}
+        >
+          {children}
+        </StyledSectionContent>
+      )}
       {loading && (
         <LoadingOverlay>
           <Loading size="sm" />

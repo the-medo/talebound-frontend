@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import Layout from './Layout';
 import LeftNavbarWorld from '../LeftNavbar/LeftNavbarWorld';
 import useNumericParam from '../../hooks/useNumericParam';
+import ActionBoxWorld from '../../screens/worlds/ActionBoxWorld';
 
 const WorldLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const worldId = useNumericParam('worldId') ?? 0;
@@ -10,6 +11,7 @@ const WorldLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <Layout vertical={true} navbar={navbar}>
+      <ActionBoxWorld worldId={worldId} />
       {children}
     </Layout>
   );

@@ -40,7 +40,7 @@ export const useCreateMenuItemPost = createMutation({
           },
         );
       } else {
-        const menuItemPostsQueryKey = useGetMenuItemPosts.getKey({menuId, menuItemId});
+        const menuItemPostsQueryKey = useGetMenuItemPosts.getKey({ menuId, menuItemId });
         queryClient.setQueryData<inferData<typeof useGetMenuItems>>(
           menuItemPostsQueryKey,
           (menuItemPosts) => {

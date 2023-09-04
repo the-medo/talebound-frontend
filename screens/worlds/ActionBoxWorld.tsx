@@ -39,7 +39,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton =
   );
 
   return (
-    <ActionBox identifier={`action-box-world-edit_${activeButton}`}>
+    <ActionBox key={`world-${worldId}`} identifier={`action-box-world-edit_${activeButton}`}>
       <Col fullWidth css={{ height: '100%' }} gap="md" justifyContent="between">
         <Col gap="md">
           <Row gap="md">

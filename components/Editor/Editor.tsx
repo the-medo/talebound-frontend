@@ -105,6 +105,7 @@ interface EditorProps {
   onChange?: (_editorState: EditorState, _editor: LexicalEditor) => void;
   hasRightToEdit?: boolean;
   defaultPostViewType?: PostViewType;
+  changedPostViewType?: PostViewType;
   editorState?: string;
   onSaveAction?: EditorOnSaveAction;
   actionLabel?: 'Save' | 'Post';
@@ -126,6 +127,7 @@ const Editor: React.FC<EditorProps> = ({
   onChange,
   hasRightToEdit = false,
   defaultPostViewType = PostViewType.POST,
+  changedPostViewType,
   editorState,
   onSaveAction,
   actionLabel = 'Post',
@@ -194,13 +196,14 @@ const Editor: React.FC<EditorProps> = ({
   }, []); //, editorState
 
   useEffect(() => {
-    const postViewTypeToSet = !hasRightToEdit || !editable ? PostViewType.POST : postViewType;
+    const postViewTypeToSet =
+      !hasRightToEdit || !editable ? PostViewType.POST : changedPostViewType ?? postViewType;
     setPostViewType(postViewTypeToSet);
 
     editorRef.current?.setEditable(
       !disabled && hasRightToEdit && editable && postViewTypeToSet === PostViewType.EDIT,
     );
-  }, [disabled, editable, hasRightToEdit, postViewType]);
+  }, [disabled, editable, hasRightToEdit, changedPostViewType, postViewType]);
 
   useEffect(() => {
     if (contentSaved) {
