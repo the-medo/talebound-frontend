@@ -4,6 +4,7 @@ import { TitleH2 } from '../Typography/Title';
 import { styled } from '../../styles/stitches.config';
 import Loading from '../Loading/Loading';
 import { Text } from '../Typography/Text';
+import Link from 'next/link';
 
 export const SECTION_CORNER_IMAGE = (url: string) => ({
   backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.65) 25%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,1) 50%), url('${url}')`,
@@ -117,6 +118,7 @@ interface ContentSectionProps extends PropsWithChildren {
   flexWrap?: CSSProperties['flexWrap'];
   loading?: boolean;
   cornerImage?: string;
+  href?: string;
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
@@ -129,6 +131,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   flexWrap,
   loading,
   cornerImage,
+  href,
 }) => {
   const cornerImageCss = useMemo(
     () => (cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined),
@@ -137,7 +140,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 
   return (
     <StyledSection cornerImage={!!cornerImage} css={cornerImageCss}>
-      {header && <TitleH2 marginBottom="md">{header}</TitleH2>}
+      {header && href && (
+        <Link href={href}>
+          <TitleH2 marginBottom="md">{header}</TitleH2>
+        </Link>
+      )}
+      {header && !href && <TitleH2 marginBottom="md">{header}</TitleH2>}
       <StyledSectionContent
         direction={direction}
         css={{

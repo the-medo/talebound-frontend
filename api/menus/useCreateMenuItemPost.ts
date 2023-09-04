@@ -2,6 +2,7 @@ import { createMutation, inferData } from 'react-query-kit';
 import { MenusCollection } from '../collections';
 import { useGetMenuItems } from './useGetMenuItems';
 import { queryClient } from '../../pages/_app';
+import { useGetMenuItemPosts } from './useGetMenuItemPosts';
 
 interface CreateMenuItemPostParams {
   menuId: number;
@@ -36,6 +37,14 @@ export const useCreateMenuItemPost = createMutation({
               descriptionPostId:
                 item.id === menuItemId ? newItemPost.postId : item.descriptionPostId,
             }));
+          },
+        );
+      } else {
+        const menuItemPostsQueryKey = useGetMenuItemPosts.getKey({menuId, menuItemId});
+        queryClient.setQueryData<inferData<typeof useGetMenuItems>>(
+          menuItemPostsQueryKey,
+          (menuItemPosts) => {
+            return [...(menuItemPosts ?? []), newItemPost];
           },
         );
       }

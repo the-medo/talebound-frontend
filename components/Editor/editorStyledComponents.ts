@@ -1,7 +1,6 @@
 import { styled } from '../../styles/stitches.config';
 
 export const EditorScroller = styled('div', {
-  minHeight: '150px',
   border: '0',
   display: 'flex',
   position: 'relative',
@@ -12,6 +11,7 @@ export const EditorScroller = styled('div', {
   variants: {
     editable: {
       true: {
+        minHeight: '150px',
         resize: 'vertical',
       },
       false: {
