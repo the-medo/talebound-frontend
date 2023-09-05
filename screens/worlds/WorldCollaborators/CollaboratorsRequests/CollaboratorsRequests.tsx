@@ -14,6 +14,7 @@ const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }
   const role = useMyWorldRole(worldId);
   const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
     variables: worldId,
+    enabled: worldId > 0,
   });
 
   const [showDenied, setShowDenied] = useState(false);

@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useMemo } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -10,6 +10,9 @@ import { UpdatePostCacheHelper } from '../../../api/posts/useUpdatePost';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
+import { Reorder } from 'framer-motion';
+import { PbMenuItem, PbMenuItemPost } from '../../../generated/api-types/data-contracts';
+import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -88,6 +91,23 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     [menuId, menuItemId],
   );
 
+  //====================================================================================================
+  const [items, setItems] = useState<PbMenuItemPost[]>([]);
+
+  useEffect(() => {
+    setItems(menuItemPostsData);
+  }, [menuItemPostsData]);
+
+  const onReorder = useCallback(
+    (x: PbMenuItemPost[]) => {
+      if (rearrangeMode) {
+        setItems(x);
+      }
+    },
+    [rearrangeMode],
+  );
+  //====================================================================================================
+
   if (!menuItem) {
     return <div>404 - not found!</div>;
   }
@@ -138,23 +158,22 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               )}
             </Row>
           </ContentSection>
-          {menuItemPostsData.map((menuItemPost) => {
-            const { post } = menuItemPost;
-            if (!post) return null;
-            return (
-              <ContentSection
-                key={post.id}
-                highlighted={post.id === displayPostId}
-                flexWrap="wrap"
-                direction="column"
-                cornerImage={post.imageThumbnailUrl}
-                header={post.title}
-                href={`${linkPrefix}/${post.id}`}
-              >
-                {post.description}
-              </ContentSection>
-            );
-          })}
+          <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
+            {items.map((menuItemPost, i) => {
+              const { post } = menuItemPost;
+              if (!post) return null;
+              return (
+                <MenuItemPostThumbnail
+                  key={post.id}
+                  data={menuItemPost}
+                  highlighted={post.id === displayPostId}
+                  linkPrefix={linkPrefix}
+                  currentIndex={i + 1}
+                  rearrangeMode={rearrangeMode}
+                />
+              );
+            })}
+          </Reorder.Group>
         </Col>
       </Row>
     </>

@@ -7,7 +7,7 @@ interface LeftNavbarWorldProps {
 }
 
 const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
   const menuId = worldData?.worldMenuId ?? 0;
 
   return <Navbar menuId={menuId} urlPrefix={`/worlds/${worldId}/c`} />;

@@ -22,6 +22,7 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
 
   const { data: worldData, isLoading: isLoadingWorld } = useGetWorldById({
     variables: worldId,
+    enabled: worldId > 0,
     suspense: true,
   });
 

@@ -23,6 +23,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton =
 
   const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
     variables: worldId,
+    enabled: worldId > 0,
   });
 
   const worldAdminApproved = useMemo(

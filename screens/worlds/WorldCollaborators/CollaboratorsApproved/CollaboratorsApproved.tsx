@@ -10,6 +10,7 @@ interface CollaboratorsApprovedProps {
 const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }) => {
   const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
     variables: worldId,
+    enabled: worldId > 0,
   });
 
   const worldAdminApproved = useMemo(

@@ -15,6 +15,8 @@ const MenuCategoryPageWorlds: React.FC<MenuCategoryProps> = ({ postId }) => {
   const role = useMyWorldRole(worldId);
   const canEdit = isWorldCollaborator(role);
 
+  if (!worldId) return null;
+
   return (
     <WorldLayout>
       <MenuCategoryPage

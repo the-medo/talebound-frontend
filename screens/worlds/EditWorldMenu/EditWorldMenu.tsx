@@ -15,7 +15,7 @@ interface EditWorldMenuProps {
 
 const EditWorldMenu: React.FC<EditWorldMenuProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
   const menuId = worldData?.worldMenuId ?? 0;
 
   const navbar = useMemo(() => <LeftNavbarWorld worldId={worldId} />, [worldId]);

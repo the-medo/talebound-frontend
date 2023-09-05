@@ -16,7 +16,7 @@ interface WorldTagsProps {
 
 const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
   const { data: availableTags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
 
   const { mutate: addTag, isLoading: isLoadingAdd, error: errorAdd } = useAddWorldTag();
   const { mutate: removeTag, isLoading: isLoadingRemove, error: errorRemove } = useRemoveWorldTag();

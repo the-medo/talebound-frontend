@@ -27,6 +27,11 @@ const StyledSection = styled('section', {
   transition: 'opacity 0.3s ease-in-out',
 
   variants: {
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+    },
     highlighted: {
       true: {
         outline: '2px solid $primary',
@@ -131,6 +136,7 @@ interface ContentSectionProps extends PropsWithChildren {
   cornerImage?: string;
   href?: string;
   highlighted?: boolean;
+  fullWidth?: boolean;
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
@@ -145,6 +151,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   cornerImage,
   href,
   highlighted,
+  fullWidth,
 }) => {
   const cornerImageCss = useMemo(
     () => (cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined),
@@ -154,7 +161,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   const hasChildren = !!children;
 
   return (
-    <StyledSection highlighted={highlighted} cornerImage={!!cornerImage} css={cornerImageCss}>
+    <StyledSection
+      fullWidth={fullWidth}
+      highlighted={highlighted}
+      cornerImage={!!cornerImage}
+      css={cornerImageCss}
+    >
       {header && href && (
         <Link href={href}>
           <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>
