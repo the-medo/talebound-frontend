@@ -4,8 +4,6 @@ const useNumericParam = (paramName: string): number | undefined => {
   const router = useRouter();
   const value = router.query[paramName];
 
-  console.log(router.query);
-
   let result = 0;
 
   if (typeof value === 'string') {

@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Reorder } from 'framer-motion';
 import { PbMenuItem, PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import MenuItemPostThumbnail from './MenuItemPostThumbnail';
+import ErrorText from '../../../components/ErrorText/ErrorText';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -93,6 +94,8 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 
   //====================================================================================================
   const [items, setItems] = useState<PbMenuItemPost[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>();
 
   useEffect(() => {
     setItems(menuItemPostsData);
@@ -159,21 +162,27 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             </Row>
           </ContentSection>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
-            {items.map((menuItemPost, i) => {
-              const { post } = menuItemPost;
-              if (!post) return null;
-              return (
-                <MenuItemPostThumbnail
-                  key={post.id}
-                  data={menuItemPost}
-                  highlighted={post.id === displayPostId}
-                  linkPrefix={linkPrefix}
-                  currentIndex={i + 1}
-                  rearrangeMode={rearrangeMode}
-                />
-              );
-            })}
+            <Col loading={loading}>
+              {items.map((menuItemPost, i) => {
+                const { post } = menuItemPost;
+                if (!post) return null;
+                return (
+                  <MenuItemPostThumbnail
+                    key={post.id}
+                    menuId={menuId}
+                    data={menuItemPost}
+                    highlighted={post.id === displayPostId}
+                    linkPrefix={linkPrefix}
+                    currentIndex={i + 1}
+                    rearrangeMode={rearrangeMode}
+                    setLoading={setLoading}
+                    setError={setError}
+                  />
+                );
+              })}
+            </Col>
           </Reorder.Group>
+          <ErrorText error={error} />
         </Col>
       </Row>
     </>

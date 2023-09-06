@@ -1,29 +1,62 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Reorder, useDragControls } from 'framer-motion';
 import { PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import { Row } from '../../../components/Flex/Flex';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { MdDragIndicator } from 'react-icons/md';
+import { useUpdateMenuItemPost } from '../../../api/menus/useUpdateMenuItemPost';
 
 interface MenuItemPostThumbnailProps {
   data: PbMenuItemPost;
+  menuId: number;
   highlighted: boolean;
   linkPrefix: string;
   currentIndex: number;
   rearrangeMode: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setError: React.Dispatch<unknown>;
 }
 
 const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
   data,
+  menuId,
   highlighted,
   linkPrefix,
   currentIndex,
   rearrangeMode,
+  setLoading,
+  setError,
 }) => {
   const { post } = data;
   const controls = useDragControls();
   const [dragging, setDragging] = React.useState(false);
+
+  const onSettled = useCallback(() => {
+    setLoading(false);
+    setError(undefined);
+  }, [setLoading, setError]);
+
+  const {
+    mutate: updateMenuItemPost,
+    isLoading: isLoadingUpdate,
+    isError: isErrorUpdate,
+    error: errorUpdate,
+  } = useUpdateMenuItemPost({
+    onSettled,
+  });
+
+  useEffect(() => {
+    if (errorUpdate) {
+      setError(errorUpdate);
+    }
+  }, [errorUpdate, setError]);
+
+  useEffect(() => {
+    if (isLoadingUpdate) {
+      setLoading(true);
+    }
+  }, [setLoading, isLoadingUpdate]);
 
   const onDragStart = useCallback(() => {
     setDragging(true);
@@ -31,23 +64,23 @@ const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
 
   const onDragEnd = useCallback(() => {
     setDragging(false);
-    // if (data.menuId && data.id) {
-    //   updateMenuItem({
-    //     menuId: data.menuId,
-    //     menuItemId: data.id,
-    //     body: {
-    //       position: currentIndex,
-    //     },
-    //   });
-    // }
-  }, [currentIndex]);
+    if (menuId && data.menuItemId && data.postId) {
+      updateMenuItemPost({
+        menuId,
+        menuItemId: data.menuItemId,
+        postId: data.postId,
+        body: {
+          position: currentIndex,
+        },
+      });
+    }
+  }, [menuId, data.menuItemId, data.postId, updateMenuItemPost, currentIndex]);
 
   if (!post) return null;
 
   if (!rearrangeMode) {
     return (
       <ContentSection
-        fullWidth
         key={post.id}
         highlighted={highlighted}
         flexWrap="wrap"
@@ -70,7 +103,7 @@ const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
     >
-      <Row gap="md" fullWidth>
+      <Row gap="md" fullWidth noSelect={rearrangeMode}>
         {rearrangeMode && (
           <DragHandle dragging={dragging} onPointerDown={(e) => controls.start(e)}>
             <MdDragIndicator size={20} />
