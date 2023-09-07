@@ -102,7 +102,7 @@ const Post: React.FC<PostProps> = ({
   return (
     <Client>
       <ContentSection flexWrap="wrap" direction="column" cornerImage={thumbnailImage}>
-        <Col fullWidth>
+        <Col fullWidth gap="md">
           <Row gap="md" fullWidth justifyContent="between" wrap>
             <TitleH2>{customTitle ?? postData?.post?.title}</TitleH2>
             {canEdit && (

@@ -11,7 +11,7 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
 import { Reorder } from 'framer-motion';
-import { PbMenuItem, PbMenuItemPost } from '../../../generated/api-types/data-contracts';
+import { PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 

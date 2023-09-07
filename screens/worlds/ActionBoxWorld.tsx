@@ -18,7 +18,7 @@ interface ActionBoxWorldProps {
   activeButton?: 'edit' | 'collaborators' | 'menu';
 }
 
-const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton = 'edit' }) => {
+const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }) => {
   const role = useMyWorldRole(worldId);
 
   const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({

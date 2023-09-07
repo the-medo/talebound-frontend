@@ -113,6 +113,7 @@ const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
           fullWidth
           key={post.id}
           highlighted={highlighted}
+          error={isErrorUpdate}
           flexWrap="wrap"
           direction="column"
           cornerImage={post.imageThumbnailUrl}

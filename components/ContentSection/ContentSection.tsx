@@ -38,6 +38,11 @@ const StyledSection = styled('section', {
         opacity: 0.8,
       },
     },
+    error: {
+      true: {
+        outline: '2px solid $danger',
+      },
+    },
     cornerImage: {
       true: {
         overflow: 'hidden',
@@ -136,6 +141,7 @@ interface ContentSectionProps extends PropsWithChildren {
   cornerImage?: string;
   href?: string;
   highlighted?: boolean;
+  error?: boolean;
   fullWidth?: boolean;
 }
 
@@ -151,6 +157,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   cornerImage,
   href,
   highlighted,
+  error,
   fullWidth,
 }) => {
   const cornerImageCss = useMemo(
@@ -164,6 +171,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
     <StyledSection
       fullWidth={fullWidth}
       highlighted={highlighted}
+      error={error}
       cornerImage={!!cornerImage}
       css={cornerImageCss}
     >

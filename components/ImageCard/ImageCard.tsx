@@ -79,7 +79,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         </Text>
       </Col>
       <div style={{ height: '100px' }}></div>
-      <Row justifyContent="around">
+      <Row gap="sm" justifyContent="around">
         <MiniStatistic title="Play modes" value={playModeCount} />
         <MiniStatistic title="Quests" value={questCount} />
         <MiniStatistic title="Activity" value={activityCount} />

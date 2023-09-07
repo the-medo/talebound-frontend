@@ -62,33 +62,36 @@ export const useUpdateMenuItemPost = createMutation({
           if (oldData && index !== undefined && index !== -1) {
             const oldItem = oldData[index];
 
-            if (newPosition !== undefined && newPosition !== oldItem.position) {
-              // If the position has changed, we need to update the positions of all menu items
-              // between the old position and the new position.
-              const oldPosition = oldItem.position;
+            if (newPosition !== undefined) {
+              if (newPosition !== oldItem.position) {
+                // If the position has changed, we need to update the positions of all menu items
+                // between the old position and the new position.
+                const oldPosition = oldItem.position;
 
-              if (oldPosition) {
-                const minPosition = Math.min(oldPosition, newPosition);
-                const maxPosition = Math.max(oldPosition, newPosition);
+                if (oldPosition) {
+                  const minPosition = Math.min(oldPosition, newPosition);
+                  const maxPosition = Math.max(oldPosition, newPosition);
 
-                return oldData
-                  .map((menuItemPost) => {
-                    if (menuItemPost.position === oldPosition) {
-                      menuItemPost.position = newPosition;
-                    } else if (
-                      menuItemPost.position &&
-                      menuItemPost.position >= minPosition &&
-                      menuItemPost.position <= maxPosition
-                    ) {
-                      const increment = oldPosition < newPosition ? -1 : 1;
-                      menuItemPost.position += increment;
-                    }
-                    return menuItemPost;
-                  })
-                  .sort(sortByPosition);
+                  return oldData
+                    .map((menuItemPost) => {
+                      if (menuItemPost.position === oldPosition) {
+                        menuItemPost.position = newPosition;
+                      } else if (
+                        menuItemPost.position &&
+                        menuItemPost.position >= minPosition &&
+                        menuItemPost.position <= maxPosition
+                      ) {
+                        const increment = oldPosition < newPosition ? -1 : 1;
+                        menuItemPost.position += increment;
+                      }
+                      return menuItemPost;
+                    })
+                    .sort(sortByPosition);
+                }
               }
+            } else {
+              oldData[index] = { ...updatedMenuItemPost };
             }
-            oldData[index] = { ...updatedMenuItemPost };
 
             return [...oldData];
           }
