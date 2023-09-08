@@ -54,11 +54,18 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     },
   );
 
+  const menuItemPost = useMemo(() => {
+    return menuItemPostsData.find((item) => item.postId === postId);
+  }, [postId, menuItemPostsData]);
+
   const descriptionPostId = useMemo(() => {
     return menuItem?.descriptionPostId ?? 0;
   }, [menuItem?.descriptionPostId]);
 
-  const displayPostId = postId ?? descriptionPostId;
+  const displayPostId = useMemo(() => {
+    if (postId === descriptionPostId || !postId) return descriptionPostId;
+    return menuItemPost?.postId ?? 0;
+  }, [descriptionPostId, menuItemPost?.postId, postId]);
 
   const createDescriptionPostHandler = useCallback(() => {
     createMenuItemPost.mutate({
@@ -119,11 +126,12 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     <>
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          {canEdit && displayPostId === 0 && (
+          {canEdit && descriptionPostId === 0 && (
             <ContentSection flexWrap="wrap" direction="column" cornerImage={worldImageThumbnail}>
               <Button onClick={createDescriptionPostHandler}>Create description post</Button>
             </ContentSection>
           )}
+          {displayPostId === 0 && <TitleH2>404 - not found</TitleH2>}
           {displayPostId > 0 && (
             <Suspense fallback={<LoadingText />}>
               <Post
