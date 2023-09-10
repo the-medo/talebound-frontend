@@ -223,6 +223,10 @@ export interface PbGetImagesResponse {
   totalCount?: number;
 }
 
+export interface PbGetMenuItemPostsByMenuIdResponse {
+  menuItemPosts?: PbMenuItemPost[];
+}
+
 export interface PbGetMenuItemPostsResponse {
   menuItemPosts?: PbMenuItemPost[];
 }

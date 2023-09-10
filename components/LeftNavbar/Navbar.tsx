@@ -7,12 +7,27 @@ import { useDispatch } from 'react-redux';
 import { setMenuImage } from '../../store/globalSlice';
 import { IMAGE_DEFAULT_MENU } from '../../utils/images/imageDefaultUrls';
 
+export interface NavbarItem {
+  key: React.Key;
+  title: string;
+  url: string;
+}
+
 interface NavbarProps {
   menuId: number;
   urlPrefix: string;
+  prefixItems?: NavbarItem[];
+  postfixItemsTitle?: string;
+  postfixItems?: NavbarItem[];
 }
 
-const Navbar: React.FC<NavbarProps> = ({ menuId, urlPrefix }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  menuId,
+  urlPrefix,
+  prefixItems = [],
+  postfixItemsTitle = '',
+  postfixItems = [],
+}) => {
   const dispatch = useDispatch();
   const { data: menuData } = useGetMenuById({ variables: menuId, enabled: menuId > 0 });
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
@@ -31,6 +46,12 @@ const Navbar: React.FC<NavbarProps> = ({ menuId, urlPrefix }) => {
 
   return (
     <NavbarWrapper>
+      {prefixItems?.map((item) => (
+        <NavbarItem key={item.key} href={item.url}>
+          {item.title}
+          <NavbarSquare />
+        </NavbarItem>
+      ))}
       {menuItemsData.map((item) => {
         if (item.isMain) return <NavbarHeader key={item.id} title={item.name ?? ''} />;
         if (item.code) {
@@ -43,6 +64,13 @@ const Navbar: React.FC<NavbarProps> = ({ menuId, urlPrefix }) => {
         }
         return null;
       })}
+      {postfixItems.length > 0 && <NavbarHeader title={postfixItemsTitle} />}
+      {postfixItems.map((item) => (
+        <NavbarItem key={item.key} href={item.url}>
+          {item.title}
+          <NavbarSquare />
+        </NavbarItem>
+      ))}
     </NavbarWrapper>
   );
 };

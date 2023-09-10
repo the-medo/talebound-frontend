@@ -10,6 +10,7 @@
  */
 
 import {
+  PbGetMenuItemPostsByMenuIdResponse,
   PbGetMenuItemPostsResponse,
   PbGetMenuItemsResponse,
   PbMenuItem,
@@ -271,6 +272,8 @@ export class Menus<SecurityDataType = unknown> {
     postId: number,
     body: {
       /** @format int32 */
+      newMenuItemId?: number;
+      /** @format int32 */
       position?: number;
     },
     params: RequestParams = {},
@@ -280,6 +283,23 @@ export class Menus<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description gets list of menu item posts for menu
+   *
+   * @tags Talebound
+   * @name TaleboundGetMenuItemPostsByMenuId
+   * @summary Get menu item posts by menu id
+   * @request GET:/menus/{menuId}/posts
+   * @response `200` `PbGetMenuItemPostsByMenuIdResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundGetMenuItemPostsByMenuId = (menuId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetMenuItemPostsByMenuIdResponse, RpcStatus>({
+      path: `/menus/${menuId}/posts`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
