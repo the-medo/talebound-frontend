@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useGetWorldById } from '../../api/worlds/useGetWorldById';
-import Navbar from './Navbar';
+import Navbar, { NavbarItem } from './Navbar';
+import { isWorldCollaborator, useMyWorldRole } from '../../hooks/useWorldAdmins';
 
 interface LeftNavbarWorldProps {
   worldId: number;
@@ -9,8 +10,30 @@ interface LeftNavbarWorldProps {
 const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
   const menuId = worldData?.worldMenuId ?? 0;
+  const role = useMyWorldRole(worldId);
 
-  return <Navbar menuId={menuId} urlPrefix={`/worlds/${worldId}/c`} />;
+  const postfixItems: NavbarItem[] = useMemo(() => {
+    if (isWorldCollaborator(role)) {
+      return [
+        {
+          key: 'world-posts',
+          title: 'Posts',
+          url: `/worlds/${worldId}/posts`,
+        },
+      ];
+    }
+
+    return [];
+  }, [role, worldId]);
+
+  return (
+    <Navbar
+      menuId={menuId}
+      urlPrefix={`/worlds/${worldId}/c`}
+      postfixItemsTitle="Admin"
+      postfixItems={postfixItems}
+    />
+  );
 };
 
 export default LeftNavbarWorld;

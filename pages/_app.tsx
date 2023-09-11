@@ -6,6 +6,18 @@ import React from 'react';
 import { StoreProvider } from '../store';
 import { CookiesProvider } from 'react-cookie';
 import { HydrationProvider } from 'react-hydration-provider';
+import { COLORS, theme } from '../styles/stitches.config';
+import { ConfigProviderProps } from 'antd/es/config-provider';
+import { ConfigProvider } from 'antd';
+
+const antdTheme: ConfigProviderProps['theme'] = {
+  token: {
+    colorPrimary: COLORS.primary,
+    colorLinkHover: COLORS.primary,
+  },
+};
+
+console.log(theme.colors.primary.toString());
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,7 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CookiesProvider>
         <StoreProvider>
           <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
+            <ConfigProvider theme={antdTheme}>
+              <Component {...pageProps} />
+            </ConfigProvider>
           </QueryClientProvider>
         </StoreProvider>
       </CookiesProvider>

@@ -11,6 +11,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.17.0",
     "@lexical/react": "^0.11.3",
     "@lexical/rich-text": "0.11.3",
     "@lexical/selection": "^0.11.3",

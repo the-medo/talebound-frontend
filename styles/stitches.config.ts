@@ -1,5 +1,15 @@
 import { createStitches } from '@stitches/react';
 
+export const COLORS = {
+  primary: '#36866f',
+  secondary: '#78959a',
+  tertiary: '#5b6b82',
+  success: '#45a359',
+  danger: '#f44336',
+  info: '#028FCC',
+  warning: '#c39321',
+};
+
 export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme, config } =
   createStitches({
     theme: {
@@ -7,14 +17,14 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         black: '#202729',
         white: '#F8F6F8',
 
-        primary: '#36866f',
-        secondary: '#78959a',
-        tertiary: '#5b6b82',
+        primary: COLORS.primary,
+        secondary: COLORS.secondary,
+        tertiary: COLORS.tertiary,
 
-        success: '#45a359',
-        danger: '#f44336',
-        info: '#028FCC',
-        warning: '#c39321',
+        success: COLORS.success,
+        danger: COLORS.danger,
+        info: COLORS.info,
+        warning: COLORS.warning,
 
         pageBackground: '$white',
         navbarBackground: '#2f3738',

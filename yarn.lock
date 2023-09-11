@@ -49,6 +49,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ant-design/cssinjs@npm:^1.17.0":
+  version: 1.17.0
+  resolution: "@ant-design/cssinjs@npm:1.17.0"
+  dependencies:
+    "@babel/runtime": ^7.11.1
+    "@emotion/hash": ^0.8.0
+    "@emotion/unitless": ^0.7.5
+    classnames: ^2.3.1
+    csstype: ^3.0.10
+    rc-util: ^5.35.0
+    stylis: ^4.0.13
+  peerDependencies:
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: f724ba57cd3bd1a28916e6d298a9929f6de2b8e4adb2acd8a12fea59ac918254d4b02e6861d4f140c3e84199d4dafbf1f72b94419a9ba4a1ef197fb17cd2916f
+  languageName: node
+  linkType: hard
+
 "@ant-design/icons-svg@npm:^4.3.0":
   version: 4.3.0
   resolution: "@ant-design/icons-svg@npm:4.3.0"
@@ -14036,6 +14054,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@ant-design/cssinjs": ^1.17.0
     "@lexical/react": ^0.11.3
     "@lexical/rich-text": 0.11.3
     "@lexical/selection": ^0.11.3
