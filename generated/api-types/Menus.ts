@@ -223,6 +223,10 @@ export class Menus<SecurityDataType = unknown> {
       /** @format int32 */
       position?: number;
       isMenuItemDescriptionPost?: boolean;
+      title?: string;
+      shortDescription?: string;
+      /** @format int32 */
+      imageThumbnailId?: number;
     },
     params: RequestParams = {},
   ) =>

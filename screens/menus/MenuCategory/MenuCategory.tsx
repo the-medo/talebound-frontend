@@ -14,6 +14,7 @@ import { Reorder } from 'framer-motion';
 import { PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import PostNew from '../../../component-sections/Post/PostNew';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -35,6 +36,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   canEdit = false,
 }) => {
   const [rearrangeMode, setRearrangeMode] = React.useState(false);
+  const [createPostMode, setCreatePostMode] = React.useState(false);
   const createMenuItemPost = useCreateMenuItemPost();
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
 
@@ -81,15 +83,13 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     setRearrangeMode((p) => !p);
   }, []);
 
-  const createPostHandler = useCallback(() => {
-    createMenuItemPost.mutate({
-      menuId: menuId,
-      menuItemId: menuItemId,
-      body: {
-        position: menuItemPostsData.length + 1,
-      },
-    });
-  }, [createMenuItemPost, menuId, menuItemId, menuItemPostsData.length]);
+  const toggleCreatePostMode = useCallback(() => {
+    setCreatePostMode((p) => !p);
+  }, []);
+
+  const postCreatedCallback = useCallback(() => {
+    setCreatePostMode(false);
+  }, []);
 
   const cacheHelper: UpdatePostCacheHelper = useMemo(
     () => ({
@@ -145,7 +145,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         </Col>
 
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ContentSection highlighted={descriptionPostId === displayPostId}>
+          <ContentSection highlighted={descriptionPostId === displayPostId && !createPostMode}>
             <Row gap="md" fullWidth justifyContent="between">
               <Link href={linkPrefix}>
                 <TitleH2>{menuItem.name}</TitleH2>
@@ -154,7 +154,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 
               {canEdit && (
                 <Row gap="md">
-                  <Button color="primaryOutline" onClick={createPostHandler}>
+                  <Button
+                    color={createPostMode ? 'primaryFill' : 'primaryOutline'}
+                    onClick={toggleCreatePostMode}
+                  >
                     <TbPlus />
                     Create post
                   </Button>
@@ -168,6 +171,14 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
                 </Row>
               )}
             </Row>
+            {createPostMode && (
+              <PostNew
+                menuId={menuId}
+                menuItemId={menuItemId}
+                position={menuItemPostsData.length + 1}
+                onFinishCallback={postCreatedCallback}
+              />
+            )}
           </ContentSection>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
             <Col loading={loading}>

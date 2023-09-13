@@ -9,6 +9,8 @@ import { PbMenuItem } from '../../../generated/api-types/data-contracts';
 import { Table } from 'antd';
 import { formatDate } from '../../../utils/functions/formatDate';
 import Avatar from '../../../components/Avatar/Avatar';
+import { ColumnType } from 'antd/es/table';
+import { TitleH2 } from '../../../components/Typography/Title';
 
 interface MenuPostsProps {
   menuId: number;
@@ -55,7 +57,7 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
     return result;
   }, [menuItemsData]);
 
-  const columns = useMemo(
+  const columns: ColumnType<PostTableData>[] = useMemo(
     () => [
       {
         title: '',
@@ -76,6 +78,7 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
         key: 'createdAt',
         dataIndex: 'createdAt',
         render: (value: string) => formatDate(value, false, 'week'),
+        defaultSortOrder: 'descend',
         sorter: (a: PostTableData, b: PostTableData) => {
           if (!a.createdAt) return -1;
           if (!b.createdAt) return 1;
@@ -87,7 +90,7 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
         key: 'lastUpdatedAt',
         dataIndex: 'lastUpdatedAt',
         render: (value: string) => formatDate(value, false, 'week'),
-        sorter: (a: PostTableData, b: PostTableData) => {
+        sorter: (a, b) => {
           if (!a.lastUpdatedAt) return -1;
           if (!b.lastUpdatedAt) return 1;
           return a.lastUpdatedAt < b.lastUpdatedAt ? -1 : 1;
@@ -148,6 +151,14 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
             dataSource={data}
             size="small"
           />
+        </ContentSection>
+      </Col>
+      <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
+        <ContentSection header="New post"></ContentSection>
+        <ContentSection>
+          <Row gap="md" alignItems="start" wrap>
+            <TitleH2>Actions</TitleH2>
+          </Row>
         </ContentSection>
       </Col>
     </Row>
