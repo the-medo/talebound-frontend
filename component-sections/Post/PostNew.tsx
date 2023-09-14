@@ -94,7 +94,7 @@ const PostNew: React.FC<PostNewProps> = ({
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
   return (
-    <ContentSection fullWidth flexWrap="wrap" direction="column">
+    <>
       <Row fullWidth gap="md" alignItems="start">
         <Col fullWidth gap="md">
           {canChangeTitle && (
@@ -142,7 +142,7 @@ const PostNew: React.FC<PostNewProps> = ({
         uploadedFilename={`post-thumbnail-menu-${menuId}`}
         uploadedImageTypeId={100}
       />
-    </ContentSection>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useGetMenuItemPostsByMenuId } from '../../../api/menus/useGetMenuItemPostsByMenuId';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
@@ -11,10 +11,15 @@ import { formatDate } from '../../../utils/functions/formatDate';
 import Avatar from '../../../components/Avatar/Avatar';
 import { ColumnType } from 'antd/es/table';
 import { TitleH2 } from '../../../components/Typography/Title';
-
-interface MenuPostsProps {
-  menuId: number;
-}
+import PostNew from '../../../component-sections/Post/PostNew';
+import { Button } from '../../../components/Button/Button';
+import { TbMenuOrder, TbPlus } from 'react-icons/tb';
+import { SelectOptionGroup, SelectOptions } from '../../../components-radix-ui/Select/selectLib';
+import Select from '../../../components/Select/Select';
+import { useCreateMenuItemPost } from '../../../api/menus/useCreateMenuItemPost';
+import { useUpdateMenuPosts } from '../../../api/menus/useUpdateMenuPosts';
+import { Text } from '../../../components/Typography/Text';
+import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface PbMenuItemWithParent {
   item: PbMenuItem;
@@ -32,14 +37,22 @@ interface PostTableData {
 
 type MenuItemsById = Record<number, PbMenuItemWithParent>;
 
-const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
+interface MenuPostsProps {
+  menuId: number;
+  canEdit?: boolean;
+}
+
+const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [createPostMode, setCreatePostMode] = useState(false);
+  const [selectedAction, setSelectedAction] = useState<string>();
 
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
   const { data: menuItemPostsData = [] } = useGetMenuItemPostsByMenuId({
     variables: menuId,
     enabled: menuId > 0,
   });
+  const { mutate: updateMenuPosts, isLoading, error } = useUpdateMenuPosts();
 
   const menuItemsById = useMemo(() => {
     const result: MenuItemsById = {};
@@ -114,12 +127,17 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
         const createdAt = p.post?.createdAt;
         const lastUpdatedAt = p.post?.lastUpdatedAt;
 
+        let category: string | undefined = '- none -';
+        if (menuItem) {
+          category = menuItem.parent
+            ? `${menuItem.parent.name} - ${menuItem.item.name}`
+            : menuItem.item.name;
+        }
+
         return {
           avatar: p.post?.imageThumbnailUrl,
           key: p.postId,
-          category: menuItem.parent
-            ? `${menuItem.parent.name} - ${menuItem.item.name}`
-            : menuItem.item.name,
+          category,
           title: p.post?.title,
           createdAt: createdAt ? new Date(createdAt) : undefined,
           lastUpdatedAt: lastUpdatedAt ? new Date(lastUpdatedAt) : undefined,
@@ -133,12 +151,49 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
+  const toggleCreatePostMode = useCallback(() => {
+    setCreatePostMode((p) => !p);
+  }, []);
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
 
+  const options: SelectOptions = useMemo(() => {
+    const groups: SelectOptionGroup[] = [];
+    menuItemsData.forEach((item) => {
+      if (item.id) {
+        if (item.isMain) {
+          groups.push({ label: item.name ?? '-', options: [] });
+        } else {
+          groups[groups.length - 1].options.push({
+            value: item.id.toString(),
+            label: item.name ?? '-',
+          });
+        }
+      }
+    });
+
+    return {
+      type: 'group',
+      groups,
+    };
+  }, [menuItemsData]);
+
   const hasSelected = selectedRowKeys.length > 0;
+
+  const submitCategoryChange = useCallback(() => {
+    if (selectedRowKeys.length > 0) {
+      updateMenuPosts({
+        menuId,
+        body: {
+          postIds: selectedRowKeys.map((k) => parseInt(k.toString())),
+          menuItemId: selectedAction ? parseInt(selectedAction) : undefined,
+        },
+      });
+    }
+  }, [updateMenuPosts, menuId, selectedRowKeys, selectedAction]);
 
   return (
     <Row gap="md" alignItems="start" wrap>
@@ -151,14 +206,53 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId }) => {
             dataSource={data}
             size="small"
           />
+          {hasSelected && (
+            <Col css={{ maxWidth: '500px' }} gap="md" fullWidth>
+              <TitleH2>Change category</TitleH2>
+            </Col>
+          )}
         </ContentSection>
       </Col>
       <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-        <ContentSection header="New post"></ContentSection>
         <ContentSection>
-          <Row gap="md" alignItems="start" wrap>
-            <TitleH2>Actions</TitleH2>
+          <Row gap="md" fullWidth justifyContent="between">
+            <TitleH2>New post</TitleH2>
+            {canEdit && (
+              <Row gap="md">
+                <Button
+                  color={createPostMode ? 'primaryFill' : 'primaryOutline'}
+                  onClick={toggleCreatePostMode}
+                >
+                  <TbPlus />
+                  Create post
+                </Button>
+              </Row>
+            )}
           </Row>
+          {createPostMode && <PostNew menuId={menuId} menuItemId={0} />}
+        </ContentSection>
+        <ContentSection>
+          <TitleH2>Change category</TitleH2>
+          {!hasSelected && <Text>Select posts to change their category or unassign them</Text>}
+          {hasSelected && (
+            <>
+              <Text>{selectedRowKeys.length} selected post</Text>
+              <Row gap="md" alignItems="center">
+                <Select
+                  id="menu_item_id"
+                  options={options}
+                  placeholder="Choose a category..."
+                  onValueChange={setSelectedAction}
+                  value={selectedAction}
+                  noHelper={true}
+                />
+                <Button onClick={submitCategoryChange} loading={isLoading}>
+                  Submit
+                </Button>
+                <ErrorText error={error} />
+              </Row>
+            </>
+          )}
         </ContentSection>
       </Col>
     </Row>

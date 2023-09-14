@@ -307,4 +307,31 @@ export class Menus<SecurityDataType = unknown> {
       format: 'json',
       ...params,
     });
+  /**
+   * @description change menu item id for multiple posts
+   *
+   * @tags Talebound
+   * @name TaleboundUpdateMenuPosts
+   * @summary Update menu posts
+   * @request PATCH:/menus/{menuId}/posts
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  taleboundUpdateMenuPosts = (
+    menuId: number,
+    body: {
+      /** @format int32 */
+      menuItemId?: number;
+      postIds?: number[];
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<object, RpcStatus>({
+      path: `/menus/${menuId}/posts`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
 }
