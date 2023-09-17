@@ -161,7 +161,18 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
   };
 
   const options: SelectOptions = useMemo(() => {
-    const groups: SelectOptionGroup[] = [];
+    const groups: SelectOptionGroup[] = [
+      {
+        label: 'Unassign',
+        options: [
+          {
+            value: '0',
+            label: ' - no category - ',
+          },
+        ],
+      },
+    ];
+
     menuItemsData.forEach((item) => {
       if (item.id) {
         if (item.isMain) {
