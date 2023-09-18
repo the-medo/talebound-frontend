@@ -382,6 +382,10 @@ export interface PbTag {
   tag?: string;
 }
 
+export interface PbUpdateMenuPostsResponse {
+  menuItemPosts?: PbMenuItemPost[];
+}
+
 export interface PbUpdateUserRequest {
   /** @format int32 */
   id?: number;

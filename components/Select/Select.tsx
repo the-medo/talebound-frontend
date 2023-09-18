@@ -23,7 +23,9 @@ import { SelectRoot } from '../../components-radix-ui/Select/SelectRoot';
 import { SelectOptions } from '../../components-radix-ui/Select/selectLib';
 import { HelperType } from '../../utils/form/helperTypes';
 
-export interface SelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, SelectTriggerVariants {
+export interface SelectProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    SelectTriggerVariants {
   id: string;
   label?: string;
   labelDirection?: 'row' | 'column';
