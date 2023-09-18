@@ -145,19 +145,22 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
     [menuItemsById, menuItemPostsData],
   );
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+  const onSelectChange = useCallback((newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
-  };
+  }, []);
 
   const toggleCreatePostMode = useCallback(() => {
     setCreatePostMode((p) => !p);
   }, []);
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+  const rowSelection = useMemo(
+    () => ({
+      selectedRowKeys,
+      onChange: onSelectChange,
+    }),
+    [selectedRowKeys, onSelectChange],
+  );
 
   const options: SelectOptions = useMemo(() => {
     const groups: SelectOptionGroup[] = [
@@ -195,13 +198,20 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
 
   const submitCategoryChange = useCallback(() => {
     if (selectedRowKeys.length > 0) {
-      updateMenuPosts({
-        menuId,
-        body: {
-          postIds: selectedRowKeys.map((k) => parseInt(k.toString())),
-          menuItemId: selectedAction ? parseInt(selectedAction) : undefined,
+      updateMenuPosts(
+        {
+          menuId,
+          body: {
+            postIds: selectedRowKeys.map((k) => parseInt(k.toString())),
+            menuItemId: selectedAction ? parseInt(selectedAction) : undefined,
+          },
         },
-      });
+        {
+          onSuccess: () => {
+            setSelectedRowKeys([]);
+          },
+        },
+      );
     }
   }, [updateMenuPosts, menuId, selectedRowKeys, selectedAction]);
 
@@ -219,6 +229,26 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
           {hasSelected && (
             <Col css={{ maxWidth: '500px' }} gap="md" fullWidth>
               <TitleH2>Change category</TitleH2>
+              {!hasSelected && <Text>Select posts to change their category or unassign them</Text>}
+              {hasSelected && (
+                <>
+                  <Text>{selectedRowKeys.length} selected post</Text>
+                  <Row gap="md" alignItems="center">
+                    <Select
+                      id="menu_item_id"
+                      options={options}
+                      placeholder="Choose a category..."
+                      onValueChange={setSelectedAction}
+                      value={selectedAction}
+                      noHelper={true}
+                    />
+                    <Button onClick={submitCategoryChange} loading={isLoading}>
+                      Submit
+                    </Button>
+                  </Row>
+                  <ErrorText error={error} />
+                </>
+              )}
             </Col>
           )}
         </ContentSection>
@@ -240,29 +270,6 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
             )}
           </Row>
           {createPostMode && <PostNew menuId={menuId} menuItemId={0} />}
-        </ContentSection>
-        <ContentSection>
-          <TitleH2>Change category</TitleH2>
-          {!hasSelected && <Text>Select posts to change their category or unassign them</Text>}
-          {hasSelected && (
-            <>
-              <Text>{selectedRowKeys.length} selected post</Text>
-              <Row gap="md" alignItems="center">
-                <Select
-                  id="menu_item_id"
-                  options={options}
-                  placeholder="Choose a category..."
-                  onValueChange={setSelectedAction}
-                  value={selectedAction}
-                  noHelper={true}
-                />
-                <Button onClick={submitCategoryChange} loading={isLoading}>
-                  Submit
-                </Button>
-                <ErrorText error={error} />
-              </Row>
-            </>
-          )}
         </ContentSection>
       </Col>
     </Row>
