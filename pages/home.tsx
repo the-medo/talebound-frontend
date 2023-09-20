@@ -5,6 +5,7 @@ import { Client } from 'react-hydration-provider';
 import { Col } from '../components/Flex/Flex';
 import Layout from '../components/Layout/Layout';
 import LeftNavbar from '../components/LeftNavbar/LeftNavbar';
+import DynamicIcon from '../components/DynamicIcon/DynamicIcon';
 
 export default function Home() {
   const { user, isLoggedIn } = useAuth();
@@ -18,6 +19,7 @@ export default function Home() {
         <Col gap="lg" padding="lg">
           <Client>{user?.email}</Client>
           <Client>Logged in = {isLoggedIn ? 'true' : 'false'}</Client>
+          <DynamicIcon icon="GiAlienBug" size="305px" />
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in
