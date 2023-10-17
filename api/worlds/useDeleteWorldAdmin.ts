@@ -10,7 +10,7 @@ interface DeleteWorldAdminParams {
 
 export const useDeleteWorldAdmin = createMutation({
   mutationFn: async (variables: DeleteWorldAdminParams) =>
-    WorldsCollection.taleboundDeleteWorldAdmin(variables.worldId, { userId: variables.userId }),
+    WorldsCollection.worldsDeleteWorldAdmin(variables.worldId, { userId: variables.userId }),
   onSuccess: (_, variables) => {
     const worldId = variables.worldId;
     const userId = variables.userId;

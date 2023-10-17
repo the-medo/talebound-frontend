@@ -15,7 +15,7 @@ export interface UpdateWorldIntroductionRequest {
 
 export const useUpdateWorldIntroduction = createMutation({
   mutationFn: async (variables: UpdateWorldIntroductionRequest) =>
-    WorldsCollection.taleboundUpdateWorldIntroduction(variables.worldId, variables.body),
+    WorldsCollection.worldsUpdateWorldIntroduction(variables.worldId, variables.body),
   onMutate: async (variables) => {
     const postQueryKey = useGetPostById.getKey(variables.postId);
     const previousData = queryClient.getQueryData(postQueryKey);

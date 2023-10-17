@@ -11,7 +11,7 @@ export type MoveGroupUpParams = {
 
 export const useUpdateMenuItemMoveGroupUp = createMutation({
   mutationFn: async (variables: MoveGroupUpParams) =>
-    MenusCollection.taleboundUpdateMenuItemMoveGroupUp(variables.menuId, variables.menuItemId),
+    MenusCollection.menusUpdateMenuItemMoveGroupUp(variables.menuId, variables.menuItemId),
 
   onMutate: async (variables) => {
     const getMenuItemsQueryKey = useGetMenuItems.getKey(variables.menuId);

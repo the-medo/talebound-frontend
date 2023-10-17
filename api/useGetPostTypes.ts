@@ -6,7 +6,7 @@ import { TaleboundError } from '../utils/types/error';
 export const useGetPostTypes = createQuery<PbDataPostType[], void, TaleboundError>({
   primaryKey: 'useGetPostTypes',
   queryFn: async () => {
-    const { data } = await PostTypesCollection.taleboundGetPostTypes();
+    const { data } = await PostTypesCollection.postTypesGetPostTypes();
     return data.postTypes ?? [];
   },
 });

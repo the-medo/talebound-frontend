@@ -11,7 +11,7 @@ interface DeleteMenuItemParams {
 
 export const useDeleteMenuItem = createMutation({
   mutationFn: async (variables: DeleteMenuItemParams) =>
-    MenusCollection.taleboundDeleteMenuItem(variables.menuId, variables.menuItemId),
+    MenusCollection.menusDeleteMenuItem(variables.menuId, variables.menuItemId),
   onSuccess: (_, variables) => {
     const { menuId, menuItemId } = variables;
     if (menuId && menuItemId) {

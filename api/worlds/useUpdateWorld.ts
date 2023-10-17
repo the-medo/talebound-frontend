@@ -7,12 +7,12 @@ import { useGetWorldsOfCreator } from '../users/useGetWorldsOfCreator';
 
 type UpdateWorldParams = {
   worldId: number;
-  body: Parameters<typeof WorldsCollection.taleboundUpdateWorld>[1];
+  body: Parameters<typeof WorldsCollection.worldsUpdateWorld>[1];
 };
 
 export const useUpdateWorld = createMutation({
   mutationFn: async (variables: UpdateWorldParams) =>
-    WorldsCollection.taleboundUpdateWorld(variables.worldId, variables.body),
+    WorldsCollection.worldsUpdateWorld(variables.worldId, variables.body),
   onSuccess: (data) => {
     const worldId = data.data.id;
     if (worldId) {

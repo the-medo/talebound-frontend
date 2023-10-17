@@ -51,14 +51,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description returns list of users
    *
-   * @tags Talebound
-   * @name TaleboundGetUsers
+   * @tags Users
+   * @name UsersGetUsers
    * @summary Get list of users
    * @request GET:/users
    * @response `200` `PbGetUsersResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetUsers = (
+  usersGetUsers = (
     query?: {
       /** @format int32 */
       limit?: number;
@@ -77,14 +77,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description use this API to create a new user
    *
-   * @tags Talebound
-   * @name TaleboundCreateUser
+   * @tags Users
+   * @name UsersCreateUser
    * @summary Create new user
    * @request POST:/users
    * @response `200` `PbCreateUserResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreateUser = (body: PbCreateUserRequest, params: RequestParams = {}) =>
+  usersCreateUser = (body: PbCreateUserRequest, params: RequestParams = {}) =>
     this.http.request<PbCreateUserResponse, RpcStatus>({
       path: `/users`,
       method: 'POST',
@@ -96,14 +96,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description use this API to update user
    *
-   * @tags Talebound
-   * @name TaleboundUpdateUser
+   * @tags Users
+   * @name UsersUpdateUser
    * @summary Update user
    * @request PATCH:/users
    * @response `200` `PbUpdateUserResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateUser = (body: PbUpdateUserRequest, params: RequestParams = {}) =>
+  usersUpdateUser = (body: PbUpdateUserRequest, params: RequestParams = {}) =>
     this.http.request<PbUpdateUserResponse, RpcStatus>({
       path: `/users`,
       method: 'PATCH',
@@ -115,14 +115,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description returns information about one user
    *
-   * @tags Talebound
-   * @name TaleboundGetUserById
+   * @tags Users
+   * @name UsersGetUserById
    * @summary Get user
    * @request GET:/users/id/{userId}
    * @response `200` `PbViewUser` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetUserById = (userId: number, params: RequestParams = {}) =>
+  usersGetUserById = (userId: number, params: RequestParams = {}) =>
     this.http.request<PbViewUser, RpcStatus>({
       path: `/users/id/${userId}`,
       method: 'GET',
@@ -132,14 +132,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description login user - get user object and set HttpOnly cookies
    *
-   * @tags Talebound
-   * @name TaleboundLoginUser
+   * @tags Users
+   * @name UsersLoginUser
    * @summary Login user
    * @request POST:/users/login
    * @response `200` `PbLoginUserResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundLoginUser = (body: PbLoginUserRequest, params: RequestParams = {}) =>
+  usersLoginUser = (body: PbLoginUserRequest, params: RequestParams = {}) =>
     this.http.request<PbLoginUserResponse, RpcStatus>({
       path: `/users/login`,
       method: 'POST',
@@ -151,14 +151,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description logout user - it clears HttpOnly cookies - no request data required
    *
-   * @tags Talebound
-   * @name TaleboundLogoutUser
+   * @tags Users
+   * @name UsersLogoutUser
    * @summary Logout user
    * @request POST:/users/logout
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundLogoutUser = (body: object, params: RequestParams = {}) =>
+  usersLogoutUser = (body: object, params: RequestParams = {}) =>
     this.http.request<object, RpcStatus>({
       path: `/users/logout`,
       method: 'POST',
@@ -170,17 +170,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description in case a user forgot their password, they can request a password reset using this endpoint
    *
-   * @tags Talebound
-   * @name TaleboundResetPasswordSendCode
+   * @tags Users
+   * @name UsersResetPasswordSendCode
    * @summary Request password reset
    * @request POST:/users/reset/send-code
    * @response `200` `PbResetPasswordSendCodeResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundResetPasswordSendCode = (
-    body: PbResetPasswordSendCodeRequest,
-    params: RequestParams = {},
-  ) =>
+  usersResetPasswordSendCode = (body: PbResetPasswordSendCodeRequest, params: RequestParams = {}) =>
     this.http.request<PbResetPasswordSendCodeResponse, RpcStatus>({
       path: `/users/reset/send-code`,
       method: 'POST',
@@ -192,14 +189,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description in case a user forgot their password, they can confirm the password reset using this endpoint
    *
-   * @tags Talebound
-   * @name TaleboundResetPasswordVerifyCode
+   * @tags Users
+   * @name UsersResetPasswordVerifyCode
    * @summary Confirm password reset
    * @request POST:/users/reset/verify-code
    * @response `200` `PbResetPasswordVerifyCodeResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundResetPasswordVerifyCode = (
+  usersResetPasswordVerifyCode = (
     body: PbResetPasswordVerifyCodeRequest,
     params: RequestParams = {},
   ) =>
@@ -214,14 +211,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description validate reset password secret code
    *
-   * @tags Talebound
-   * @name TaleboundResetPasswordVerifyCodeValidity
+   * @tags Users
+   * @name UsersResetPasswordVerifyCodeValidity
    * @summary Validate reset password secret code
    * @request GET:/users/reset/verify-code-validity
    * @response `200` `PbResetPasswordVerifyCodeValidityResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundResetPasswordVerifyCodeValidity = (
+  usersResetPasswordVerifyCodeValidity = (
     query?: {
       secretCode?: string;
     },
@@ -237,14 +234,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description returns full list of user roles
    *
-   * @tags Talebound
-   * @name TaleboundGetUserRoles
+   * @tags Users
+   * @name UsersGetUserRoles
    * @summary Get user roles (admin, moderator, etc.)
    * @request GET:/users/roles
    * @response `200` `PbGetUserRolesResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetUserRoles = (
+  usersGetUserRoles = (
     query?: {
       /** @format int32 */
       userId?: number;
@@ -261,14 +258,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description adds new role to user
    *
-   * @tags Talebound
-   * @name TaleboundAddRoleToUser
+   * @tags Users
+   * @name UsersAddRoleToUser
    * @summary Add role to user
    * @request POST:/users/roles
    * @response `200` `PbAddRoleToUserResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundAddRoleToUser = (body: PbAddRoleToUserRequest, params: RequestParams = {}) =>
+  usersAddRoleToUser = (body: PbAddRoleToUserRequest, params: RequestParams = {}) =>
     this.http.request<PbAddRoleToUserResponse, RpcStatus>({
       path: `/users/roles`,
       method: 'POST',
@@ -280,14 +277,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description uploads an user avatar
    *
-   * @tags Talebound
-   * @name TaleboundUploadUserAvatar
+   * @tags Users
+   * @name UsersUploadUserAvatar
    * @summary Upload user avatar
    * @request POST:/users/{userId}/avatar
    * @response `200` `PbUploadUserAvatarResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUploadUserAvatar = (
+  usersUploadUserAvatar = (
     userId: number,
     body: {
       /** @format byte */
@@ -306,14 +303,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description get evaluation votes by user id
    *
-   * @tags Talebound
-   * @name TaleboundGetEvaluationVotesByUserId
+   * @tags Users
+   * @name UsersGetEvaluationVotesByUserId
    * @summary Get evaluation votes by user id
    * @request GET:/users/{userId}/evaluation-vote
    * @response `200` `PbGetEvaluationVotesByUserIdResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetEvaluationVotesByUserId = (userId: number, params: RequestParams = {}) =>
+  usersGetEvaluationVotesByUserId = (userId: number, params: RequestParams = {}) =>
     this.http.request<PbGetEvaluationVotesByUserIdResponse, RpcStatus>({
       path: `/users/${userId}/evaluation-vote`,
       method: 'GET',
@@ -323,14 +320,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description create or update evaluation vote
    *
-   * @tags Talebound
-   * @name TaleboundCreateOrUpdateEvaluationVote
+   * @tags Users
+   * @name UsersCreateOrUpdateEvaluationVote
    * @summary Create or update evaluation vote
    * @request POST:/users/{userId}/evaluation-vote
    * @response `200` `PbCreateOrUpdateEvaluationVoteResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreateOrUpdateEvaluationVote = (
+  usersCreateOrUpdateEvaluationVote = (
     userId: number,
     body: {
       /** @format int32 */
@@ -353,14 +350,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description get average user evaluation by type
    *
-   * @tags Talebound
-   * @name TaleboundGetAverageUserEvaluationsByType
+   * @tags Users
+   * @name UsersGetAverageUserEvaluationsByType
    * @summary Get average user evaluation
    * @request GET:/users/{userId}/evaluation-vote/type/{type}/average
    * @response `200` `PbGetAverageUserEvaluationsByTypeResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetAverageUserEvaluationsByType = (
+  usersGetAverageUserEvaluationsByType = (
     userId: number,
     type: string,
     params: RequestParams = {},
@@ -374,14 +371,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description get evaluation votes by user id and voter
    *
-   * @tags Talebound
-   * @name TaleboundGetEvaluationVotesByUserIdAndVoter
+   * @tags Users
+   * @name UsersGetEvaluationVotesByUserIdAndVoter
    * @summary Get evaluation votes by user id and voter
    * @request GET:/users/{userId}/evaluation-vote/voter/{userIdVoter}
    * @response `200` `PbGetEvaluationVotesByUserIdAndVoterResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetEvaluationVotesByUserIdAndVoter = (
+  usersGetEvaluationVotesByUserIdAndVoter = (
     userId: number,
     userIdVoter: number,
     params: RequestParams = {},
@@ -395,14 +392,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description delete evaluation vote
    *
-   * @tags Talebound
-   * @name TaleboundDeleteEvaluationVote
+   * @tags Users
+   * @name UsersDeleteEvaluationVote
    * @summary Delete evaluation vote
    * @request DELETE:/users/{userId}/evaluation-vote/{evaluationId}/voter/{userIdVoter}
    * @response `200` `PbDeleteEvaluationVoteResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeleteEvaluationVote = (
+  usersDeleteEvaluationVote = (
     userId: number,
     evaluationId: number,
     userIdVoter: number,
@@ -417,14 +414,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description get images of user by userID - filterable by image type
    *
-   * @tags Talebound
-   * @name TaleboundGetUserImages
+   * @tags Users
+   * @name UsersGetUserImages
    * @summary Get user images
    * @request GET:/users/{userId}/images
    * @response `200` `PbGetImagesResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetUserImages = (
+  usersGetUserImages = (
     userId: number,
     query?: {
       /** @format int32 */
@@ -446,14 +443,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description use this API to update user introduction
    *
-   * @tags Talebound
-   * @name TaleboundUpdateUserIntroduction
+   * @tags Users
+   * @name UsersUpdateUserIntroduction
    * @summary Update user introduction
    * @request PATCH:/users/{userId}/introduction
    * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateUserIntroduction = (
+  usersUpdateUserIntroduction = (
     userId: number,
     body: {
       content?: string;
@@ -472,14 +469,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description get posts of user by userID
    *
-   * @tags Talebound
-   * @name TaleboundGetUserPosts
+   * @tags Users
+   * @name UsersGetUserPosts
    * @summary Get user posts
    * @request GET:/users/{userId}/posts
    * @response `200` `PbGetUserPostsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetUserPosts = (
+  usersGetUserPosts = (
     userId: number,
     query?: {
       /** @format int32 */
@@ -501,14 +498,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description removes role from user
    *
-   * @tags Talebound
-   * @name TaleboundRemoveRoleFromUser
+   * @tags Users
+   * @name UsersRemoveRoleFromUser
    * @summary Remove role from user
    * @request DELETE:/users/{userId}/roles/{roleId}
    * @response `200` `PbRemoveRoleFromUserResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundRemoveRoleFromUser = (userId: number, roleId: number, params: RequestParams = {}) =>
+  usersRemoveRoleFromUser = (userId: number, roleId: number, params: RequestParams = {}) =>
     this.http.request<PbRemoveRoleFromUserResponse, RpcStatus>({
       path: `/users/${userId}/roles/${roleId}`,
       method: 'DELETE',
@@ -518,14 +515,14 @@ export class Users<SecurityDataType = unknown> {
   /**
    * @description gets list of worlds that the creator is part of
    *
-   * @tags Talebound
-   * @name TaleboundGetWorldsOfCreator
+   * @tags Users
+   * @name UsersGetWorldsOfCreator
    * @summary Get creator's worlds
    * @request GET:/users/{userId}/worlds
    * @response `200` `PbGetWorldsOfCreatorResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetWorldsOfCreator = (userId: number, params: RequestParams = {}) =>
+  usersGetWorldsOfCreator = (userId: number, params: RequestParams = {}) =>
     this.http.request<PbGetWorldsOfCreatorResponse, RpcStatus>({
       path: `/users/${userId}/worlds`,
       method: 'GET',

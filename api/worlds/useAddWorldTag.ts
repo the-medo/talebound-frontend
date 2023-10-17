@@ -10,7 +10,7 @@ interface AddWorldTagParams {
 
 export const useAddWorldTag = createMutation({
   mutationFn: async (variables: AddWorldTagParams) =>
-    WorldsCollection.taleboundAddWorldTag(variables.worldId, { tagId: variables.tagId }),
+    WorldsCollection.worldsAddWorldTag(variables.worldId, { tagId: variables.tagId }),
   onSuccess: (data, variables) => {
     const newTag = data.data.tag;
     if (newTag) {

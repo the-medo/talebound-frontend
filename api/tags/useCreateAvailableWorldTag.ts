@@ -6,7 +6,7 @@ import { useGetAvailableWorldTags } from './useGetAvailableWorldTags';
 
 export const useCreateAvailableWorldTag = createMutation({
   mutationFn: async (variables: PbCreateAvailableWorldTagRequest) =>
-    TagsCollection.taleboundCreateAvailableWorldTag(variables),
+    TagsCollection.tagsCreateAvailableWorldTag(variables),
   onSuccess: (data) => {
     const newTag = data.data;
     if (newTag) {

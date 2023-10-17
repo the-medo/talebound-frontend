@@ -10,7 +10,7 @@ interface CreateWorldAdminProps {
 
 export const useCreateWorldAdmin = createMutation({
   mutationFn: async (variables: CreateWorldAdminProps) =>
-    WorldsCollection.taleboundCreateWorldAdmin(variables.worldId, {
+    WorldsCollection.worldsCreateWorldAdmin(variables.worldId, {
       motivationalLetter: variables.motivationalLetter,
     }),
   onSuccess: (data, variables) => {

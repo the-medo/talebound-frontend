@@ -8,12 +8,12 @@ import { sortByPosition } from '../../utils/functions/sortByPosition';
 
 type UpdateMenuParams = {
   menuId: number;
-  body: Parameters<typeof MenusCollection.taleboundUpdateMenuPosts>[1];
+  body: Parameters<typeof MenusCollection.menusUpdateMenuPosts>[1];
 };
 
 export const useUpdateMenuPosts = createMutation({
   mutationFn: async (variables: UpdateMenuParams) =>
-    MenusCollection.taleboundUpdateMenuPosts(variables.menuId, variables.body),
+    MenusCollection.menusUpdateMenuPosts(variables.menuId, variables.body),
   onSuccess: (data, variables) => {
     const newData = data.data;
     if (newData) {

@@ -7,12 +7,12 @@ import { useGetMenuItemPosts } from './useGetMenuItemPosts';
 interface CreateMenuItemPostParams {
   menuId: number;
   menuItemId: number;
-  body: Parameters<typeof MenusCollection.taleboundCreateMenuItemPost>[2];
+  body: Parameters<typeof MenusCollection.menusCreateMenuItemPost>[2];
 }
 
 export const useCreateMenuItemPost = createMutation({
   mutationFn: async (variables: CreateMenuItemPostParams) => {
-    return MenusCollection.taleboundCreateMenuItemPost(
+    return MenusCollection.menusCreateMenuItemPost(
       variables.menuId,
       variables.menuItemId,
       variables.body,

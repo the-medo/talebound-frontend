@@ -7,13 +7,13 @@ const PAGE_SIZE = 4;
 
 export const useGetImages = createInfiniteQuery<
   InfiniteResponse<PbGetImagesResponse>,
-  OmitLimitOffset<typeof ImagesCollection.taleboundGetImages>,
+  OmitLimitOffset<typeof ImagesCollection.imagesGetImages>,
   Error,
   number
 >({
   primaryKey: 'useGetImages',
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
-    const { data } = await ImagesCollection.taleboundGetImages({
+    const { data } = await ImagesCollection.imagesGetImages({
       userId: variables?.userId,
       imageTypeId: variables?.imageTypeId,
       limit: PAGE_SIZE,

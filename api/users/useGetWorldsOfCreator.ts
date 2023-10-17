@@ -20,7 +20,7 @@ import { UserWorldMap } from '../../utils/types/UserWorldMap';
 export const useGetWorldsOfCreator = createQuery<UserWorldMap, number>({
   primaryKey: 'useGetWorldsOfCreator',
   queryFn: async ({ queryKey: [, variables] }) => {
-    const { data } = await UsersCollection.taleboundGetWorldsOfCreator(variables);
+    const { data } = await UsersCollection.usersGetWorldsOfCreator(variables);
 
     const rsp: UserWorldMap =
       data.worlds?.reduce((acc, { superAdmin, world }) => {

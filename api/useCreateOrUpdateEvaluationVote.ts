@@ -14,5 +14,5 @@ export interface PbCreateOrUpdateEvaluationVoteRequest {
 
 export const useCreateOrUpdateEvaluationVote = createMutation({
   mutationFn: async (variables: PbCreateOrUpdateEvaluationVoteRequest) =>
-    UsersCollection.taleboundCreateOrUpdateEvaluationVote(variables.userId, variables),
+    UsersCollection.usersCreateOrUpdateEvaluationVote(variables.userId, variables),
 });

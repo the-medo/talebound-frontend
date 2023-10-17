@@ -9,10 +9,10 @@
  * ---------------------------------------------------------------
  */
 
-import { PbVerifyEmailRequest, PbVerifyEmailResponse, RpcStatus } from './data-contracts';
+import { PbViewLocation, RpcStatus } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
-export class Verify<SecurityDataType = unknown> {
+export class Locations<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
 
   constructor(http: HttpClient<SecurityDataType>) {
@@ -20,19 +20,30 @@ export class Verify<SecurityDataType = unknown> {
   }
 
   /**
-   * @description verify user email
+   * @description updates location properties
    *
-   * @tags Verify
-   * @name VerifyVerifyEmail
-   * @summary Verify email
-   * @request POST:/verify
-   * @response `200` `PbVerifyEmailResponse` A successful response.
+   * @tags Locations
+   * @name LocationsUpdateLocation
+   * @summary Update location
+   * @request PATCH:/locations/{locationId}
+   * @response `200` `PbViewLocation` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  verifyVerifyEmail = (body: PbVerifyEmailRequest, params: RequestParams = {}) =>
-    this.http.request<PbVerifyEmailResponse, RpcStatus>({
-      path: `/verify`,
-      method: 'POST',
+  locationsUpdateLocation = (
+    locationId: number,
+    body: {
+      name?: string;
+      description?: string;
+      /** @format int32 */
+      postId?: number;
+      /** @format int32 */
+      thumbnailImageId?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbViewLocation, RpcStatus>({
+      path: `/locations/${locationId}`,
+      method: 'PATCH',
       body: body,
       type: ContentType.Json,
       format: 'json',

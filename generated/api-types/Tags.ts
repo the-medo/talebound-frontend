@@ -27,14 +27,14 @@ export class Tags<SecurityDataType = unknown> {
   /**
    * @description gets list of tags, that are usable for worlds
    *
-   * @tags Talebound
-   * @name TaleboundGetAvailableWorldTags
+   * @tags Tags
+   * @name TagsGetAvailableWorldTags
    * @summary Get available world tags
    * @request GET:/tags/worlds
    * @response `200` `PbGetAvailableWorldTagsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetAvailableWorldTags = (params: RequestParams = {}) =>
+  tagsGetAvailableWorldTags = (params: RequestParams = {}) =>
     this.http.request<PbGetAvailableWorldTagsResponse, RpcStatus>({
       path: `/tags/worlds`,
       method: 'GET',
@@ -44,14 +44,14 @@ export class Tags<SecurityDataType = unknown> {
   /**
    * @description creates new tag, that can be assigned to worlds
    *
-   * @tags Talebound
-   * @name TaleboundCreateAvailableWorldTag
+   * @tags Tags
+   * @name TagsCreateAvailableWorldTag
    * @summary Create available world tag
    * @request POST:/tags/worlds
    * @response `200` `PbViewTag` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreateAvailableWorldTag = (
+  tagsCreateAvailableWorldTag = (
     body: PbCreateAvailableWorldTagRequest,
     params: RequestParams = {},
   ) =>
@@ -66,14 +66,14 @@ export class Tags<SecurityDataType = unknown> {
   /**
    * @description deletes available world tag and removes all its assignments
    *
-   * @tags Talebound
-   * @name TaleboundDeleteAvailableWorldTag
+   * @tags Tags
+   * @name TagsDeleteAvailableWorldTag
    * @summary Delete available world tag
    * @request DELETE:/tags/worlds/{tagId}
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeleteAvailableWorldTag = (tagId: number, params: RequestParams = {}) =>
+  tagsDeleteAvailableWorldTag = (tagId: number, params: RequestParams = {}) =>
     this.http.request<object, RpcStatus>({
       path: `/tags/worlds/${tagId}`,
       method: 'DELETE',
@@ -83,14 +83,14 @@ export class Tags<SecurityDataType = unknown> {
   /**
    * @description updates world-assignable tag
    *
-   * @tags Talebound
-   * @name TaleboundUpdateAvailableWorldTag
+   * @tags Tags
+   * @name TagsUpdateAvailableWorldTag
    * @summary Update available world tag
    * @request PATCH:/tags/worlds/{tagId}
    * @response `200` `PbViewTag` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateAvailableWorldTag = (
+  tagsUpdateAvailableWorldTag = (
     tagId: number,
     body: {
       newTag?: string;

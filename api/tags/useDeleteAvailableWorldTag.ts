@@ -4,8 +4,7 @@ import { queryClient } from '../../pages/_app';
 import { useGetAvailableWorldTags } from './useGetAvailableWorldTags';
 
 export const useDeleteAvailableWorldTag = createMutation({
-  mutationFn: async (variables: number) =>
-    TagsCollection.taleboundDeleteAvailableWorldTag(variables),
+  mutationFn: async (variables: number) => TagsCollection.tagsDeleteAvailableWorldTag(variables),
   onSuccess: (_, tagId) => {
     if (tagId) {
       const availableWorldTagsQueryKey = useGetAvailableWorldTags.getKey();

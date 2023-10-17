@@ -12,12 +12,12 @@ export interface UpdatePostCacheHelper {
 export interface UpdatePostRequest {
   postId: number;
   cacheHelper?: UpdatePostCacheHelper;
-  body: Parameters<typeof PostsCollection.taleboundUpdatePost>[1];
+  body: Parameters<typeof PostsCollection.postsUpdatePost>[1];
 }
 
 export const useUpdatePost = createMutation({
   mutationFn: async (variables: UpdatePostRequest) =>
-    PostsCollection.taleboundUpdatePost(variables.postId, variables.body),
+    PostsCollection.postsUpdatePost(variables.postId, variables.body),
   onSuccess: (data, variables) => {
     const { postId, cacheHelper } = variables;
     console.log('TEST2', variables);

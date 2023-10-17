@@ -8,5 +8,5 @@ export type UploadUserAvatarRequest = {
 
 export const useUploadUserAvatar = createMutation({
   mutationFn: async (variables: UploadUserAvatarRequest) =>
-    UsersCollection.taleboundUploadUserAvatar(variables.userId, { data: variables.data }),
+    UsersCollection.usersUploadUserAvatar(variables.userId, { data: variables.data }),
 });

@@ -7,7 +7,7 @@ import { useGetWorldById } from './useGetWorldById';
 
 export const useCreateWorld = createMutation({
   mutationFn: async (variables: PbCreateWorldRequest) =>
-    WorldsCollection.taleboundCreateWorld(variables),
+    WorldsCollection.worldsCreateWorld(variables),
   onSuccess: (data) => {
     const worldId = data.data.id;
     if (worldId) {

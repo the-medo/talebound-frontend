@@ -10,7 +10,7 @@ export interface ExpandedUploadImageRequest extends PbUploadImageRequest {
 
 export const useUploadImage = createMutation({
   mutationFn: async (variables: ExpandedUploadImageRequest) =>
-    ImagesCollection.taleboundUploadDefaultImage(variables),
+    ImagesCollection.imagesUploadDefaultImage(variables),
 
   onSuccess: (data, variables) => {
     const queryKeys = [];

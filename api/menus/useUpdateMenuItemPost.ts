@@ -8,12 +8,12 @@ export type UpdateMenuItemPostParams = {
   menuId: number;
   menuItemId: number;
   postId: number;
-  body: Parameters<typeof MenusCollection.taleboundUpdateMenuItemPost>[3];
+  body: Parameters<typeof MenusCollection.menusUpdateMenuItemPost>[3];
 };
 
 export const useUpdateMenuItemPost = createMutation({
   mutationFn: async (variables: UpdateMenuItemPostParams) =>
-    MenusCollection.taleboundUpdateMenuItemPost(
+    MenusCollection.menusUpdateMenuItemPost(
       variables.menuId,
       variables.menuItemId,
       variables.postId,

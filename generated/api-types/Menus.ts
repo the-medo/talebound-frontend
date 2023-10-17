@@ -10,6 +10,7 @@
  */
 
 import {
+  PbGetMenuItemContentResponse,
   PbGetMenuItemPostsByMenuIdResponse,
   PbGetMenuItemPostsResponse,
   PbGetMenuItemsResponse,
@@ -31,14 +32,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description gets menu by ID
    *
-   * @tags Talebound
-   * @name TaleboundGetMenu
+   * @tags Menus
+   * @name MenusGetMenu
    * @summary Get menu by ID
    * @request GET:/menus/{menuId}
    * @response `200` `PbViewMenu` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetMenu = (menuId: number, params: RequestParams = {}) =>
+  menusGetMenu = (menuId: number, params: RequestParams = {}) =>
     this.http.request<PbViewMenu, RpcStatus>({
       path: `/menus/${menuId}`,
       method: 'GET',
@@ -48,14 +49,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description updates menu (code or image)
    *
-   * @tags Talebound
-   * @name TaleboundUpdateMenu
+   * @tags Menus
+   * @name MenusUpdateMenu
    * @summary Update Menu
    * @request PATCH:/menus/{menuId}
    * @response `200` `PbViewMenu` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateMenu = (
+  menusUpdateMenu = (
     menuId: number,
     body: {
       code?: string;
@@ -75,14 +76,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description move menu item group up
    *
-   * @tags Talebound
-   * @name TaleboundUpdateMenuItemMoveGroupUp
+   * @tags Menus
+   * @name MenusUpdateMenuItemMoveGroupUp
    * @summary Move menu item group up
    * @request PATCH:/menus/{menuId}/groups/{menuItemId}
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateMenuItemMoveGroupUp = (
+  menusUpdateMenuItemMoveGroupUp = (
     menuId: number,
     menuItemId: number,
     params: RequestParams = {},
@@ -96,14 +97,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description gets list of menu items
    *
-   * @tags Talebound
-   * @name TaleboundGetMenuItems
+   * @tags Menus
+   * @name MenusGetMenuItems
    * @summary Get menu items
    * @request GET:/menus/{menuId}/items
    * @response `200` `PbGetMenuItemsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetMenuItems = (menuId: number, params: RequestParams = {}) =>
+  menusGetMenuItems = (menuId: number, params: RequestParams = {}) =>
     this.http.request<PbGetMenuItemsResponse, RpcStatus>({
       path: `/menus/${menuId}/items`,
       method: 'GET',
@@ -113,14 +114,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description adds new menu item to the menu
    *
-   * @tags Talebound
-   * @name TaleboundCreateMenuItem
+   * @tags Menus
+   * @name MenusCreateMenuItem
    * @summary Create menu item
    * @request POST:/menus/{menuId}/items
    * @response `200` `PbMenuItem` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreateMenuItem = (
+  menusCreateMenuItem = (
     menuId: number,
     body: {
       code?: string;
@@ -140,16 +141,33 @@ export class Menus<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description gets list of entities for menu item - posts, maps, locations,...
+   *
+   * @tags Menus
+   * @name MenusGetMenuItemContent
+   * @summary Get all entities for menu item
+   * @request GET:/menus/{menuId}/items/{menuItemId}
+   * @response `200` `PbGetMenuItemContentResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  menusGetMenuItemContent = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetMenuItemContentResponse, RpcStatus>({
+      path: `/menus/${menuId}/items/${menuItemId}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description deletes menu item
    *
-   * @tags Talebound
-   * @name TaleboundDeleteMenuItem
+   * @tags Menus
+   * @name MenusDeleteMenuItem
    * @summary Delete menu item
    * @request DELETE:/menus/{menuId}/items/{menuItemId}
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeleteMenuItem = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
+  menusDeleteMenuItem = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
     this.http.request<object, RpcStatus>({
       path: `/menus/${menuId}/items/${menuItemId}`,
       method: 'DELETE',
@@ -159,14 +177,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description updates menu item
    *
-   * @tags Talebound
-   * @name TaleboundUpdateMenuItem
+   * @tags Menus
+   * @name MenusUpdateMenuItem
    * @summary Update menu item
    * @request PATCH:/menus/{menuId}/items/{menuItemId}
    * @response `200` `PbMenuItem` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateMenuItem = (
+  menusUpdateMenuItem = (
     menuId: number,
     menuItemId: number,
     body: {
@@ -191,14 +209,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description gets list of menu item posts
    *
-   * @tags Talebound
-   * @name TaleboundGetMenuItemPosts
+   * @tags Menus
+   * @name MenusGetMenuItemPosts
    * @summary Get menu item posts
    * @request GET:/menus/{menuId}/items/{menuItemId}/posts
    * @response `200` `PbGetMenuItemPostsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetMenuItemPosts = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
+  menusGetMenuItemPosts = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
     this.http.request<PbGetMenuItemPostsResponse, RpcStatus>({
       path: `/menus/${menuId}/items/${menuItemId}/posts`,
       method: 'GET',
@@ -208,14 +226,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description adds new menu item post to the menu item
    *
-   * @tags Talebound
-   * @name TaleboundCreateMenuItemPost
+   * @tags Menus
+   * @name MenusCreateMenuItemPost
    * @summary Create menu item post
    * @request POST:/menus/{menuId}/items/{menuItemId}/posts
    * @response `200` `PbMenuItemPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreateMenuItemPost = (
+  menusCreateMenuItemPost = (
     menuId: number,
     menuItemId: number,
     body: {
@@ -242,14 +260,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description deletes menu item post
    *
-   * @tags Talebound
-   * @name TaleboundDeleteMenuItemPost
+   * @tags Menus
+   * @name MenusDeleteMenuItemPost
    * @summary Delete menu item post
    * @request DELETE:/menus/{menuId}/items/{menuItemId}/posts/{postId}
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeleteMenuItemPost = (
+  menusDeleteMenuItemPost = (
     menuId: number,
     menuItemId: number,
     postId: number,
@@ -264,14 +282,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description updates menu item post
    *
-   * @tags Talebound
-   * @name TaleboundUpdateMenuItemPost
+   * @tags Menus
+   * @name MenusUpdateMenuItemPost
    * @summary Update menu item post
    * @request PATCH:/menus/{menuId}/items/{menuItemId}/posts/{postId}
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateMenuItemPost = (
+  menusUpdateMenuItemPost = (
     menuId: number,
     menuItemId: number,
     postId: number,
@@ -294,14 +312,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description gets list of menu item posts for menu
    *
-   * @tags Talebound
-   * @name TaleboundGetMenuItemPostsByMenuId
+   * @tags Menus
+   * @name MenusGetMenuItemPostsByMenuId
    * @summary Get menu item posts by menu id
    * @request GET:/menus/{menuId}/posts
    * @response `200` `PbGetMenuItemPostsByMenuIdResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetMenuItemPostsByMenuId = (menuId: number, params: RequestParams = {}) =>
+  menusGetMenuItemPostsByMenuId = (menuId: number, params: RequestParams = {}) =>
     this.http.request<PbGetMenuItemPostsByMenuIdResponse, RpcStatus>({
       path: `/menus/${menuId}/posts`,
       method: 'GET',
@@ -311,14 +329,14 @@ export class Menus<SecurityDataType = unknown> {
   /**
    * @description change menu item id for multiple posts
    *
-   * @tags Talebound
-   * @name TaleboundUpdateMenuPosts
+   * @tags Menus
+   * @name MenusUpdateMenuPosts
    * @summary Update menu posts
    * @request PATCH:/menus/{menuId}/posts
    * @response `200` `PbUpdateMenuPostsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdateMenuPosts = (
+  menusUpdateMenuPosts = (
     menuId: number,
     body: {
       /** @format int32 */

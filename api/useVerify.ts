@@ -4,5 +4,5 @@ import { PbVerifyEmailRequest } from '../generated/api-types/data-contracts';
 
 export const useVerify = createMutation({
   mutationFn: async (variables: PbVerifyEmailRequest) =>
-    VerifyCollection.taleboundVerifyEmail(variables),
+    VerifyCollection.verifyVerifyEmail(variables),
 });

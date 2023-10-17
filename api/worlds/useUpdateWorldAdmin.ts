@@ -5,12 +5,12 @@ import { useGetWorldAdmins } from './useGetWorldAdmins';
 
 type UpdateWorldAdminParams = {
   worldId: number;
-  body: Parameters<typeof WorldsCollection.taleboundUpdateWorldAdmin>[1];
+  body: Parameters<typeof WorldsCollection.worldsUpdateWorldAdmin>[1];
 };
 
 export const useUpdateWorldAdmin = createMutation({
   mutationFn: async (variables: UpdateWorldAdminParams) =>
-    WorldsCollection.taleboundUpdateWorldAdmin(variables.worldId, variables.body),
+    WorldsCollection.worldsUpdateWorldAdmin(variables.worldId, variables.body),
   onSuccess: (data, variables) => {
     const worldId = variables.worldId;
     const userId = data.data.userId;

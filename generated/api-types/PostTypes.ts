@@ -22,14 +22,14 @@ export class PostTypes<SecurityDataType = unknown> {
   /**
    * @description get post types with info (draftable, privatable)
    *
-   * @tags Talebound
-   * @name TaleboundGetPostTypes
+   * @tags PostTypes
+   * @name PostTypesGetPostTypes
    * @summary Get post types
    * @request GET:/post_types
    * @response `200` `PbGetPostTypesResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetPostTypes = (params: RequestParams = {}) =>
+  postTypesGetPostTypes = (params: RequestParams = {}) =>
     this.http.request<PbGetPostTypesResponse, RpcStatus>({
       path: `/post_types`,
       method: 'GET',

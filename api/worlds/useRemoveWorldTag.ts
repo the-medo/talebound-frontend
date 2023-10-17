@@ -12,7 +12,7 @@ interface RemoveWorldTagParams {
 
 export const useRemoveWorldTag = createMutation({
   mutationFn: async (variables: RemoveWorldTagParams) =>
-    WorldsCollection.taleboundRemoveWorldTag(variables.worldId, { tagId: variables.tagId }),
+    WorldsCollection.worldsRemoveWorldTag(variables.worldId, { tagId: variables.tagId }),
   onSuccess: (_, variables) => {
     const getWorldByIdKey = useGetWorldById.getKey(variables.worldId);
     const getAvailableWorldTagsKey = useGetAvailableWorldTags.getKey();

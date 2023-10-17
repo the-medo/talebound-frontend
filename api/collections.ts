@@ -12,6 +12,9 @@ import { Images } from '../generated/api-types/Images';
 import { Worlds } from '../generated/api-types/Worlds';
 import { Tags } from '../generated/api-types/Tags';
 import { Menus } from '../generated/api-types/Menus';
+import { Entities } from '../generated/api-types/Entities';
+import { Maps } from '../generated/api-types/Maps';
+import { Locations } from '../generated/api-types/Locations';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -36,3 +39,6 @@ export const TagsCollection = new Tags(API);
 export const UsersCollection = new Users(API);
 export const VerifyCollection = new Verify(API);
 export const WorldsCollection = new Worlds(API);
+export const EntitiesCollection = new Entities(API);
+export const MapsCollection = new Maps(API);
+export const LocationsCollection = new Locations(API);

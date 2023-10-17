@@ -3,6 +3,5 @@ import { UsersCollection } from './collections';
 import { PbUpdateUserRequest } from '../generated/api-types/data-contracts';
 
 export const useUpdateUser = createMutation({
-  mutationFn: async (variables: PbUpdateUserRequest) =>
-    UsersCollection.taleboundUpdateUser(variables),
+  mutationFn: async (variables: PbUpdateUserRequest) => UsersCollection.usersUpdateUser(variables),
 });

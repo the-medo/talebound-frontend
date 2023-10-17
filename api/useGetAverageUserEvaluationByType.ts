@@ -16,7 +16,7 @@ export const useGetAverageUserEvaluationByType = createQuery<
 >({
   primaryKey: 'useGetAverageUserEvaluationByType',
   queryFn: async ({ queryKey: [, variables] }) => {
-    const { data } = await UsersCollection.taleboundGetAverageUserEvaluationsByType(
+    const { data } = await UsersCollection.usersGetAverageUserEvaluationsByType(
       variables.userId,
       variables.type,
     );

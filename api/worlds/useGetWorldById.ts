@@ -6,7 +6,7 @@ import { WorldsCollection } from '../collections';
 export const useGetWorldById = createQuery<PbWorld, number, TaleboundError>({
   primaryKey: 'useGetWorldById',
   queryFn: async ({ queryKey: [, variables] }) => {
-    const { data } = await WorldsCollection.taleboundGetWorldById(variables);
+    const { data } = await WorldsCollection.worldsGetWorldById(variables);
     return data;
   },
 });

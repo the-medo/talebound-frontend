@@ -28,14 +28,14 @@ export class Chat<SecurityDataType = unknown> {
   /**
    * @description returns list of chat messages
    *
-   * @tags Talebound
-   * @name TaleboundGetChatMessages
+   * @tags Chat
+   * @name ChatGetChatMessages
    * @summary Get list of chat messages
    * @request GET:/chat
    * @response `200` `PbGetChatMessagesResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetChatMessages = (
+  chatGetChatMessages = (
     query?: {
       /** @format int32 */
       limit?: number;
@@ -54,14 +54,14 @@ export class Chat<SecurityDataType = unknown> {
   /**
    * @description adds new chat message
    *
-   * @tags Talebound
-   * @name TaleboundAddChatMessage
+   * @tags Chat
+   * @name ChatAddChatMessage
    * @summary Add new chat message
    * @request POST:/chat
    * @response `200` `PbAddChatMessageResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundAddChatMessage = (body: PbAddChatMessageRequest, params: RequestParams = {}) =>
+  chatAddChatMessage = (body: PbAddChatMessageRequest, params: RequestParams = {}) =>
     this.http.request<PbAddChatMessageResponse, RpcStatus>({
       path: `/chat`,
       method: 'POST',
@@ -73,14 +73,14 @@ export class Chat<SecurityDataType = unknown> {
   /**
    * @description removes role from user
    *
-   * @tags Talebound
-   * @name TaleboundDeleteChatMessage
+   * @tags Chat
+   * @name ChatDeleteChatMessage
    * @summary Delete chat message
    * @request DELETE:/chat/{id}
    * @response `200` `PbDeleteChatMessageResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeleteChatMessage = (id: string, params: RequestParams = {}) =>
+  chatDeleteChatMessage = (id: string, params: RequestParams = {}) =>
     this.http.request<PbDeleteChatMessageResponse, RpcStatus>({
       path: `/chat/${id}`,
       method: 'DELETE',

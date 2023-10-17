@@ -16,7 +16,7 @@ export const useGetMenuItemPosts = createQuery<
 >({
   primaryKey: 'useGetMenuItemPosts',
   queryFn: async ({ queryKey: [_, variables] }) => {
-    const { data } = await MenusCollection.taleboundGetMenuItemPosts(
+    const { data } = await MenusCollection.menusGetMenuItemPosts(
       variables.menuId,
       variables.menuItemId,
     );

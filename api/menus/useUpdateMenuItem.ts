@@ -7,12 +7,12 @@ import { sortByPosition } from '../../utils/functions/sortByPosition';
 export type UpdateMenuItemParams = {
   menuId: number;
   menuItemId: number;
-  body: Parameters<typeof MenusCollection.taleboundUpdateMenuItem>[2];
+  body: Parameters<typeof MenusCollection.menusUpdateMenuItem>[2];
 };
 
 export const useUpdateMenuItem = createMutation({
   mutationFn: async (variables: UpdateMenuItemParams) =>
-    MenusCollection.taleboundUpdateMenuItem(variables.menuId, variables.menuItemId, variables.body),
+    MenusCollection.menusUpdateMenuItem(variables.menuId, variables.menuItemId, variables.body),
   onMutate: async (variables) => {
     const getMenuItemsQueryKey = useGetMenuItems.getKey(variables.menuId);
     const previousData = queryClient.getQueryData(getMenuItemsQueryKey) as inferData<

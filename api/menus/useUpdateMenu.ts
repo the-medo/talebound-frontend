@@ -5,12 +5,12 @@ import { queryClient } from '../../pages/_app';
 
 type UpdateMenuParams = {
   menuId: number;
-  body: Parameters<typeof MenusCollection.taleboundUpdateMenu>[1];
+  body: Parameters<typeof MenusCollection.menusUpdateMenu>[1];
 };
 
 export const useUpdateMenu = createMutation({
   mutationFn: async (variables: UpdateMenuParams) =>
-    MenusCollection.taleboundUpdateMenu(variables.menuId, variables.body),
+    MenusCollection.menusUpdateMenu(variables.menuId, variables.body),
   onSuccess: (data) => {
     const menuId = data.data.id;
     if (menuId) {

@@ -15,7 +15,7 @@ export interface UpdateUserIntroductionRequest {
 
 export const useUpdateUserIntroduction = createMutation({
   mutationFn: async (variables: UpdateUserIntroductionRequest) =>
-    UsersCollection.taleboundUpdateUserIntroduction(variables.userId, variables.body),
+    UsersCollection.usersUpdateUserIntroduction(variables.userId, variables.body),
   onMutate: async (variables) => {
     const postQueryKey = useGetPostById.getKey(variables.postId);
     const previousData = queryClient.getQueryData(postQueryKey);

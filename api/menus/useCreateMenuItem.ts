@@ -5,7 +5,7 @@ import { queryClient } from '../../pages/_app';
 
 interface CreateMenuItemParams {
   menuId: number;
-  body: Parameters<typeof MenusCollection.taleboundCreateMenuItem>[1];
+  body: Parameters<typeof MenusCollection.menusCreateMenuItem>[1];
 }
 
 export const useCreateMenuItem = createMutation({
@@ -18,7 +18,7 @@ export const useCreateMenuItem = createMutation({
       variables.body.position = currentData?.length + 1 ?? 1;
     }
 
-    return MenusCollection.taleboundCreateMenuItem(variables.menuId, variables.body);
+    return MenusCollection.menusCreateMenuItem(variables.menuId, variables.body);
   },
   onSuccess: (data, variables) => {
     const { menuId } = variables;

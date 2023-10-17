@@ -26,14 +26,14 @@ export class Evaluations<SecurityDataType = unknown> {
   /**
    * @description get evaluation by id
    *
-   * @tags Talebound
-   * @name TaleboundGetEvaluationById
+   * @tags Evaluations
+   * @name EvaluationsGetEvaluationById
    * @summary Get evaluation by id
    * @request GET:/evaluations/id/{id}
    * @response `200` `PbGetEvaluationByIdResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetEvaluationById = (id: number, params: RequestParams = {}) =>
+  evaluationsGetEvaluationById = (id: number, params: RequestParams = {}) =>
     this.http.request<PbGetEvaluationByIdResponse, RpcStatus>({
       path: `/evaluations/id/${id}`,
       method: 'GET',
@@ -43,14 +43,14 @@ export class Evaluations<SecurityDataType = unknown> {
   /**
    * @description get evaluations by type
    *
-   * @tags Talebound
-   * @name TaleboundGetEvaluationsByType
+   * @tags Evaluations
+   * @name EvaluationsGetEvaluationsByType
    * @summary Get evaluations by type
    * @request GET:/evaluations/type/{type}
    * @response `200` `PbGetEvaluationsByTypeResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetEvaluationsByType = (type: 'self' | 'dm', params: RequestParams = {}) =>
+  evaluationsGetEvaluationsByType = (type: 'self' | 'dm', params: RequestParams = {}) =>
     this.http.request<PbGetEvaluationsByTypeResponse, RpcStatus>({
       path: `/evaluations/type/${type}`,
       method: 'GET',

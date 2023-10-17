@@ -56,6 +56,15 @@ export interface PbCreateAvailableWorldTagRequest {
   tag?: string;
 }
 
+export interface PbCreateEntityGroupRequest {
+  /** @format int32 */
+  parentEntityGroupId?: number;
+  name?: string;
+  description?: string;
+  style?: string;
+  direction?: string;
+}
+
 export interface PbCreateOrUpdateEvaluationVoteResponse {
   evaluationVote?: PbEvaluationVote;
 }
@@ -77,6 +86,11 @@ export interface PbCreateUserRequest {
 
 export interface PbCreateUserResponse {
   user?: PbUser;
+}
+
+export interface PbCreateWorldMapResponse {
+  map?: PbViewMap;
+  layer?: PbViewMapLayer;
 }
 
 export interface PbCreateWorldRequest {
@@ -162,6 +176,58 @@ export interface PbDeletePostResponse {
   message?: string;
 }
 
+export interface PbEntity {
+  /** @format int32 */
+  id?: number;
+  type?: PbEntityType;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  mapId?: number;
+  /** @format int32 */
+  locationId?: number;
+  /** @format int32 */
+  imageId?: number;
+}
+
+export interface PbEntityGroup {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  description?: string;
+}
+
+export interface PbEntityGroupContent {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  entityGroupId?: number;
+  /** @format int32 */
+  position?: number;
+  /** @format int32 */
+  contentEntityId?: number;
+  /** @format int32 */
+  contentEntityGroupId?: number;
+}
+
+export interface PbEntityList {
+  entities?: PbEntity[];
+  posts?: PbDataPost[];
+  maps?: PbViewMap[];
+  locations?: PbViewLocation[];
+  images?: PbImage[];
+}
+
+/** @default "UNKNOWN" */
+export enum PbEntityType {
+  UNKNOWN = 'UNKNOWN',
+  POST = 'POST',
+  MAP = 'MAP',
+  LOCATION = 'LOCATION',
+  CHARACTER = 'CHARACTER',
+  IMAGE = 'IMAGE',
+}
+
 export interface PbEvaluation {
   /** @format int32 */
   id?: number;
@@ -223,6 +289,24 @@ export interface PbGetImagesResponse {
   totalCount?: number;
 }
 
+export interface PbGetMapLayersResponse {
+  layers?: PbViewMapLayer[];
+}
+
+export interface PbGetMapPinTypesResponse {
+  pinTypes?: PbMapPinType[];
+}
+
+export interface PbGetMapPinsResponse {
+  pins?: PbViewMapPin[];
+}
+
+export interface PbGetMenuItemContentResponse {
+  menuItemEntityGroups?: number[];
+  content?: PbEntityGroupContent[];
+  entityList?: PbEntityList;
+}
+
 export interface PbGetMenuItemPostsByMenuIdResponse {
   menuItemPosts?: PbMenuItemPost[];
 }
@@ -261,6 +345,14 @@ export interface PbGetWorldAdminsResponse {
 
 export interface PbGetWorldDailyActivityResponse {
   activity?: PbWorldActivity[];
+}
+
+export interface PbGetWorldLocationResponse {
+  locations?: PbViewLocation[];
+}
+
+export interface PbGetWorldMapResponse {
+  maps?: PbViewMap[];
 }
 
 export interface PbGetWorldMonthlyActivityResponse {
@@ -311,6 +403,22 @@ export interface PbLoginUserResponse {
   refreshTokenExpiresAt?: string;
 }
 
+export interface PbMapPinType {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  mapId?: number;
+  shape?: PbPinShape;
+  backgroundColor?: string;
+  borderColor?: string;
+  iconColor?: string;
+  icon?: string;
+  /** @format int32 */
+  iconSize?: number;
+  /** @format int32 */
+  width?: number;
+}
+
 export interface PbMenuItem {
   /** @format int32 */
   id?: number;
@@ -323,6 +431,8 @@ export interface PbMenuItem {
   isMain?: boolean;
   /** @format int32 */
   descriptionPostId?: number;
+  /** @format int32 */
+  entityGroupId?: number;
 }
 
 export interface PbMenuItemPost {
@@ -333,6 +443,21 @@ export interface PbMenuItemPost {
   /** @format int32 */
   position?: number;
   post?: PbDataPost;
+}
+
+/** @default "SQUARE" */
+export enum PbPinShape {
+  SQUARE = 'SQUARE',
+  TRIANGLE = 'TRIANGLE',
+  PIN = 'PIN',
+  CIRCLE = 'CIRCLE',
+  HEXAGON = 'HEXAGON',
+  OCTAGON = 'OCTAGON',
+  STAR = 'STAR',
+  DIAMOND = 'DIAMOND',
+  PENTAGON = 'PENTAGON',
+  HEART = 'HEART',
+  CLOUD = 'CLOUD',
 }
 
 export interface PbPost {
@@ -380,6 +505,10 @@ export interface PbTag {
   /** @format int32 */
   id?: number;
   tag?: string;
+}
+
+export interface PbUpdateMapPinTypeResponse {
+  pinType?: PbMapPinType;
 }
 
 export interface PbUpdateMenuPostsResponse {
@@ -441,6 +570,72 @@ export interface PbVerifyEmailRequest {
 
 export interface PbVerifyEmailResponse {
   isVerified?: boolean;
+}
+
+export interface PbViewLocation {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  description?: string;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  thumbnailImageId?: number;
+  thumbnailImageUrl?: string;
+}
+
+export interface PbViewMap {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  type?: string;
+  description?: string;
+  /** @format int32 */
+  width?: number;
+  /** @format int32 */
+  height?: number;
+  /** @format int32 */
+  thumbnailImageId?: number;
+  thumbnailImageUrl?: string;
+}
+
+export interface PbViewMapLayer {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  /** @format int32 */
+  mapId?: number;
+  /** @format int32 */
+  imageId?: number;
+  imageUrl?: string;
+  isMain?: boolean;
+  enabled?: boolean;
+  sublayer?: boolean;
+}
+
+export interface PbViewMapPin {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  /** @format int32 */
+  mapId?: number;
+  /** @format int32 */
+  mapPinTypeId?: number;
+  /** @format int32 */
+  locationId?: number;
+  /** @format int32 */
+  mapLayerId?: number;
+  /** @format int32 */
+  x?: number;
+  /** @format int32 */
+  y?: number;
+  locationName?: string;
+  /** @format int32 */
+  locationPostId?: number;
+  locationDescription?: string;
+  /** @format int32 */
+  locationThumbnailImageId?: number;
+  locationThumbnailImageUrl?: string;
 }
 
 export interface PbViewMenu {

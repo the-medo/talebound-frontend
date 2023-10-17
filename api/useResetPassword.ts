@@ -7,17 +7,17 @@ import { UsersCollection } from './collections';
 
 export const useResetPassword = createMutation({
   mutationFn: async (variables: PbResetPasswordSendCodeRequest) =>
-    UsersCollection.taleboundResetPasswordSendCode(variables),
+    UsersCollection.usersResetPasswordSendCode(variables),
 });
 
 export const useResetPasswordVerifyCode = createMutation({
   mutationFn: async (variables: PbResetPasswordVerifyCodeRequest) =>
-    UsersCollection.taleboundResetPasswordVerifyCode(variables),
+    UsersCollection.usersResetPasswordVerifyCode(variables),
 });
 
 export const useResetPasswordVerifyCodeValidity = createMutation({
   mutationFn: async (code: string) =>
-    UsersCollection.taleboundResetPasswordVerifyCodeValidity({
+    UsersCollection.usersResetPasswordVerifyCodeValidity({
       secretCode: code,
     }),
 });

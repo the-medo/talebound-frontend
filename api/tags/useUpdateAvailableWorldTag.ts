@@ -10,7 +10,7 @@ export interface UpdateAvailableWorldTagRequest {
 
 export const useUpdateAvailableWorldTag = createMutation({
   mutationFn: async (variables: UpdateAvailableWorldTagRequest) =>
-    TagsCollection.taleboundUpdateAvailableWorldTag(variables.tagId, {
+    TagsCollection.tagsUpdateAvailableWorldTag(variables.tagId, {
       newTag: variables.newTag,
     }),
   onSuccess: (data) => {

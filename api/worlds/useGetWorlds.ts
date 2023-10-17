@@ -7,7 +7,7 @@ const PAGE_SIZE = 4;
 
 export const useGetWorlds = createInfiniteQuery<
   InfiniteResponse<PbGetWorldsResponse>,
-  OmitLimitOffset<typeof WorldsCollection.taleboundGetWorlds>,
+  OmitLimitOffset<typeof WorldsCollection.worldsGetWorlds>,
   Error,
   number
 >({
@@ -15,7 +15,7 @@ export const useGetWorlds = createInfiniteQuery<
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
     const tags = (variables.tags?.length ?? 0) > 0 ? variables.tags : undefined;
 
-    const { data } = await WorldsCollection.taleboundGetWorlds({
+    const { data } = await WorldsCollection.worldsGetWorlds({
       public: variables.public,
       orderBy: variables.orderBy,
       tags,
