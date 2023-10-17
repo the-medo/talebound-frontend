@@ -26,4 +26,6 @@ export const useGetImages = createInfiniteQuery<
   getNextPageParam: (lastPage, _pages) => {
     return lastPage.newOffset;
   },
+
+  initialPageParam: 1,
 });

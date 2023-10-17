@@ -25,7 +25,7 @@
     "@radix-ui/react-select": "^1.2.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@stitches/react": "^1.2.8",
-    "@tanstack/react-query": "^4.29.19",
+    "@tanstack/react-query": "5.0.0",
     "antd": "^5.6.3",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
@@ -40,7 +40,7 @@
     "react-google-recaptcha": "^2.1.0",
     "react-hydration-provider": "^1.0.2",
     "react-icons": "^4.10.1",
-    "react-query-kit": "^1.4.5",
+    "react-query-kit": "^2.0.7",
     "react-redux": "^8.1.1"
   },
   "devDependencies": {
@@ -55,7 +55,7 @@
     "@storybook/preset-typescript": "^3.0.0",
     "@storybook/react": "7.2.2",
     "@storybook/testing-library": "0.2.0",
-    "@tanstack/eslint-plugin-query": "^4.29.9",
+    "@tanstack/eslint-plugin-query": "5.0.0",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^20.3.2",
     "@types/react": "^18.2.14",
