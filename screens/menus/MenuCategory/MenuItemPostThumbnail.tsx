@@ -39,7 +39,7 @@ const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
 
   const {
     mutate: updateMenuItemPost,
-    isLoading: isLoadingUpdate,
+    isPending: isPendingUpdate,
     isError: isErrorUpdate,
     error: errorUpdate,
   } = useUpdateMenuItemPost({
@@ -53,10 +53,10 @@ const MenuItemPostThumbnail: React.FC<MenuItemPostThumbnailProps> = ({
   }, [errorUpdate, setError]);
 
   useEffect(() => {
-    if (isLoadingUpdate) {
+    if (isPendingUpdate) {
       setLoading(true);
     }
-  }, [setLoading, isLoadingUpdate]);
+  }, [setLoading, isPendingUpdate]);
 
   const onDragStart = useCallback(() => {
     setDragging(true);

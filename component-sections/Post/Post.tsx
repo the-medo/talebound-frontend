@@ -38,8 +38,7 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const [editModeDetails, setEditModeDetails] = useState(false);
   const [editModeContent, setEditModeContent] = useState(false);
-  const { data: postData, isLoading: isLoadingPost } = useGetPostById({
-    enabled: postId > 0,
+  const { data: postData, isPending: isPendingPost } = useGetPostById({
     variables: postId,
   });
 
@@ -72,12 +71,12 @@ const Post: React.FC<PostProps> = ({
   );
 
   const editorState = useMemo(() => {
-    if (!isLoadingPost && postId !== undefined) {
+    if (!isPendingPost && postId !== undefined) {
       return postData?.post?.content;
     } else {
       return undefined;
     }
-  }, [isLoadingPost, postId, postData?.post?.content]);
+  }, [isPendingPost, postId, postData?.post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updatePost.reset();
@@ -97,7 +96,7 @@ const Post: React.FC<PostProps> = ({
     return undefined;
   }, [postData?.post?.imageThumbnailUrl]);
 
-  if (isLoadingPost) return <LoadingText />;
+  if (isPendingPost) return <LoadingText />;
 
   return (
     <Client>
@@ -136,7 +135,7 @@ const Post: React.FC<PostProps> = ({
           )}
           <Editor
             key={postId}
-            loading={updatePost.isLoading}
+            loading={updatePost.isPending}
             editable={editModeContent && canEdit}
             hasRightToEdit={editModeContent && canEdit}
             editorState={editorState}

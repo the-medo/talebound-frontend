@@ -1,5 +1,5 @@
 import { PbDataPostType } from '../generated/api-types/data-contracts';
-import { useGetPostTypes } from '../api/useGetPostTypes';
+import { useSuspenseGetPostTypes } from '../api/useSuspenseGetPostTypes';
 
 export enum PostTypeEnum {
   Universal = 100,
@@ -13,9 +13,7 @@ export enum PostTypeEnum {
 }
 
 export function usePostType(postTypeId: number): PbDataPostType | undefined {
-  const { data } = useGetPostTypes({
-    suspense: true,
-  });
+  const { data } = useSuspenseGetPostTypes();
 
   return data?.find((postType) => postType.id === postTypeId);
 }

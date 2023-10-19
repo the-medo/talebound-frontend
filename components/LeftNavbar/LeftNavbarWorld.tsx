@@ -8,7 +8,7 @@ interface LeftNavbarWorldProps {
 }
 
 const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: worldData } = useGetWorldById({ variables: worldId });
   const menuId = worldData?.worldMenuId ?? 0;
   const role = useMyWorldRole(worldId);
 

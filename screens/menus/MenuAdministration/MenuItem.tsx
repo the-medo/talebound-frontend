@@ -61,7 +61,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
 
   const {
     mutate: updateMenuItem,
-    isLoading: isLoadingUpdate,
+    isPending: isPendingUpdate,
     isError: isErrorUpdate,
     error: errorUpdate,
   } = useUpdateMenuItem({
@@ -70,7 +70,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
 
   const {
     mutate: updateMenuItemMoveGroupUp,
-    isLoading: isLoadingUpdateMoveGroupUp,
+    isPending: isPendingUpdateMoveGroupUp,
     // isError: isErrorUpdateMoveGroupUp,
     error: errorUpdateMoveGroupUp,
   } = useUpdateMenuItemMoveGroupUp({
@@ -79,7 +79,7 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
 
   const {
     mutate: deleteMenuItem,
-    isLoading: isLoadingDelete,
+    isPending: isPendingDelete,
     // isError: isErrorDelete,
     error: errorDelete,
   } = useDeleteMenuItem({
@@ -93,10 +93,10 @@ const MenuItem: React.FC<MenuAdministrationItemProps> = ({
   }, [errorUpdate, errorUpdateMoveGroupUp, errorDelete, setError]);
 
   useEffect(() => {
-    if (isLoadingUpdate || isLoadingUpdateMoveGroupUp || isLoadingDelete) {
+    if (isPendingUpdate || isPendingUpdateMoveGroupUp || isPendingDelete) {
       setLoading(true);
     }
-  }, [setLoading, isLoadingUpdate, isLoadingUpdateMoveGroupUp, isLoadingDelete]);
+  }, [setLoading, isPendingUpdate, isPendingUpdateMoveGroupUp, isPendingDelete]);
 
   const onDragStart = useCallback(() => {
     setDragging(true);

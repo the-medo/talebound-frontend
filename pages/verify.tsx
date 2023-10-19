@@ -55,7 +55,7 @@ export default function Verify() {
               Email verified! You can now sign in.
             </Text>
           )}
-          {verify.isLoading && (
+          {verify.isPending && (
             <Row gap="md">
               <Loading color="secondary" />
               <Text size="lg">Verifying email...</Text>

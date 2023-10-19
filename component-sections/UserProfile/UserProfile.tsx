@@ -22,7 +22,7 @@ const UserIntroduction = React.lazy(() => import('./UserIntroduction'));
 const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
   const {
     data,
-    isLoading: _isLoading,
+    isPending: _isPending,
     error: _error,
   } = useGetUserById({
     variables: userId,

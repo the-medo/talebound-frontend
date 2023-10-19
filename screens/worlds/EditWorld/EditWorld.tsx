@@ -26,7 +26,7 @@ interface EditWorldProps {
 }
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: worldData } = useGetWorldById({ variables: worldId });
   const role = useMyWorldRole(worldId);
   const updateWorldMutation = useUpdateWorld();
   const disabled = useMemo(() => role !== WorldAdminRole.SUPER_COLLABORATOR, [role]);
@@ -127,7 +127,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                     />
                   </Flex>
                   <Button
-                    loading={updateWorldMutation.isLoading}
+                    loading={updateWorldMutation.isPending}
                     disabled={disabled || buttonDisabled}
                     size="md"
                     color="primaryFill"

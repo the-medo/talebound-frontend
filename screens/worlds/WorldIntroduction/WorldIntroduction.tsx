@@ -20,27 +20,23 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
   const role = useMyWorldRole(worldId);
   const hasRightToEdit = isWorldCollaborator(role);
 
-  const { data: worldData, isLoading: isLoadingWorld } = useGetWorldById({
+  const { data: worldData, isPending: isPendingWorld } = useGetWorldById({
     variables: worldId,
-    enabled: worldId > 0,
-    suspense: true,
   });
 
   const postId = useMemo(() => worldData?.descriptionPostId, [worldData?.descriptionPostId]);
 
   const loadIntroductionData = useMemo(() => postId !== undefined, [postId]);
 
-  const { data: postData, isLoading: isLoadingIntroduction } = useGetPostById({
-    enabled: loadIntroductionData,
-    variables: postId ?? 0,
-    suspense: true,
+  const { data: postData, isPending: isPendingIntroduction } = useGetPostById({
+    variables: loadIntroductionData ? postId ?? 0 : 0,
   });
 
   const updateWorldIntroduction = useUpdateWorldIntroduction();
 
-  const isLoading = isLoadingWorld || (isLoadingIntroduction && loadIntroductionData);
+  const isPending = isPendingWorld || (isPendingIntroduction && loadIntroductionData);
 
-  const hasIntroduction = !isLoading && postData?.post?.content !== undefined;
+  const hasIntroduction = !isPending && postData?.post?.content !== undefined;
 
   const onSave: EditorOnSaveAction = useCallback(
     (editorState, _editor, _draft, successAction, errorAction, settleAction) => {
@@ -68,14 +64,14 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
   );
 
   const editorState = useMemo(() => {
-    if (!isLoading && postId !== undefined) {
+    if (!isPending && postId !== undefined) {
       return postData?.post?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isLoading, postId, postData?.post?.content]);
+  }, [hasIntroduction, isPending, postId, postData?.post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateWorldIntroduction.reset();
@@ -85,7 +81,7 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
     <Col fullWidth>
       <Editor
         key={postId}
-        loading={updateWorldIntroduction.isLoading}
+        loading={updateWorldIntroduction.isPending}
         hasRightToEdit={hasRightToEdit}
         editorState={editorState}
         disabled={false}

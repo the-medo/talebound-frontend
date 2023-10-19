@@ -1,4 +1,4 @@
-import { createQuery } from 'react-query-kit';
+import { createSuspenseQuery } from 'react-query-kit';
 import {
   PbEvaluationType,
   PbGetAverageUserEvaluationsByTypeResponse,
@@ -10,7 +10,7 @@ export interface PbGetAverageUserEvaluationsByTypeRequest {
   type: PbEvaluationType;
 }
 
-export const useGetAverageUserEvaluationByType = createQuery<
+export const useGetAverageUserEvaluationByType = createSuspenseQuery<
   PbGetAverageUserEvaluationsByTypeResponse,
   PbGetAverageUserEvaluationsByTypeRequest
 >({

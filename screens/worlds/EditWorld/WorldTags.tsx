@@ -15,11 +15,11 @@ interface WorldTagsProps {
 }
 
 const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
-  const { data: availableTags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: availableTags = [], isPending: isPendingGet } = useGetAvailableWorldTags();
+  const { data: worldData } = useGetWorldById({ variables: worldId });
 
-  const { mutate: addTag, isLoading: isLoadingAdd, error: errorAdd } = useAddWorldTag();
-  const { mutate: removeTag, isLoading: isLoadingRemove, error: errorRemove } = useRemoveWorldTag();
+  const { mutate: addTag, isPending: isPendingAdd, error: errorAdd } = useAddWorldTag();
+  const { mutate: removeTag, isPending: isPendingRemove, error: errorRemove } = useRemoveWorldTag();
 
   const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
 
@@ -35,7 +35,7 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
     [addTag, removeTag, tags, worldId],
   );
 
-  const isLoading = isLoadingAdd || isLoadingGet || isLoadingRemove;
+  const isPending = isPendingAdd || isPendingGet || isPendingRemove;
 
   return (
     <>
@@ -45,7 +45,7 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
       <Row wrap css={{ width: '100%' }} gap="sm">
         {availableTags.map((t) => (
           <TagButton
-            disabled={disabled || isLoading}
+            disabled={disabled || isPending}
             tag={t}
             key={t.id}
             onSelect={onTagSelect}

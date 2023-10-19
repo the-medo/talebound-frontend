@@ -21,9 +21,8 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
   const { user, isLoggedIn: _isLoggedIn } = useAuth();
   const postType = usePostType(PostTypeEnum.UserIntroduction);
 
-  const { data: userData, isLoading: isLoadingUser } = useGetUserById({
+  const { data: userData, isPending: isPendingUser } = useGetUserById({
     variables: userId,
-    suspense: true,
   });
 
   const loadIntroductionData = useMemo(
@@ -31,17 +30,16 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
     [userData?.introductionPostId],
   );
 
-  const { data: postData, isLoading: isLoadingIntroduction } = useGetPostById({
-    enabled: loadIntroductionData,
+  const { data: postData, isPending: isPendingIntroduction } = useGetPostById({
+    // use: [globalQueryMiddleware], //getMiddlewareEnabled(loadIntroductionData)
     variables: userData?.introductionPostId ?? 0,
-    suspense: true,
   });
 
   const updateUserIntroduction = useUpdateUserIntroduction();
 
-  const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
+  const isPending = isPendingUser || (isPendingIntroduction && loadIntroductionData);
 
-  const hasIntroduction = !isLoading && postData?.post?.content !== undefined;
+  const hasIntroduction = !isPending && postData?.post?.content !== undefined;
 
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
@@ -75,14 +73,14 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
   );
 
   const editorState = useMemo(() => {
-    if (!isLoading && userData?.introductionPostId !== undefined) {
+    if (!isPending && userData?.introductionPostId !== undefined) {
       return postData?.post?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isLoading, userData?.introductionPostId, postData?.post?.content]);
+  }, [hasIntroduction, isPending, userData?.introductionPostId, postData?.post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateUserIntroduction.reset();
@@ -91,7 +89,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
   return (
     <Col fullWidth>
       <Editor
-        loading={updateUserIntroduction.isLoading}
+        loading={updateUserIntroduction.isPending}
         hasRightToEdit={isMyPost}
         editorState={editorState}
         disabled={false}

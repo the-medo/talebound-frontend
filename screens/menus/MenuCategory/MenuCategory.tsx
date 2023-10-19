@@ -38,7 +38,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const [rearrangeMode, setRearrangeMode] = React.useState(false);
   const [createPostMode, setCreatePostMode] = React.useState(false);
   const createMenuItemPost = useCreateMenuItemPost();
-  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
+  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const menuItem = useMemo(() => {
     return menuItemsData.find((item) => item.code === menuItemCode);
@@ -52,7 +52,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         menuId,
         menuItemId,
       },
-      enabled: menuItemId > 0,
     },
   );
 

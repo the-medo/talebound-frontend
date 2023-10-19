@@ -13,7 +13,6 @@ export enum WorldAdminRole {
 
 export function useWorldAdmins(worldId: number): PbWorldAdmin[] {
   const { data: worldAdminData } = useGetWorldAdmins({
-    enabled: worldId > 0,
     variables: worldId ?? 0,
   });
 

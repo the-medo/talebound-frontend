@@ -34,7 +34,7 @@ const PostNew: React.FC<PostNewProps> = ({
   canChangeThumbnail = true,
   onFinishCallback,
 }) => {
-  const { mutate: createMenuItemPost, isLoading, error } = useCreateMenuItemPost();
+  const { mutate: createMenuItemPost, isPending, error } = useCreateMenuItemPost();
 
   const [showImageModal, setShowImageModal] = useState(false);
 
@@ -89,7 +89,7 @@ const PostNew: React.FC<PostNewProps> = ({
     thumbnailImageId,
   ]);
 
-  const loading = isLoading;
+  const pending = isPending;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -117,7 +117,7 @@ const PostNew: React.FC<PostNewProps> = ({
               onChange={onChange}
             />
           )}
-          <Button onClick={createPostHandler} loading={loading}>
+          <Button onClick={createPostHandler} loading={pending}>
             Create
           </Button>
           <ErrorText error={error} />
@@ -126,7 +126,7 @@ const PostNew: React.FC<PostNewProps> = ({
           <Col gap="md" alignItems="center" padding="xl">
             <Label css={{ width: 'auto' }}>Thumbnail</Label>
             <Avatar
-              loading={loading}
+              loading={pending}
               onClick={toggleImageModal}
               size="xl"
               url={thumbnailImageUrl}

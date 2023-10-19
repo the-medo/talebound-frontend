@@ -43,7 +43,7 @@ interface CollaboratorRowRequestProps {
 const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data }) => {
   const {
     mutate: updateWorldAdmin,
-    isLoading: isLoadingUpdate,
+    isPending: isPendingUpdate,
     error: errorUpdate,
   } = useUpdateWorldAdmin();
 
@@ -93,12 +93,12 @@ const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data })
         </Text>
       </Col>
       <Row gap="md">
-        <Button size="sm" onClick={approveRequest} loading={isLoadingUpdate}>
+        <Button size="sm" onClick={approveRequest} loading={isPendingUpdate}>
           <TbShieldCheck />
           Approve
         </Button>
         {props.showDenyButton && (
-          <Button color="dangerOutline" size="sm" onClick={denyRequest} loading={isLoadingUpdate}>
+          <Button color="dangerOutline" size="sm" onClick={denyRequest} loading={isPendingUpdate}>
             <TbShieldOff />
             Deny
           </Button>

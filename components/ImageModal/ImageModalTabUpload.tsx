@@ -60,11 +60,11 @@ const ImageModalTabUpload: React.FC<ImageModalTabUploadProps> = ({
         showBorder={false}
         showTitle={false}
         ref={inputRef}
-        disabled={doUploadImage.isLoading}
+        disabled={doUploadImage.isPending}
       />
       <Row gap="sm">
-        <Button onClick={handleUpload} disabled={doUploadImage.isLoading}>
-          {doUploadImage.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
+        <Button onClick={handleUpload} disabled={doUploadImage.isPending}>
+          {doUploadImage.isPending ? <Loading color="currentColor" size="xs" /> : 'Upload'}
         </Button>
         <ErrorText error={doUploadImage.error} />
       </Row>

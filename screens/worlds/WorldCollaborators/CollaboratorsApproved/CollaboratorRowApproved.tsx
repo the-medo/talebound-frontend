@@ -34,13 +34,13 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
 
   const {
     mutate: updateWorldAdmin,
-    isLoading: isLoadingUpdate,
+    isPending: isPendingUpdate,
     error: errorUpdate,
   } = useUpdateWorldAdmin();
 
   const {
     mutate: deleteWorldAdmin,
-    isLoading: isLoadingDelete,
+    isPending: isPendingDelete,
     error: errorDelete,
   } = useDeleteWorldAdmin();
 
@@ -73,22 +73,22 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
 
   const deleteButton = useMemo(
     () => (
-      <Button color="dangerOutline" size="sm" loading={isLoadingDelete}>
+      <Button color="dangerOutline" size="sm" loading={isPendingDelete}>
         <TbShieldOff />
         Remove from collaborators
       </Button>
     ),
-    [isLoadingDelete],
+    [isPendingDelete],
   );
 
   const leaveButton = useMemo(
     () => (
-      <Button color="dangerOutline" size="sm" loading={isLoadingDelete}>
+      <Button color="dangerOutline" size="sm" loading={isPendingDelete}>
         <TbShieldOff />
         Leave world
       </Button>
     ),
-    [isLoadingDelete],
+    [isPendingDelete],
   );
 
   return (
@@ -111,12 +111,12 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
         {role === WorldAdminRole.SUPER_COLLABORATOR && !isMyRow && (
           <>
             {data.superAdmin ? (
-              <Button size="sm" onClick={makeBasicCollaborator} loading={isLoadingUpdate}>
+              <Button size="sm" onClick={makeBasicCollaborator} loading={isPendingUpdate}>
                 <TbShield />
                 Make basic
               </Button>
             ) : (
-              <Button size="sm" onClick={makeSuperCollaborator} loading={isLoadingUpdate}>
+              <Button size="sm" onClick={makeSuperCollaborator} loading={isPendingUpdate}>
                 <TbShieldStar />
                 Make super
               </Button>

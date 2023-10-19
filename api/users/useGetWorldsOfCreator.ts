@@ -20,6 +20,7 @@ import { UserWorldMap } from '../../utils/types/UserWorldMap';
 export const useGetWorldsOfCreator = createQuery<UserWorldMap, number>({
   primaryKey: 'useGetWorldsOfCreator',
   queryFn: async ({ queryKey: [, variables] }) => {
+    if (!variables) return {};
     const { data } = await UsersCollection.usersGetWorldsOfCreator(variables);
 
     const rsp: UserWorldMap =
