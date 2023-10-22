@@ -2,9 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import Layout from '../../components/Layout/Layout';
 import LeftNavbar from '../../components/LeftNavbar/LeftNavbar';
-import AvatarChange from '../../component-sections/user-settings/AvatarChange';
-import PasswordChange from '../../component-sections/user-settings/PasswordChange';
-import SelfEvaluation from '../../component-sections/user-settings/SelfEvaluation';
+import AvatarChange from '../../component-sections/UserSettings/AvatarChange';
+import PasswordChange from '../../component-sections/UserSettings/PasswordChange';
+import SelfEvaluation from '../../component-sections/UserSettings/SelfEvaluation';
 import { Col, Row } from '../../components/Flex/Flex';
 
 const Settings: React.FC = () => {

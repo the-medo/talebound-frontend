@@ -20,6 +20,16 @@ const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
           title: 'Posts',
           url: `/worlds/${worldId}/posts`,
         },
+        {
+          key: 'world-maps',
+          title: 'Maps',
+          url: `/worlds/${worldId}/maps`,
+        },
+        {
+          key: 'world-locations',
+          title: 'Locations',
+          url: `/worlds/${worldId}/locations`,
+        },
       ];
     }
 
