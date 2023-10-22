@@ -8,9 +8,8 @@ interface CollaboratorsApprovedProps {
 }
 
 const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }) => {
-  const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
     variables: worldId,
-    enabled: worldId > 0,
   });
 
   const worldAdminApproved = useMemo(
@@ -24,7 +23,7 @@ const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }
   const canLeave = worldAdminApproved.filter((wa) => wa.superAdmin).length > 1;
 
   return (
-    <ContentSection loading={isLoading} flexWrap="wrap" direction="column" header="Collaborators">
+    <ContentSection loading={isPending} flexWrap="wrap" direction="column" header="Collaborators">
       {worldAdminApproved.map((worldAdmin) => (
         <CollaboratorRowApproved data={worldAdmin} key={worldAdmin.userId} canLeave={canLeave} />
       ))}

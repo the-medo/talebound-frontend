@@ -13,14 +13,13 @@ const SelfEvaluation: React.FC = () => {
 
   const {
     data,
-    isLoading,
+    isPending,
     error: _error,
   } = useGetAverageUserEvaluationByType({
     variables: {
       userId: user?.id ?? 0,
       type: PbEvaluationType.Self,
     },
-    suspense: true,
   });
 
   return (
@@ -30,7 +29,7 @@ const SelfEvaluation: React.FC = () => {
         better connections and gameplay experiences. Take a moment to reflect and rate your own
         expertise in the following areas:
       </Text>
-      {isLoading && (
+      {isPending && (
         <Flex alignSelf="center">
           <Loading color="secondary" /> Loading...
         </Flex>

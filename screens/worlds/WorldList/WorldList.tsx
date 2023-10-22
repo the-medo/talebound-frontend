@@ -15,7 +15,7 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 
 const WorldList: React.FC = () => {
-  const { data: tags = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
+  const { data: tags = [], isPending: isPendingGet } = useGetAvailableWorldTags();
   const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
   const [showOnlyPublic, setShowOnlyPublic] = React.useState<boolean>(false);
 
@@ -41,7 +41,7 @@ const WorldList: React.FC = () => {
       <Layout vertical={true} navbar={<LeftNavbar />}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-            <ContentSection loading={isLoadingGet} flexWrap="wrap" direction="column">
+            <ContentSection loading={isPendingGet} flexWrap="wrap" direction="column">
               <Row gap="md" fullWidth justifyContent="between">
                 <TitleH2>Filters</TitleH2>
                 <Row>

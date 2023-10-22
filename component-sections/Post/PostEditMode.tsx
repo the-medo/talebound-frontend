@@ -32,10 +32,9 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
   canChangeDescription = true,
   canChangeThumbnail = true,
 }) => {
-  const { mutate: updatePost, isLoading, error } = useUpdatePost();
+  const { mutate: updatePost, isPending, error } = useUpdatePost();
   const [showImageModal, setShowImageModal] = useState(false);
-  const { data: postData, isLoading: isLoadingPost } = useGetPostById({
-    enabled: postId > 0,
+  const { data: postData, isPending: isPendingPost } = useGetPostById({
     variables: postId,
   });
 
@@ -74,7 +73,7 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
     });
   }, [cacheHelper, canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
 
-  const loading = isLoadingPost || isLoading;
+  const loading = isPendingPost || isPending;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 

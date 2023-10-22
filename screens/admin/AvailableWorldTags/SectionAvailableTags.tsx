@@ -14,24 +14,24 @@ import { Text } from '../../../components/Typography/Text';
 import AlertDialog from '../../../components/AlertDialog/AlertDialog';
 
 const SectionAvailableTags: React.FC = () => {
-  const { data: tag = [], isLoading: isLoadingGet } = useGetAvailableWorldTags();
+  const { data: tag = [], isPending: isPendingGet } = useGetAvailableWorldTags();
 
   const {
     mutate: updateTag,
-    isLoading: isLoadingUpdate,
+    isPending: isPendingUpdate,
     error: errorUpdate,
   } = useUpdateAvailableWorldTag();
 
   const {
     mutate: deleteTag,
-    isLoading: isLoadingDelete,
+    isPending: isPendingDelete,
     error: errorDelete,
   } = useDeleteAvailableWorldTag();
 
   const [selectedTag, setSelectedTag] = React.useState<PbTag>();
   const { value: tagValue, onChange: onChangeTag, setValue: setTagValue } = useInput<string>('');
 
-  const isLoading = isLoadingUpdate || isLoadingGet || isLoadingDelete;
+  const isPending = isPendingUpdate || isPendingGet || isPendingDelete;
 
   const handleNewTag = useCallback(() => {
     const tagId = selectedTag?.id;
@@ -105,12 +105,12 @@ const SectionAvailableTags: React.FC = () => {
               onKeyDown={handleKeyDown}
               displayHelpers={false}
             />
-            <Button disabled={!selectedTag} loading={isLoading} onClick={handleNewTag}>
+            <Button disabled={!selectedTag} loading={isPending} onClick={handleNewTag}>
               Update
             </Button>
             <AlertDialog
               triggerButtonDisabled={!selectedTag}
-              triggerButtonLoading={isLoading}
+              triggerButtonLoading={isPending}
               triggerButtonText="Delete"
               title={`Delete tag "${selectedTag?.tag}"`}
               description="Deleting this tag will remove it from all worlds, that have it assigned."

@@ -46,12 +46,11 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
   const [createPostMode, setCreatePostMode] = useState(false);
   const [selectedAction, setSelectedAction] = useState<string>();
 
-  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
+  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
   const { data: menuItemPostsData = [] } = useGetMenuItemPostsByMenuId({
     variables: menuId,
-    enabled: menuId > 0,
   });
-  const { mutate: updateMenuPosts, isLoading, error } = useUpdateMenuPosts();
+  const { mutate: updateMenuPosts, isPending, error } = useUpdateMenuPosts();
 
   const menuItemsById = useMemo(() => {
     const result: MenuItemsById = {};
@@ -242,7 +241,7 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
                       value={selectedAction}
                       noHelper={true}
                     />
-                    <Button onClick={submitCategoryChange} loading={isLoading}>
+                    <Button onClick={submitCategoryChange} loading={isPending}>
                       Submit
                     </Button>
                   </Row>

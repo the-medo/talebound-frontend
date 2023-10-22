@@ -21,9 +21,8 @@ interface ActionBoxWorldProps {
 const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }) => {
   const role = useMyWorldRole(worldId);
 
-  const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
     variables: worldId,
-    enabled: worldId > 0,
   });
 
   const worldAdminApproved = useMemo(
@@ -64,7 +63,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
             </Link>
           </Row>
           <Row gap="md">
-            {isLoading && <Loading size="sm" />}
+            {isPending && <Loading size="sm" />}
             {worldAdminApproved.map((worldAdmin) => (
               <Link
                 key={worldAdmin.userId}

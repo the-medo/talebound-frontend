@@ -102,8 +102,8 @@ const Login: React.FC = () => {
   const { value: passwordValue, onChange: onChangePassword } = useInput('');
 
   const buttonDisabled = useMemo(
-    () => !passwordValue || !usernameValue || login.isLoading,
-    [passwordValue, usernameValue, login.isLoading],
+    () => !passwordValue || !usernameValue || login.isPending,
+    [passwordValue, usernameValue, login.isPending],
   );
 
   const submitLogin = useCallback(() => {
@@ -149,7 +149,7 @@ const Login: React.FC = () => {
         />
         <LoginButtonWrapper>
           <Button color="primaryFill" size="md" onClick={submitLogin} disabled={buttonDisabled}>
-            {login.isLoading || login.isSuccess ? (
+            {login.isPending || login.isSuccess ? (
               <Loading color="currentColor" size="xs" />
             ) : (
               <Text weight="bold" size="lg" color="white">
@@ -161,7 +161,7 @@ const Login: React.FC = () => {
           <Link href="/#register">Sign up</Link>
           <ForgotPassword href="/reset-password">Forgot password?</ForgotPassword>
 
-          {login.isError && !login.isLoading && <Text color="danger">Something went wrong.</Text>}
+          {login.isError && !login.isPending && <Text color="danger">Something went wrong.</Text>}
         </LoginButtonWrapper>
       </LoginBox>
     </Client>

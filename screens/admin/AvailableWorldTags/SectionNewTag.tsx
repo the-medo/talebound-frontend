@@ -13,13 +13,13 @@ const SectionNewTag: React.FC<SectionNewTagProps> = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { value: tagValue, onChange: onChangeTag, setValue: setTagValue } = useInput<string>('');
 
-  const { mutate: createNewTag, isLoading, error } = useCreateAvailableWorldTag();
+  const { mutate: createNewTag, isPending, error } = useCreateAvailableWorldTag();
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isPending) {
       inputRef.current?.focus();
     }
-  }, [isLoading]);
+  }, [isPending]);
 
   const handleNewTag = useCallback(() => {
     createNewTag(
@@ -47,7 +47,7 @@ const SectionNewTag: React.FC<SectionNewTagProps> = () => {
     <ContentSection flexWrap="wrap" direction="column" header="New tag">
       <Row gap="md" css={{ width: '300px' }}>
         <Input
-          disabled={isLoading}
+          disabled={isPending}
           id={'new-tag'}
           type={'text'}
           value={tagValue}
@@ -56,7 +56,7 @@ const SectionNewTag: React.FC<SectionNewTagProps> = () => {
           ref={inputRef}
           displayHelpers={false}
         />
-        <Button loading={isLoading} onClick={handleNewTag}>
+        <Button loading={isPending} onClick={handleNewTag}>
           Add
         </Button>
       </Row>

@@ -21,7 +21,7 @@ const textareaPlaceholder =
 const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
   const { isLoggedIn } = useAuth();
-  const { mutate: createWorldAdmin, isLoading, error } = useCreateWorldAdmin();
+  const { mutate: createWorldAdmin, isPending, error } = useCreateWorldAdmin();
   const { value: motivation, onChange } = useInput<string, HTMLTextAreaElement>('');
 
   const sendCollaboratorRequest = useCallback(() => {
@@ -49,7 +49,7 @@ const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ worldId
             value={motivation}
             onChange={onChange}
           />
-          <Button loading={isLoading} onClick={sendCollaboratorRequest}>
+          <Button loading={isPending} onClick={sendCollaboratorRequest}>
             Send request
           </Button>
           <ErrorText error={error} />

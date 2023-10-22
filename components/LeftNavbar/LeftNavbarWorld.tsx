@@ -8,7 +8,7 @@ interface LeftNavbarWorldProps {
 }
 
 const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: worldData } = useGetWorldById({ variables: worldId });
   const menuId = worldData?.worldMenuId ?? 0;
   const role = useMyWorldRole(worldId);
 
@@ -19,6 +19,16 @@ const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
           key: 'world-posts',
           title: 'Posts',
           url: `/worlds/${worldId}/posts`,
+        },
+        {
+          key: 'world-maps',
+          title: 'Maps',
+          url: `/worlds/${worldId}/maps`,
+        },
+        {
+          key: 'world-locations',
+          title: 'Locations',
+          url: `/worlds/${worldId}/locations`,
         },
       ];
     }

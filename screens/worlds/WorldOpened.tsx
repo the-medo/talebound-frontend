@@ -10,7 +10,7 @@ interface WorldOpenedProps {
 
 const WorldOpened: React.FC<WorldOpenedProps> = ({ worldId }) => {
   const dispatch = useDispatch();
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: worldData } = useGetWorldById({ variables: worldId });
 
   useEffect(() => {
     if (worldData?.imageHeader) {

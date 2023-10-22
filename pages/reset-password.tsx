@@ -81,7 +81,7 @@ export default function ResetPassword() {
                   disabled={buttonDisabled}
                 >
                   <Text weight="bold" size="lg" color="white">
-                    {resetPasswordSendCode.isLoading ? 'Sending...' : 'Send reset link'}
+                    {resetPasswordSendCode.isPending ? 'Sending...' : 'Send reset link'}
                   </Text>
                 </Button>
 

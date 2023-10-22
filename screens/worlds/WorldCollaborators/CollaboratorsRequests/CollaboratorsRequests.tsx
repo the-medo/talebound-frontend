@@ -12,9 +12,8 @@ interface CollaboratorsRequestsProps {
 
 const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
-  const { data: worldAdmins = [], isLoading } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
     variables: worldId,
-    enabled: worldId > 0,
   });
 
   const [showDenied, setShowDenied] = useState(false);
@@ -38,7 +37,7 @@ const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }
   }
 
   return (
-    <ContentSection loading={isLoading} flexWrap="wrap" direction="column" header="Requests">
+    <ContentSection loading={isPending} flexWrap="wrap" direction="column" header="Requests">
       {worldAdminRequestsWaiting.length === 0 && <p>No pending collaboration requests</p>}
       {worldAdminRequestsWaiting.map((wa) => (
         <CollaboratorRowRequest data={wa} key={wa.userId} />

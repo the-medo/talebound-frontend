@@ -111,7 +111,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
     setChecked(v);
   }, []);
 
-  const buttonDisabled = useMemo(() => !checked || createUser.isLoading, [checked, createUser]);
+  const buttonDisabled = useMemo(() => !checked || createUser.isPending, [checked, createUser]);
 
   const submitNewUser = useCallback(() => {
     if (buttonDisabled) return;
@@ -216,7 +216,7 @@ const Register: React.FC<HomepageRegisterProps> = ({ background = false }) => {
               <div>
                 <Button onClick={submitNewUser} disabled={buttonDisabled}>
                   <Text weight="bold" size="lg" color="white">
-                    {createUser.isLoading ? 'Creating...' : 'Sign up'}
+                    {createUser.isPending ? 'Creating...' : 'Sign up'}
                   </Text>
                 </Button>
               </div>

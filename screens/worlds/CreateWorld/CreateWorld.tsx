@@ -156,7 +156,7 @@ const CreateWorld: React.FC = () => {
                   Note: You will be able to change image and tags later.
                 </Text>
                 <Button
-                  loading={createWorldMutation.isLoading}
+                  loading={createWorldMutation.isPending}
                   disabled={buttonDisabled}
                   size="xl"
                   color="primaryFill"

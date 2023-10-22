@@ -17,7 +17,7 @@ interface MenuHeaderImageProps {
 const MenuHeaderImage: React.FC<MenuHeaderImageProps> = ({ menuId }) => {
   const [showImageModal, setShowImageModal] = useState(false);
 
-  const { mutate: updateMenu, isLoading, error } = useUpdateMenu();
+  const { mutate: updateMenu, isPending: isPending, error } = useUpdateMenu();
 
   const changeMenuHeaderImage = useCallback(
     (image: PbImage) => {
@@ -38,7 +38,7 @@ const MenuHeaderImage: React.FC<MenuHeaderImageProps> = ({ menuId }) => {
           <NavbarWrapper>
             <NavbarHeader title={'header title'} />
           </NavbarWrapper>
-          <Button loading={isLoading} onClick={() => setShowImageModal(true)}>
+          <Button loading={isPending} onClick={() => setShowImageModal(true)}>
             Change
           </Button>
         </Row>

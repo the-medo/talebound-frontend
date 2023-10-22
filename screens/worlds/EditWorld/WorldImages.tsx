@@ -63,7 +63,7 @@ const imageTypeInfo: Record<WorldImageType, ImageTypeInfo> = {
 };
 
 const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId, enabled: worldId > 0 });
+  const { data: worldData } = useGetWorldById({ variables: worldId });
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalType, setModalType] = useState<WorldImageType>(WorldImageType.imageThumbnail);
 

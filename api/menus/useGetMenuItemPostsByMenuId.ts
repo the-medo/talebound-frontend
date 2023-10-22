@@ -6,6 +6,7 @@ import { MenusCollection } from '../collections';
 export const useGetMenuItemPostsByMenuId = createQuery<PbMenuItemPost[], number, TaleboundError>({
   primaryKey: 'useGetMenuItemPostsByMenuId',
   queryFn: async ({ queryKey: [_, variables] }) => {
+    if (!variables) return [];
     const { data } = await MenusCollection.menusGetMenuItemPostsByMenuId(variables);
     return data?.menuItemPosts ?? [];
   },

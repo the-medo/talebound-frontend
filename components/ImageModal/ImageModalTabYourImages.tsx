@@ -27,7 +27,6 @@ const ImageModalTabYourImages: React.FC<ImageModalTabYourImagesProps> = ({
     fetchNextPage,
     hasNextPage,
   } = useGetImages({
-    enabled: !!user?.id,
     variables: {
       userId: user?.id,
     },

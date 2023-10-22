@@ -7,6 +7,7 @@ import { sortByPosition } from '../../utils/functions/sortByPosition';
 export const useGetMenuItems = createQuery<PbMenuItem[], number, TaleboundError>({
   primaryKey: 'useGetMenuItems',
   queryFn: async ({ queryKey: [_, variables] }) => {
+    if (!variables) return [];
     const { data } = await MenusCollection.menusGetMenuItems(variables);
     return data?.menuItems?.sort(sortByPosition) ?? [];
   },

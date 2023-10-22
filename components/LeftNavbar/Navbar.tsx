@@ -29,8 +29,8 @@ const Navbar: React.FC<NavbarProps> = ({
   postfixItems = [],
 }) => {
   const dispatch = useDispatch();
-  const { data: menuData } = useGetMenuById({ variables: menuId, enabled: menuId > 0 });
-  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId, enabled: menuId > 0 });
+  const { data: menuData } = useGetMenuById({ variables: menuId });
+  const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   useEffect(() => {
     if (menuData) {

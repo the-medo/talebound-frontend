@@ -21,13 +21,13 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
     setValue: setTitleValue,
   } = useInput<string>('');
 
-  const { mutate: createMenuItem, isLoading, error } = useCreateMenuItem();
+  const { mutate: createMenuItem, isPending, error } = useCreateMenuItem();
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isPending) {
       inputRef.current?.focus();
     }
-  }, [isLoading]);
+  }, [isPending]);
 
   const handleNewTag = useCallback(() => {
     createMenuItem(
@@ -56,7 +56,7 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
     <ContentSection flexWrap="wrap" direction="column" header="New menu item">
       <Row gap="md" css={{ width: '300px' }}>
         <Input
-          disabled={isLoading}
+          disabled={isPending}
           id="new-menu-item"
           type="text"
           value={titleValue}
@@ -65,7 +65,7 @@ const NewMenuItem: React.FC<NewMenuItemProps> = ({ menuId }) => {
           ref={inputRef}
           displayHelpers={false}
         />
-        <Button loading={isLoading} onClick={handleNewTag}>
+        <Button loading={isPending} onClick={handleNewTag}>
           Add
         </Button>
       </Row>

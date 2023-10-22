@@ -11,7 +11,6 @@ export function useUserRole(): UserRole {
   const userRole = useSelector((state: ReduxState) => state.auth.role);
 
   const { data: roles } = useGetUserRoles({
-    enabled: !!userId && !userRole,
     variables: userId ?? 0,
   });
 

@@ -61,7 +61,7 @@ const AvatarChange: React.FC = () => {
           ref={inputRef}
         />
         <Button onClick={handleUpload}>
-          {doUploadAvatar.isLoading ? <Loading color="currentColor" size="xs" /> : 'Upload'}
+          {doUploadAvatar.isPending ? <Loading color="currentColor" size="xs" /> : 'Upload'}
         </Button>
       </Col>
       <Avatar size="xl" type="user" url={user?.img?.url} />

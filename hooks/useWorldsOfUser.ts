@@ -14,7 +14,6 @@ interface WorldAdmin {
  */
 export function useWorldsOfUser(userId: number): UserWorldMap {
   const { data: worldCreatorData } = useGetWorldsOfCreator({
-    enabled: userId > 0,
     variables: userId ?? 0,
   });
 

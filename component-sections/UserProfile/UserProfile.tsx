@@ -22,7 +22,7 @@ const UserIntroduction = React.lazy(() => import('./UserIntroduction'));
 const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
   const {
     data,
-    isLoading: _isLoading,
+    isPending: _isPending,
     error: _error,
   } = useGetUserById({
     variables: userId,
@@ -72,7 +72,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
         <ContentSection direction="column" header="Introduction">
           <Suspense fallback={<Loading />}>
-            <UserIntroduction userId={userId} postViewOnly={false} />
+            <UserIntroduction key={userId} userId={userId} postViewOnly={false} />
           </Suspense>
         </ContentSection>
       </Col>

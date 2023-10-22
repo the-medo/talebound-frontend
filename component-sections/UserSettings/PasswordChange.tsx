@@ -14,8 +14,8 @@ const PasswordChange: React.FC = () => {
   const changePassword = useUpdateUser();
 
   const buttonDisabled = useMemo(
-    () => changePassword.isLoading || externalButtonDisabled,
-    [changePassword.isLoading, externalButtonDisabled],
+    () => changePassword.isPending || externalButtonDisabled,
+    [changePassword.isPending, externalButtonDisabled],
   );
 
   const submitChangePassword = useCallback(() => {
