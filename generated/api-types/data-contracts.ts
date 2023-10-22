@@ -65,6 +65,30 @@ export interface PbCreateEntityGroupRequest {
   direction?: string;
 }
 
+export interface PbCreateLocationRequest {
+  placement?: PbLocationPlacement;
+  name?: string;
+  description?: string;
+  /** @format int32 */
+  thumbnailImageId?: number;
+}
+
+export interface PbCreateMapRequest {
+  placement?: PbMapPlacement;
+  name?: string;
+  type?: string;
+  description?: string;
+  /** @format int32 */
+  thumbnailImageId?: number;
+  /** @format int32 */
+  layerImageId?: number;
+}
+
+export interface PbCreateMapResponse {
+  map?: PbViewMap;
+  layer?: PbViewMapLayer;
+}
+
 export interface PbCreateOrUpdateEvaluationVoteResponse {
   evaluationVote?: PbEvaluationVote;
 }
@@ -86,11 +110,6 @@ export interface PbCreateUserRequest {
 
 export interface PbCreateUserResponse {
   user?: PbUser;
-}
-
-export interface PbCreateWorldMapResponse {
-  map?: PbViewMap;
-  layer?: PbViewMapLayer;
 }
 
 export interface PbCreateWorldRequest {
@@ -289,6 +308,10 @@ export interface PbGetImagesResponse {
   totalCount?: number;
 }
 
+export interface PbGetLocationsResponse {
+  locations?: PbViewLocation[];
+}
+
 export interface PbGetMapLayersResponse {
   layers?: PbViewMapLayer[];
 }
@@ -299,6 +322,10 @@ export interface PbGetMapPinTypesResponse {
 
 export interface PbGetMapPinsResponse {
   pins?: PbViewMapPin[];
+}
+
+export interface PbGetMapsResponse {
+  maps?: PbViewMap[];
 }
 
 export interface PbGetMenuItemContentResponse {
@@ -347,14 +374,6 @@ export interface PbGetWorldDailyActivityResponse {
   activity?: PbWorldActivity[];
 }
 
-export interface PbGetWorldLocationResponse {
-  locations?: PbViewLocation[];
-}
-
-export interface PbGetWorldMapResponse {
-  maps?: PbViewMap[];
-}
-
 export interface PbGetWorldMonthlyActivityResponse {
   activity?: PbWorldActivity[];
 }
@@ -387,6 +406,17 @@ export interface PbImage {
   createdAt?: string;
   /** @format int32 */
   userId?: number;
+  /** @format int32 */
+  width?: number;
+  /** @format int32 */
+  height?: number;
+}
+
+export interface PbLocationPlacement {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
 }
 
 export interface PbLoginUserRequest {
@@ -407,7 +437,7 @@ export interface PbMapPinType {
   /** @format int32 */
   id?: number;
   /** @format int32 */
-  mapId?: number;
+  mapPinTypeGroupId?: number;
   shape?: PbPinShape;
   backgroundColor?: string;
   borderColor?: string;
@@ -417,6 +447,14 @@ export interface PbMapPinType {
   iconSize?: number;
   /** @format int32 */
   width?: number;
+  section?: string;
+}
+
+export interface PbMapPlacement {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
 }
 
 export interface PbMenuItem {
@@ -537,6 +575,10 @@ export interface PbUploadImageRequest {
   data?: string;
   /** @format int32 */
   imageTypeId?: number;
+  /** @format int32 */
+  width?: number;
+  /** @format int32 */
+  height?: number;
 }
 
 export interface PbUploadUserAvatarResponse {

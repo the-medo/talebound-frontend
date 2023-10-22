@@ -10,18 +10,14 @@
  */
 
 import {
-  PbCreateWorldMapResponse,
   PbCreateWorldRequest,
   PbGetWorldAdminsResponse,
   PbGetWorldDailyActivityResponse,
-  PbGetWorldLocationResponse,
-  PbGetWorldMapResponse,
   PbGetWorldMonthlyActivityResponse,
   PbGetWorldsResponse,
   PbImage,
   PbPost,
   PbTag,
-  PbViewLocation,
   PbWorld,
   PbWorldAdmin,
   RpcStatus,
@@ -335,145 +331,6 @@ export class Worlds<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description returns world locations
-   *
-   * @tags Locations
-   * @name LocationsGetWorldLocations
-   * @summary Get world locations
-   * @request GET:/worlds/{worldId}/locations
-   * @response `200` `PbGetWorldLocationResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  locationsGetWorldLocations = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetWorldLocationResponse, RpcStatus>({
-      path: `/worlds/${worldId}/locations`,
-      method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description deletes location from the world
-   *
-   * @tags Locations
-   * @name LocationsDeleteWorldLocation
-   * @summary Delete world location
-   * @request DELETE:/worlds/{worldId}/locations
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  locationsDeleteWorldLocation = (
-    worldId: number,
-    query?: {
-      /** @format int32 */
-      locationId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<object, RpcStatus>({
-      path: `/worlds/${worldId}/locations`,
-      method: 'DELETE',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description creates a new location in the world
-   *
-   * @tags Locations
-   * @name LocationsCreateWorldLocation
-   * @summary Create world location
-   * @request POST:/worlds/{worldId}/locations
-   * @response `200` `PbViewLocation` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  locationsCreateWorldLocation = (
-    worldId: number,
-    body: {
-      name?: string;
-      description?: string;
-      /** @format int32 */
-      thumbnailImageId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbViewLocation, RpcStatus>({
-      path: `/worlds/${worldId}/locations`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description returns maps of the world
-   *
-   * @tags Maps
-   * @name MapsGetWorldMaps
-   * @summary Get world maps
-   * @request GET:/worlds/{worldId}/maps
-   * @response `200` `PbGetWorldMapResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsGetWorldMaps = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetWorldMapResponse, RpcStatus>({
-      path: `/worlds/${worldId}/maps`,
-      method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description creates a new map for the world
-   *
-   * @tags Maps
-   * @name MapsCreateWorldMap
-   * @summary Create world map
-   * @request POST:/worlds/{worldId}/maps
-   * @response `200` `PbCreateWorldMapResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsCreateWorldMap = (
-    worldId: number,
-    body: {
-      name?: string;
-      type?: string;
-      description?: string;
-      /** @format int32 */
-      width?: number;
-      /** @format int32 */
-      height?: number;
-      /** @format int32 */
-      thumbnailImageId?: number;
-      /** @format int32 */
-      layerImageId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbCreateWorldMapResponse, RpcStatus>({
-      path: `/worlds/${worldId}/maps`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description deletes a map from the world
-   *
-   * @tags Maps
-   * @name MapsDeleteWorldMap
-   * @summary Delete world map
-   * @request DELETE:/worlds/{worldId}/maps/{mapId}
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsDeleteWorldMap = (worldId: number, mapId: number, params: RequestParams = {}) =>
-    this.http.request<object, RpcStatus>({
-      path: `/worlds/${worldId}/maps/${mapId}`,
-      method: 'DELETE',
       format: 'json',
       ...params,
     });

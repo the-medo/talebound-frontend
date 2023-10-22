@@ -10,9 +10,12 @@
  */
 
 import {
+  PbCreateMapRequest,
+  PbCreateMapResponse,
   PbGetMapLayersResponse,
   PbGetMapPinTypesResponse,
   PbGetMapPinsResponse,
+  PbGetMapsResponse,
   PbMapPinType,
   PbPinShape,
   PbUpdateMapPinTypeResponse,
@@ -31,6 +34,68 @@ export class Maps<SecurityDataType = unknown> {
   }
 
   /**
+   * @description returns maps based on placement (world or quest)
+   *
+   * @tags Maps
+   * @name MapsGetMaps
+   * @summary Get maps
+   * @request GET:/maps
+   * @response `200` `PbGetMapsResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsGetMaps = (
+    query?: {
+      /** @format int32 */
+      placementWorldId?: number;
+      /** @format int32 */
+      placementQuestId?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetMapsResponse, RpcStatus>({
+      path: `/maps`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description creates a new map for world or quest
+   *
+   * @tags Maps
+   * @name MapsCreateMap
+   * @summary Create map
+   * @request POST:/maps
+   * @response `200` `PbCreateMapResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsCreateMap = (body: PbCreateMapRequest, params: RequestParams = {}) =>
+    this.http.request<PbCreateMapResponse, RpcStatus>({
+      path: `/maps`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description deletes a map from the world or quest
+   *
+   * @tags Maps
+   * @name MapsDeleteMap
+   * @summary Delete map
+   * @request DELETE:/maps/{mapId}
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsDeleteMap = (mapId: number, params: RequestParams = {}) =>
+    this.http.request<object, RpcStatus>({
+      path: `/maps/${mapId}`,
+      method: 'DELETE',
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description updates map properties
    *
    * @tags Maps
@@ -46,10 +111,6 @@ export class Maps<SecurityDataType = unknown> {
       name?: string;
       type?: string;
       description?: string;
-      /** @format int32 */
-      width?: number;
-      /** @format int32 */
-      height?: number;
       /** @format int32 */
       thumbnailImageId?: number;
     },
@@ -195,6 +256,7 @@ export class Maps<SecurityDataType = unknown> {
       iconSize?: number;
       /** @format int32 */
       width?: number;
+      section?: string;
     },
     params: RequestParams = {},
   ) =>
@@ -245,6 +307,7 @@ export class Maps<SecurityDataType = unknown> {
       iconSize?: number;
       /** @format int32 */
       width?: number;
+      section?: string;
     },
     params: RequestParams = {},
   ) =>
