@@ -2,7 +2,6 @@ import { createMutation, inferData } from 'react-query-kit';
 import { LocationsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
 import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
-import { locationPlacementToParams } from './locationLib';
 import { useGetLocations } from './useGetLocations';
 
 interface DeleteLocationParams {
@@ -15,9 +14,7 @@ export const useDeleteLocation = createMutation({
     LocationsCollection.locationsDeleteLocation(variables),
   onSuccess: (_, variables) => {
     const locationId = variables.locationId;
-    const keyParams = variables.placement
-      ? locationPlacementToParams(variables.placement)
-      : undefined;
+    const keyParams = variables.placement;
 
     if (locationId && keyParams) {
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);

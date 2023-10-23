@@ -1,131 +1,40 @@
 import React, { useCallback, useState } from 'react';
-import Textarea from '../../components/Textarea/Textarea';
-import { useInput } from '../../hooks/useInput';
-import Input from '../../components/Input/Input';
-import { Col, Row } from '../../components/Flex/Flex';
-import Avatar from '../../components/Avatar/Avatar';
-import { Label } from '../../components/Typography/Label';
-import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbImage, PbLocationPlacement } from '../../generated/api-types/data-contracts';
-import ErrorText from '../../components/ErrorText/ErrorText';
+import { Row } from '../../components/Flex/Flex';
+import { TitleH2 } from '../../components/Typography/Title';
 import { Button } from '../../components/Button/Button';
-import { useCreateLocation } from '../../api/locations/useCreateLocation';
-
-const textareaPlaceholder =
-  'Short description of the post. What information does this post contain?';
+import { TbPlus } from 'react-icons/tb';
+import LocationNewForm from './LocationNewForm';
+import ContentSection from '../../components/ContentSection/ContentSection';
+import { usePlacement } from '../../hooks/usePlacement';
 
 interface LocationNewProps {
-  placement: PbLocationPlacement;
-  canChangeName?: boolean;
-  canChangeDescription?: boolean;
-  canChangeThumbnail?: boolean;
-  onFinishCallback?: () => void;
+  canEdit?: boolean;
 }
 
-const LocationNew: React.FC<LocationNewProps> = ({
-  placement,
-  canChangeName = true,
-  canChangeDescription = true,
-  canChangeThumbnail = true,
-  onFinishCallback,
-}) => {
-  const { mutate: createLocation, isPending, error } = useCreateLocation();
+const LocationNew: React.FC<LocationNewProps> = ({ canEdit }) => {
+  const [placement, validPlacement] = usePlacement('location');
+  const [createMode, setCreateMode] = useState(false);
 
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [thumbnailImageId, setThumbnailImageId] = useState<number>();
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string>();
-  const { value: name, onChange: onChangeName } = useInput<string>('');
-  const { value: description, onChange } = useInput<string, HTMLTextAreaElement>('');
-
-  const toggleImageModal = useCallback(() => {
-    setShowImageModal((p) => !p);
-  }, []);
-
-  const changeThumbnailImage = useCallback(
-    (image: PbImage) => {
-      if (canChangeThumbnail) {
-        setThumbnailImageId(image.id);
-        setThumbnailImageUrl(image.baseUrl);
-      }
-    },
-    [canChangeThumbnail],
-  );
-
-  const createLocationHandler = useCallback(() => {
-    if (placement !== undefined) {
-      createLocation(
-        {
-          placement,
-          name: canChangeName ? name : undefined,
-          description: canChangeDescription ? description : undefined,
-          thumbnailImageId: canChangeThumbnail ? thumbnailImageId : undefined,
-        },
-        {
-          onSuccess: () => {
-            if (onFinishCallback) onFinishCallback();
-          },
-        },
-      );
-    }
-  }, [
-    placement,
-    createLocation,
-    canChangeName,
-    name,
-    canChangeDescription,
-    description,
-    canChangeThumbnail,
-    thumbnailImageId,
-    onFinishCallback,
-  ]);
-
-  const pending = isPending;
-
-  if (!canChangeName && !canChangeDescription && !canChangeThumbnail) return null;
+  const toggleCreateMode = useCallback(() => setCreateMode((p) => !p), []);
 
   return (
-    <>
-      <Row fullWidth gap="md" alignItems="start">
-        <Col fullWidth gap="md">
-          {canChangeName && (
-            <Input id="name" label="Name" onChange={onChangeName} value={name} required fullWidth />
-          )}
-          {canChangeDescription && (
-            <Textarea
-              id="description"
-              label="Short description"
-              placeholder={textareaPlaceholder}
-              rows={5}
-              value={description}
-              onChange={onChange}
-            />
-          )}
-          <Button onClick={createLocationHandler} loading={pending}>
-            Create
-          </Button>
-          <ErrorText error={error} />
-        </Col>
-        {canChangeThumbnail && (
-          <Col gap="md" alignItems="center" padding="xl">
-            <Label css={{ width: 'auto' }}>Thumbnail</Label>
-            <Avatar
-              loading={pending}
-              onClick={toggleImageModal}
-              size="xl"
-              url={thumbnailImageUrl}
-            />
-          </Col>
+    <ContentSection>
+      <Row gap="md" fullWidth justifyContent="between">
+        <TitleH2>New location</TitleH2>
+        {canEdit && (
+          <Row gap="md">
+            <Button
+              color={createMode ? 'primaryFill' : 'primaryOutline'}
+              onClick={toggleCreateMode}
+            >
+              <TbPlus />
+              Create location
+            </Button>
+          </Row>
         )}
       </Row>
-      <ImageModal
-        open={showImageModal}
-        setOpen={setShowImageModal}
-        trigger={null}
-        onSubmit={changeThumbnailImage}
-        uploadedFilename={`location-${JSON.stringify(placement)}`}
-        uploadedImageTypeId={500}
-      />
-    </>
+      {createMode && validPlacement && <LocationNewForm placement={placement} />}
+    </ContentSection>
   );
 };
 

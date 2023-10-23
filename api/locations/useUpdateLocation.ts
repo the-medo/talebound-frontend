@@ -3,7 +3,6 @@ import { createMutation, inferData } from 'react-query-kit';
 import { queryClient } from '../../pages/_app';
 import { useGetLocations } from './useGetLocations';
 import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
-import { locationPlacementToParams } from './locationLib';
 
 type UpdateLocationParams = {
   locationId: number;
@@ -16,9 +15,7 @@ export const useUpdateLocation = createMutation({
     LocationsCollection.locationsUpdateLocation(variables.locationId, variables.body),
   onSuccess: (data, variables) => {
     const locationId = variables.locationId;
-    const keyParams = variables.placement
-      ? locationPlacementToParams(variables.placement)
-      : undefined;
+    const keyParams = variables.placement;
 
     if (locationId && keyParams) {
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);

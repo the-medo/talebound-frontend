@@ -3,7 +3,6 @@ import { LocationsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
 import { PbCreateLocationRequest } from '../../generated/api-types/data-contracts';
 import { useGetLocations } from './useGetLocations';
-import { locationPlacementToParams } from './locationLib';
 
 export const useCreateLocation = createMutation({
   mutationFn: async (variables: PbCreateLocationRequest) =>
@@ -11,9 +10,7 @@ export const useCreateLocation = createMutation({
   onSuccess: (data, variables) => {
     const newLocation = data.data;
     if (newLocation && variables.placement) {
-      const getLocationsQueryKey = useGetLocations.getKey(
-        locationPlacementToParams(variables.placement),
-      );
+      const getLocationsQueryKey = useGetLocations.getKey(variables.placement);
       queryClient.setQueryData<inferData<typeof useGetLocations>>(
         getLocationsQueryKey,
         (locations) => {
