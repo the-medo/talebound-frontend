@@ -16,7 +16,7 @@ export function useAuth(): Auth {
   const [cookies] = useCookies<string, CookieMap>(['access_token_present']);
 
   const user = useSelector((state: ReduxState) => state.auth.user);
-  const isLoggedIn = cookies.access_token_present === 'true';
+  const isLoggedIn = cookies.access_token_present ?? false;
 
   useEffect(() => {
     if (!isLoggedIn) {
