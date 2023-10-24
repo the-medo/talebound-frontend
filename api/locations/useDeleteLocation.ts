@@ -20,15 +20,7 @@ export const useDeleteLocation = createMutation({
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);
       queryClient.setQueryData<inferData<typeof useGetLocations>>(
         getLocationsQueryKey,
-        (oldData) => {
-          const index = oldData?.findIndex((location) => location.id === locationId);
-
-          if (oldData && index !== undefined && index !== -1) {
-            oldData.splice(index, 1);
-          }
-
-          return oldData;
-        },
+        (oldData) => oldData?.filter(({ id }) => (id ? id !== locationId : true)),
       );
     }
   },

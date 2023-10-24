@@ -9,6 +9,9 @@ import LocationFormModal from './LocationFormModal';
 import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
 import { useDeleteBulkLocation } from '../../api/locations/useDeleteBulkLocation';
 import ErrorText from '../../components/ErrorText/ErrorText';
+import { Row } from '../../components/Flex/Flex';
+import { useDeleteLocation } from '../../api/locations/useDeleteLocation';
+import AlertDialog from '../../components/AlertDialog/AlertDialog';
 
 interface LocationTableProps {
   data: PbViewLocation[];
@@ -25,6 +28,12 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
     isPending: isPendingDeleteBulk,
     error: errorDeleteBulk,
   } = useDeleteBulkLocation();
+
+  const {
+    mutate: deleteLocation,
+    isPending: isPendingDelete,
+    error: errorDelete,
+  } = useDeleteLocation();
 
   const handleCloseModal = useCallback(() => {
     setUpdateLocation(undefined);
@@ -48,17 +57,41 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
 
   const openEditModal = useCallback((record: PbViewLocation) => setUpdateLocation(record), []);
 
-  const editButton = useCallback(
-    (record: PbViewLocation, callback: (record: PbViewLocation) => void) => {
-      const onClickHandler = () => callback(record);
+  const deleteLocationRecord = useCallback(
+    (record: PbViewLocation) => {
+      const { id: locationId } = record;
+      if (locationId) {
+        deleteLocation({ locationId, placement });
+      }
+    },
+    [placement],
+  );
+
+  const actionButtons = useCallback(
+    (record: PbViewLocation) => {
+      const updateHandler = () => openEditModal(record);
+      const deleteHandler = () => deleteLocationRecord(record);
 
       return (
-        <Button icon onClick={onClickHandler} size="md" color="primaryOutline">
-          <MdEdit />
-        </Button>
+        <Row gap="xs">
+          <Button icon onClick={updateHandler} size="md" color="primaryOutline">
+            <MdEdit />
+          </Button>
+          <AlertDialog
+            dialogSize="md"
+            triggerElement={
+              <Button icon size="md" color="dangerOutline">
+                <MdDelete />
+              </Button>
+            }
+            title={`Delete location "${record.name}"`}
+            description="All assigned menu entities and map pins will be deleted."
+            submitAction={deleteHandler}
+          />
+        </Row>
       );
     },
-    [],
+    [openEditModal, deleteLocationRecord],
   );
 
   const columns: ColumnType<PbViewLocation>[] = useMemo(() => {
@@ -75,6 +108,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
         dataIndex: 'name',
         render: (value: string) => <b>{value}</b>,
         sorter: (a, b) => (a.name ?? '').localeCompare(b.name ?? ''),
+        width: '200px',
       },
       {
         title: 'Description',
@@ -86,15 +120,14 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
 
     if (canEdit) {
       cols.push({
-        title: 'Edit',
-        key: 'edit',
-        dataIndex: 'edit',
-        render: (_, record) => editButton(record, openEditModal),
+        title: '',
+        key: 'action-buttons',
+        render: (_, record) => actionButtons(record),
       });
     }
 
     return cols;
-  }, [canEdit, editButton, openEditModal]);
+  }, [canEdit, actionButtons]);
 
   const summary: TableProps<PbViewLocation>['summary'] = useCallback(() => {
     if (!canEdit) return undefined;
@@ -116,10 +149,21 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
       <Table.Summary fixed>
         <Table.Summary.Row>
           <Table.Summary.Cell colSpan={4} index={0}>
-            <Button color="dangerFill" loading={isPendingDeleteBulk} onClick={deleteBulkHandler}>
-              <MdDelete />
-              Delete locations ({selectedRowKeys.length})
-            </Button>
+            <AlertDialog
+              dialogSize="md"
+              triggerElement={
+                <Button color="dangerFill" loading={isPendingDeleteBulk}>
+                  <MdDelete />
+                  Delete locations ({selectedRowKeys.length})
+                </Button>
+              }
+              title={`Delete ${selectedRowKeys.length} location ${
+                selectedRowKeys.length > 1 ? 's' : ''
+              }`}
+              description="All assigned menu entities and map pins to these locations will be deleted."
+              submitAction={deleteBulkHandler}
+            />
+
             <ErrorText error={errorDeleteBulk} />
           </Table.Summary.Cell>
         </Table.Summary.Row>
@@ -137,6 +181,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
   return (
     <>
       <Table<PbViewLocation>
+        loading={isPendingDelete}
         rowSelection={rowSelection}
         showSorterTooltip={false}
         columns={columns}
@@ -145,6 +190,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
         size="small"
         summary={summary}
       />
+      <ErrorText error={errorDelete} />
       <LocationFormModal
         placement={placement}
         trigger={undefined}
