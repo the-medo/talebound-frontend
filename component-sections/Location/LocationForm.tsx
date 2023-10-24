@@ -41,6 +41,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
     isPending: isPendingCreate,
     error: errorCreate,
   } = useCreateLocation();
+
   const {
     mutate: updateLocation,
     isPending: isPendingUpdate,
@@ -77,30 +78,53 @@ const LocationForm: React.FC<LocationFormProps> = ({
 
   const createLocationHandler = useCallback(() => {
     if (placement !== undefined) {
-      createLocation(
-        {
-          placement,
-          name: canChangeName ? name : undefined,
-          description: canChangeDescription ? description : undefined,
-          thumbnailImageId: canChangeThumbnail ? thumbnailImageId : undefined,
+      const options = {
+        onSuccess: () => {
+          if (onFinishCallback) onFinishCallback();
         },
-        {
-          onSuccess: () => {
-            if (onFinishCallback) onFinishCallback();
+      };
+
+      const body = {
+        name: canChangeName && name ? name : undefined,
+        description: canChangeDescription && description ? description : undefined,
+        thumbnailImageId: canChangeThumbnail && thumbnailImageId ? thumbnailImageId : undefined,
+      };
+
+      if (location) {
+        //update
+        if (location.id) {
+          updateLocation(
+            {
+              locationId: location.id,
+              placement,
+              body,
+            },
+            options,
+          );
+        }
+      } else {
+        //create
+        createLocation(
+          {
+            placement,
+            ...body,
           },
-        },
-      );
+          options,
+        );
+      }
     }
   }, [
     placement,
-    createLocation,
     canChangeName,
     name,
     canChangeDescription,
     description,
     canChangeThumbnail,
     thumbnailImageId,
+    location,
     onFinishCallback,
+    updateLocation,
+    createLocation,
   ]);
 
   const pending = isPendingUpdate || isPendingCreate;
@@ -125,7 +149,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
             />
           )}
           <Button onClick={createLocationHandler} loading={pending}>
-            Create
+            {location ? 'Update' : 'Create'}
           </Button>
           <ErrorText error={errorCreate ?? errorUpdate} />
         </Col>

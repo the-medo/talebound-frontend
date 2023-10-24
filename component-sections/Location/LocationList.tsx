@@ -14,7 +14,7 @@ const LocationList: React.FC<LocationListProps> = ({ canEdit }) => {
 
   return (
     <div>
-      <LocationTable data={locationsData} canEdit={canEdit} />
+      <LocationTable data={locationsData} canEdit={canEdit} placement={placement} />
     </div>
   );
 };

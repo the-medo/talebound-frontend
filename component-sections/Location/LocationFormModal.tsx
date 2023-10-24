@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
 import LocationForm from './LocationForm';
 import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
@@ -18,8 +18,14 @@ const LocationFormModal: React.FC<LocationFormModalProps> = ({
   open,
   setOpen,
 }) => {
+  const onFinishCallback = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
+
   const content = useMemo(
-    () => <LocationForm location={location} placement={placement} />,
+    () => (
+      <LocationForm location={location} placement={placement} onFinishCallback={onFinishCallback} />
+    ),
     [location, placement],
   );
 
