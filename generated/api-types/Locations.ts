@@ -51,19 +51,18 @@ export class Locations<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description deletes location from the world
+   * @description deletes multiple locations from the world or quest
    *
    * @tags Locations
-   * @name LocationsDeleteLocation
-   * @summary Delete world location
+   * @name LocationsDeleteBulkLocation
+   * @summary Delete multiple locations
    * @request DELETE:/locations
    * @response `200` `object` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  locationsDeleteLocation = (
+  locationsDeleteBulkLocation = (
     query?: {
-      /** @format int32 */
-      locationId?: number;
+      locationIds?: number[];
     },
     params: RequestParams = {},
   ) =>
@@ -90,6 +89,23 @@ export class Locations<SecurityDataType = unknown> {
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description deletes location from the world or quest
+   *
+   * @tags Locations
+   * @name LocationsDeleteLocation
+   * @summary Delete location
+   * @request DELETE:/locations/{locationId}
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  locationsDeleteLocation = (locationId: number, params: RequestParams = {}) =>
+    this.http.request<object, RpcStatus>({
+      path: `/locations/${locationId}`,
+      method: 'DELETE',
       format: 'json',
       ...params,
     });

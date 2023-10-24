@@ -9,6 +9,7 @@ import { HydrationProvider } from 'react-hydration-provider';
 import { COLORS, theme } from '../styles/stitches.config';
 import { ConfigProviderProps } from 'antd/es/config-provider';
 import { ConfigProvider } from 'antd';
+import qs from 'qs';
 
 const antdTheme: ConfigProviderProps['theme'] = {
   token: {
@@ -29,6 +30,9 @@ export const queryClient = new QueryClient({
 });
 
 axios.defaults.withCredentials = true;
+axios.defaults.paramsSerializer = function (params) {
+  return qs.stringify(params, { indices: false }); // param=value1&param=value2
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   globalStyles();

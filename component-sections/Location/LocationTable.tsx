@@ -4,15 +4,11 @@ import Avatar from '../../components/Avatar/Avatar';
 import { Table } from 'antd';
 import { TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
-import { MdEdit } from 'react-icons/md';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import LocationFormModal from './LocationFormModal';
 import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
-
-/*interface LocationTableData {
-  name?: string;
-  description?: string;
-  thumbnailImageUrl?: string;
-}*/
+import { useDeleteBulkLocation } from '../../api/locations/useDeleteBulkLocation';
+import ErrorText from '../../components/ErrorText/ErrorText';
 
 interface LocationTableProps {
   data: PbViewLocation[];
@@ -23,6 +19,12 @@ interface LocationTableProps {
 const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [updateLocation, setUpdateLocation] = useState<PbViewLocation>();
+
+  const {
+    mutate: deleteBulkLocations,
+    isPending: isPendingDeleteBulk,
+    error: errorDeleteBulk,
+  } = useDeleteBulkLocation();
 
   const handleCloseModal = useCallback(() => {
     setUpdateLocation(undefined);
@@ -95,18 +97,42 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
   }, [canEdit, editButton, openEditModal]);
 
   const summary: TableProps<PbViewLocation>['summary'] = useCallback(() => {
+    if (!canEdit) return undefined;
     if (selectedRowKeys.length === 0) return undefined;
+
+    const deleteBulkHandler = () => {
+      const locationIds = selectedRowKeys.map((key) => parseInt(key.toString()));
+      deleteBulkLocations(
+        { locationIds, placement },
+        {
+          onSuccess: () => {
+            setSelectedRowKeys([]);
+          },
+        },
+      );
+    };
 
     return (
       <Table.Summary fixed>
         <Table.Summary.Row>
           <Table.Summary.Cell colSpan={4} index={0}>
-            Delete locations ({selectedRowKeys.length})
+            <Button color="dangerFill" loading={isPendingDeleteBulk} onClick={deleteBulkHandler}>
+              <MdDelete />
+              Delete locations ({selectedRowKeys.length})
+            </Button>
+            <ErrorText error={errorDeleteBulk} />
           </Table.Summary.Cell>
         </Table.Summary.Row>
       </Table.Summary>
     );
-  }, [selectedRowKeys.length]);
+  }, [
+    canEdit,
+    deleteBulkLocations,
+    errorDeleteBulk,
+    isPendingDeleteBulk,
+    placement,
+    selectedRowKeys,
+  ]);
 
   return (
     <>

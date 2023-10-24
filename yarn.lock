@@ -13311,7 +13311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.11.0":
+"qs@npm:^6.10.0, qs@npm:^6.11.0, qs@npm:^6.11.2":
   version: 6.11.2
   resolution: "qs@npm:6.11.2"
   dependencies:
@@ -14831,6 +14831,7 @@ __metadata:
     lodash.debounce: ^4.0.8
     next: 13.4.13
     prettier: ^3.0.3
+    qs: ^6.11.2
     react: 18.2.0
     react-cookie: ^6.1.1
     react-dom: 18.2.0

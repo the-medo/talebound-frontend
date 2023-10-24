@@ -26,7 +26,7 @@ const LocationFormModal: React.FC<LocationFormModalProps> = ({
     () => (
       <LocationForm location={location} placement={placement} onFinishCallback={onFinishCallback} />
     ),
-    [location, placement],
+    [location, onFinishCallback, placement],
   );
 
   return (

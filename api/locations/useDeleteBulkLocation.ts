@@ -4,31 +4,23 @@ import { queryClient } from '../../pages/_app';
 import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
 import { useGetLocations } from './useGetLocations';
 
-interface DeleteLocationParams {
-  locationId: number;
+interface DeleteBulkLocationParams {
+  locationIds: number[];
   placement?: PbLocationPlacement;
 }
 
-export const useDeleteLocation = createMutation({
-  mutationFn: async (variables: DeleteLocationParams) =>
-    LocationsCollection.locationsDeleteLocation(variables.locationId),
+export const useDeleteBulkLocation = createMutation({
+  mutationFn: async (variables: DeleteBulkLocationParams) =>
+    LocationsCollection.locationsDeleteBulkLocation({ locationIds: variables.locationIds }),
   onSuccess: (_, variables) => {
-    const locationId = variables.locationId;
+    const deletedLocationIds = variables.locationIds;
     const keyParams = variables.placement;
 
-    if (locationId && keyParams) {
+    if (deletedLocationIds && keyParams) {
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);
       queryClient.setQueryData<inferData<typeof useGetLocations>>(
         getLocationsQueryKey,
-        (oldData) => {
-          const index = oldData?.findIndex((location) => location.id === locationId);
-
-          if (oldData && index !== undefined && index !== -1) {
-            oldData.splice(index, 1);
-          }
-
-          return oldData;
-        },
+        (oldData) => oldData?.filter(({ id }) => (id ? !deletedLocationIds.includes(id) : true)),
       );
     }
   },
