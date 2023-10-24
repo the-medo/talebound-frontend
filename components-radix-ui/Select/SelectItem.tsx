@@ -4,13 +4,13 @@ import { styled } from '@stitches/react';
 import { MdCheck } from 'react-icons/md';
 
 const StyledItem = styled(Select.Item, {
-  fontSize: 13,
+  fontSize: 16,
   lineHeight: 1,
   color: '$primary700',
   borderRadius: 3,
   display: 'flex',
   alignItems: 'center',
-  height: 25,
+  height: 35,
   padding: '0 35px 0 25px',
   position: 'relative',
   userSelect: 'none',

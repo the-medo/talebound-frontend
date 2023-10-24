@@ -3,7 +3,7 @@ import { Row } from '../../components/Flex/Flex';
 import { TitleH2 } from '../../components/Typography/Title';
 import { Button } from '../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
-import LocationNewForm from './LocationNewForm';
+import LocationForm from './LocationForm';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { usePlacement } from '../../hooks/usePlacement';
 
@@ -33,7 +33,7 @@ const LocationNew: React.FC<LocationNewProps> = ({ canEdit }) => {
           </Row>
         )}
       </Row>
-      {createMode && validPlacement && <LocationNewForm placement={placement} />}
+      {createMode && validPlacement && <LocationForm placement={placement} />}
     </ContentSection>
   );
 };

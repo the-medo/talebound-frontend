@@ -6,36 +6,60 @@ import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbImage, PbLocationPlacement } from '../../generated/api-types/data-contracts';
+import {
+  PbImage,
+  PbLocationPlacement,
+  PbViewLocation,
+} from '../../generated/api-types/data-contracts';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { useCreateLocation } from '../../api/locations/useCreateLocation';
+import { useUpdateLocation } from '../../api/locations/useUpdateLocation';
 
 const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
-interface LocationNewFormProps {
+interface LocationFormProps {
   placement: PbLocationPlacement;
   canChangeName?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
   onFinishCallback?: () => void;
+  location?: PbViewLocation;
 }
 
-const LocationNewForm: React.FC<LocationNewFormProps> = ({
+const LocationForm: React.FC<LocationFormProps> = ({
   placement,
   canChangeName = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
   onFinishCallback,
+  location,
 }) => {
-  const { mutate: createLocation, isPending, error } = useCreateLocation();
+  const {
+    mutate: createLocation,
+    isPending: isPendingCreate,
+    error: errorCreate,
+  } = useCreateLocation();
+  const {
+    mutate: updateLocation,
+    isPending: isPendingUpdate,
+    error: errorUpdate,
+  } = useUpdateLocation();
 
   const [showImageModal, setShowImageModal] = useState(false);
-  const [thumbnailImageId, setThumbnailImageId] = useState<number>();
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string>();
-  const { value: name, onChange: onChangeName } = useInput<string>('');
-  const { value: description, onChange } = useInput<string, HTMLTextAreaElement>('');
+  const [thumbnailImageId, setThumbnailImageId] = useState<number | undefined>(
+    location ? location.thumbnailImageId : undefined,
+  );
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string | undefined>(
+    location ? location.thumbnailImageUrl : undefined,
+  );
+  const { value: name, onChange: onChangeName } = useInput<string>(
+    location ? location.name ?? '' : '',
+  );
+  const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
+    location ? location.description ?? '' : '',
+  );
 
   const toggleImageModal = useCallback(() => {
     setShowImageModal((p) => !p);
@@ -79,7 +103,7 @@ const LocationNewForm: React.FC<LocationNewFormProps> = ({
     onFinishCallback,
   ]);
 
-  const pending = isPending;
+  const pending = isPendingUpdate || isPendingCreate;
 
   if (!canChangeName && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -103,7 +127,7 @@ const LocationNewForm: React.FC<LocationNewFormProps> = ({
           <Button onClick={createLocationHandler} loading={pending}>
             Create
           </Button>
-          <ErrorText error={error} />
+          <ErrorText error={errorCreate ?? errorUpdate} />
         </Col>
         {canChangeThumbnail && (
           <Col gap="md" alignItems="center" padding="xl">
@@ -129,4 +153,4 @@ const LocationNewForm: React.FC<LocationNewFormProps> = ({
   );
 };
 
-export default LocationNewForm;
+export default LocationForm;

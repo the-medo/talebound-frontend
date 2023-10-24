@@ -1,22 +1,20 @@
 import React from 'react';
 import { usePlacement } from '../../hooks/usePlacement';
 import { useGetLocations } from '../../api/locations/useGetLocations';
+import LocationTable from './LocationTable';
 
-interface LocationListProps {}
+interface LocationListProps {
+  canEdit?: boolean;
+}
 
-const LocationList: React.FC<LocationListProps> = () => {
+const LocationList: React.FC<LocationListProps> = ({ canEdit }) => {
   const [placement] = usePlacement('location');
 
   const { data: locationsData = [] } = useGetLocations({ variables: placement });
 
   return (
     <div>
-      {JSON.stringify(placement)}
-      {locationsData.map((l) => (
-        <div key={l.id}>
-          {l.name} - {l.description}
-        </div>
-      ))}
+      <LocationTable data={locationsData} canEdit={canEdit} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import * as Select from '@radix-ui/react-select';
 
 export const SelectLabel = styled(Select.Label, {
   padding: '0 12px',
-  fontSize: 12,
+  fontSize: 16,
   lineHeight: '25px',
   color: '$primary200',
 });
