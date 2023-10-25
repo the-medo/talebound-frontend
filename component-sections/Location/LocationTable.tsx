@@ -12,6 +12,7 @@ import ErrorText from '../../components/ErrorText/ErrorText';
 import { Row } from '../../components/Flex/Flex';
 import { useDeleteLocation } from '../../api/locations/useDeleteLocation';
 import AlertDialog from '../../components/AlertDialog/AlertDialog';
+import LocationTablePostCell from './LocationTablePostCell';
 
 interface LocationTableProps {
   data: PbViewLocation[];
@@ -116,6 +117,22 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
         dataIndex: 'description',
         sorter: (a, b) => (a.description ?? '').localeCompare(b.description ?? ''),
       },
+      {
+        title: 'Post',
+        key: 'postTitle',
+        dataIndex: 'postTitle',
+        render: (_, record) =>
+          record.id && (
+            <LocationTablePostCell
+              locationId={record.id}
+              placement={placement}
+              postId={record.postId}
+              postTitle={record.postTitle}
+              canEdit={canEdit}
+            />
+          ),
+        sorter: (a, b) => (a.postTitle ?? '').localeCompare(b.postTitle ?? ''),
+      },
     ];
 
     if (canEdit) {
@@ -127,7 +144,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
     }
 
     return cols;
-  }, [canEdit, actionButtons]);
+  }, [canEdit, placement, actionButtons]);
 
   const summary: TableProps<PbViewLocation>['summary'] = useCallback(() => {
     if (!canEdit) return undefined;

@@ -139,4 +139,21 @@ export class Locations<SecurityDataType = unknown> {
       format: 'json',
       ...params,
     });
+  /**
+   * @description creates a new post and assigns it to location in the world or a quest
+   *
+   * @tags Locations
+   * @name LocationsCreateLocationPost
+   * @summary Create post for location
+   * @request POST:/locations/{locationId}/posts
+   * @response `200` `PbViewLocation` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  locationsCreateLocationPost = (locationId: number, params: RequestParams = {}) =>
+    this.http.request<PbViewLocation, RpcStatus>({
+      path: `/locations/${locationId}/posts`,
+      method: 'POST',
+      format: 'json',
+      ...params,
+    });
 }

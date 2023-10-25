@@ -621,6 +621,7 @@ export interface PbViewLocation {
   description?: string;
   /** @format int32 */
   postId?: number;
+  postTitle?: string;
   /** @format int32 */
   thumbnailImageId?: number;
   thumbnailImageUrl?: string;
