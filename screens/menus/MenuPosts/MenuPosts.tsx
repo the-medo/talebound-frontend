@@ -11,7 +11,7 @@ import { formatDate } from '../../../utils/functions/formatDate';
 import Avatar from '../../../components/Avatar/Avatar';
 import { ColumnType } from 'antd/es/table';
 import { TitleH2 } from '../../../components/Typography/Title';
-import PostNew from '../../../component-sections/Post/PostNew';
+import PostForm from '../../../component-sections/Post/PostForm';
 import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import { SelectOptionGroup, SelectOptions } from '../../../components-radix-ui/Select/selectLib';
@@ -268,7 +268,7 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
               </Row>
             )}
           </Row>
-          {createPostMode && <PostNew menuId={menuId} menuItemId={0} />}
+          {createPostMode && <PostForm menuId={menuId} menuItemId={0} />}
         </ContentSection>
       </Col>
     </Row>

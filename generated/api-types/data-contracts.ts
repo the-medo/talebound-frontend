@@ -354,6 +354,12 @@ export interface PbGetPostTypesResponse {
   postTypes?: PbDataPostType[];
 }
 
+export interface PbGetPostsByPlacementResponse {
+  posts?: PbPost[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
 export interface PbGetUserPostsResponse {
   posts?: PbPost[];
 }

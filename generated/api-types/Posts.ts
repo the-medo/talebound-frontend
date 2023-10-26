@@ -13,6 +13,7 @@ import {
   PbCreatePostRequest,
   PbDeletePostResponse,
   PbGetPostHistoryResponse,
+  PbGetPostsByPlacementResponse,
   PbHistoryPost,
   PbPost,
   RpcStatus,
@@ -26,6 +27,40 @@ export class Posts<SecurityDataType = unknown> {
     this.http = http;
   }
 
+  /**
+   * @description returns posts based on placement
+   *
+   * @tags Posts
+   * @name PostsGetPostsByPlacement
+   * @summary Get posts
+   * @request GET:/posts
+   * @response `200` `PbGetPostsByPlacementResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  postsGetPostsByPlacement = (
+    query?: {
+      /** @format int32 */
+      worldId?: number;
+      /** @format int32 */
+      questId?: number;
+      /** @format int32 */
+      characterId?: number;
+      /** @format int32 */
+      systemId?: number;
+      /** @format int32 */
+      limit?: number;
+      /** @format int32 */
+      offset?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetPostsByPlacementResponse, RpcStatus>({
+      path: `/posts`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
   /**
    * @description create completely new post
    *

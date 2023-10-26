@@ -1,7 +1,7 @@
 import { PbPlacement } from '../generated/api-types/data-contracts';
 import { useRouter } from 'next/router';
 
-export type PlacementType = 'location' | 'map';
+export type PlacementType = 'location' | 'map' | 'post';
 export type PlacementIdsToUse = keyof PbPlacement;
 
 const parseRouterParam = (p: string | string[] | undefined): number => {
@@ -14,6 +14,7 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
 const idUsageForPlacementType: Record<PlacementType, PlacementIdsToUse[]> = {
   location: ['worldId', 'questId'],
   map: ['worldId', 'questId'],
+  post: ['worldId', 'questId', 'systemId', 'characterId'],
 };
 
 const keyShortcuts: Record<PlacementIdsToUse, string> = {

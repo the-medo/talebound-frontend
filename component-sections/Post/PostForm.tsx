@@ -7,7 +7,7 @@ import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbImage } from '../../generated/api-types/data-contracts';
+import { PbDataPost, PbImage, PbPlacement, PbPost } from '../../generated/api-types/data-contracts';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { useCreateMenuItemPost } from '../../api/menus/useCreateMenuItemPost';
@@ -15,26 +15,24 @@ import { useCreateMenuItemPost } from '../../api/menus/useCreateMenuItemPost';
 const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
-interface PostNewProps {
-  menuId?: number;
-  menuItemId?: number;
-  position?: number;
+interface PostFormProps {
+  post?: PbDataPost;
+  placement: PbPlacement;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
   onFinishCallback?: () => void;
 }
 
-const PostNew: React.FC<PostNewProps> = ({
-  menuId,
-  menuItemId,
-  position,
+const PostForm: React.FC<PostFormProps> = ({
+  post,
+  placement,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
   onFinishCallback,
 }) => {
-  const { mutate: createMenuItemPost, isPending, error } = useCreateMenuItemPost();
+  // const { mutate: createMenuItemPost, isPending, error } = useCreateMenuItemPost();
 
   const [showImageModal, setShowImageModal] = useState(false);
 
@@ -57,25 +55,29 @@ const PostNew: React.FC<PostNewProps> = ({
     [canChangeThumbnail],
   );
 
-  const createPostHandler = useCallback(() => {
-    if (menuId && menuItemId !== undefined) {
-      createMenuItemPost(
-        {
-          menuId,
-          menuItemId,
-          body: {
-            title: canChangeTitle ? title : undefined,
-            position,
-            shortDescription: canChangeDescription ? description : undefined,
-            imageThumbnailId: thumbnailImageId,
-          },
+  const createPostHandler = useCallback(() => {}, []);
+  /*
+const createPostHandler = useCallback(() => {
+  if (placement) {
+
+    createMenuItemPost(
+      {
+        menuId,
+        menuItemId,
+        body: {
+          title: canChangeTitle ? title : undefined,
+          position,
+          shortDescription: canChangeDescription ? description : undefined,
+          imageThumbnailId: thumbnailImageId,
         },
-        {
-          onSuccess: () => {
-            if (onFinishCallback) onFinishCallback();
-          },
+      },
+      {
+        onSuccess: () => {
+          if (onFinishCallback) onFinishCallback();
         },
-      );
+      },
+    );
+
     }
   }, [
     createMenuItemPost,
@@ -88,8 +90,10 @@ const PostNew: React.FC<PostNewProps> = ({
     description,
     thumbnailImageId,
   ]);
+  */
 
-  const pending = isPending;
+  // const pending = isPending;
+  const pending = false;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -120,7 +124,7 @@ const PostNew: React.FC<PostNewProps> = ({
           <Button onClick={createPostHandler} loading={pending}>
             Create
           </Button>
-          <ErrorText error={error} />
+          {/*<ErrorText error={error} />*/}
         </Col>
         {canChangeThumbnail && (
           <Col gap="md" alignItems="center" padding="xl">
@@ -139,11 +143,11 @@ const PostNew: React.FC<PostNewProps> = ({
         setOpen={setShowImageModal}
         trigger={null}
         onSubmit={changeThumbnailImage}
-        uploadedFilename={`post-thumbnail-menu-${menuId}`}
+        uploadedFilename={`post-thumbnail`}
         uploadedImageTypeId={100}
       />
     </>
   );
 };
 
-export default PostNew;
+export default PostForm;

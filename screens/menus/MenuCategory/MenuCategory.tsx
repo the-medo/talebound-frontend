@@ -14,7 +14,7 @@ import { Reorder } from 'framer-motion';
 import { PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import PostNew from '../../../component-sections/Post/PostNew';
+import PostForm from '../../../component-sections/Post/PostForm';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -171,7 +171,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               )}
             </Row>
             {createPostMode && (
-              <PostNew
+              <PostForm
                 menuId={menuId}
                 menuItemId={menuItemId}
                 position={menuItemPostsData.length + 1}

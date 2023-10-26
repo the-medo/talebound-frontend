@@ -1,4 +1,7 @@
-export type InfiniteResponse<T> = T & { newOffset: number | undefined };
+export type InfiniteResponse<T> = T & {
+  newOffset: number | undefined;
+  totalCount: number;
+};
 
 export const expandDataForInfiniteQuery = <T>(
   data: T,
@@ -12,6 +15,7 @@ export const expandDataForInfiniteQuery = <T>(
   return {
     ...data,
     newOffset: newOffset < total ? newOffset : undefined,
+    totalCount: total,
   };
 };
 
