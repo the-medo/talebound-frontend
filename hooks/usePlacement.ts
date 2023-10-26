@@ -1,12 +1,8 @@
-import { PbLocationPlacement, PbMapPlacement } from '../generated/api-types/data-contracts';
+import { PbPlacement } from '../generated/api-types/data-contracts';
 import { useRouter } from 'next/router';
 
 export type PlacementType = 'location' | 'map';
-
-type PlacementReturnTypes = {
-  location: PbLocationPlacement;
-  map: PbMapPlacement;
-};
+export type PlacementIdsToUse = keyof PbPlacement;
 
 const parseRouterParam = (p: string | string[] | undefined): number => {
   if (!p) return 0;
@@ -15,53 +11,41 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
   return parseInt(p[0]) ?? 0;
 };
 
-const zeroIsUndefined = (n: number): number | undefined => (n > 0 ? n : undefined);
-
-const savedPlacementObjects: {
-  location: Record<string, PbLocationPlacement>;
-  map: Record<string, PbMapPlacement>;
-} = {
-  location: {},
-  map: {},
+const idUsageForPlacementType: Record<PlacementType, PlacementIdsToUse[]> = {
+  location: ['worldId', 'questId'],
+  map: ['worldId', 'questId'],
 };
 
-export const usePlacement = <T extends PlacementType>(
-  type: T,
-): [PlacementReturnTypes[T], boolean] => {
+const keyShortcuts: Record<PlacementIdsToUse, string> = {
+  worldId: 'w',
+  questId: 'q',
+  systemId: 's',
+  characterId: 'c',
+};
+
+const zeroIsUndefined = (n: number): number | undefined => (n > 0 ? n : undefined);
+
+const savedPlacementObjects: Record<string, PbPlacement> = {};
+
+export const usePlacement = <T extends PlacementType>(type: T): [PbPlacement, boolean] => {
   const router = useRouter();
 
-  const worldId = parseRouterParam(router.query['worldId']);
-  const questId = parseRouterParam(router.query['questId']);
-  // const systemId = parseRouterParam(router.query['systemId']);
-  // const characterId = parseRouterParam(router.query['characterId']);
+  let valid = false;
+  const keyParts: string[] = [];
+  const placementObject: PbPlacement = {};
 
-  let valid = true;
-
-  if (type === 'location') {
-    const key = `w${worldId}-q${questId}`;
-    if (worldId === 0 && questId === 0) valid = false;
-
-    if (!savedPlacementObjects['location'][key]) {
-      savedPlacementObjects['location'][key] = {
-        worldId: zeroIsUndefined(worldId),
-        questId: zeroIsUndefined(questId),
-      };
-    }
-
-    return [savedPlacementObjects['location'][key], valid];
-  } else if (type === 'map') {
-    const key = `w${worldId}-q${questId}`;
-    if (worldId === 0 && questId === 0) valid = false;
-
-    if (!savedPlacementObjects['map'][key]) {
-      savedPlacementObjects['map'][key] = {
-        worldId: zeroIsUndefined(worldId),
-        questId: zeroIsUndefined(questId),
-      };
-    }
-
-    return [savedPlacementObjects['map'][key], valid];
+  for (const idToUse of idUsageForPlacementType[type]) {
+    const id = parseRouterParam(router.query[idToUse]);
+    keyParts.push(`${keyShortcuts[idToUse]}${id ?? 0}`);
+    placementObject[idToUse] = zeroIsUndefined(id);
+    if (id > 0) valid = true; //at least one positive ID to have valid placement
   }
 
-  return [{}, false];
+  const key = keyParts.join('-');
+
+  if (!savedPlacementObjects[key]) {
+    savedPlacementObjects[key] = placementObject;
+  }
+
+  return [savedPlacementObjects[key], valid];
 };

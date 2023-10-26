@@ -1,5 +1,5 @@
 import { createQuery } from 'react-query-kit';
-import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
 import { LocationsCollection } from '../collections';
 import { TaleboundError } from '../../utils/types/error';
 
@@ -8,7 +8,7 @@ import { TaleboundError } from '../../utils/types/error';
 //   undefined
 // >;
 
-export const useGetLocations = createQuery<PbViewLocation[], PbLocationPlacement, TaleboundError>({
+export const useGetLocations = createQuery<PbViewLocation[], PbPlacement, TaleboundError>({
   primaryKey: 'useGetLocations',
   queryFn: async ({ queryKey: [, variables] }) => {
     console.log('useGetLocations', variables);

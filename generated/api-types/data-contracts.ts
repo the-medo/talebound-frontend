@@ -66,7 +66,7 @@ export interface PbCreateEntityGroupRequest {
 }
 
 export interface PbCreateLocationRequest {
-  placement?: PbLocationPlacement;
+  placement?: PbPlacement;
   name?: string;
   description?: string;
   /** @format int32 */
@@ -74,7 +74,7 @@ export interface PbCreateLocationRequest {
 }
 
 export interface PbCreateMapRequest {
-  placement?: PbMapPlacement;
+  placement?: PbPlacement;
   name?: string;
   type?: string;
   description?: string;
@@ -412,13 +412,6 @@ export interface PbImage {
   height?: number;
 }
 
-export interface PbLocationPlacement {
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
-}
-
 export interface PbLoginUserRequest {
   username?: string;
   password?: string;
@@ -448,13 +441,6 @@ export interface PbMapPinType {
   /** @format int32 */
   width?: number;
   section?: string;
-}
-
-export interface PbMapPlacement {
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
 }
 
 export interface PbMenuItem {
@@ -496,6 +482,17 @@ export enum PbPinShape {
   PENTAGON = 'PENTAGON',
   HEART = 'HEART',
   CLOUD = 'CLOUD',
+}
+
+export interface PbPlacement {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
+  /** @format int32 */
+  characterId?: number;
+  /** @format int32 */
+  systemId?: number;
 }
 
 export interface PbPost {

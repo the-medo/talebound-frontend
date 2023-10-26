@@ -34,7 +34,7 @@ export class Maps<SecurityDataType = unknown> {
   }
 
   /**
-   * @description returns maps based on placement (world or quest)
+   * @description returns maps based on placements (world or quest)
    *
    * @tags Maps
    * @name MapsGetMaps
@@ -49,6 +49,10 @@ export class Maps<SecurityDataType = unknown> {
       placementWorldId?: number;
       /** @format int32 */
       placementQuestId?: number;
+      /** @format int32 */
+      placementCharacterId?: number;
+      /** @format int32 */
+      placementSystemId?: number;
     },
     params: RequestParams = {},
   ) =>

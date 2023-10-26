@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
+import { PbPlacement } from '../../generated/api-types/data-contracts';
 import { MdAdd } from 'react-icons/md';
 import { useCreateLocationPost } from '../../api/locations/useCreateLocationPost';
 import AssignPostModal from '../Post/AssignPostModal/AssignPostModal';
@@ -8,7 +8,7 @@ import ErrorText from '../../components/ErrorText/ErrorText';
 
 interface LocationTablePostCellProps {
   locationId: number;
-  placement: PbLocationPlacement;
+  placement: PbPlacement;
   postId?: number;
   postTitle?: string;
   canEdit?: boolean;

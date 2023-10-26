@@ -2,11 +2,11 @@ import { LocationsCollection } from '../collections';
 import { createMutation, inferData } from 'react-query-kit';
 import { queryClient } from '../../pages/_app';
 import { useGetLocations } from './useGetLocations';
-import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
+import { PbPlacement } from '../../generated/api-types/data-contracts';
 
 type UpdateLocationParams = {
   locationId: number;
-  placement?: PbLocationPlacement;
+  placement?: PbPlacement;
   body: Parameters<typeof LocationsCollection.locationsUpdateLocation>[1];
 };
 

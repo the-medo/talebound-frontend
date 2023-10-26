@@ -6,7 +6,7 @@ import { TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import LocationFormModal from './LocationFormModal';
-import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
 import { useDeleteBulkLocation } from '../../api/locations/useDeleteBulkLocation';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Row } from '../../components/Flex/Flex';
@@ -17,7 +17,7 @@ import LocationTablePostCell from './LocationTablePostCell';
 interface LocationTableProps {
   data: PbViewLocation[];
   canEdit?: boolean;
-  placement: PbLocationPlacement;
+  placement: PbPlacement;
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
 }

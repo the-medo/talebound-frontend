@@ -1,11 +1,11 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { LocationsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
-import { PbLocationPlacement } from '../../generated/api-types/data-contracts';
+import { PbPlacement } from '../../generated/api-types/data-contracts';
 import { useGetLocations } from './useGetLocations';
 
 export interface CreateLocationPostRequest {
-  placement?: PbLocationPlacement;
+  placement?: PbPlacement;
   locationId: number;
 }
 

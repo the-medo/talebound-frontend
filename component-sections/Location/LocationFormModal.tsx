@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
 import LocationForm from './LocationForm';
-import { PbLocationPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
 
 interface LocationFormModalProps {
-  placement: PbLocationPlacement;
+  placement: PbPlacement;
   location?: PbViewLocation;
   trigger: React.ReactNode;
   open?: boolean;

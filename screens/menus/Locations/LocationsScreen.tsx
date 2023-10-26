@@ -8,7 +8,6 @@ import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import LocationFormModal from '../../../component-sections/Location/LocationFormModal';
 import { usePlacement } from '../../../hooks/usePlacement';
-import LocationListSelection from '../../../component-sections/Location/LocationListSelection';
 
 interface LocationsScreenProps {
   canEdit?: boolean;

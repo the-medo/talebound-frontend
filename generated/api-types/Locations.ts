@@ -25,7 +25,7 @@ export class Locations<SecurityDataType = unknown> {
   }
 
   /**
-   * @description returns locations based on placement (world or quest)
+   * @description returns locations based on placements (world or quest)
    *
    * @tags Locations
    * @name LocationsGetLocations
@@ -40,6 +40,10 @@ export class Locations<SecurityDataType = unknown> {
       worldId?: number;
       /** @format int32 */
       questId?: number;
+      /** @format int32 */
+      characterId?: number;
+      /** @format int32 */
+      systemId?: number;
     },
     params: RequestParams = {},
   ) =>

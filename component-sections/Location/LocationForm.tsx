@@ -6,11 +6,7 @@ import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import {
-  PbImage,
-  PbLocationPlacement,
-  PbViewLocation,
-} from '../../generated/api-types/data-contracts';
+import { PbImage, PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { useCreateLocation } from '../../api/locations/useCreateLocation';
@@ -20,7 +16,7 @@ const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
 interface LocationFormProps {
-  placement: PbLocationPlacement;
+  placement: PbPlacement;
   canChangeName?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
