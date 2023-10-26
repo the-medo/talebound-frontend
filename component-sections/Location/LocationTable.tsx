@@ -18,11 +18,21 @@ interface LocationTableProps {
   data: PbViewLocation[];
   canEdit?: boolean;
   placement: PbLocationPlacement;
+  isSelectionTable?: boolean;
+  isSelectionMultiple?: boolean;
 }
 
-const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement }) => {
+const LocationTable: React.FC<LocationTableProps> = ({
+  data,
+  canEdit,
+  placement,
+  isSelectionTable = false,
+  isSelectionMultiple = false,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [updateLocation, setUpdateLocation] = useState<PbViewLocation>();
+
+  canEdit = canEdit && !isSelectionTable;
 
   const {
     mutate: deleteBulkLocations,
@@ -45,15 +55,16 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
     setSelectedRowKeys(newSelectedRowKeys);
   }, []);
 
-  const rowSelection = useMemo(
+  const rowSelection: TableProps<PbViewLocation>['rowSelection'] = useMemo(
     () =>
-      canEdit
+      canEdit || isSelectionTable
         ? {
             selectedRowKeys,
             onChange: onSelectChange,
+            type: isSelectionTable ? (isSelectionMultiple ? 'checkbox' : 'radio') : 'checkbox',
           }
         : undefined,
-    [canEdit, selectedRowKeys, onSelectChange],
+    [canEdit, selectedRowKeys, onSelectChange, isSelectionTable, isSelectionMultiple],
   );
 
   const openEditModal = useCallback((record: PbViewLocation) => setUpdateLocation(record), []);
@@ -65,7 +76,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
         deleteLocation({ locationId, placement });
       }
     },
-    [placement],
+    [deleteLocation, placement],
   );
 
   const actionButtons = useCallback(
@@ -132,6 +143,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
             />
           ),
         sorter: (a, b) => (a.postTitle ?? '').localeCompare(b.postTitle ?? ''),
+        width: '150px',
       },
     ];
 
@@ -174,7 +186,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
                   Delete locations ({selectedRowKeys.length})
                 </Button>
               }
-              title={`Delete ${selectedRowKeys.length} location ${
+              title={`Delete ${selectedRowKeys.length} location${
                 selectedRowKeys.length > 1 ? 's' : ''
               }`}
               description="All assigned menu entities and map pins to these locations will be deleted."
@@ -195,6 +207,19 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
     selectedRowKeys,
   ]);
 
+  const onRow: TableProps<PbViewLocation>['onRow'] = useCallback(
+    (record: PbViewLocation) => {
+      if (!isSelectionTable) return {};
+
+      return {
+        onClick: () => {
+          setSelectedRowKeys([record.id!]);
+        },
+      };
+    },
+    [isSelectionTable],
+  );
+
   return (
     <>
       <Table<PbViewLocation>
@@ -206,6 +231,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ data, canEdit, placement 
         rowKey="id"
         size="small"
         summary={summary}
+        onRow={onRow}
       />
       <ErrorText error={errorDelete} />
       <LocationFormModal

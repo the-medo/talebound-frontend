@@ -53,13 +53,15 @@ const LocationTablePostCell: React.FC<LocationTablePostCellProps> = ({
   if (!postId) {
     return (
       <>
-        <AssignPostModal
-          trigger={trigger}
-          open={assignPostModal}
-          setOpen={setAssignPostModal}
-          createNewPostCallback={createNewPostCallback}
-          chooseExistingPostCallback={() => {}}
-        />
+        {canEdit && (
+          <AssignPostModal
+            trigger={trigger}
+            open={assignPostModal}
+            setOpen={setAssignPostModal}
+            createNewPostCallback={createNewPostCallback}
+            chooseExistingPostCallback={() => {}}
+          />
+        )}
         <ErrorText error={errorCreateLocationPost} />
       </>
     );

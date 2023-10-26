@@ -11,7 +11,6 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
   borderRadius: '100%',
   border: '1px solid $primary500',
   backgroundColor: 'rgba(0,0,0,.04)',
-  cursor: 'pointer',
 
   variants: {
     size: {
@@ -38,6 +37,15 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
       '2xl': {
         width: 200,
         height: 200,
+      },
+    },
+
+    clickable: {
+      true: {
+        cursor: 'pointer',
+      },
+      false: {
+        // cursor: 'zoom-in',
       },
     },
 

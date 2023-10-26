@@ -40,7 +40,7 @@ const Avatar: React.FC<AvatarProps> = ({
   }, [url, size]);
 
   return (
-    <AvatarRoot onClick={onClick} size={size} loading={loading}>
+    <AvatarRoot clickable={!!onClick} onClick={onClick} size={size} loading={loading}>
       <AvatarImage src={optimizedUrl ?? emptyUrlByType[type]} alt={`Avatar ${fallbackText}`} />
       {fallbackText && <AvatarFallback delayMs={600}>{fallbackText}</AvatarFallback>}
     </AvatarRoot>
