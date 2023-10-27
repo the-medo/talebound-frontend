@@ -354,3 +354,102 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
       xlMax: '(max-width: 1920px)',
     },
   });
+
+/*export const paddingStyles = css({
+  variants: {
+    padding: {
+      none: {
+        padding: '0',
+      },
+      xs: {
+        padding: '$xs',
+      },
+      sm: {
+        padding: '$sm',
+      },
+      md: {
+        padding: '$md',
+      },
+      lg: {
+        padding: '$lg',
+      },
+      xl: {
+        padding: '$xl',
+      },
+    },
+  },
+});*/
+
+export const paddingStyles = {
+  padding: {
+    none: {
+      padding: '0',
+    },
+    xs: {
+      padding: '$xs',
+    },
+    sm: {
+      padding: '$sm',
+    },
+    md: {
+      padding: '$md',
+    },
+    lg: {
+      padding: '$lg',
+    },
+    xl: {
+      padding: '$xl',
+    },
+    '2xl': {
+      padding: '$2xl',
+    },
+  },
+
+  paddingRight: {
+    none: {
+      paddingRight: '0',
+    },
+    xs: {
+      paddingRight: '$xs',
+    },
+    sm: {
+      paddingRight: '$sm',
+    },
+    md: {
+      paddingRight: '$md',
+    },
+    lg: {
+      paddingRight: '$lg',
+    },
+    xl: {
+      paddingRight: '$xl',
+    },
+    '2xl': {
+      paddingRight: '$2xl',
+    },
+  },
+
+  paddingLeft: {
+    none: {
+      paddingLeft: '0',
+    },
+    xs: {
+      paddingLeft: '$xs',
+    },
+    sm: {
+      paddingLeft: '$sm',
+    },
+    md: {
+      paddingLeft: '$md',
+    },
+    lg: {
+      paddingLeft: '$lg',
+    },
+    xl: {
+      paddingLeft: '$xl',
+    },
+    '2xl': {
+      paddingLeft: '$2xl',
+    },
+  },
+} as const;

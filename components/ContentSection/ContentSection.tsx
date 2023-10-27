@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useMemo } from 'react';
-import { CSSProperties } from '@stitches/react';
+import Stitches, { CSSProperties } from '@stitches/react';
 import { TitleH2 } from '../Typography/Title';
 import { styled } from '../../styles/stitches.config';
 import Loading from '../Loading/Loading';
@@ -32,6 +32,11 @@ const StyledSection = styled('section', {
         width: '100%',
       },
     },
+    noMargin: {
+      true: {
+        margin: 0,
+      },
+    },
     highlighted: {
       true: {
         outline: '2px solid $primary',
@@ -43,7 +48,7 @@ const StyledSection = styled('section', {
         outline: '2px solid $danger',
       },
     },
-    cornerImage: {
+    hasCornerImage: {
       true: {
         overflow: 'hidden',
         backgroundPosition: 'top right, top right',
@@ -95,6 +100,8 @@ const StyledSection = styled('section', {
   },
 });
 
+export type StyledSectionVariants = Stitches.VariantProps<typeof StyledSection>;
+
 const LoadingOverlay = styled('section', {
   display: 'flex',
   position: 'absolute',
@@ -130,7 +137,7 @@ const StyledSectionContent = styled('div', {
   },
 });
 
-interface ContentSectionProps extends PropsWithChildren {
+interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
   direction?: 'row' | 'column';
   header?: string;
   alignItems?: CSSProperties['alignItems'];
@@ -138,8 +145,8 @@ interface ContentSectionProps extends PropsWithChildren {
   flexBasis?: CSSProperties['flexBasis'];
   flexWrap?: CSSProperties['flexWrap'];
   loading?: boolean;
-  cornerImage?: string;
   href?: string;
+  cornerImage?: string;
   highlighted?: boolean;
   error?: boolean;
   fullWidth?: boolean;
@@ -159,6 +166,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   highlighted,
   error,
   fullWidth,
+  ...styledSectionProps
 }) => {
   const cornerImageCss = useMemo(
     () => (cornerImage ? SECTION_CORNER_IMAGE(cornerImage) : undefined),
@@ -172,8 +180,9 @@ const ContentSection: React.FC<ContentSectionProps> = ({
       fullWidth={fullWidth}
       highlighted={highlighted}
       error={error}
-      cornerImage={!!cornerImage}
+      hasCornerImage={!!cornerImage}
       css={cornerImageCss}
+      {...styledSectionProps}
     >
       {header && href && (
         <Link href={href}>

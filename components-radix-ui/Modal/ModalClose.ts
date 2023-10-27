@@ -9,8 +9,19 @@ export const ModalClose = styled(DialogRadix.Close, {
   borderRadius: '50%',
   color: '$primary',
   padding: '$xs',
+  transition: 'background .2s ease-in-out',
 
   '&:hover': {
     backgroundColor: '$primary200',
+  },
+
+  variants: {
+    outside: {
+      true: {
+        background: 'white',
+        right: 16,
+        top: 16,
+      },
+    },
   },
 });

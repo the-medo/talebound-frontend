@@ -11,10 +11,10 @@ const contentShow = keyframes({
 });
 
 export const overlayStyles = css({
-  backgroundColor: 'rgba(0, 0, 0, .1)',
+  backgroundColor: 'rgba(0, 0, 0, .3)',
   position: 'fixed',
   inset: 0,
-  animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  animation: `${overlayShow} 250ms cubic-bezier(0.16, 1, 0.3, 1)`,
 });
 
 export const modalTitleStyles = css({
@@ -34,7 +34,7 @@ export const modalContentStyles = css({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  minHeight: '150px',
+  minHeight: '135px',
   maxHeight: '85vh',
   overflowY: 'auto',
 
@@ -71,6 +71,12 @@ export const modalContentStyles = css({
       xl: {
         width: '60vw',
         minWidth: '550px',
+      },
+    },
+
+    noPadding: {
+      true: {
+        padding: 0,
       },
     },
   },

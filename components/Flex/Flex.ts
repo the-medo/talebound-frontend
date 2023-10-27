@@ -1,10 +1,12 @@
-import { styled } from '../../styles/stitches.config';
+import { paddingStyles, styled } from '../../styles/stitches.config';
 
 export const Flex = styled('div', {
   display: 'flex',
   position: 'relative',
 
   variants: {
+    ...paddingStyles,
+
     loading: {
       true: {
         opacity: 0.5,
@@ -41,27 +43,6 @@ export const Flex = styled('div', {
       },
       xl: {
         gap: '$xl',
-      },
-    },
-
-    padding: {
-      none: {
-        gap: '0',
-      },
-      xs: {
-        padding: '$xs',
-      },
-      sm: {
-        padding: '$sm',
-      },
-      md: {
-        padding: '$md',
-      },
-      lg: {
-        padding: '$lg',
-      },
-      xl: {
-        padding: '$xl',
       },
     },
 

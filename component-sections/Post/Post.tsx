@@ -25,6 +25,7 @@ interface PostProps {
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
+  isModal?: boolean;
 }
 
 const Post: React.FC<PostProps> = ({
@@ -35,6 +36,7 @@ const Post: React.FC<PostProps> = ({
   canChangeTitle,
   canChangeDescription,
   canChangeThumbnail,
+  isModal = false,
 }) => {
   const [editModeDetails, setEditModeDetails] = useState(false);
   const [editModeContent, setEditModeContent] = useState(false);
@@ -100,12 +102,17 @@ const Post: React.FC<PostProps> = ({
 
   return (
     <Client>
-      <ContentSection flexWrap="wrap" direction="column" cornerImage={thumbnailImage}>
+      <ContentSection
+        flexWrap="wrap"
+        direction="column"
+        cornerImage={thumbnailImage}
+        noMargin={isModal}
+      >
         <Col fullWidth gap="md">
           <Row gap="md" fullWidth justifyContent="between" wrap>
             <TitleH2>{customTitle ?? postData?.post?.title}</TitleH2>
             {canEdit && (
-              <Row gap="md">
+              <Row gap="md" paddingRight={isModal ? '2xl' : undefined}>
                 <Button
                   color={editModeDetails ? 'primaryFill' : 'semiGhost'}
                   onClick={toggleEditModeDetails}

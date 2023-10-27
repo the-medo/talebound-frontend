@@ -4,12 +4,13 @@ import Avatar from '../../components/Avatar/Avatar';
 import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdEdit, MdOpenInNew } from 'react-icons/md';
 import { PbDataPost, PbPlacement } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
 import PostFormModal from './PostFormModal';
 import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPostsByPlacement';
 import { formatDate } from '../../utils/functions/formatDate';
+import PostDetailModal from './PostDetailModal';
 
 interface PostsTableProps {
   data: PbDataPost[];
@@ -34,12 +35,12 @@ const PostsTable: React.FC<PostsTableProps> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [updatePost, setUpdatePost] = useState<PbDataPost>();
+  const [detailModalPostId, setDetailModalPostId] = useState<number>();
 
   canEdit = canEdit && !isSelectionTable;
 
-  const handleCloseModal = useCallback(() => {
-    setUpdatePost(undefined);
-  }, []);
+  const handleCloseUpdatePostModal = useCallback(() => setUpdatePost(undefined), []);
+  const handleClosePostDetailModal = useCallback(() => setDetailModalPostId(undefined), []);
 
   const onSelectChange = useCallback((newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -74,6 +75,16 @@ const PostsTable: React.FC<PostsTableProps> = ({
     },
     [openEditModal],
   );
+
+  const openPostModalButtons = useCallback((record: PbDataPost) => {
+    const openHandler = () => setDetailModalPostId(record.id!);
+
+    return (
+      <Button icon onClick={openHandler} size="md" color="primaryOutline">
+        <MdOpenInNew />
+      </Button>
+    );
+  }, []);
 
   const columns: ColumnType<PbDataPost>[] = useMemo(() => {
     const cols: ColumnType<PbDataPost>[] = [
@@ -125,8 +136,15 @@ const PostsTable: React.FC<PostsTableProps> = ({
       });
     }
 
+    cols.push({
+      title: '',
+      key: 'action-buttons',
+      render: (_, record) => openPostModalButtons(record),
+      width: '40px',
+    });
+
     return cols;
-  }, [canEdit, actionButtons]);
+  }, [canEdit, actionButtons, openPostModalButtons]);
 
   const onRow: TableProps<PbDataPost>['onRow'] = useCallback(
     (record: PbDataPost) => {
@@ -174,7 +192,14 @@ const PostsTable: React.FC<PostsTableProps> = ({
         trigger={undefined}
         post={updatePost}
         open={!!updatePost}
-        setOpen={handleCloseModal}
+        setOpen={handleCloseUpdatePostModal}
+      />
+      <PostDetailModal
+        postId={detailModalPostId}
+        canEdit={canEdit}
+        trigger={undefined}
+        open={!!detailModalPostId}
+        setOpen={handleClosePostDetailModal}
       />
     </>
   );
