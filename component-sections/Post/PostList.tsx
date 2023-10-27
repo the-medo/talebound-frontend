@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePlacement } from '../../hooks/usePlacement';
-import { useGetPostsByPlacement } from '../../api/posts/useGetPostsByPlacement';
+import { PAGE_SIZE_POSTS, useGetPostsByPlacement } from '../../api/posts/useGetPostsByPlacement';
 import PostsTable from './PostsTable';
 
 interface PostListProps {
@@ -8,7 +8,8 @@ interface PostListProps {
 }
 
 const PostList: React.FC<PostListProps> = ({ canEdit }) => {
-  const [placement, validPlacement] = usePlacement('post');
+  const [placement] = usePlacement('post');
+  const [openedPage, setOpenedPage] = useState(1);
 
   const {
     data: postsDataPages,
@@ -22,24 +23,37 @@ const PostList: React.FC<PostListProps> = ({ canEdit }) => {
       postsDataPages?.pages
         ?.map((page) => page.posts)
         .flat()
-        .map((p) => p?.post!) ?? []
+        .map((p) => p!.post!) ?? []
     );
   }, [postsDataPages]);
+
+  useEffect(() => {
+    if (
+      hasNextPage &&
+      postsData.length > 0 &&
+      postsData.length <= PAGE_SIZE_POSTS * (openedPage - 1)
+    ) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, postsData.length, openedPage, fetchNextPage]);
 
   const totalPostCount = useMemo(() => {
     return postsDataPages?.pages[0]?.totalCount ?? 0;
   }, [postsDataPages]);
 
-  console.log(postsData);
-  console.log(postsDataPages);
+  const onPageChange = useCallback((page: number) => {
+    setOpenedPage(page);
+  }, []);
 
   return (
-    <div>
-      Total posts: {totalPostCount} <br />
-      <button onClick={() => fetchNextPage()}> Load new page</button>
-      {/*{postsData.map((post) => post.postTitle)}*/}
-      <PostsTable data={postsData} canEdit={canEdit} placement={placement} />
-    </div>
+    <PostsTable
+      totalCount={totalPostCount}
+      loading={isFetchingPosts}
+      data={postsData}
+      canEdit={canEdit}
+      placement={placement}
+      onPageChange={onPageChange}
+    />
   );
 };
 

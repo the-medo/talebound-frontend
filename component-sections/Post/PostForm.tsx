@@ -36,10 +36,16 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const [showImageModal, setShowImageModal] = useState(false);
 
-  const [thumbnailImageId, setThumbnailImageId] = useState<number>();
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string>();
-  const { value: title, onChange: onChangeTitle } = useInput<string>('');
-  const { value: description, onChange } = useInput<string, HTMLTextAreaElement>('');
+  const [thumbnailImageId, setThumbnailImageId] = useState<number | undefined>(
+    post?.imageThumbnailId,
+  );
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string | undefined>(
+    post?.imageThumbnailUrl,
+  );
+  const { value: title, onChange: onChangeTitle } = useInput<string>(post?.title ?? '');
+  const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
+    post?.description ?? '',
+  );
 
   const toggleImageModal = useCallback(() => {
     setShowImageModal((p) => !p);
@@ -122,7 +128,7 @@ const createPostHandler = useCallback(() => {
             />
           )}
           <Button onClick={createPostHandler} loading={pending}>
-            Create
+            {post ? 'Update' : 'Create'}
           </Button>
           {/*<ErrorText error={error} />*/}
         </Col>

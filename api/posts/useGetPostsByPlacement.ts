@@ -6,7 +6,7 @@ import {
   PbPlacement,
 } from '../../generated/api-types/data-contracts';
 
-const PAGE_SIZE = 10;
+export const PAGE_SIZE_POSTS = 3;
 
 const queryPlacementMiddleware: Middleware<
   InfiniteQueryHook<InfiniteResponse<PbGetPostsByPlacementResponse>, PbPlacement, Error>
@@ -33,11 +33,11 @@ export const useGetPostsByPlacement = createInfiniteQuery<
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
     const { data } = await PostsCollection.postsGetPostsByPlacement({
       ...variables,
-      limit: PAGE_SIZE,
+      limit: PAGE_SIZE_POSTS,
       offset,
     });
 
-    return expandDataForInfiniteQuery(data, offset, PAGE_SIZE, data.totalCount);
+    return expandDataForInfiniteQuery(data, offset, PAGE_SIZE_POSTS, data.totalCount);
   },
 
   use: [queryPlacementMiddleware],
@@ -46,5 +46,5 @@ export const useGetPostsByPlacement = createInfiniteQuery<
     return lastPage.newOffset;
   },
 
-  initialPageParam: 1,
+  initialPageParam: 0,
 });
