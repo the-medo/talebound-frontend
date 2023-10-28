@@ -5,10 +5,10 @@ import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdEdit, MdOpenInNew } from 'react-icons/md';
-import { PbDataPost, PbPlacement } from '../../generated/api-types/data-contracts';
+import { PbDataPost, PbModule } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
 import PostFormModal from './PostFormModal';
-import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPostsByPlacement';
+import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPostsByModule';
 import { formatDate } from '../../utils/functions/formatDate';
 import PostDetailModal from './PostDetailModal';
 
@@ -17,7 +17,7 @@ interface PostsTableProps {
   totalCount: number;
   canEdit?: boolean;
   loading?: boolean;
-  placement: PbPlacement;
+  module: PbModule;
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
   onPageChange: (page: number, pageSize: number) => void;
@@ -27,7 +27,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
   data,
   totalCount,
   canEdit,
-  placement,
+  module,
   loading,
   isSelectionTable = false,
   isSelectionMultiple = false,
@@ -188,7 +188,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
       </Col>
       {/*<ErrorText error={errorDelete} />*/}
       <PostFormModal
-        placement={placement}
+        module={module}
         trigger={undefined}
         post={updatePost}
         open={!!updatePost}

@@ -25,7 +25,7 @@ export class Locations<SecurityDataType = unknown> {
   }
 
   /**
-   * @description returns locations based on placements (world or quest)
+   * @description returns locations based on modules (world or quest)
    *
    * @tags Locations
    * @name LocationsGetLocations

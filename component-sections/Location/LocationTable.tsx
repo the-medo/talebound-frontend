@@ -6,7 +6,7 @@ import { TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import LocationFormModal from './LocationFormModal';
-import { PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbModule, PbViewLocation } from '../../generated/api-types/data-contracts';
 import { useDeleteBulkLocation } from '../../api/locations/useDeleteBulkLocation';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Row } from '../../components/Flex/Flex';
@@ -17,7 +17,7 @@ import LocationTablePostCell from './LocationTablePostCell';
 interface LocationTableProps {
   data: PbViewLocation[];
   canEdit?: boolean;
-  placement: PbPlacement;
+  module: PbModule;
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
 }
@@ -25,7 +25,7 @@ interface LocationTableProps {
 const LocationTable: React.FC<LocationTableProps> = ({
   data,
   canEdit,
-  placement,
+  module,
   isSelectionTable = false,
   isSelectionMultiple = false,
 }) => {
@@ -73,10 +73,10 @@ const LocationTable: React.FC<LocationTableProps> = ({
     (record: PbViewLocation) => {
       const { id: locationId } = record;
       if (locationId) {
-        deleteLocation({ locationId, placement });
+        deleteLocation({ locationId, module });
       }
     },
-    [deleteLocation, placement],
+    [deleteLocation, module],
   );
 
   const actionButtons = useCallback(
@@ -136,7 +136,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
           record.id && (
             <LocationTablePostCell
               locationId={record.id}
-              placement={placement}
+              module={module}
               postId={record.postId}
               postTitle={record.postTitle}
               canEdit={canEdit}
@@ -156,7 +156,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
     }
 
     return cols;
-  }, [canEdit, placement, actionButtons]);
+  }, [canEdit, module, actionButtons]);
 
   const summary: TableProps<PbViewLocation>['summary'] = useCallback(() => {
     if (!canEdit) return undefined;
@@ -165,7 +165,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
     const deleteBulkHandler = () => {
       const locationIds = selectedRowKeys.map((key) => parseInt(key.toString()));
       deleteBulkLocations(
-        { locationIds, placement },
+        { locationIds, module },
         {
           onSuccess: () => {
             setSelectedRowKeys([]);
@@ -198,14 +198,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
         </Table.Summary.Row>
       </Table.Summary>
     );
-  }, [
-    canEdit,
-    deleteBulkLocations,
-    errorDeleteBulk,
-    isPendingDeleteBulk,
-    placement,
-    selectedRowKeys,
-  ]);
+  }, [canEdit, deleteBulkLocations, errorDeleteBulk, isPendingDeleteBulk, module, selectedRowKeys]);
 
   const onRow: TableProps<PbViewLocation>['onRow'] = useCallback(
     (record: PbViewLocation) => {
@@ -235,7 +228,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
       />
       <ErrorText error={errorDelete} />
       <LocationFormModal
-        placement={placement}
+        module={module}
         trigger={undefined}
         location={updateLocation}
         open={!!updateLocation}

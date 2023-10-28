@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { usePlacement } from '../../hooks/usePlacement';
-import { PAGE_SIZE_POSTS, useGetPostsByPlacement } from '../../api/posts/useGetPostsByPlacement';
+import { useModule } from '../../hooks/useModule';
+import { PAGE_SIZE_POSTS, useGetPostsByModule } from '../../api/posts/useGetPostsByModule';
 import PostsTable from './PostsTable';
 
 interface PostListProps {
@@ -8,7 +8,7 @@ interface PostListProps {
 }
 
 const PostList: React.FC<PostListProps> = ({ canEdit }) => {
-  const [placement] = usePlacement('post');
+  const [module] = useModule('post');
   const [openedPage, setOpenedPage] = useState(1);
 
   const {
@@ -16,7 +16,7 @@ const PostList: React.FC<PostListProps> = ({ canEdit }) => {
     isFetching: isFetchingPosts,
     fetchNextPage,
     hasNextPage,
-  } = useGetPostsByPlacement({ variables: placement });
+  } = useGetPostsByModule({ variables: module });
 
   const postsData = useMemo(() => {
     return (
@@ -51,7 +51,7 @@ const PostList: React.FC<PostListProps> = ({ canEdit }) => {
       loading={isFetchingPosts}
       data={postsData}
       canEdit={canEdit}
-      placement={placement}
+      module={module}
       onPageChange={onPageChange}
     />
   );

@@ -1,12 +1,12 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { LocationsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
-import { PbPlacement } from '../../generated/api-types/data-contracts';
+import { PbModule } from '../../generated/api-types/data-contracts';
 import { useGetLocations } from './useGetLocations';
 
 interface DeleteBulkLocationParams {
   locationIds: number[];
-  placement?: PbPlacement;
+  module?: PbModule;
 }
 
 export const useDeleteBulkLocation = createMutation({
@@ -14,7 +14,7 @@ export const useDeleteBulkLocation = createMutation({
     LocationsCollection.locationsDeleteBulkLocation({ locationIds: variables.locationIds }),
   onSuccess: (_, variables) => {
     const deletedLocationIds = variables.locationIds;
-    const keyParams = variables.placement;
+    const keyParams = variables.module;
 
     if (deletedLocationIds && keyParams) {
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);

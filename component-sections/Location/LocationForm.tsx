@@ -6,7 +6,7 @@ import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbImage, PbPlacement, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbImage, PbModule, PbViewLocation } from '../../generated/api-types/data-contracts';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { useCreateLocation } from '../../api/locations/useCreateLocation';
@@ -16,7 +16,7 @@ const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
 interface LocationFormProps {
-  placement: PbPlacement;
+  module: PbModule;
   canChangeName?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
@@ -25,7 +25,7 @@ interface LocationFormProps {
 }
 
 const LocationForm: React.FC<LocationFormProps> = ({
-  placement,
+  module,
   canChangeName = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
@@ -73,7 +73,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
   );
 
   const createLocationHandler = useCallback(() => {
-    if (placement !== undefined) {
+    if (module !== undefined) {
       const options = {
         onSuccess: () => {
           if (onFinishCallback) onFinishCallback();
@@ -92,7 +92,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
           updateLocation(
             {
               locationId: location.id,
-              placement,
+              module,
               body,
             },
             options,
@@ -102,7 +102,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
         //create
         createLocation(
           {
-            placement,
+            module,
             ...body,
           },
           options,
@@ -110,7 +110,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
       }
     }
   }, [
-    placement,
+    module,
     canChangeName,
     name,
     canChangeDescription,
@@ -166,7 +166,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
         setOpen={setShowImageModal}
         trigger={null}
         onSubmit={changeThumbnailImage}
-        uploadedFilename={`location-${JSON.stringify(placement)}`}
+        uploadedFilename={`location-${JSON.stringify(module)}`}
         uploadedImageTypeId={500}
       />
     </>

@@ -66,7 +66,7 @@ export interface PbCreateEntityGroupRequest {
 }
 
 export interface PbCreateLocationRequest {
-  placement?: PbPlacement;
+  module?: PbModule;
   name?: string;
   description?: string;
   /** @format int32 */
@@ -74,7 +74,7 @@ export interface PbCreateLocationRequest {
 }
 
 export interface PbCreateMapRequest {
-  placement?: PbPlacement;
+  module?: PbModule;
   name?: string;
   type?: string;
   description?: string;
@@ -198,6 +198,8 @@ export interface PbDeletePostResponse {
 export interface PbEntity {
   /** @format int32 */
   id?: number;
+  /** @format int32 */
+  moduleId?: number;
   type?: PbEntityType;
   /** @format int32 */
   postId?: number;
@@ -354,7 +356,7 @@ export interface PbGetPostTypesResponse {
   postTypes?: PbDataPostType[];
 }
 
-export interface PbGetPostsByPlacementResponse {
+export interface PbGetPostsByModuleResponse {
   posts?: PbPost[];
   /** @format int32 */
   totalCount?: number;
@@ -475,6 +477,17 @@ export interface PbMenuItemPost {
   post?: PbDataPost;
 }
 
+export interface PbModule {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
+  /** @format int32 */
+  characterId?: number;
+  /** @format int32 */
+  systemId?: number;
+}
+
 /** @default "SQUARE" */
 export enum PbPinShape {
   SQUARE = 'SQUARE',
@@ -488,17 +501,6 @@ export enum PbPinShape {
   PENTAGON = 'PENTAGON',
   HEART = 'HEART',
   CLOUD = 'CLOUD',
-}
-
-export interface PbPlacement {
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
-  /** @format int32 */
-  characterId?: number;
-  /** @format int32 */
-  systemId?: number;
 }
 
 export interface PbPost {

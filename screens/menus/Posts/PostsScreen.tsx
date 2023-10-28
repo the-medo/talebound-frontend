@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { usePlacement } from '../../../hooks/usePlacement';
+import { useModule } from '../../../hooks/useModule';
 import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -13,7 +13,7 @@ interface PostsScreenProps {
 }
 
 const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
-  const [placement] = usePlacement('post');
+  const [module] = useModule('post');
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);
@@ -36,7 +36,7 @@ const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
             {canEdit && (
               <Row gap="md">
                 <PostFormModal
-                  placement={placement}
+                  module={module}
                   trigger={modalTriggerCreate}
                   open={createModal}
                   setOpen={setCreateModal}

@@ -2,11 +2,11 @@ import { LocationsCollection } from '../collections';
 import { createMutation, inferData } from 'react-query-kit';
 import { queryClient } from '../../pages/_app';
 import { useGetLocations } from './useGetLocations';
-import { PbPlacement } from '../../generated/api-types/data-contracts';
+import { PbModule } from '../../generated/api-types/data-contracts';
 
 type UpdateLocationParams = {
   locationId: number;
-  placement?: PbPlacement;
+  module?: PbModule;
   body: Parameters<typeof LocationsCollection.locationsUpdateLocation>[1];
 };
 
@@ -15,7 +15,7 @@ export const useUpdateLocation = createMutation({
     LocationsCollection.locationsUpdateLocation(variables.locationId, variables.body),
   onSuccess: (data, variables) => {
     const locationId = variables.locationId;
-    const keyParams = variables.placement;
+    const keyParams = variables.module;
 
     if (locationId && keyParams) {
       const getLocationsQueryKey = useGetLocations.getKey(keyParams);

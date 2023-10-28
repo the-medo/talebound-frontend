@@ -7,14 +7,14 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import LocationFormModal from '../../../component-sections/Location/LocationFormModal';
-import { usePlacement } from '../../../hooks/usePlacement';
+import { useModule } from '../../../hooks/useModule';
 
 interface LocationsScreenProps {
   canEdit?: boolean;
 }
 
 const LocationsScreen: React.FC<LocationsScreenProps> = ({ canEdit }) => {
-  const [placement] = usePlacement('location');
+  const [module] = useModule('location');
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);
@@ -37,7 +37,7 @@ const LocationsScreen: React.FC<LocationsScreenProps> = ({ canEdit }) => {
             {canEdit && (
               <Row gap="md">
                 <LocationFormModal
-                  placement={placement}
+                  module={module}
                   trigger={locationModalTrigger}
                   open={createModal}
                   setOpen={setCreateModal}

@@ -7,7 +7,7 @@ import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbDataPost, PbImage, PbPlacement, PbPost } from '../../generated/api-types/data-contracts';
+import { PbDataPost, PbImage, PbModule, PbPost } from '../../generated/api-types/data-contracts';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { useCreateMenuItemPost } from '../../api/menus/useCreateMenuItemPost';
@@ -17,7 +17,7 @@ const textareaPlaceholder =
 
 interface PostFormProps {
   post?: PbDataPost;
-  placement: PbPlacement;
+  module: PbModule;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
@@ -26,7 +26,7 @@ interface PostFormProps {
 
 const PostForm: React.FC<PostFormProps> = ({
   post,
-  placement,
+  module,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
@@ -64,7 +64,7 @@ const PostForm: React.FC<PostFormProps> = ({
   const createPostHandler = useCallback(() => {}, []);
   /*
 const createPostHandler = useCallback(() => {
-  if (placement) {
+  if (module) {
 
     createMenuItemPost(
       {

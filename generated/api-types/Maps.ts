@@ -34,7 +34,7 @@ export class Maps<SecurityDataType = unknown> {
   }
 
   /**
-   * @description returns maps based on placements (world or quest)
+   * @description returns maps based on modules (world or quest)
    *
    * @tags Maps
    * @name MapsGetMaps
@@ -46,13 +46,13 @@ export class Maps<SecurityDataType = unknown> {
   mapsGetMaps = (
     query?: {
       /** @format int32 */
-      placementWorldId?: number;
+      moduleWorldId?: number;
       /** @format int32 */
-      placementQuestId?: number;
+      moduleQuestId?: number;
       /** @format int32 */
-      placementCharacterId?: number;
+      moduleCharacterId?: number;
       /** @format int32 */
-      placementSystemId?: number;
+      moduleSystemId?: number;
     },
     params: RequestParams = {},
   ) =>
