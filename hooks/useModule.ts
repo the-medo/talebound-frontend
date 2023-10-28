@@ -1,7 +1,9 @@
-import { PbModule } from '../generated/api-types/data-contracts';
+import { PbEntityType, PbModule, PbModuleType } from '../generated/api-types/data-contracts';
 import { useRouter } from 'next/router';
+import { useGetModuleId } from '../api/modules/useGetModuleId';
+import { useMemo } from 'react';
 
-export type ModuleType = 'location' | 'map' | 'post';
+export type EntityType = 'location' | 'map' | 'post';
 export type ModuleIdsToUse = keyof PbModule;
 
 const parseRouterParam = (p: string | string[] | undefined): number => {
@@ -11,10 +13,20 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
   return parseInt(p[0]) ?? 0;
 };
 
-const idUsageForModuleType: Record<ModuleType, ModuleIdsToUse[]> = {
-  location: ['worldId', 'questId'],
-  map: ['worldId', 'questId'],
-  post: ['worldId', 'questId', 'systemId', 'characterId'],
+const idUsageForModuleType: Record<PbEntityType, ModuleIdsToUse[]> = {
+  [PbEntityType.ENTITY_TYPE_UNKNOWN]: [],
+  [PbEntityType.ENTITY_TYPE_LOCATION]: ['worldId', 'questId'],
+  [PbEntityType.ENTITY_TYPE_MAP]: ['worldId', 'questId'],
+  [PbEntityType.ENTITY_TYPE_POST]: ['worldId', 'questId', 'systemId', 'characterId'],
+  [PbEntityType.ENTITY_TYPE_IMAGE]: ['worldId', 'questId', 'systemId', 'characterId'],
+  [PbEntityType.ENTITY_TYPE_CHARACTER]: [],
+};
+
+const idToModuleType: Record<ModuleIdsToUse, PbModuleType> = {
+  worldId: PbModuleType.MODULE_TYPE_WORLD,
+  questId: PbModuleType.MODULE_TYPE_QUEST,
+  systemId: PbModuleType.MODULE_TYPE_SYSTEM,
+  characterId: PbModuleType.MODULE_TYPE_CHARACTER,
 };
 
 const keyShortcuts: Record<ModuleIdsToUse, string> = {
@@ -28,10 +40,10 @@ const zeroIsUndefined = (n: number): number | undefined => (n > 0 ? n : undefine
 
 const savedModuleObjects: Record<string, PbModule> = {};
 
-export const useModule = <T extends ModuleType>(type: T): [PbModule, boolean] => {
+export const useModule = (type: PbEntityType): [PbModule, number, PbModuleType] => {
   const router = useRouter();
 
-  let valid = false;
+  let moduleType: PbModuleType = PbModuleType.MODULE_TYPE_UNKNOWN;
   const keyParts: string[] = [];
   const moduleObject: PbModule = {};
 
@@ -39,7 +51,7 @@ export const useModule = <T extends ModuleType>(type: T): [PbModule, boolean] =>
     const id = parseRouterParam(router.query[idToUse]);
     keyParts.push(`${keyShortcuts[idToUse]}${id ?? 0}`);
     moduleObject[idToUse] = zeroIsUndefined(id);
-    if (id > 0) valid = true; //at least one positive ID to have valid module
+    if (id > 0) moduleType = idToModuleType[idToUse]; //at least one positive ID to have valid module
   }
 
   const key = keyParts.join('-');
@@ -48,5 +60,12 @@ export const useModule = <T extends ModuleType>(type: T): [PbModule, boolean] =>
     savedModuleObjects[key] = moduleObject;
   }
 
-  return [savedModuleObjects[key], valid];
+  const obj = savedModuleObjects[key];
+
+  const { data: moduleId = 0 } = useGetModuleId({ variables: obj });
+
+  return useMemo(
+    () => [savedModuleObjects[key], moduleId, moduleType],
+    [key, moduleId, moduleType],
+  );
 };

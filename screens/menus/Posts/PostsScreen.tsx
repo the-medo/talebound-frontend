@@ -7,13 +7,14 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import { TitleH2 } from '../../../components/Typography/Title';
 import PostFormModal from '../../../component-sections/Post/PostFormModal';
 import PostList from '../../../component-sections/Post/PostList';
+import { PbEntityType } from '../../../generated/api-types/data-contracts';
 
 interface PostsScreenProps {
   canEdit?: boolean;
 }
 
 const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
-  const [module] = useModule('post');
+  const [module] = useModule(PbEntityType.ENTITY_TYPE_POST);
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);

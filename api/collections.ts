@@ -15,6 +15,7 @@ import { Menus } from '../generated/api-types/Menus';
 import { Entities } from '../generated/api-types/Entities';
 import { Maps } from '../generated/api-types/Maps';
 import { Locations } from '../generated/api-types/Locations';
+import { Modules } from '../generated/api-types/Modules';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -42,3 +43,4 @@ export const WorldsCollection = new Worlds(API);
 export const EntitiesCollection = new Entities(API);
 export const MapsCollection = new Maps(API);
 export const LocationsCollection = new Locations(API);
+export const ModulesCollection = new Modules(API);

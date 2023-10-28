@@ -1,19 +1,22 @@
 import React, { KeyboardEventHandler, useCallback, useEffect } from 'react';
-import { Col, Row } from '../../../components/Flex/Flex';
+import { Row } from '../../../components/Flex/Flex';
 import Input from '../../../components/Input/Input';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Button } from '../../../components/Button/Button';
 import { useInput } from '../../../hooks/useInput';
-import { useCreateAvailableWorldTag } from '../../../api/tags/useCreateAvailableWorldTag';
+import { useCreateModuleTypeAvailableTag } from '../../../api/tags/useCreateModuleTypeAvailableTag';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import { PbModuleType } from '../../../generated/api-types/data-contracts';
 
-interface SectionNewTagProps {}
+interface SectionNewTagProps {
+  moduleType: PbModuleType;
+}
 
-const SectionNewTag: React.FC<SectionNewTagProps> = () => {
+const SectionNewTag: React.FC<SectionNewTagProps> = ({ moduleType }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { value: tagValue, onChange: onChangeTag, setValue: setTagValue } = useInput<string>('');
 
-  const { mutate: createNewTag, isPending, error } = useCreateAvailableWorldTag();
+  const { mutate: createNewTag, isPending, error } = useCreateModuleTypeAvailableTag();
 
   useEffect(() => {
     if (!isPending) {
@@ -24,6 +27,7 @@ const SectionNewTag: React.FC<SectionNewTagProps> = () => {
   const handleNewTag = useCallback(() => {
     createNewTag(
       {
+        moduleType,
         tag: tagValue,
       },
       {
@@ -32,7 +36,7 @@ const SectionNewTag: React.FC<SectionNewTagProps> = () => {
         },
       },
     );
-  }, [createNewTag, setTagValue, tagValue]);
+  }, [moduleType, createNewTag, setTagValue, tagValue]);
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
     (event) => {

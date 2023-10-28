@@ -2,7 +2,7 @@ import { createMutation, inferData } from 'react-query-kit';
 import { WorldsCollection } from '../collections';
 import { useGetWorldById } from './useGetWorldById';
 import { queryClient } from '../../pages/_app';
-import { useGetAvailableWorldTags } from '../tags/useGetAvailableWorldTags';
+import { useGetModuleTypeAvailableTags } from '../tags/useGetModuleTypeAvailableTags';
 import { PbTag } from '../../generated/api-types/data-contracts';
 
 interface RemoveWorldTagParams {
@@ -15,7 +15,7 @@ export const useRemoveWorldTag = createMutation({
     WorldsCollection.worldsRemoveWorldTag(variables.worldId, { tagId: variables.tagId }),
   onSuccess: (_, variables) => {
     const getWorldByIdKey = useGetWorldById.getKey(variables.worldId);
-    const getAvailableWorldTagsKey = useGetAvailableWorldTags.getKey();
+    const getAvailableWorldTagsKey = useGetModuleTypeAvailableTags.getKey();
 
     const availableTags = queryClient.getQueryData<PbTag[]>(getAvailableWorldTagsKey) ?? [];
 

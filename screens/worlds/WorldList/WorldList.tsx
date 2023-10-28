@@ -8,14 +8,16 @@ import { useGetWorlds } from '../../../api/worlds/useGetWorlds';
 import WorldCard from '../../../components/WorldCard/WorldCard';
 import LoadingText from '../../../components/Loading/LoadingText';
 import InfiniteScrollObserver from '../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
-import { useGetAvailableWorldTags } from '../../../api/tags/useGetAvailableWorldTags';
-import { PbViewTag } from '../../../generated/api-types/data-contracts';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
+import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
 import TagButtonBox from '../../../components/TagButtonBox/TagButtonBox';
 import { TitleH2 } from '../../../components/Typography/Title';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 
 const WorldList: React.FC = () => {
-  const { data: tags = [], isPending: isPendingGet } = useGetAvailableWorldTags();
+  const { data: tags = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
   const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
   const [showOnlyPublic, setShowOnlyPublic] = React.useState<boolean>(false);
 

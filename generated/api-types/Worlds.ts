@@ -17,7 +17,6 @@ import {
   PbGetWorldsResponse,
   PbImage,
   PbPost,
-  PbTag,
   PbWorld,
   PbWorldAdmin,
   RpcStatus,
@@ -329,57 +328,6 @@ export class Worlds<SecurityDataType = unknown> {
     this.http.request<PbPost, RpcStatus>({
       path: `/worlds/${worldId}/introduction`,
       method: 'PATCH',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description removes tag from the world
-   *
-   * @tags Worlds
-   * @name WorldsRemoveWorldTag
-   * @summary Remove world tag
-   * @request DELETE:/worlds/{worldId}/tags
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsRemoveWorldTag = (
-    worldId: number,
-    query?: {
-      /** @format int32 */
-      tagId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<object, RpcStatus>({
-      path: `/worlds/${worldId}/tags`,
-      method: 'DELETE',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description assigns one tag to the world
-   *
-   * @tags Worlds
-   * @name WorldsAddWorldTag
-   * @summary Add tag world
-   * @request POST:/worlds/{worldId}/tags
-   * @response `200` `PbTag` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsAddWorldTag = (
-    worldId: number,
-    body: {
-      /** @format int32 */
-      tagId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbTag, RpcStatus>({
-      path: `/worlds/${worldId}/tags`,
-      method: 'POST',
       body: body,
       type: ContentType.Json,
       format: 'json',

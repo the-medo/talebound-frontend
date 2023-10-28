@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
-import { useGetAvailableWorldTags } from '../../../api/tags/useGetAvailableWorldTags';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { useAddWorldTag } from '../../../api/worlds/useAddWorldTag';
 import { useRemoveWorldTag } from '../../../api/worlds/useRemoveWorldTag';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';
-import { PbTag } from '../../../generated/api-types/data-contracts';
+import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface WorldTagsProps {
@@ -15,7 +15,9 @@ interface WorldTagsProps {
 }
 
 const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
-  const { data: availableTags = [], isPending: isPendingGet } = useGetAvailableWorldTags();
+  const { data: availableTags = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
   const { data: worldData } = useGetWorldById({ variables: worldId });
 
   const { mutate: addTag, isPending: isPendingAdd, error: errorAdd } = useAddWorldTag();
@@ -24,7 +26,7 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
   const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
 
   const onTagSelect = useCallback(
-    (tag: PbTag) => {
+    (tag: PbViewTag) => {
       if (!tag.tag || !tag.id) return;
       if (tag.id && tags.includes(tag.tag)) {
         removeTag({ worldId, tagId: tag.id });

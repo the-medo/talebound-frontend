@@ -1,34 +1,40 @@
 import React, { KeyboardEventHandler, useCallback } from 'react';
 import ContentSection from '../../../components/ContentSection/ContentSection';
-import { useGetAvailableWorldTags } from '../../../api/tags/useGetAvailableWorldTags';
-import { PbTag } from '../../../generated/api-types/data-contracts';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
+import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
 import TagButton from '../../../components/TagButton/TagButton';
 import { Col, Row } from '../../../components/Flex/Flex';
 import Input from '../../../components/Input/Input';
 import { Button } from '../../../components/Button/Button';
 import { useInput } from '../../../hooks/useInput';
-import { useUpdateAvailableWorldTag } from '../../../api/tags/useUpdateAvailableWorldTag';
+import { useUpdateModuleTypeAvailableTag } from '../../../api/tags/useUpdateModuleTypeAvailableTag';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import { useDeleteAvailableWorldTag } from '../../../api/tags/useDeleteAvailableWorldTag';
+import { useDeleteModuleTypeAvailableTag } from '../../../api/tags/useDeleteModuleTypeAvailableTag';
 import { Text } from '../../../components/Typography/Text';
 import AlertDialog from '../../../components/AlertDialog/AlertDialog';
 
-const SectionAvailableTags: React.FC = () => {
-  const { data: tag = [], isPending: isPendingGet } = useGetAvailableWorldTags();
+interface SectionAvailableModuleTagsProps {
+  moduleType: PbModuleType;
+}
+
+const SectionAvailableModuleTags: React.FC<SectionAvailableModuleTagsProps> = ({ moduleType }) => {
+  const { data: tag = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
+    variables: moduleType,
+  });
 
   const {
     mutate: updateTag,
     isPending: isPendingUpdate,
     error: errorUpdate,
-  } = useUpdateAvailableWorldTag();
+  } = useUpdateModuleTypeAvailableTag();
 
   const {
     mutate: deleteTag,
     isPending: isPendingDelete,
     error: errorDelete,
-  } = useDeleteAvailableWorldTag();
+  } = useDeleteModuleTypeAvailableTag();
 
-  const [selectedTag, setSelectedTag] = React.useState<PbTag>();
+  const [selectedTag, setSelectedTag] = React.useState<PbViewTag>();
   const { value: tagValue, onChange: onChangeTag, setValue: setTagValue } = useInput<string>('');
 
   const isPending = isPendingUpdate || isPendingGet || isPendingDelete;
@@ -54,14 +60,20 @@ const SectionAvailableTags: React.FC = () => {
   const handleDeleteTag = useCallback(() => {
     const tagId = selectedTag?.id;
     if (tagId) {
-      deleteTag(tagId, {
-        onSuccess: () => {
-          setSelectedTag(undefined);
-          setTagValue('');
+      deleteTag(
+        {
+          tagId,
+          moduleType,
         },
-      });
+        {
+          onSuccess: () => {
+            setSelectedTag(undefined);
+            setTagValue('');
+          },
+        },
+      );
     }
-  }, [selectedTag?.id, deleteTag, setTagValue]);
+  }, [moduleType, selectedTag?.id, deleteTag, setTagValue]);
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
     (event) => {
@@ -73,7 +85,7 @@ const SectionAvailableTags: React.FC = () => {
   );
 
   const onTagSelect = useCallback(
-    (tag: PbTag) => {
+    (tag: PbViewTag) => {
       setSelectedTag(tag);
       setTagValue(tag.tag ?? '');
     },
@@ -128,4 +140,4 @@ const SectionAvailableTags: React.FC = () => {
   );
 };
 
-export default SectionAvailableTags;
+export default SectionAvailableModuleTags;

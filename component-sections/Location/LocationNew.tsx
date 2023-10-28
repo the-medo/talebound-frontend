@@ -6,13 +6,14 @@ import { TbPlus } from 'react-icons/tb';
 import LocationForm from './LocationForm';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { useModule } from '../../hooks/useModule';
+import { PbEntityType, PbModuleType } from '../../generated/api-types/data-contracts';
 
 interface LocationNewProps {
   canEdit?: boolean;
 }
 
 const LocationNew: React.FC<LocationNewProps> = ({ canEdit }) => {
-  const [module, validModule] = useModule('location');
+  const [module, , moduleType] = useModule(PbEntityType.ENTITY_TYPE_LOCATION);
   const [createMode, setCreateMode] = useState(false);
 
   const toggleCreateMode = useCallback(() => setCreateMode((p) => !p), []);
@@ -33,7 +34,9 @@ const LocationNew: React.FC<LocationNewProps> = ({ canEdit }) => {
           </Row>
         )}
       </Row>
-      {createMode && validModule && <LocationForm module={module} />}
+      {createMode && moduleType !== PbModuleType.MODULE_TYPE_UNKNOWN && (
+        <LocationForm module={module} />
+      )}
     </ContentSection>
   );
 };

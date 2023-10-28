@@ -52,10 +52,6 @@ export interface PbChatMessage {
   createdAt?: string;
 }
 
-export interface PbCreateAvailableWorldTagRequest {
-  tag?: string;
-}
-
 export interface PbCreateEntityGroupRequest {
   /** @format int32 */
   parentEntityGroupId?: number;
@@ -87,6 +83,18 @@ export interface PbCreateMapRequest {
 export interface PbCreateMapResponse {
   map?: PbViewMap;
   layer?: PbViewMapLayer;
+}
+
+export interface PbCreateModuleTagResponse {
+  /** @format int32 */
+  moduleId?: number;
+  /** @format int32 */
+  tagId?: number;
+}
+
+export interface PbCreateModuleTypeAvailableTagRequest {
+  moduleType?: PbModuleType;
+  tag?: string;
 }
 
 export interface PbCreateOrUpdateEvaluationVoteResponse {
@@ -239,14 +247,14 @@ export interface PbEntityList {
   images?: PbImage[];
 }
 
-/** @default "UNKNOWN" */
+/** @default "ENTITY_TYPE_UNKNOWN" */
 export enum PbEntityType {
-  UNKNOWN = 'UNKNOWN',
-  POST = 'POST',
-  MAP = 'MAP',
-  LOCATION = 'LOCATION',
-  CHARACTER = 'CHARACTER',
-  IMAGE = 'IMAGE',
+  ENTITY_TYPE_UNKNOWN = 'ENTITY_TYPE_UNKNOWN',
+  ENTITY_TYPE_POST = 'ENTITY_TYPE_POST',
+  ENTITY_TYPE_MAP = 'ENTITY_TYPE_MAP',
+  ENTITY_TYPE_LOCATION = 'ENTITY_TYPE_LOCATION',
+  ENTITY_TYPE_CHARACTER = 'ENTITY_TYPE_CHARACTER',
+  ENTITY_TYPE_IMAGE = 'ENTITY_TYPE_IMAGE',
 }
 
 export interface PbEvaluation {
@@ -274,10 +282,6 @@ export interface PbEvaluationVote {
   value?: number;
   /** @format date-time */
   createdAt?: string;
-}
-
-export interface PbGetAvailableWorldTagsResponse {
-  tags?: PbViewTag[];
 }
 
 export interface PbGetAverageUserEvaluationsByTypeResponse {
@@ -346,6 +350,16 @@ export interface PbGetMenuItemPostsResponse {
 
 export interface PbGetMenuItemsResponse {
   menuItems?: PbMenuItem[];
+}
+
+export interface PbGetModuleIdResponse {
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+}
+
+export interface PbGetModuleTypeAvailableTagsResponse {
+  tags?: PbViewTag[];
 }
 
 export interface PbGetPostHistoryResponse {
@@ -488,6 +502,15 @@ export interface PbModule {
   systemId?: number;
 }
 
+/** @default "MODULE_TYPE_UNKNOWN" */
+export enum PbModuleType {
+  MODULE_TYPE_UNKNOWN = 'MODULE_TYPE_UNKNOWN',
+  MODULE_TYPE_WORLD = 'MODULE_TYPE_WORLD',
+  MODULE_TYPE_QUEST = 'MODULE_TYPE_QUEST',
+  MODULE_TYPE_SYSTEM = 'MODULE_TYPE_SYSTEM',
+  MODULE_TYPE_CHARACTER = 'MODULE_TYPE_CHARACTER',
+}
+
 /** @default "SQUARE" */
 export enum PbPinShape {
   SQUARE = 'SQUARE',
@@ -542,12 +565,6 @@ export interface PbRole {
   id?: number;
   name?: string;
   description?: string;
-}
-
-export interface PbTag {
-  /** @format int32 */
-  id?: number;
-  tag?: string;
 }
 
 export interface PbUpdateMapPinTypeResponse {
@@ -699,6 +716,7 @@ export interface PbViewTag {
   /** @format int32 */
   id?: number;
   tag?: string;
+  moduleType?: PbModuleType;
   /** @format int32 */
   count?: number;
 }
