@@ -6,6 +6,7 @@ import { Text } from '../Typography/Text';
 import TagRow from '../TagRow/TagRow';
 import MiniStatistic from '../MiniStatistic/MiniStatistic';
 import Link from 'next/link';
+import { PbViewTag } from '../../generated/api-types/data-contracts';
 
 const ImageBackground = styled(Col, {
   paddingTop: '$md',
@@ -42,7 +43,8 @@ interface ImageCardProps {
   playModeCount: number;
   questCount: number;
   activityCount: number;
-  tags: string[];
+  availableTags: PbViewTag[];
+  tags: number[];
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({
@@ -53,6 +55,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   playModeCount,
   questCount,
   activityCount,
+  availableTags,
   tags,
 }) => {
   return (
@@ -85,7 +88,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         <MiniStatistic title="Activity" value={activityCount} />
       </Row>
       <div style={{ height: '0px' }}></div>
-      <TagRow tags={tags} width={330} />
+      <TagRow availableTags={availableTags} tagIds={tags} width={330} />
     </ImageBackground>
   );
 };

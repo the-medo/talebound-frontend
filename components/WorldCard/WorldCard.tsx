@@ -1,13 +1,18 @@
 import React from 'react';
-import { PbWorld } from '../../generated/api-types/data-contracts';
+import { PbModuleType, PbWorld } from '../../generated/api-types/data-contracts';
 import ImageCard from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
+import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 
 interface WorldCardProps {
   world: PbWorld;
 }
 
 const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
+  const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
+
   return (
     <ImageCard
       key={world.id}
@@ -18,6 +23,7 @@ const WorldCard: React.FC<WorldCardProps> = ({ world }) => {
       playModeCount={world.activityResourceCount ?? 0}
       imgSrc={world.imageThumbnail ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
       href={`/worlds/${world.id}/detail`}
+      availableTags={availableTags}
       tags={world.tags ?? []}
     />
   );

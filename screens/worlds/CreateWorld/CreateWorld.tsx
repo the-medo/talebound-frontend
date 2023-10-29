@@ -18,6 +18,8 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourneyOfWorldCrafting';
 import { useRouter } from 'next/router';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../../utils/images/imageDefaultUrls';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
+import { PbModuleType } from '../../../generated/api-types/data-contracts';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -38,6 +40,9 @@ const CreateWorld: React.FC = () => {
   const { value: nameValue, onChange: onChangeName } = useInput<string>('');
   const { value: basedOnValue, onChange: onChangeBasedOn } = useInput<string>('');
   const { value: shortDescriptionValue, onChange: onChangeShortDescription } = useInput<string>('');
+  const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
 
   const helperNameMessage: HelperMessage = useMemo(
     () => validateString(nameValue, 3, 64),
@@ -149,7 +154,8 @@ const CreateWorld: React.FC = () => {
                   activityCount={12}
                   playModeCount={2}
                   imgSrc={IMAGE_DEFAULT_WORLD_THUMBNAIL}
-                  tags={['fantasy', 'magic', 'dragons', 'books']}
+                  availableTags={availableTags}
+                  tags={[]}
                   href="#"
                 />
                 <Text i size="sm">

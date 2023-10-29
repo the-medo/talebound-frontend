@@ -27,5 +27,5 @@ export const useGetImages = createInfiniteQuery<
     return lastPage.newOffset;
   },
 
-  initialPageParam: 1,
+  initialPageParam: 0,
 });

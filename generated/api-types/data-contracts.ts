@@ -755,7 +755,7 @@ export interface PbWorld {
   imageHeader?: string;
   /** @format int32 */
   descriptionPostId?: number;
-  tags?: string[];
+  tags?: number[];
   /** @format int32 */
   activityPostCount?: number;
   /** @format int32 */

@@ -10,6 +10,8 @@ import MiniStatistic from '../../../components/MiniStatistic/MiniStatistic';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Text } from '../../../components/Typography/Text';
 import TagRow from '../../../components/TagRow/TagRow';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
+import { PbModuleType } from '../../../generated/api-types/data-contracts';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -21,6 +23,9 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
   const { data: worldData } = useGetWorldById({ variables: worldId });
 
   const navbar = useMemo(() => <LeftNavbarWorld worldId={worldId} />, [worldId]);
+  const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
 
   return (
     <Layout vertical={true} navbar={navbar}>
@@ -36,7 +41,12 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
               <Row gap="md">
                 <TitleH2>{worldData?.name}</TitleH2>
               </Row>
-              <TagRow colorNonactive="primaryOutline" tags={worldData?.tags ?? []} width={500} />
+              <TagRow
+                availableTags={availableTags}
+                colorNonactive="primaryOutline"
+                tagIds={worldData?.tags ?? []}
+                width={500}
+              />
               <Row gap="md">
                 <MiniStatistic title="Play modes" value={1} />
                 <MiniStatistic title="Quests" value={4} />

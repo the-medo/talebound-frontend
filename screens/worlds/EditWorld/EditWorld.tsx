@@ -14,10 +14,13 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import WorldImages from './WorldImages';
-import WorldTags from './WorldTags';
+import ModuleTags from './ModuleTags';
 import Loading from '../../../components/Loading/Loading';
 import ActionBoxWorld from '../ActionBoxWorld';
 import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
+import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
+import { PbEntityType, PbModuleType } from '../../../generated/api-types/data-contracts';
+import { useModule } from '../../../hooks/useModule';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -26,12 +29,16 @@ interface EditWorldProps {
 }
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
+  const [module, moduleId] = useModule(PbEntityType.ENTITY_TYPE_UNKNOWN);
   const { data: worldData } = useGetWorldById({ variables: worldId });
   const role = useMyWorldRole(worldId);
   const updateWorldMutation = useUpdateWorld();
   const disabled = useMemo(() => role !== WorldAdminRole.SUPER_COLLABORATOR, [role]);
 
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
+  const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
+    variables: PbModuleType.MODULE_TYPE_WORLD,
+  });
 
   const {
     value: basedOnValue,
@@ -77,6 +84,8 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
       },
     });
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
+
+  const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
 
   return (
     <>
@@ -151,13 +160,22 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                         'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'
                       }
                       href="#"
-                      tags={worldData?.tags ?? []}
+                      availableTags={availableTags}
+                      tags={tags}
                     />
                     <ErrorText error={updateWorldMutation.error} />
                   </Col>
                 </Col>{' '}
               </Row>
-              <WorldTags worldId={worldId} disabled={disabled} />
+              {moduleId > 0 && (
+                <ModuleTags
+                  moduleType={PbModuleType.MODULE_TYPE_WORLD}
+                  moduleId={moduleId}
+                  module={module}
+                  tags={tags}
+                  disabled={disabled}
+                />
+              )}
             </ContentSection>
           </Col>
 

@@ -11,7 +11,7 @@ export const useGetWorlds = createInfiniteQuery<
   Error,
   number
 >({
-  primaryKey: 'useWorldsGetWorlds',
+  primaryKey: 'useGetWorlds',
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
     const tags = (variables.tags?.length ?? 0) > 0 ? variables.tags : undefined;
 
@@ -30,5 +30,5 @@ export const useGetWorlds = createInfiniteQuery<
     return lastPage.newOffset;
   },
 
-  initialPageParam: 1,
+  initialPageParam: 0,
 });

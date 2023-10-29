@@ -14,7 +14,7 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
 };
 
 const idUsageForModuleType: Record<PbEntityType, ModuleIdsToUse[]> = {
-  [PbEntityType.ENTITY_TYPE_UNKNOWN]: [],
+  [PbEntityType.ENTITY_TYPE_UNKNOWN]: ['worldId', 'questId', 'systemId', 'characterId'],
   [PbEntityType.ENTITY_TYPE_LOCATION]: ['worldId', 'questId'],
   [PbEntityType.ENTITY_TYPE_MAP]: ['worldId', 'questId'],
   [PbEntityType.ENTITY_TYPE_POST]: ['worldId', 'questId', 'systemId', 'characterId'],

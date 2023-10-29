@@ -1,40 +1,49 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
-import { useAddWorldTag } from '../../../api/worlds/useAddWorldTag';
-import { useRemoveWorldTag } from '../../../api/worlds/useRemoveWorldTag';
+import { useCreateModuleTag } from '../../../api/worlds/useCreateModuleTag';
+import { useDeleteModuleTag } from '../../../api/worlds/useDeleteModuleTag';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';
-import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
+import { PbModule, PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 
-interface WorldTagsProps {
-  worldId: number;
+interface ModuleTagsProps {
+  moduleType: PbModuleType;
+  moduleId: number;
+  module: PbModule;
   disabled?: boolean;
+  tags: number[];
 }
 
-const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
+const ModuleTags: React.FC<ModuleTagsProps> = ({
+  moduleType,
+  moduleId,
+  module,
+  disabled,
+  tags,
+}) => {
   const { data: availableTags = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
-  const { data: worldData } = useGetWorldById({ variables: worldId });
 
-  const { mutate: addTag, isPending: isPendingAdd, error: errorAdd } = useAddWorldTag();
-  const { mutate: removeTag, isPending: isPendingRemove, error: errorRemove } = useRemoveWorldTag();
-
-  const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
+  const { mutate: createTag, isPending: isPendingAdd, error: errorAdd } = useCreateModuleTag();
+  const {
+    mutate: deleteTag,
+    isPending: isPendingRemove,
+    error: errorRemove,
+  } = useDeleteModuleTag();
 
   const onTagSelect = useCallback(
     (tag: PbViewTag) => {
       if (!tag.tag || !tag.id) return;
-      if (tag.id && tags.includes(tag.tag)) {
-        removeTag({ worldId, tagId: tag.id });
+      if (tag.id && tags.includes(tag.id)) {
+        deleteTag({ moduleType, moduleId, module, tagId: tag.id });
       } else {
-        addTag({ worldId, tagId: tag.id });
+        createTag({ moduleType, moduleId, module, tagId: tag.id });
       }
     },
-    [addTag, removeTag, tags, worldId],
+    [moduleType, createTag, deleteTag, tags, moduleId, module],
   );
 
   const isPending = isPendingAdd || isPendingGet || isPendingRemove;
@@ -51,7 +60,7 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
             tag={t}
             key={t.id}
             onSelect={onTagSelect}
-            active={tags.includes(t.tag ?? '')}
+            active={tags.includes(t.id ?? 0)}
           />
         ))}
         {availableTags.length === 0 && <p>No tags available</p>}
@@ -61,4 +70,4 @@ const WorldTags: React.FC<WorldTagsProps> = ({ worldId, disabled }) => {
   );
 };
 
-export default WorldTags;
+export default ModuleTags;

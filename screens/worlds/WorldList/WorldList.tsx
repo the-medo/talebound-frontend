@@ -29,7 +29,7 @@ const WorldList: React.FC = () => {
   } = useGetWorlds({
     variables: {
       public: showOnlyPublic,
-      tags: selectedTags.map((t) => t.tag ?? ''),
+      tags: selectedTags.map((t) => t.id ?? 0),
     },
   });
 

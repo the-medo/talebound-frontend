@@ -43,7 +43,7 @@ export class Worlds<SecurityDataType = unknown> {
   worldsGetWorlds = (
     query?: {
       public?: boolean;
-      tags?: string[];
+      tags?: number[];
       orderBy?: string;
       /** @format int32 */
       limit?: number;
