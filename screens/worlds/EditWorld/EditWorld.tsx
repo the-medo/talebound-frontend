@@ -21,6 +21,8 @@ import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbEntityType, PbModuleType } from '../../../generated/api-types/data-contracts';
 import { useModule } from '../../../hooks/useModule';
+import { Text } from '../../../components/Typography/Text';
+import ModuleEntityTagAdministration from '../../../component-sections/Module/ModuleEntityTagAdministration/ModuleEntityTagAdministration';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -167,16 +169,34 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   </Col>
                 </Col>{' '}
               </Row>
-              {moduleId > 0 && (
-                <ModuleTags
-                  moduleType={PbModuleType.MODULE_TYPE_WORLD}
-                  moduleId={moduleId}
-                  module={module}
-                  tags={tags}
-                  disabled={disabled}
-                />
-              )}
             </ContentSection>
+            {moduleId > 0 && (
+              <>
+                <ContentSection flexWrap="wrap" direction="column" header="Tags">
+                  <Text>
+                    Select tags that describe your world. This will make it easier for other users
+                    to find it.
+                  </Text>
+                  <ModuleTags
+                    moduleType={PbModuleType.MODULE_TYPE_WORLD}
+                    moduleId={moduleId}
+                    module={module}
+                    tags={tags}
+                    disabled={disabled}
+                  />
+                </ContentSection>
+                <ContentSection
+                  flexWrap="wrap"
+                  direction="column"
+                  header="Entity tag administration"
+                >
+                  <ModuleEntityTagAdministration
+                    moduleType={PbModuleType.MODULE_TYPE_WORLD}
+                    moduleId={moduleId}
+                  />
+                </ContentSection>
+              </>
+            )}
           </Col>
 
           <Col css={{ flexGrow: 0, flexBasis: '600px' }}>

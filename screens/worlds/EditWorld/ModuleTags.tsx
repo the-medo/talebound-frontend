@@ -50,9 +50,6 @@ const ModuleTags: React.FC<ModuleTagsProps> = ({
 
   return (
     <>
-      <TitleH2 css={{ marginTop: '$lg' }} marginBottom="md">
-        Tags
-      </TitleH2>
       <Row wrap css={{ width: '100%' }} gap="sm">
         {availableTags.map((t) => (
           <TagButton

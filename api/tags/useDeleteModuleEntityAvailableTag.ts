@@ -10,7 +10,7 @@ interface DeleteModuleEntityAvailableTagRequest {
 
 export const useDeleteModuleEntityAvailableTag = createMutation({
   mutationFn: async (variables: DeleteModuleEntityAvailableTagRequest) =>
-    TagsCollection.tagsDeleteModuleTypeAvailableTag(variables.tagId),
+    TagsCollection.tagsDeleteModuleEntityAvailableTag(variables.tagId),
   onSuccess: (_, { tagId, moduleId }) => {
     const availableModuleEntityTagsQueryKey = useGetModuleEntityAvailableTags.getKey(moduleId);
 
