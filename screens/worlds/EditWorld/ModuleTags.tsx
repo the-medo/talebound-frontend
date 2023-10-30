@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
-import { useCreateModuleTag } from '../../../api/worlds/useCreateModuleTag';
-import { useDeleteModuleTag } from '../../../api/worlds/useDeleteModuleTag';
+import { useCreateModuleTag } from '../../../api/tags/useCreateModuleTag';
+import { useDeleteModuleTag } from '../../../api/tags/useDeleteModuleTag';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';

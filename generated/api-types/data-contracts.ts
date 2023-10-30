@@ -61,6 +61,13 @@ export interface PbCreateEntityGroupRequest {
   direction?: string;
 }
 
+export interface PbCreateEntityTagResponse {
+  /** @format int32 */
+  entityId?: number;
+  /** @format int32 */
+  tagId?: number;
+}
+
 export interface PbCreateLocationRequest {
   module?: PbModule;
   name?: string;
@@ -83,6 +90,12 @@ export interface PbCreateMapRequest {
 export interface PbCreateMapResponse {
   map?: PbViewMap;
   layer?: PbViewMapLayer;
+}
+
+export interface PbCreateModuleEntityAvailableTagRequest {
+  /** @format int32 */
+  moduleId?: number;
+  tag?: string;
 }
 
 export interface PbCreateModuleTagResponse {
@@ -247,6 +260,14 @@ export interface PbEntityList {
   images?: PbImage[];
 }
 
+export interface PbEntityTagAvailable {
+  /** @format int32 */
+  id?: number;
+  tag?: string;
+  /** @format int32 */
+  moduleId?: number;
+}
+
 /** @default "ENTITY_TYPE_UNKNOWN" */
 export enum PbEntityType {
   ENTITY_TYPE_UNKNOWN = 'ENTITY_TYPE_UNKNOWN',
@@ -350,6 +371,10 @@ export interface PbGetMenuItemPostsResponse {
 
 export interface PbGetMenuItemsResponse {
   menuItems?: PbMenuItem[];
+}
+
+export interface PbGetModuleEntityAvailableTagsResponse {
+  tags?: PbTag[];
 }
 
 export interface PbGetModuleIdResponse {
@@ -565,6 +590,12 @@ export interface PbRole {
   id?: number;
   name?: string;
   description?: string;
+}
+
+export interface PbTag {
+  /** @format int32 */
+  id?: number;
+  tag?: string;
 }
 
 export interface PbUpdateMapPinTypeResponse {

@@ -1,7 +1,7 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { TagsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
-import { useGetWorldById } from './useGetWorldById';
+import { useGetWorldById } from '../worlds/useGetWorldById';
 import { PbModule, PbModuleType } from '../../generated/api-types/data-contracts';
 
 interface CreateModuleTagParams {
