@@ -14,9 +14,8 @@ import { UserDiamond } from './ControlPanel/UserDiamond';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../store';
-import { useMyWorlds } from '../../hooks/useWorldsOfUser';
-import Avatar from '../../components/Avatar/Avatar';
 import { DEFAULT_AVATAR_URL } from '../../utils/constants';
+import { useGetUserModules } from '../../api/users/useGetUserModules';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -35,9 +34,13 @@ const Header: React.FC = () => {
   const [characterData, setCharacterData] = useState<AspectData>({ marker: [] });
   const [playModeData, setPlayModeData] = useState<AspectData>({ marker: [] });
 
-  const myWorlds = useMyWorlds();
+  const userId = useSelector((state: ReduxState) => state.auth.user?.id);
 
-  const worlds = useMemo(() => Object.entries(myWorlds), [myWorlds]);
+  const { data: moduleData } = useGetUserModules({
+    variables: userId ?? 0,
+  });
+
+  const worlds = moduleData?.worlds ?? [];
 
   return (
     <BaseHeader css={{ backgroundImage: `url("${image}")` }}>
@@ -82,12 +85,12 @@ const Header: React.FC = () => {
               text={'No worlds'}
             />
           )}
-          {worlds.map(([worldId, data], idx) => (
+          {worlds.map((w, idx) => (
             <AspectDiamond
-              key={worldId}
+              key={w.id}
               imgIdx={0}
               totalCount={worlds.length}
-              avatarUrl={data?.world.imageAvatar}
+              avatarUrl={m.imageAvatar}
               linkUrl={`/worlds/${worldId}/detail`}
               name={data?.world.name}
               entityId={data?.world.id}

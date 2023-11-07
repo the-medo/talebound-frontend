@@ -3,7 +3,7 @@ import { WorldsCollection } from '../collections';
 import { useGetWorldById } from './useGetWorldById';
 import { queryClient } from '../../pages/_app';
 import { store } from '../../store';
-import { useGetWorldsOfCreator } from '../users/useGetWorldsOfCreator';
+import { useGetUserModules } from '../users/useGetUserModules';
 
 type UpdateWorldParams = {
   worldId: number;
@@ -23,8 +23,8 @@ export const useUpdateWorld = createMutation({
 
       const userId = store.getState().auth.user?.id;
       if (userId) {
-        const useGetWorldsOfCreatorQueryKey = useGetWorldsOfCreator.getKey(userId);
-        queryClient.setQueryData<inferData<typeof useGetWorldsOfCreator>>(
+        const useGetWorldsOfCreatorQueryKey = useGetUserModules.getKey(userId);
+        queryClient.setQueryData<inferData<typeof useGetUserModules>>(
           useGetWorldsOfCreatorQueryKey,
           (x) => {
             const worldData = x?.[worldId];

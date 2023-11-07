@@ -317,6 +317,7 @@ export interface PbGetPostsByModuleResponse {
 }
 
 export interface PbGetUserModulesResponse {
+  userModules?: PbUserModule[];
   modules?: PbViewModule[];
   worlds?: PbWorld[];
 }
@@ -611,6 +612,17 @@ export interface PbUser {
   img?: PbImage;
   /** @format int32 */
   introductionPostId?: number;
+}
+
+export interface PbUserModule {
+  /** @format int32 */
+  userId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  admin?: boolean;
+  favorite?: boolean;
+  following?: boolean;
+  entityNotifications?: PbEntityType[];
 }
 
 export interface PbVerifyEmailRequest {
