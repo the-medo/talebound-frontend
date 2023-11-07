@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { ExpandedUploadImageRequest, useUploadImage } from '../../api/useUploadImage';
+import { ExpandedUploadImageRequest, useUploadImage } from '../../api/images/useUploadImage';
 import { fileInputChanged } from '../../utils/functions/fileInputChanged';
 import InputFile from '../InputFile/InputFile';
 import { Button } from '../Button/Button';

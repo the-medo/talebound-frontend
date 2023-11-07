@@ -5,7 +5,7 @@ import { HelperMessage } from '../utils/form/helperTypes';
 import { validateEmail } from '../utils/form/validateEmail';
 import ReCaptcha from 'react-google-recaptcha';
 import { getRecaptchaSiteKey } from '../utils/functions/config';
-import { useResetPassword } from '../api/useResetPassword';
+import { useResetPassword } from '../api/auth/useResetPassword';
 import { styled } from '../styles/stitches.config';
 import { useInput } from '../hooks/useInput';
 import Input from '../components/Input/Input';

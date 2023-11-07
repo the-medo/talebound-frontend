@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
-} from '../api/useResetPassword';
+} from '../api/auth/useResetPassword';
 import { useRouter } from 'next/router';
 import PasswordChangeInputs, {
   PasswordChangeStatus,

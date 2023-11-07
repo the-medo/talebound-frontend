@@ -9,14 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface PbAddChatMessageRequest {
-  text?: string;
-}
-
-export interface PbAddChatMessageResponse {
-  message?: PbChatMessage;
-}
-
 export interface PbAddRoleToUserRequest {
   /** @format int32 */
   userId?: number;
@@ -41,17 +33,6 @@ export interface PbAverageEvaluationVote {
   average?: number;
 }
 
-export interface PbChatMessage {
-  /** @format int64 */
-  id?: string;
-  /** @format int32 */
-  userId?: number;
-  username?: string;
-  text?: string;
-  /** @format date-time */
-  createdAt?: string;
-}
-
 export interface PbCreateEntityGroupRequest {
   /** @format int32 */
   parentEntityGroupId?: number;
@@ -69,7 +50,8 @@ export interface PbCreateEntityTagResponse {
 }
 
 export interface PbCreateLocationRequest {
-  module?: PbModule;
+  /** @format int32 */
+  moduleId?: number;
   name?: string;
   description?: string;
   /** @format int32 */
@@ -77,7 +59,8 @@ export interface PbCreateLocationRequest {
 }
 
 export interface PbCreateMapRequest {
-  module?: PbModule;
+  /** @format int32 */
+  moduleId?: number;
   name?: string;
   type?: string;
   description?: string;
@@ -117,8 +100,6 @@ export interface PbCreateOrUpdateEvaluationVoteResponse {
 export interface PbCreatePostRequest {
   title?: string;
   content?: string;
-  /** @format int32 */
-  postTypeId?: number;
   isDraft?: boolean;
   isPrivate?: boolean;
 }
@@ -139,71 +120,9 @@ export interface PbCreateWorldRequest {
   basedOn?: string;
 }
 
-export interface PbDataHistoryPost {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  postId?: number;
-  /** @format int32 */
-  postTypeId?: number;
-  /** @format int32 */
-  userId?: number;
-  title?: string;
-  content?: string;
-  description?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  deletedAt?: string;
-  /** @format date-time */
-  lastUpdatedAt?: string;
-  /** @format int32 */
-  lastUpdatedUserId?: number;
-  isDraft?: boolean;
-  isPrivate?: boolean;
-  postTypeName?: string;
-  postTypeDraftable?: boolean;
-  postTypePrivatable?: boolean;
-  /** @format int32 */
-  imageThumbnailId?: number;
-}
-
-export interface PbDataPost {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  postTypeId?: number;
-  /** @format int32 */
-  userId?: number;
-  title?: string;
-  content?: string;
-  description?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  deletedAt?: string;
-  /** @format date-time */
-  lastUpdatedAt?: string;
-  /** @format int32 */
-  lastUpdatedUserId?: number;
-  isDraft?: boolean;
-  isPrivate?: boolean;
-  /** @format int32 */
-  imageThumbnailId?: number;
-  imageThumbnailUrl?: string;
-}
-
-export interface PbDataPostType {
-  /** @format int32 */
-  id?: number;
-  name?: string;
-  draftable?: boolean;
-  privatable?: boolean;
-}
-
-export interface PbDeleteChatMessageResponse {
-  success?: boolean;
-  message?: string;
+export interface PbCreateWorldResponse {
+  world?: PbWorld;
+  module?: PbModule;
 }
 
 export interface PbDeleteEvaluationVoteResponse {
@@ -254,7 +173,7 @@ export interface PbEntityGroupContent {
 
 export interface PbEntityList {
   entities?: PbEntity[];
-  posts?: PbDataPost[];
+  posts?: PbViewPost[];
   maps?: PbViewMap[];
   locations?: PbViewLocation[];
   images?: PbImage[];
@@ -307,10 +226,6 @@ export interface PbEvaluationVote {
 
 export interface PbGetAverageUserEvaluationsByTypeResponse {
   averageEvaluationVote?: PbAverageEvaluationVote[];
-}
-
-export interface PbGetChatMessagesResponse {
-  messages?: PbChatMessage[];
 }
 
 export interface PbGetEvaluationByIdResponse {
@@ -373,6 +288,10 @@ export interface PbGetMenuItemsResponse {
   menuItems?: PbMenuItem[];
 }
 
+export interface PbGetModuleAdminsResponse {
+  moduleAdmins?: PbModuleAdmin[];
+}
+
 export interface PbGetModuleEntityAvailableTagsResponse {
   tags?: PbTag[];
 }
@@ -388,21 +307,22 @@ export interface PbGetModuleTypeAvailableTagsResponse {
 }
 
 export interface PbGetPostHistoryResponse {
-  historyPosts?: PbHistoryPost[];
-}
-
-export interface PbGetPostTypesResponse {
-  postTypes?: PbDataPostType[];
+  historyPosts?: PbPostHistory[];
 }
 
 export interface PbGetPostsByModuleResponse {
-  posts?: PbPost[];
+  posts?: PbViewPost[];
   /** @format int32 */
   totalCount?: number;
 }
 
+export interface PbGetUserModulesResponse {
+  modules?: PbViewModule[];
+  worlds?: PbWorld[];
+}
+
 export interface PbGetUserPostsResponse {
-  posts?: PbPost[];
+  posts?: PbViewPost[];
 }
 
 export interface PbGetUserRolesResponse {
@@ -413,31 +333,10 @@ export interface PbGetUsersResponse {
   users?: PbUser[];
 }
 
-export interface PbGetWorldAdminsResponse {
-  worldAdmins?: PbWorldAdmin[];
-}
-
-export interface PbGetWorldDailyActivityResponse {
-  activity?: PbWorldActivity[];
-}
-
-export interface PbGetWorldMonthlyActivityResponse {
-  activity?: PbWorldActivity[];
-}
-
-export interface PbGetWorldsOfCreatorResponse {
-  worlds?: PbWorldOfCreatorResponse[];
-}
-
 export interface PbGetWorldsResponse {
   worlds?: PbWorld[];
   /** @format int32 */
   totalCount?: number;
-}
-
-export interface PbHistoryPost {
-  post?: PbDataHistoryPost;
-  postType?: PbDataPostType;
 }
 
 export interface PbImage {
@@ -513,10 +412,48 @@ export interface PbMenuItemPost {
   postId?: number;
   /** @format int32 */
   position?: number;
-  post?: PbDataPost;
+  post?: PbViewPost;
 }
 
 export interface PbModule {
+  /** @format int32 */
+  id?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
+  /** @format int32 */
+  characterId?: number;
+  /** @format int32 */
+  systemId?: number;
+  /** @format int32 */
+  menuId?: number;
+  /** @format int32 */
+  headerImgId?: number;
+  /** @format int32 */
+  thumbnailImgId?: number;
+  /** @format int32 */
+  avatarImgId?: number;
+}
+
+export interface PbModuleAdmin {
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  userId?: number;
+  user?: PbViewUser;
+  /** @format date-time */
+  createdAt?: string;
+  superAdmin?: boolean;
+  /** @format int32 */
+  approved?: number;
+  motivationalLetter?: string;
+  allowedEntityTypes?: PbEntityType[];
+  allowedMenu?: boolean;
+}
+
+export interface PbModuleDefinition {
   /** @format int32 */
   worldId?: number;
   /** @format int32 */
@@ -551,9 +488,28 @@ export enum PbPinShape {
   CLOUD = 'CLOUD',
 }
 
-export interface PbPost {
-  post?: PbDataPost;
-  postType?: PbDataPostType;
+export interface PbPostHistory {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  description?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
 }
 
 export interface PbRemoveRoleFromUserResponse {
@@ -678,6 +634,14 @@ export interface PbViewLocation {
   /** @format int32 */
   thumbnailImageId?: number;
   thumbnailImageUrl?: string;
+  /** @format int32 */
+  entityId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  moduleTypeId?: number;
+  tags?: number[];
 }
 
 export interface PbViewMap {
@@ -693,6 +657,14 @@ export interface PbViewMap {
   /** @format int32 */
   thumbnailImageId?: number;
   thumbnailImageUrl?: string;
+  /** @format int32 */
+  entityId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  moduleTypeId?: number;
+  tags?: number[];
 }
 
 export interface PbViewMapLayer {
@@ -743,6 +715,62 @@ export interface PbViewMenu {
   headerImageUrl?: string;
 }
 
+export interface PbViewModule {
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  moduleWorldId?: number;
+  /** @format int32 */
+  moduleQuestId?: number;
+  /** @format int32 */
+  moduleCharacterId?: number;
+  /** @format int32 */
+  moduleSystemId?: number;
+  /** @format int32 */
+  menuId?: number;
+  /** @format int32 */
+  headerImgId?: number;
+  headerImgUrl?: string;
+  /** @format int32 */
+  thumbnailImgId?: number;
+  thumbnailImgUrl?: string;
+  /** @format int32 */
+  avatarImgId?: number;
+  avatarImgUrl?: string;
+}
+
+export interface PbViewPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  description?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
+  imageThumbnailUrl?: string;
+  /** @format int32 */
+  entityId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  moduleTypeId?: number;
+  tags?: number[];
+}
+
 export interface PbViewTag {
   /** @format int32 */
   id?: number;
@@ -781,52 +809,8 @@ export interface PbWorld {
   createdAt?: string;
   basedOn?: string;
   shortDescription?: string;
-  imageAvatar?: string;
-  imageThumbnail?: string;
-  imageHeader?: string;
   /** @format int32 */
   descriptionPostId?: number;
-  tags?: number[];
-  /** @format int32 */
-  activityPostCount?: number;
-  /** @format int32 */
-  activityQuestCount?: number;
-  /** @format int32 */
-  activityResourceCount?: number;
-  /** @format int32 */
-  worldMenuId?: number;
-}
-
-export interface PbWorldActivity {
-  /** @format int32 */
-  worldId?: number;
-  /** @format date-time */
-  date?: string;
-  /** @format int32 */
-  activityPostCount?: number;
-  /** @format int32 */
-  activityQuestCount?: number;
-  /** @format int32 */
-  activityResourceCount?: number;
-}
-
-export interface PbWorldAdmin {
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  userId?: number;
-  user?: PbViewUser;
-  /** @format date-time */
-  createdAt?: string;
-  superAdmin?: boolean;
-  /** @format int32 */
-  approved?: number;
-  motivationalLetter?: string;
-}
-
-export interface PbWorldOfCreatorResponse {
-  world?: PbWorld;
-  superAdmin?: boolean;
 }
 
 export interface ProtobufAny {

@@ -1,5 +1,5 @@
 import { createMutation } from 'react-query-kit';
-import { UsersCollection } from './collections';
+import { UsersCollection } from '../collections';
 
 export type UploadUserAvatarRequest = {
   userId: number;

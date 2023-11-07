@@ -1,4 +1,4 @@
-import { UsersCollection } from './collections';
+import { UsersCollection } from '../collections';
 import { createMutation } from 'react-query-kit';
 
 export interface PbCreateOrUpdateEvaluationVoteRequest {

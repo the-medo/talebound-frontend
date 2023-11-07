@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { useGetUserById } from '../../api/useGetUserById';
+import { useGetUserById } from '../../api/users/useGetUserById';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../components/Flex/Flex';
 import { TitleH2 } from '../../components/Typography/Title';
@@ -7,7 +7,7 @@ import { formatDate } from '../../utils/functions/formatDate';
 import InfoRow from '../../components/InfoRow/InfoRow';
 import InfoRowBox from '../../components/InfoRow/InfoRowBox';
 import { Button } from '../../components/Button/Button';
-import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
+import { useGetAverageUserEvaluationByType } from '../../api/users/useGetAverageUserEvaluationByType';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import Evaluation from '../../components/Evaluation/Evaluation';
 import Avatar from '../../components/Avatar/Avatar';

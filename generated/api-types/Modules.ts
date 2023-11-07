@@ -9,8 +9,13 @@
  * ---------------------------------------------------------------
  */
 
-import { PbGetModuleIdResponse, RpcStatus } from './data-contracts';
-import { HttpClient, RequestParams } from './http-client';
+import {
+  PbGetModuleAdminsResponse,
+  PbGetModuleIdResponse,
+  PbModuleAdmin,
+  RpcStatus,
+} from './data-contracts';
+import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class Modules<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
@@ -46,6 +51,103 @@ export class Modules<SecurityDataType = unknown> {
       path: `/modules/id`,
       method: 'GET',
       query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description returns admins and admin requests for module
+   *
+   * @tags Modules
+   * @name ModulesGetModuleAdmins
+   * @summary Get module admins
+   * @request GET:/modules/{moduleId}/admin
+   * @response `200` `PbGetModuleAdminsResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesGetModuleAdmins = (moduleId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetModuleAdminsResponse, RpcStatus>({
+      path: `/modules/${moduleId}/admin`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description deletes module admin
+   *
+   * @tags Modules
+   * @name ModulesDeleteModuleAdmin
+   * @summary Delete module admin
+   * @request DELETE:/modules/{moduleId}/admin
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesDeleteModuleAdmin = (
+    moduleId: number,
+    query?: {
+      /** @format int32 */
+      userId?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<object, RpcStatus>({
+      path: `/modules/${moduleId}/admin`,
+      method: 'DELETE',
+      query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description adds request to become admin of the module
+   *
+   * @tags Modules
+   * @name ModulesCreateModuleAdmin
+   * @summary Create module admin
+   * @request POST:/modules/{moduleId}/admin
+   * @response `200` `PbModuleAdmin` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesCreateModuleAdmin = (
+    moduleId: number,
+    body: {
+      motivationalLetter?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbModuleAdmin, RpcStatus>({
+      path: `/modules/${moduleId}/admin`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description updates module admin request (approve / decline)
+   *
+   * @tags Modules
+   * @name ModulesUpdateModuleAdmin
+   * @summary Update module admin
+   * @request PATCH:/modules/{moduleId}/admin
+   * @response `200` `PbModuleAdmin` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesUpdateModuleAdmin = (
+    moduleId: number,
+    body: {
+      /** @format int32 */
+      userId?: number;
+      superAdmin?: boolean;
+      /** @format int32 */
+      approved?: number;
+      motivationalLetter?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbModuleAdmin, RpcStatus>({
+      path: `/modules/${moduleId}/admin`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });

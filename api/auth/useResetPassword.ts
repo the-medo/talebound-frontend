@@ -2,22 +2,22 @@ import { createMutation } from 'react-query-kit';
 import {
   PbResetPasswordSendCodeRequest,
   PbResetPasswordVerifyCodeRequest,
-} from '../generated/api-types/data-contracts';
-import { UsersCollection } from './collections';
+} from '../../generated/api-types/data-contracts';
+import { AuthCollection } from '../collections';
 
 export const useResetPassword = createMutation({
   mutationFn: async (variables: PbResetPasswordSendCodeRequest) =>
-    UsersCollection.usersResetPasswordSendCode(variables),
+    AuthCollection.authResetPasswordSendCode(variables),
 });
 
 export const useResetPasswordVerifyCode = createMutation({
   mutationFn: async (variables: PbResetPasswordVerifyCodeRequest) =>
-    UsersCollection.usersResetPasswordVerifyCode(variables),
+    AuthCollection.authResetPasswordVerifyCode(variables),
 });
 
 export const useResetPasswordVerifyCodeValidity = createMutation({
   mutationFn: async (code: string) =>
-    UsersCollection.usersResetPasswordVerifyCodeValidity({
+    AuthCollection.authResetPasswordVerifyCodeValidity({
       secretCode: code,
     }),
 });

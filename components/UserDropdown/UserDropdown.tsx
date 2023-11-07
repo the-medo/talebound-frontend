@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth';
-import { useLogout } from '../../api/useLogout';
+import { useLogout } from '../../api/auth/useLogout';
 import { resetAuth } from '../../utils/auth/userSlice';
 import { DropdownMenuContent } from '../../components-radix-ui/DropdownMenu/DropdownMenuContent';
 import { DropdownMenuItem } from '../../components-radix-ui/DropdownMenu/DropdownMenuItem';

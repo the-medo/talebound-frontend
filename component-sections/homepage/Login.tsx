@@ -4,7 +4,7 @@ import React, { KeyboardEvent, useCallback, useMemo } from 'react';
 import { VerticalSemitransparent } from '../../components/VerticalSemitransparent/VerticalSemitransparent';
 import Input from '../../components/Input/Input';
 import Link from 'next/link';
-import { useLogin } from '../../api/useLogin';
+import { useLogin } from '../../api/auth/useLogin';
 import { useRouter } from 'next/router';
 import { setUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';

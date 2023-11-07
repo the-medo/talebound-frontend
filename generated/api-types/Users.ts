@@ -19,23 +19,15 @@ import {
   PbGetAverageUserEvaluationsByTypeResponse,
   PbGetEvaluationVotesByUserIdAndVoterResponse,
   PbGetEvaluationVotesByUserIdResponse,
-  PbGetImagesResponse,
+  PbGetUserModulesResponse,
   PbGetUserPostsResponse,
   PbGetUserRolesResponse,
   PbGetUsersResponse,
-  PbGetWorldsOfCreatorResponse,
-  PbLoginUserRequest,
-  PbLoginUserResponse,
-  PbPost,
   PbRemoveRoleFromUserResponse,
-  PbResetPasswordSendCodeRequest,
-  PbResetPasswordSendCodeResponse,
-  PbResetPasswordVerifyCodeRequest,
-  PbResetPasswordVerifyCodeResponse,
-  PbResetPasswordVerifyCodeValidityResponse,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
   PbUploadUserAvatarResponse,
+  PbViewPost,
   PbViewUser,
   RpcStatus,
 } from './data-contracts';
@@ -126,108 +118,6 @@ export class Users<SecurityDataType = unknown> {
     this.http.request<PbViewUser, RpcStatus>({
       path: `/users/id/${userId}`,
       method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description login user - get user object and set HttpOnly cookies
-   *
-   * @tags Users
-   * @name UsersLoginUser
-   * @summary Login user
-   * @request POST:/users/login
-   * @response `200` `PbLoginUserResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersLoginUser = (body: PbLoginUserRequest, params: RequestParams = {}) =>
-    this.http.request<PbLoginUserResponse, RpcStatus>({
-      path: `/users/login`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description logout user - it clears HttpOnly cookies - no request data required
-   *
-   * @tags Users
-   * @name UsersLogoutUser
-   * @summary Logout user
-   * @request POST:/users/logout
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersLogoutUser = (body: object, params: RequestParams = {}) =>
-    this.http.request<object, RpcStatus>({
-      path: `/users/logout`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description in case a user forgot their password, they can request a password reset using this endpoint
-   *
-   * @tags Users
-   * @name UsersResetPasswordSendCode
-   * @summary Request password reset
-   * @request POST:/users/reset/send-code
-   * @response `200` `PbResetPasswordSendCodeResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersResetPasswordSendCode = (body: PbResetPasswordSendCodeRequest, params: RequestParams = {}) =>
-    this.http.request<PbResetPasswordSendCodeResponse, RpcStatus>({
-      path: `/users/reset/send-code`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description in case a user forgot their password, they can confirm the password reset using this endpoint
-   *
-   * @tags Users
-   * @name UsersResetPasswordVerifyCode
-   * @summary Confirm password reset
-   * @request POST:/users/reset/verify-code
-   * @response `200` `PbResetPasswordVerifyCodeResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersResetPasswordVerifyCode = (
-    body: PbResetPasswordVerifyCodeRequest,
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbResetPasswordVerifyCodeResponse, RpcStatus>({
-      path: `/users/reset/verify-code`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description validate reset password secret code
-   *
-   * @tags Users
-   * @name UsersResetPasswordVerifyCodeValidity
-   * @summary Validate reset password secret code
-   * @request GET:/users/reset/verify-code-validity
-   * @response `200` `PbResetPasswordVerifyCodeValidityResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersResetPasswordVerifyCodeValidity = (
-    query?: {
-      secretCode?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbResetPasswordVerifyCodeValidityResponse, RpcStatus>({
-      path: `/users/reset/verify-code-validity`,
-      method: 'GET',
-      query: query,
       format: 'json',
       ...params,
     });
@@ -412,42 +302,13 @@ export class Users<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description get images of user by userID - filterable by image type
-   *
-   * @tags Users
-   * @name UsersGetUserImages
-   * @summary Get user images
-   * @request GET:/users/{userId}/images
-   * @response `200` `PbGetImagesResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersGetUserImages = (
-    userId: number,
-    query?: {
-      /** @format int32 */
-      imageTypeId?: number;
-      /** @format int32 */
-      limit?: number;
-      /** @format int32 */
-      offset?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbGetImagesResponse, RpcStatus>({
-      path: `/users/${userId}/images`,
-      method: 'GET',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
    * @description use this API to update user introduction
    *
    * @tags Users
    * @name UsersUpdateUserIntroduction
    * @summary Update user introduction
    * @request PATCH:/users/{userId}/introduction
-   * @response `200` `PbPost` A successful response.
+   * @response `200` `PbViewPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   usersUpdateUserIntroduction = (
@@ -458,11 +319,28 @@ export class Users<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbPost, RpcStatus>({
+    this.http.request<PbViewPost, RpcStatus>({
       path: `/users/${userId}/introduction`,
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description gets list of worlds that the creator is part of
+   *
+   * @tags Users
+   * @name UsersGetUserModules
+   * @summary Get creator's worlds
+   * @request GET:/users/{userId}/modules
+   * @response `200` `PbGetUserModulesResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  usersGetUserModules = (userId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetUserModulesResponse, RpcStatus>({
+      path: `/users/${userId}/modules`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
@@ -479,8 +357,6 @@ export class Users<SecurityDataType = unknown> {
   usersGetUserPosts = (
     userId: number,
     query?: {
-      /** @format int32 */
-      postTypeId?: number;
       /** @format int32 */
       limit?: number;
       /** @format int32 */
@@ -509,23 +385,6 @@ export class Users<SecurityDataType = unknown> {
     this.http.request<PbRemoveRoleFromUserResponse, RpcStatus>({
       path: `/users/${userId}/roles/${roleId}`,
       method: 'DELETE',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description gets list of worlds that the creator is part of
-   *
-   * @tags Users
-   * @name UsersGetWorldsOfCreator
-   * @summary Get creator's worlds
-   * @request GET:/users/{userId}/worlds
-   * @response `200` `PbGetWorldsOfCreatorResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersGetWorldsOfCreator = (userId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetWorldsOfCreatorResponse, RpcStatus>({
-      path: `/users/${userId}/worlds`,
-      method: 'GET',
       format: 'json',
       ...params,
     });

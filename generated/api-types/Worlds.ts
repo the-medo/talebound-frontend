@@ -11,14 +11,11 @@
 
 import {
   PbCreateWorldRequest,
-  PbGetWorldAdminsResponse,
-  PbGetWorldDailyActivityResponse,
-  PbGetWorldMonthlyActivityResponse,
+  PbCreateWorldResponse,
   PbGetWorldsResponse,
   PbImage,
-  PbPost,
+  PbViewPost,
   PbWorld,
-  PbWorldAdmin,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -66,67 +63,15 @@ export class Worlds<SecurityDataType = unknown> {
    * @name WorldsCreateWorld
    * @summary Create world
    * @request POST:/worlds
-   * @response `200` `PbWorld` A successful response.
+   * @response `200` `PbCreateWorldResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   worldsCreateWorld = (body: PbCreateWorldRequest, params: RequestParams = {}) =>
-    this.http.request<PbWorld, RpcStatus>({
+    this.http.request<PbCreateWorldResponse, RpcStatus>({
       path: `/worlds`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description gets activity by day
-   *
-   * @tags Worlds
-   * @name WorldsGetWorldDailyActivity
-   * @summary Get world(s) daily activity
-   * @request GET:/worlds/activity/daily
-   * @response `200` `PbGetWorldDailyActivityResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsGetWorldDailyActivity = (
-    query?: {
-      /** @format int32 */
-      worldId?: number;
-      /** @format date-time */
-      dateFrom?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbGetWorldDailyActivityResponse, RpcStatus>({
-      path: `/worlds/activity/daily`,
-      method: 'GET',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description gets world activity grouped by month
-   *
-   * @tags Worlds
-   * @name WorldsGetWorldMonthlyActivity
-   * @summary Get world(s) monthly activity
-   * @request GET:/worlds/activity/monthly
-   * @response `200` `PbGetWorldMonthlyActivityResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsGetWorldMonthlyActivity = (
-    query?: {
-      /** @format int32 */
-      worldId?: number;
-      /** @format date-time */
-      dateFrom?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbGetWorldMonthlyActivityResponse, RpcStatus>({
-      path: `/worlds/activity/monthly`,
-      method: 'GET',
-      query: query,
       format: 'json',
       ...params,
     });
@@ -166,114 +111,11 @@ export class Worlds<SecurityDataType = unknown> {
       basedOn?: string;
       /** @format int32 */
       descriptionPostId?: number;
-      /** @format int32 */
-      imageAvatarId?: number;
-      /** @format int32 */
-      imageThumbnailId?: number;
-      /** @format int32 */
-      imageHeaderId?: number;
     },
     params: RequestParams = {},
   ) =>
     this.http.request<PbWorld, RpcStatus>({
       path: `/worlds/${worldId}`,
-      method: 'PATCH',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description returns admins and admin requests for world
-   *
-   * @tags Worlds
-   * @name WorldsGetWorldAdmins
-   * @summary Get world admins
-   * @request GET:/worlds/{worldId}/admin
-   * @response `200` `PbGetWorldAdminsResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsGetWorldAdmins = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetWorldAdminsResponse, RpcStatus>({
-      path: `/worlds/${worldId}/admin`,
-      method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description deletes world admin
-   *
-   * @tags Worlds
-   * @name WorldsDeleteWorldAdmin
-   * @summary Delete world admin
-   * @request DELETE:/worlds/{worldId}/admin
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsDeleteWorldAdmin = (
-    worldId: number,
-    query?: {
-      /** @format int32 */
-      userId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<object, RpcStatus>({
-      path: `/worlds/${worldId}/admin`,
-      method: 'DELETE',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description adds request to become admin of the world
-   *
-   * @tags Worlds
-   * @name WorldsCreateWorldAdmin
-   * @summary Create world admin
-   * @request POST:/worlds/{worldId}/admin
-   * @response `200` `PbWorldAdmin` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsCreateWorldAdmin = (
-    worldId: number,
-    body: {
-      motivationalLetter?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbWorldAdmin, RpcStatus>({
-      path: `/worlds/${worldId}/admin`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description updates world admin request (approve / decline)
-   *
-   * @tags Worlds
-   * @name WorldsUpdateWorldAdmin
-   * @summary Update world admin
-   * @request PATCH:/worlds/{worldId}/admin
-   * @response `200` `PbWorldAdmin` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsUpdateWorldAdmin = (
-    worldId: number,
-    body: {
-      /** @format int32 */
-      userId?: number;
-      superAdmin?: boolean;
-      /** @format int32 */
-      approved?: number;
-      motivationalLetter?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbWorldAdmin, RpcStatus>({
-      path: `/worlds/${worldId}/admin`,
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
@@ -315,7 +157,7 @@ export class Worlds<SecurityDataType = unknown> {
    * @name WorldsUpdateWorldIntroduction
    * @summary Update world introduction
    * @request PATCH:/worlds/{worldId}/introduction
-   * @response `200` `PbPost` A successful response.
+   * @response `200` `PbViewPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   worldsUpdateWorldIntroduction = (
@@ -325,7 +167,7 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbPost, RpcStatus>({
+    this.http.request<PbViewPost, RpcStatus>({
       path: `/worlds/${worldId}/introduction`,
       method: 'PATCH',
       body: body,

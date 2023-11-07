@@ -10,7 +10,7 @@ import { validatePassword, validatePasswordAgain } from '../../utils/form/valida
 import PageTermsOfService from '../../screens/terms-of-service/PageTermsOfService';
 import PagePrivacyPolicy from '../../screens/privacy-policy/PagePrivacyPolicy';
 import { ClickableSpan } from '../../components/ClickableSpan/ClickableSpan';
-import { useCreateUser } from '../../api/useCreateUser';
+import { useCreateUser } from '../../api/users/useCreateUser';
 import { Client } from 'react-hydration-provider';
 import { styled } from '../../styles/stitches.config';
 import { useInput } from '../../hooks/useInput';

@@ -14,8 +14,8 @@ import {
   PbDeletePostResponse,
   PbGetPostHistoryResponse,
   PbGetPostsByModuleResponse,
-  PbHistoryPost,
-  PbPost,
+  PbPostHistory,
+  PbViewPost,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -68,11 +68,11 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsCreatePost
    * @summary Create post
    * @request POST:/posts
-   * @response `200` `PbPost` A successful response.
+   * @response `200` `PbViewPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsCreatePost = (body: PbCreatePostRequest, params: RequestParams = {}) =>
-    this.http.request<PbPost, RpcStatus>({
+    this.http.request<PbViewPost, RpcStatus>({
       path: `/posts`,
       method: 'POST',
       body: body,
@@ -87,11 +87,11 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsGetPostById
    * @summary Get post by id
    * @request GET:/posts/{postId}
-   * @response `200` `PbPost` A successful response.
+   * @response `200` `PbViewPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsGetPostById = (postId: number, params: RequestParams = {}) =>
-    this.http.request<PbPost, RpcStatus>({
+    this.http.request<PbViewPost, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'GET',
       format: 'json',
@@ -121,7 +121,7 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsUpdatePost
    * @summary Update post
    * @request PATCH:/posts/{postId}
-   * @response `200` `PbPost` A successful response.
+   * @response `200` `PbViewPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsUpdatePost = (
@@ -130,8 +130,6 @@ export class Posts<SecurityDataType = unknown> {
       title?: string;
       content?: string;
       description?: string;
-      /** @format int32 */
-      postTypeId?: number;
       isDraft?: boolean;
       isPrivate?: boolean;
       /** @format int32 */
@@ -139,7 +137,7 @@ export class Posts<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbPost, RpcStatus>({
+    this.http.request<PbViewPost, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'PATCH',
       body: body,
@@ -171,11 +169,11 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsGetPostHistoryById
    * @summary Get post history content
    * @request GET:/posts/{postId}/history/{postHistoryId}/content
-   * @response `200` `PbHistoryPost` A successful response.
+   * @response `200` `PbPostHistory` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsGetPostHistoryById = (postId: number, postHistoryId: number, params: RequestParams = {}) =>
-    this.http.request<PbHistoryPost, RpcStatus>({
+    this.http.request<PbPostHistory, RpcStatus>({
       path: `/posts/${postId}/history/${postHistoryId}/content`,
       method: 'GET',
       format: 'json',

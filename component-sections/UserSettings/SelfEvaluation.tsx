@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import Evaluation from '../../components/Evaluation/Evaluation';
-import { useGetAverageUserEvaluationByType } from '../../api/useGetAverageUserEvaluationByType';
+import { useGetAverageUserEvaluationByType } from '../../api/users/useGetAverageUserEvaluationByType';
 import { useAuth } from '../../hooks/useAuth';
 import { PbEvaluationType } from '../../generated/api-types/data-contracts';
 import { Flex } from '../../components/Flex/Flex';

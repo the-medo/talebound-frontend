@@ -1,6 +1,6 @@
 import { createSuspenseQuery } from 'react-query-kit';
-import { PbViewUser } from '../generated/api-types/data-contracts';
-import { UsersCollection } from './collections';
+import { PbViewUser } from '../../generated/api-types/data-contracts';
+import { UsersCollection } from '../collections';
 
 export const useGetUserById = createSuspenseQuery<PbViewUser, number>({
   primaryKey: 'useGetUserById',

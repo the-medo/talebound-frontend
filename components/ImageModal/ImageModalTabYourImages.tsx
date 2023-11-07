@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useGetImages } from '../../api/useGetImages';
+import { useGetImages } from '../../api/images/useGetImages';
 import { useAuth } from '../../hooks/useAuth';
 import { Spin } from 'antd';
 import { Row } from '../Flex/Flex';

@@ -1,7 +1,7 @@
-import { ImagesCollection } from './collections';
+import { ImagesCollection } from '../collections';
 import { createInfiniteQuery } from 'react-query-kit';
-import { PbGetImagesResponse } from '../generated/api-types/data-contracts';
-import { expandDataForInfiniteQuery, InfiniteResponse, OmitLimitOffset } from './apiLib';
+import { PbGetImagesResponse } from '../../generated/api-types/data-contracts';
+import { expandDataForInfiniteQuery, InfiniteResponse, OmitLimitOffset } from '../apiLib';
 
 const PAGE_SIZE = 4;
 

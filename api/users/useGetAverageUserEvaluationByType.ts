@@ -2,8 +2,8 @@ import { createSuspenseQuery } from 'react-query-kit';
 import {
   PbEvaluationType,
   PbGetAverageUserEvaluationsByTypeResponse,
-} from '../generated/api-types/data-contracts';
-import { UsersCollection } from './collections';
+} from '../../generated/api-types/data-contracts';
+import { UsersCollection } from '../collections';
 
 export interface PbGetAverageUserEvaluationsByTypeRequest {
   userId: number;

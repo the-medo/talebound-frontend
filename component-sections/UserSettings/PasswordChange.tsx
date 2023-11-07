@@ -4,7 +4,7 @@ import PasswordChangeInputs, {
 } from '../../components/PasswordChangeInputs/PasswordChangeInputs';
 import { Button } from '../../components/Button/Button';
 import ContentSection from '../../components/ContentSection/ContentSection';
-import { useUpdateUser } from '../../api/useUpdateUser';
+import { useUpdateUser } from '../../api/users/useUpdateUser';
 import { Col } from '../../components/Flex/Flex';
 
 const PasswordChange: React.FC = () => {

@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { Col } from '../../components/Flex/Flex';
-import { useGetUserById } from '../../api/useGetUserById';
+import { useGetUserById } from '../../api/users/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';
 import { UserProfileProps } from './UserProfile';
 import { useGetPostById } from '../../api/posts/useGetPostById';
 import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,
-} from '../../api/useUpdateUserIntroduction';
+} from '../../api/users/useUpdateUserIntroduction';
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
 import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';

@@ -3,7 +3,7 @@ import { Col } from '../../components/Flex/Flex';
 import InputFile from '../../components/InputFile/InputFile';
 import { Button } from '../../components/Button/Button';
 import ContentSection from '../../components/ContentSection/ContentSection';
-import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/useUploadUserAvatar';
+import { UploadUserAvatarRequest, useUploadUserAvatar } from '../../api/users/useUploadUserAvatar';
 import { useAuth } from '../../hooks/useAuth';
 import { updateUser } from '../../utils/auth/userSlice';
 import { useDispatch } from 'react-redux';
