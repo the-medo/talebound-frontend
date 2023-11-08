@@ -1,4 +1,4 @@
-export interface AspectData {
+export interface ModuleData {
   marker: {
     imgIdx?: number;
     entityId?: number;
@@ -8,16 +8,16 @@ export interface AspectData {
   }[];
 }
 
-export const generateAspectData = () => {
+export const generateModuleData = () => {
   const randNumber = Math.floor(Math.random() * 5);
-  const aspectData: AspectData = {
+  const moduleData: ModuleData = {
     marker: [],
   };
   for (let i = 0; i < randNumber; i++) {
-    aspectData.marker.push({
+    moduleData.marker.push({
       imgIdx: Math.floor(Math.random() * 10),
     });
   }
 
-  return aspectData;
+  return moduleData;
 };

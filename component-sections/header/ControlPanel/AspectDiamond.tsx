@@ -8,10 +8,10 @@ import {
   getAspectDiamondPosition,
 } from './utilsAspectDiamond';
 import { AspectDiamondText } from './AspectDiamondText';
-import { AspectData } from './utilsAspectBox';
+import { ModuleData } from './utilsAspectBox';
 import Link from 'next/link';
 
-type MarkerType = AspectData['marker'][number];
+type MarkerType = ModuleData['marker'][number];
 
 interface AspectDiamondProps extends MarkerType {
   text?: string;
