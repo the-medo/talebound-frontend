@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { PbWorld } from '../generated/api-types/data-contracts';
+import { PbViewWorld } from '../generated/api-types/data-contracts';
 import { ReduxState } from '../store';
 import { createSelector } from 'reselect';
 
-export const WorldAdapter = createEntityAdapter<PbWorld>({
+export const WorldAdapter = createEntityAdapter<PbViewWorld>({
   selectId: (world) => world.id!,
   sortComparer: (a, b) => a.id! - b.id!,
 });
@@ -32,3 +32,5 @@ export const selectWorldsByIds = createSelector(
 
 // And then use the selectors to retrieve values
 // const _allWorlds = worldSelectors.selectAll(store.getState());
+
+// const worlds = useSelector((state) => selectWorldsByIds(state, worldIds));

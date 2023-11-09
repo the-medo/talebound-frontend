@@ -121,8 +121,8 @@ export interface PbCreateWorldRequest {
 }
 
 export interface PbCreateWorldResponse {
-  world?: PbWorld;
-  module?: PbModule;
+  world?: PbViewWorld;
+  module?: PbViewModule;
 }
 
 export interface PbDeleteEvaluationVoteResponse {
@@ -319,7 +319,7 @@ export interface PbGetPostsByModuleResponse {
 export interface PbGetUserModulesResponse {
   userModules?: PbUserModule[];
   modules?: PbViewModule[];
-  worlds?: PbWorld[];
+  worlds?: PbViewWorld[];
 }
 
 export interface PbGetUserPostsResponse {
@@ -335,7 +335,7 @@ export interface PbGetUsersResponse {
 }
 
 export interface PbGetWorldsResponse {
-  worlds?: PbWorld[];
+  worlds?: PbViewWorld[];
   /** @format int32 */
   totalCount?: number;
 }
@@ -414,28 +414,6 @@ export interface PbMenuItemPost {
   /** @format int32 */
   position?: number;
   post?: PbViewPost;
-}
-
-export interface PbModule {
-  /** @format int32 */
-  id?: number;
-  moduleType?: PbModuleType;
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
-  /** @format int32 */
-  characterId?: number;
-  /** @format int32 */
-  systemId?: number;
-  /** @format int32 */
-  menuId?: number;
-  /** @format int32 */
-  headerImgId?: number;
-  /** @format int32 */
-  thumbnailImgId?: number;
-  /** @format int32 */
-  avatarImgId?: number;
 }
 
 export interface PbModuleAdmin {
@@ -750,6 +728,7 @@ export interface PbViewModule {
   /** @format int32 */
   avatarImgId?: number;
   avatarImgUrl?: string;
+  tags?: number[];
 }
 
 export interface PbViewPost {
@@ -812,7 +791,7 @@ export interface PbViewUser {
   introductionPostDeletedAt?: string;
 }
 
-export interface PbWorld {
+export interface PbViewWorld {
   /** @format int32 */
   id?: number;
   name?: string;
@@ -823,6 +802,20 @@ export interface PbWorld {
   shortDescription?: string;
   /** @format int32 */
   descriptionPostId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  /** @format int32 */
+  menuId?: number;
+  /** @format int32 */
+  headerImgId?: number;
+  headerImgUrl?: string;
+  /** @format int32 */
+  thumbnailImgId?: number;
+  thumbnailImgUrl?: string;
+  /** @format int32 */
+  avatarImgId?: number;
+  avatarImgUrl?: string;
+  tags?: number[];
 }
 
 export interface ProtobufAny {

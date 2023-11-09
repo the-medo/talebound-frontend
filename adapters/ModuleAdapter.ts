@@ -1,5 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { PbViewModule } from '../generated/api-types/data-contracts';
+import { ReduxState } from '../store';
+import { createSelector } from 'reselect';
 
 export const ModuleAdapter = createEntityAdapter<PbViewModule>({
   selectId: (module) => module.moduleId!,
@@ -20,3 +22,10 @@ export const moduleAdapterSlice = createSlice({
     removeAllModules: ModuleAdapter.removeAll,
   },
 });
+
+export const moduleSelectors = ModuleAdapter.getSelectors<ReduxState>((state) => state.modules);
+
+export const selectModulesByIds = createSelector(
+  [moduleSelectors.selectEntities, (_, ids: number[]) => ids],
+  (entities, ids) => ids.map((id) => entities[id]).filter(Boolean),
+);
