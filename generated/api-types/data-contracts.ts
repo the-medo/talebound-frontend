@@ -416,6 +416,28 @@ export interface PbMenuItemPost {
   post?: PbViewPost;
 }
 
+export interface PbModule {
+  /** @format int32 */
+  id?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  questId?: number;
+  /** @format int32 */
+  characterId?: number;
+  /** @format int32 */
+  systemId?: number;
+  /** @format int32 */
+  menuId?: number;
+  /** @format int32 */
+  headerImgId?: number;
+  /** @format int32 */
+  thumbnailImgId?: number;
+  /** @format int32 */
+  avatarImgId?: number;
+}
+
 export interface PbModuleAdmin {
   /** @format int32 */
   worldId?: number;
@@ -525,6 +547,24 @@ export interface PbRole {
   id?: number;
   name?: string;
   description?: string;
+}
+
+export interface PbRunFetcherRequest {
+  moduleIds?: number[];
+  worldIds?: number[];
+  systemIds?: number[];
+  questIds?: number[];
+  characterIds?: number[];
+  entityIds?: number[];
+  postIds?: number[];
+  imageIds?: number[];
+  locationIds?: number[];
+  mapIds?: number[];
+}
+
+export interface PbRunFetcherResponse {
+  modules?: PbModule[];
+  worlds?: PbWorld[];
 }
 
 export interface PbTag {
@@ -816,6 +856,19 @@ export interface PbViewWorld {
   avatarImgId?: number;
   avatarImgUrl?: string;
   tags?: number[];
+}
+
+export interface PbWorld {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  public?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  basedOn?: string;
+  shortDescription?: string;
+  /** @format int32 */
+  descriptionPostId?: number;
 }
 
 export interface ProtobufAny {
