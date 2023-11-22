@@ -8,14 +8,14 @@ import {
 import { imageModalReducer, imageModalSlice } from '../components/ImageModal/imageModalSlice';
 import { globalReducer, globalSlice } from './globalSlice';
 import { Provider } from 'react-redux';
-import { worldAdapterSlice } from '../adapters/WorldAdapter';
-import { moduleAdapterSlice } from '../adapters/ModuleAdapter';
-import { entityAdapterSlice } from '../adapters/EntityAdapter';
-import { userAdapterSlice } from '../adapters/UserAdapter';
-import { imageAdapterSlice } from '../adapters/ImageAdapter';
 import { locationAdapterSlice } from '../adapters/LocationAdapter';
-import { mapAdapterSlice } from '../adapters/MapAdapter';
+import { userAdapterSlice } from '../adapters/UserAdapter';
+import { moduleAdapterSlice } from '../adapters/ModuleAdapter';
+import { worldAdapterSlice } from '../adapters/WorldAdapter';
+import { entityAdapterSlice } from '../adapters/EntityAdapter';
+import { imageAdapterSlice } from '../adapters/ImageAdapter';
 import { postAdapterSlice } from '../adapters/PostAdapter';
+import { mapAdapterSlice } from '../adapters/MapAdapter';
 
 export const store = configureStore({
   reducer: {
@@ -23,17 +23,17 @@ export const store = configureStore({
     [globalSlice.name]: globalReducer,
     [imageModalSlice.name]: imageModalReducer,
     [editorImageModalSlice.name]: editorImageModalReducer,
-    //adapters:
-    [moduleAdapterSlice.name]: moduleAdapterSlice.reducer,
-    [entityAdapterSlice.name]: entityAdapterSlice.reducer,
-    [userAdapterSlice.name]: userAdapterSlice.reducer,
 
+    //adapters:
+    [userAdapterSlice.name]: userAdapterSlice.reducer,
+    [moduleAdapterSlice.name]: moduleAdapterSlice.reducer,
     [worldAdapterSlice.name]: worldAdapterSlice.reducer,
 
+    [entityAdapterSlice.name]: entityAdapterSlice.reducer,
     [imageAdapterSlice.name]: imageAdapterSlice.reducer,
-    [locationAdapterSlice.name]: locationAdapterSlice.reducer,
-    [mapAdapterSlice.name]: mapAdapterSlice.reducer,
     [postAdapterSlice.name]: postAdapterSlice.reducer,
+    [mapAdapterSlice.name]: mapAdapterSlice.reducer,
+    [locationAdapterSlice.name]: locationAdapterSlice.reducer,
   },
 });
 

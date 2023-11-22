@@ -23,7 +23,9 @@ export const postAdapterSlice = createSlice({
   },
 });
 
-export const postSelectors = PostAdapter.getSelectors<ReduxState>((state) => state.posts);
+export const postSelectors = PostAdapter.getSelectors<ReduxState>(
+  (state) => state[postAdapterSlice.name],
+);
 
 export const selectPostsByIds = createSelector(
   [postSelectors.selectEntities, (_, ids: number[]) => ids],

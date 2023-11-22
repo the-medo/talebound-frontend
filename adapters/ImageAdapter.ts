@@ -23,7 +23,9 @@ export const imageAdapterSlice = createSlice({
   },
 });
 
-export const imageSelectors = ImageAdapter.getSelectors<ReduxState>((state) => state.images);
+export const imageSelectors = ImageAdapter.getSelectors<ReduxState>(
+  (state) => state[imageAdapterSlice.name],
+);
 
 export const selectImagesByIds = createSelector(
   [imageSelectors.selectEntities, (_, ids: number[]) => ids],

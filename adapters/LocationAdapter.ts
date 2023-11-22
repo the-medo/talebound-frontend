@@ -24,7 +24,7 @@ export const locationAdapterSlice = createSlice({
 });
 
 export const locationSelectors = LocationAdapter.getSelectors<ReduxState>(
-  (state) => state.locations,
+  (state) => state[locationAdapterSlice.name],
 );
 
 export const selectLocationsByIds = createSelector(

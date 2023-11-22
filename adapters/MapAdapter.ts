@@ -23,7 +23,9 @@ export const mapAdapterSlice = createSlice({
   },
 });
 
-export const mapSelectors = MapAdapter.getSelectors<ReduxState>((state) => state.maps);
+export const mapSelectors = MapAdapter.getSelectors<ReduxState>(
+  (state) => state[mapAdapterSlice.name],
+);
 
 export const selectMapsByIds = createSelector(
   [mapSelectors.selectEntities, (_, ids: number[]) => ids],

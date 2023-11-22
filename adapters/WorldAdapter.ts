@@ -23,7 +23,9 @@ export const worldAdapterSlice = createSlice({
   },
 });
 
-export const worldSelectors = WorldAdapter.getSelectors<ReduxState>((state) => state.worlds);
+export const worldSelectors = WorldAdapter.getSelectors<ReduxState>(
+  (state) => state[worldAdapterSlice.name],
+);
 
 export const selectWorldsByIds = createSelector(
   [worldSelectors.selectEntities, (_, ids: number[]) => ids],

@@ -23,7 +23,9 @@ export const entityAdapterSlice = createSlice({
   },
 });
 
-export const entitySelectors = EntityAdapter.getSelectors<ReduxState>((state) => state.entities);
+export const entitySelectors = EntityAdapter.getSelectors<ReduxState>(
+  (state) => state[entityAdapterSlice.name],
+);
 
 export const selectEntitiesByIds = createSelector(
   [entitySelectors.selectEntities, (_, ids: number[]) => ids],

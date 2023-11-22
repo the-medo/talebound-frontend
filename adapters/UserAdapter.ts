@@ -23,7 +23,9 @@ export const userAdapterSlice = createSlice({
   },
 });
 
-export const userSelectors = UserAdapter.getSelectors<ReduxState>((state) => state.users);
+export const userSelectors = UserAdapter.getSelectors<ReduxState>(
+  (state) => state[userAdapterSlice.name],
+);
 
 export const selectUsersByIds = createSelector(
   [userSelectors.selectEntities, (_, ids: number[]) => ids],

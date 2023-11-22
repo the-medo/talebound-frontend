@@ -23,7 +23,9 @@ export const moduleAdapterSlice = createSlice({
   },
 });
 
-export const moduleSelectors = ModuleAdapter.getSelectors<ReduxState>((state) => state.modules);
+export const moduleSelectors = ModuleAdapter.getSelectors<ReduxState>(
+  (state) => state[moduleAdapterSlice.name],
+);
 
 export const selectModulesByIds = createSelector(
   [moduleSelectors.selectEntities, (_, ids: number[]) => ids],
