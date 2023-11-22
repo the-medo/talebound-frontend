@@ -10,6 +10,12 @@ import { globalReducer, globalSlice } from './globalSlice';
 import { Provider } from 'react-redux';
 import { worldAdapterSlice } from '../adapters/WorldAdapter';
 import { moduleAdapterSlice } from '../adapters/ModuleAdapter';
+import { entityAdapterSlice } from '../adapters/EntityAdapter';
+import { userAdapterSlice } from '../adapters/UserAdapter';
+import { imageAdapterSlice } from '../adapters/ImageAdapter';
+import { locationAdapterSlice } from '../adapters/LocationAdapter';
+import { mapAdapterSlice } from '../adapters/MapAdapter';
+import { postAdapterSlice } from '../adapters/PostAdapter';
 
 export const store = configureStore({
   reducer: {
@@ -18,8 +24,16 @@ export const store = configureStore({
     [imageModalSlice.name]: imageModalReducer,
     [editorImageModalSlice.name]: editorImageModalReducer,
     //adapters:
-    [worldAdapterSlice.name]: worldAdapterSlice.reducer,
     [moduleAdapterSlice.name]: moduleAdapterSlice.reducer,
+    [entityAdapterSlice.name]: entityAdapterSlice.reducer,
+    [userAdapterSlice.name]: userAdapterSlice.reducer,
+
+    [worldAdapterSlice.name]: worldAdapterSlice.reducer,
+
+    [imageAdapterSlice.name]: imageAdapterSlice.reducer,
+    [locationAdapterSlice.name]: locationAdapterSlice.reducer,
+    [mapAdapterSlice.name]: mapAdapterSlice.reducer,
+    [postAdapterSlice.name]: postAdapterSlice.reducer,
   },
 });
 

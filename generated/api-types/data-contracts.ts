@@ -359,6 +359,17 @@ export interface PbImage {
   height?: number;
 }
 
+export interface PbLocation {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  description?: string;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  thumbnailImageId?: number;
+}
+
 export interface PbLoginUserRequest {
   username?: string;
   password?: string;
@@ -371,6 +382,20 @@ export interface PbLoginUserResponse {
   accessTokenExpiresAt?: string;
   /** @format date-time */
   refreshTokenExpiresAt?: string;
+}
+
+export interface PbMap {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  type?: string;
+  description?: string;
+  /** @format int32 */
+  width?: number;
+  /** @format int32 */
+  height?: number;
+  /** @format int32 */
+  thumbnailImageId?: number;
 }
 
 export interface PbMapPinType {
@@ -489,6 +514,28 @@ export enum PbPinShape {
   CLOUD = 'CLOUD',
 }
 
+export interface PbPost {
+  /** @format int32 */
+  id?: number;
+  /** @format int32 */
+  userId?: number;
+  title?: string;
+  content?: string;
+  description?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  deletedAt?: string;
+  /** @format date-time */
+  lastUpdatedAt?: string;
+  /** @format int32 */
+  lastUpdatedUserId?: number;
+  isDraft?: boolean;
+  isPrivate?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
+}
+
 export interface PbPostHistory {
   /** @format int32 */
   id?: number;
@@ -560,11 +607,18 @@ export interface PbRunFetcherRequest {
   imageIds?: number[];
   locationIds?: number[];
   mapIds?: number[];
+  userIds?: number[];
 }
 
 export interface PbRunFetcherResponse {
   modules?: PbModule[];
   worlds?: PbWorld[];
+  entities?: PbViewEntity[];
+  posts?: PbPost[];
+  images?: PbImage[];
+  maps?: PbMap[];
+  locations?: PbLocation[];
+  users?: PbUser[];
 }
 
 export interface PbTag {
@@ -627,7 +681,6 @@ export interface PbUser {
   /** @format date-time */
   createdAt?: string;
   isEmailVerified?: boolean;
-  img?: PbImage;
   /** @format int32 */
   introductionPostId?: number;
 }
@@ -651,6 +704,26 @@ export interface PbVerifyEmailRequest {
 
 export interface PbVerifyEmailResponse {
   isVerified?: boolean;
+}
+
+export interface PbViewEntity {
+  /** @format int32 */
+  id?: number;
+  type?: PbEntityType;
+  /** @format int32 */
+  postId?: number;
+  /** @format int32 */
+  mapId?: number;
+  /** @format int32 */
+  locationId?: number;
+  /** @format int32 */
+  imageId?: number;
+  /** @format int32 */
+  moduleId?: number;
+  moduleType?: PbModuleType;
+  /** @format int32 */
+  moduleTypeId?: number;
+  tags?: number[];
 }
 
 export interface PbViewLocation {

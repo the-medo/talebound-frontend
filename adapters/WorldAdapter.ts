@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { PbViewWorld } from '../generated/api-types/data-contracts';
+import { PbWorld } from '../generated/api-types/data-contracts';
 import { ReduxState } from '../store';
 import { createSelector } from 'reselect';
 
-export const WorldAdapter = createEntityAdapter<PbViewWorld>({
+export const WorldAdapter = createEntityAdapter<PbWorld>({
   selectId: (world) => world.id!,
   sortComparer: (a, b) => a.id! - b.id!,
 });

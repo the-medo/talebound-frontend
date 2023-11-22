@@ -17,6 +17,7 @@ import { Auth } from '../generated/api-types/Auth';
 import { Fetcher } from '../generated/api-types/Fetcher';
 import { isFetcherKey, useRunFetcher } from './fetcher/useRunFetcher';
 import { queryClient } from '../pages/_app';
+import { PbRunFetcherRequest } from '../generated/api-types/data-contracts';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -40,7 +41,7 @@ API.instance.interceptors.response.use(async (response) => {
   if (fetchHeader) {
     const headers = JSON.parse(fetchHeader);
     console.log('headers', headers);
-    const result: RunFetcherRequest = {};
+    const result: PbRunFetcherRequest = {};
     let numberOfIds = 0;
 
     Object.keys(headers).forEach((key) => {
@@ -54,7 +55,7 @@ API.instance.interceptors.response.use(async (response) => {
         const ids = headers[key];
         if (Array.isArray(ids)) {
           result[newKey] = ids.filter((id) => Number.isInteger(id));
-          numberOfIds += result[newKey].length;
+          numberOfIds += result[newKey]?.length ?? 0;
         }
       }
     });
