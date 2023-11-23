@@ -11,7 +11,6 @@ import {
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
 import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';
-import { PostTypeEnum, usePostType } from '../../hooks/usePostType';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
   postViewOnly?: boolean;
@@ -19,7 +18,6 @@ type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
 
 const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnly = false }) => {
   const { user, isLoggedIn: _isLoggedIn } = useAuth();
-  const postType = usePostType(PostTypeEnum.UserIntroduction);
 
   const { data: userData, isPending: isPendingUser } = useGetUserById({
     variables: userId,
@@ -39,7 +37,7 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
 
   const isPending = isPendingUser || (isPendingIntroduction && loadIntroductionData);
 
-  const hasIntroduction = !isPending && postData?.post?.content !== undefined;
+  const hasIntroduction = !isPending && postData?.content !== undefined;
 
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
@@ -74,13 +72,13 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
 
   const editorState = useMemo(() => {
     if (!isPending && userData?.introductionPostId !== undefined) {
-      return postData?.post?.content;
+      return postData?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isPending, userData?.introductionPostId, postData?.post?.content]);
+  }, [hasIntroduction, isPending, userData?.introductionPostId, postData?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateUserIntroduction.reset();
@@ -95,9 +93,9 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
         disabled={false}
         editable={!postViewOnly}
         defaultPostViewType={PostViewType.POST}
-        isDraft={postData?.post?.isDraft ?? false}
-        alreadyExists={postData?.post?.id !== undefined}
-        draftable={postData?.postType?.draftable ?? postType?.draftable ?? false}
+        isDraft={postData?.isDraft ?? false}
+        alreadyExists={postData?.id !== undefined}
+        draftable={false}
         onSaveAction={onSave}
         error={parseError(updateUserIntroduction.error)}
         resetError={resetErrorHandler}

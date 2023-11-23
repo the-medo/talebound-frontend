@@ -11,13 +11,14 @@ import { ModuleData, generateModuleData } from './ControlPanel/utilsAspectBox';
 import { UserDiamond } from './ControlPanel/UserDiamond';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { ReduxState } from '../../store';
+import { ReduxState, store } from '../../store';
 import { DEFAULT_AVATAR_URL } from '../../utils/constants';
 import { useGetUserModules } from '../../api/users/useGetUserModules';
 import UserModuleQuests from './UserModules/UserModuleQuests';
 import UserModuleWorlds from './UserModules/UserModuleWorlds';
 import UserModuleCharacters from './UserModules/UserModuleCharacters';
 import UserModuleSystems from './UserModules/UserModuleSystems';
+import { imageSelectors } from '../../adapters/ImageAdapter';
 
 const BaseHeader = styled('div', {
   width: '100%',
@@ -30,10 +31,11 @@ const BaseHeader = styled('div', {
 
 const Header: React.FC = () => {
   const { user } = useAuth();
-  const image = useSelector((state: ReduxState) => state.global.headerImage);
+  const headerImage = useSelector((state: ReduxState) => state.global.headerImage);
+  const image = imageSelectors.selectById(store.getState(), user?.imgId ?? 0);
 
   return (
-    <BaseHeader css={{ backgroundImage: `url("${image}")` }}>
+    <BaseHeader css={{ backgroundImage: `url("${headerImage}")` }}>
       <Menu />
       <HeaderTransparentSection position="left">
         <UserModuleQuests />
@@ -42,7 +44,7 @@ const Header: React.FC = () => {
         <UserModuleCharacters />
         <UserDiamond>
           <Link href={`/user/${user?.id}/profile`}>
-            <img src={user?.img?.url ?? DEFAULT_AVATAR_URL} alt="User avatar" />
+            <img src={image?.url ?? DEFAULT_AVATAR_URL} alt="User avatar" />
           </Link>
         </UserDiamond>
       </HeaderTransparentSection>

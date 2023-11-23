@@ -318,8 +318,6 @@ export interface PbGetPostsByModuleResponse {
 
 export interface PbGetUserModulesResponse {
   userModules?: PbUserModule[];
-  modules?: PbViewModule[];
-  worlds?: PbViewWorld[];
 }
 
 export interface PbGetUserPostsResponse {

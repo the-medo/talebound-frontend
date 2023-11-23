@@ -5,7 +5,10 @@ import AspectDiamond from '../ControlPanel/AspectDiamond';
 import { AspectBox } from '../ControlPanel/AspectBox';
 import { useSelector } from 'react-redux';
 import { useGetUserModules } from '../../../api/users/useGetUserModules';
-import WorldAspectDiamond from './WorldAspectDiamond';
+import ModuleAspectDiamond from './ModuleAspectDiamond';
+import { imageSelectors } from '../../../adapters/ImageAdapter';
+import { store } from '../../../store';
+import { worldSelectors } from '../../../adapters/WorldAdapter';
 
 interface UserModuleWorldsProps {}
 
@@ -16,23 +19,25 @@ const UserModuleWorlds: React.FC<UserModuleWorldsProps> = () => {
     variables: userId ?? 0,
   });
 
-  const worldIds = (moduleData?.worlds ?? []).map((m) => m.id!);
+  const moduleIds = (moduleData?.userModules ?? []).map((m) => m.moduleId!);
+
+  // const worlds = worldSelectors.selectById(store.getState(), user?.imgId ?? 0);
 
   return (
     <AspectBox x="right" y="top">
       <AspectBoxIcon x="right" y="top">
         <LuGlobe2 size={20} />
       </AspectBoxIcon>
-      {worldIds.length === 0 && (
+      {moduleIds.length === 0 && (
         <AspectDiamond imgIdx={0} totalCount={0} index={0} x="right" y="top" text={'No worlds'} />
       )}
-      {worldIds.map(
+      {moduleIds.map(
         (wid, idx) =>
           wid && (
-            <WorldAspectDiamond
+            <ModuleAspectDiamond
               key={wid}
-              worldId={wid}
-              totalCount={worldIds.length}
+              moduleId={wid}
+              totalCount={moduleIds.length}
               index={idx + 1}
             />
           ),
