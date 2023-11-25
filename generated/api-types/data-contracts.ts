@@ -333,7 +333,7 @@ export interface PbGetUsersResponse {
 }
 
 export interface PbGetWorldsResponse {
-  worlds?: PbViewWorld[];
+  worldIds?: number[];
   /** @format int32 */
   totalCount?: number;
 }

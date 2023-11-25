@@ -16,9 +16,12 @@ import { entityAdapterSlice } from '../adapters/EntityAdapter';
 import { imageAdapterSlice } from '../adapters/ImageAdapter';
 import { postAdapterSlice } from '../adapters/PostAdapter';
 import { mapAdapterSlice } from '../adapters/MapAdapter';
+import { mappingReducer, mappingSlice } from '../adapters/mappingSlice';
 
 export const store = configureStore({
   reducer: {
+    [mappingSlice.name]: mappingReducer,
+
     [userSlice.name]: userReducer,
     [globalSlice.name]: globalReducer,
     [imageModalSlice.name]: imageModalReducer,

@@ -11,6 +11,7 @@ import { locationAdapterSlice } from '../adapters/LocationAdapter';
 import { excludeExistingIds, isFetcherKey, useRunFetcher } from './fetcher/useRunFetcher';
 import { queryClient } from '../pages/_app';
 import { AxiosResponse } from 'axios';
+import { mappingSlice } from '../adapters/mappingSlice';
 
 export const fetcherInterceptor = async (response: AxiosResponse) => {
   console.log('INTERCEPTED');
@@ -32,6 +33,7 @@ export const fetcherInterceptor = async (response: AxiosResponse) => {
       console.log('Saving modules to store ', fetcherData.modules);
       // ModuleAdapter.upsertMany(store.getState().modules, fetcherData.modules);
       store.dispatch(moduleAdapterSlice.actions.upsertModules(fetcherData.modules));
+      store.dispatch(mappingSlice.actions.mapModules(fetcherData.modules));
     }
     if (fetcherData.worlds) {
       console.log('Saving worlds to store ', fetcherData.worlds);
