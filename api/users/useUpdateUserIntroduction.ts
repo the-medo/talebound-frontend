@@ -33,15 +33,15 @@ export const useUpdateUserIntroduction = createMutation({
   },
   onSuccess: (data, variables) => {
     const userQueryKey = useGetUserById.getKey(variables.userId);
-    const postQueryKey = useGetPostById.getKey(data.data.post?.id);
-    if (data.data.post?.id) {
+    const postQueryKey = useGetPostById.getKey(data.data.id);
+    if (data.data.id) {
       queryClient.setQueryData<inferData<typeof useGetPostById>>(postQueryKey, () => {
         return data.data;
       });
     }
     queryClient.setQueryData<inferData<typeof useGetUserById>>(userQueryKey, (oldData) => ({
       ...oldData,
-      introductionPostId: data.data.post?.id,
+      introductionPostId: data.data.id,
     }));
   },
   onError: (err, variables, context) => {

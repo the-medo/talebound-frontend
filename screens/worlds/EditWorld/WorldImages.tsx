@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { Label } from '../../../components/Typography/Label';
@@ -13,6 +12,7 @@ import {
   IMAGE_DEFAULT_WORLD_HEADER,
   IMAGE_DEFAULT_WORLD_THUMBNAIL,
 } from '../../../utils/images/imageDefaultUrls';
+import { useWorld } from '../../../hooks/useWorld';
 
 interface WorldImagesProps {
   worldId: number;
@@ -63,7 +63,7 @@ const imageTypeInfo: Record<WorldImageType, ImageTypeInfo> = {
 };
 
 const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { module } = useWorld(worldId);
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalType, setModalType] = useState<WorldImageType>(WorldImageType.imageThumbnail);
 
@@ -108,7 +108,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalThumbnail}
             size="xl"
-            url={worldData?.imageThumbnail ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
+            url={module?.thumbnailImgUrl ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
           />
           <Label css={{ width: 'auto' }}>Thumbnail</Label>
         </ImageColWrapper>
@@ -116,7 +116,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalAvatar}
             size="xl"
-            url={worldData?.imageAvatar ?? IMAGE_DEFAULT_WORLD_AVATAR}
+            url={module?.avatarImgUrl ?? IMAGE_DEFAULT_WORLD_AVATAR}
           />
           <Label css={{ width: 'auto' }}>Avatar</Label>
         </ImageColWrapper>
@@ -124,7 +124,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalHeader}
             size="xl"
-            url={worldData?.imageHeader ?? IMAGE_DEFAULT_WORLD_HEADER}
+            url={module?.headerImgUrl ?? IMAGE_DEFAULT_WORLD_HEADER}
           />
           <Label css={{ width: 'auto' }}>Header</Label>
         </ImageColWrapper>

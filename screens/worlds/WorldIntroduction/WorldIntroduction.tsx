@@ -7,9 +7,9 @@ import {
   UpdateWorldIntroductionRequest,
   useUpdateWorldIntroduction,
 } from '../../../api/worlds/useUpdateWorldIntroduction';
-import { useGetPostById } from '../../../api/posts/useGetPostById';
-import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import { isWorldCollaborator, useMyWorldRole } from '../../../hooks/useWorldAdmins';
+import { useWorld } from '../../../hooks/useWorld';
+import { usePost } from '../../../hooks/usePost';
 
 type WorldIntroductionProps = {
   worldId: number;
@@ -20,29 +20,21 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
   const role = useMyWorldRole(worldId);
   const hasRightToEdit = isWorldCollaborator(role);
 
-  const { data: worldData, isPending: isPendingWorld } = useGetWorldById({
-    variables: worldId,
-  });
+  const { world, isFetching: isFetchingWorld } = useWorld(worldId);
 
-  const postId = useMemo(() => worldData?.descriptionPostId, [worldData?.descriptionPostId]);
-
-  const loadIntroductionData = useMemo(() => postId !== undefined, [postId]);
-
-  const { data: postData, isPending: isPendingIntroduction } = useGetPostById({
-    variables: loadIntroductionData ? postId ?? 0 : 0,
-  });
+  const { post, isFetching: isFetchingIntroduction } = usePost(world?.descriptionPostId);
 
   const updateWorldIntroduction = useUpdateWorldIntroduction();
 
-  const isPending = isPendingWorld || (isPendingIntroduction && loadIntroductionData);
+  const isFetching = isFetchingWorld || isFetchingIntroduction;
 
-  const hasIntroduction = !isPending && postData?.post?.content !== undefined;
+  const hasIntroduction = !isFetching && post?.content !== undefined;
 
   const onSave: EditorOnSaveAction = useCallback(
     (editorState, _editor, _draft, successAction, errorAction, settleAction) => {
       const props: UpdateWorldIntroductionRequest = {
         worldId: worldId,
-        postId: postId,
+        postId: post?.id,
         body: {
           content: JSON.stringify(editorState),
         },
@@ -60,18 +52,18 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
         },
       });
     },
-    [worldId, postId, updateWorldIntroduction],
+    [worldId, post?.id, updateWorldIntroduction],
   );
 
   const editorState = useMemo(() => {
-    if (!isPending && postId !== undefined) {
-      return postData?.post?.content;
+    if (!isFetching && post?.id !== undefined) {
+      return post?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isPending, postId, postData?.post?.content]);
+  }, [hasIntroduction, isFetching, post?.id, post?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateWorldIntroduction.reset();
@@ -80,14 +72,14 @@ const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postView
   return (
     <Col fullWidth>
       <Editor
-        key={postId}
+        key={post?.id}
         loading={updateWorldIntroduction.isPending}
         hasRightToEdit={hasRightToEdit}
         editorState={editorState}
         disabled={false}
         editable={!postViewOnly}
         defaultPostViewType={PostViewType.POST}
-        alreadyExists={postId !== undefined}
+        alreadyExists={post?.id !== undefined}
         draftable={false}
         isDraft={false}
         onSaveAction={onSave}

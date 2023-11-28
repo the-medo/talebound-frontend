@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { PbWorldAdmin } from '../../../../generated/api-types/data-contracts';
+import { PbModuleAdmin } from '../../../../generated/api-types/data-contracts';
 import Avatar from '../../../../components/Avatar/Avatar';
 import { TitleH4 } from '../../../../components/Typography/Title';
 import { Col, Row } from '../../../../components/Flex/Flex';
@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
 
 interface CollaboratorRowApprovedProps {
-  data: PbWorldAdmin;
+  data: PbModuleAdmin;
   canLeave?: boolean;
 }
 

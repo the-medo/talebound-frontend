@@ -71,7 +71,7 @@ export interface PbCreateMapRequest {
 }
 
 export interface PbCreateMapResponse {
-  map?: PbViewMap;
+  map?: PbMap;
   layer?: PbViewMapLayer;
 }
 
@@ -121,7 +121,7 @@ export interface PbCreateWorldRequest {
 }
 
 export interface PbCreateWorldResponse {
-  world?: PbViewWorld;
+  world?: PbWorld;
   module?: PbViewModule;
 }
 
@@ -436,37 +436,15 @@ export interface PbMenuItemPost {
   postId?: number;
   /** @format int32 */
   position?: number;
-  post?: PbViewPost;
-}
-
-export interface PbModule {
-  /** @format int32 */
-  id?: number;
-  moduleType?: PbModuleType;
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
-  /** @format int32 */
-  characterId?: number;
-  /** @format int32 */
-  systemId?: number;
-  /** @format int32 */
-  menuId?: number;
-  /** @format int32 */
-  headerImgId?: number;
-  /** @format int32 */
-  thumbnailImgId?: number;
-  /** @format int32 */
-  avatarImgId?: number;
+  post?: PbPost;
 }
 
 export interface PbModuleAdmin {
   /** @format int32 */
-  worldId?: number;
+  moduleId?: number;
   /** @format int32 */
   userId?: number;
-  user?: PbViewUser;
+  user?: PbUser;
   /** @format date-time */
   createdAt?: string;
   superAdmin?: boolean;
@@ -609,7 +587,7 @@ export interface PbRunFetcherRequest {
 }
 
 export interface PbRunFetcherResponse {
-  modules?: PbModule[];
+  modules?: PbViewModule[];
   worlds?: PbWorld[];
   entities?: PbViewEntity[];
   posts?: PbPost[];
@@ -818,16 +796,16 @@ export interface PbViewMenu {
 
 export interface PbViewModule {
   /** @format int32 */
-  moduleId?: number;
+  id?: number;
   moduleType?: PbModuleType;
   /** @format int32 */
-  moduleWorldId?: number;
+  worldId?: number;
   /** @format int32 */
-  moduleQuestId?: number;
+  questId?: number;
   /** @format int32 */
-  moduleCharacterId?: number;
+  characterId?: number;
   /** @format int32 */
-  moduleSystemId?: number;
+  systemId?: number;
   /** @format int32 */
   menuId?: number;
   /** @format int32 */
@@ -880,53 +858,6 @@ export interface PbViewTag {
   moduleType?: PbModuleType;
   /** @format int32 */
   count?: number;
-}
-
-export interface PbViewUser {
-  /** @format int32 */
-  id?: number;
-  username?: string;
-  email?: string;
-  /** @format int32 */
-  imgId?: number;
-  /** @format date-time */
-  passwordChangedAt?: string;
-  /** @format date-time */
-  createdAt?: string;
-  isEmailVerified?: boolean;
-  avatarImageUrl?: string;
-  avatarImageGuid?: string;
-  /** @format int32 */
-  introductionPostId?: number;
-  /** @format date-time */
-  introductionPostDeletedAt?: string;
-}
-
-export interface PbViewWorld {
-  /** @format int32 */
-  id?: number;
-  name?: string;
-  public?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  basedOn?: string;
-  shortDescription?: string;
-  /** @format int32 */
-  descriptionPostId?: number;
-  /** @format int32 */
-  moduleId?: number;
-  /** @format int32 */
-  menuId?: number;
-  /** @format int32 */
-  headerImgId?: number;
-  headerImgUrl?: string;
-  /** @format int32 */
-  thumbnailImgId?: number;
-  thumbnailImgUrl?: string;
-  /** @format int32 */
-  avatarImgId?: number;
-  avatarImgUrl?: string;
-  tags?: number[];
 }
 
 export interface PbWorld {

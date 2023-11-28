@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { AspectBoxIcon } from '../ControlPanel/AspectBoxIcon';
 import { LuGlobe2 } from 'react-icons/lu';
 import AspectDiamond from '../ControlPanel/AspectDiamond';
 import { AspectBox } from '../ControlPanel/AspectBox';
 import { useSelector } from 'react-redux';
 import { useGetUserModules } from '../../../api/users/useGetUserModules';
-import ModuleAspectDiamond from './ModuleAspectDiamond';
-import { imageSelectors } from '../../../adapters/ImageAdapter';
-import { store } from '../../../store';
-import { worldSelectors } from '../../../adapters/WorldAdapter';
+
+const ModuleAspectDiamond = React.lazy(() => import('./ModuleAspectDiamond'));
 
 interface UserModuleWorldsProps {}
 
@@ -31,17 +29,23 @@ const UserModuleWorlds: React.FC<UserModuleWorldsProps> = () => {
       {moduleIds.length === 0 && (
         <AspectDiamond imgIdx={0} totalCount={0} index={0} x="right" y="top" text={'No worlds'} />
       )}
-      {moduleIds.map(
-        (wid, idx) =>
-          wid && (
-            <ModuleAspectDiamond
-              key={wid}
-              moduleId={wid}
-              totalCount={moduleIds.length}
-              index={idx + 1}
-            />
-          ),
-      )}
+      <Suspense
+        fallback={
+          <AspectDiamond imgIdx={0} totalCount={0} index={0} x="right" y="top" text={'...'} />
+        }
+      >
+        {moduleIds.map(
+          (wid, idx) =>
+            wid && (
+              <ModuleAspectDiamond
+                key={wid}
+                moduleId={wid}
+                totalCount={moduleIds.length}
+                index={idx + 1}
+              />
+            ),
+        )}
+      </Suspense>
     </AspectBox>
   );
 };

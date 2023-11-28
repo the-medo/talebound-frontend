@@ -16,10 +16,10 @@ import {
   PbGetMapPinTypesResponse,
   PbGetMapPinsResponse,
   PbGetMapsResponse,
+  PbMap,
   PbMapPinType,
   PbPinShape,
   PbUpdateMapPinTypeResponse,
-  PbViewMap,
   PbViewMapLayer,
   PbViewMapPin,
   RpcStatus,
@@ -83,6 +83,23 @@ export class Maps<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description get map by id
+   *
+   * @tags Maps
+   * @name MapsGetMapById
+   * @summary Get map by id
+   * @request GET:/maps/{mapId}
+   * @response `200` `PbMap` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsGetMapById = (mapId: number, params: RequestParams = {}) =>
+    this.http.request<PbMap, RpcStatus>({
+      path: `/maps/${mapId}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description deletes a map from the world or quest
    *
    * @tags Maps
@@ -106,7 +123,7 @@ export class Maps<SecurityDataType = unknown> {
    * @name MapsUpdateMap
    * @summary Update map
    * @request PATCH:/maps/{mapId}
-   * @response `200` `PbViewMap` A successful response.
+   * @response `200` `PbMap` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   mapsUpdateMap = (
@@ -120,7 +137,7 @@ export class Maps<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewMap, RpcStatus>({
+    this.http.request<PbMap, RpcStatus>({
       path: `/maps/${mapId}`,
       method: 'PATCH',
       body: body,

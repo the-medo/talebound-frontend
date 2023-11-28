@@ -10,8 +10,6 @@
  */
 
 import {
-  PbAddRoleToUserRequest,
-  PbAddRoleToUserResponse,
   PbCreateOrUpdateEvaluationVoteResponse,
   PbCreateUserRequest,
   PbCreateUserResponse,
@@ -21,14 +19,12 @@ import {
   PbGetEvaluationVotesByUserIdResponse,
   PbGetUserModulesResponse,
   PbGetUserPostsResponse,
-  PbGetUserRolesResponse,
   PbGetUsersResponse,
-  PbRemoveRoleFromUserResponse,
+  PbPost,
   PbUpdateUserRequest,
   PbUpdateUserResponse,
   PbUploadUserAvatarResponse,
-  PbViewPost,
-  PbViewUser,
+  PbUser,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -110,57 +106,14 @@ export class Users<SecurityDataType = unknown> {
    * @tags Users
    * @name UsersGetUserById
    * @summary Get user
-   * @request GET:/users/id/{userId}
-   * @response `200` `PbViewUser` A successful response.
+   * @request GET:/users/{userId}
+   * @response `200` `PbUser` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   usersGetUserById = (userId: number, params: RequestParams = {}) =>
-    this.http.request<PbViewUser, RpcStatus>({
-      path: `/users/id/${userId}`,
+    this.http.request<PbUser, RpcStatus>({
+      path: `/users/${userId}`,
       method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description returns full list of user roles
-   *
-   * @tags Users
-   * @name UsersGetUserRoles
-   * @summary Get user roles (admin, moderator, etc.)
-   * @request GET:/users/roles
-   * @response `200` `PbGetUserRolesResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersGetUserRoles = (
-    query?: {
-      /** @format int32 */
-      userId?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbGetUserRolesResponse, RpcStatus>({
-      path: `/users/roles`,
-      method: 'GET',
-      query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description adds new role to user
-   *
-   * @tags Users
-   * @name UsersAddRoleToUser
-   * @summary Add role to user
-   * @request POST:/users/roles
-   * @response `200` `PbAddRoleToUserResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersAddRoleToUser = (body: PbAddRoleToUserRequest, params: RequestParams = {}) =>
-    this.http.request<PbAddRoleToUserResponse, RpcStatus>({
-      path: `/users/roles`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });
@@ -308,7 +261,7 @@ export class Users<SecurityDataType = unknown> {
    * @name UsersUpdateUserIntroduction
    * @summary Update user introduction
    * @request PATCH:/users/{userId}/introduction
-   * @response `200` `PbViewPost` A successful response.
+   * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   usersUpdateUserIntroduction = (
@@ -319,7 +272,7 @@ export class Users<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewPost, RpcStatus>({
+    this.http.request<PbPost, RpcStatus>({
       path: `/users/${userId}/introduction`,
       method: 'PATCH',
       body: body,
@@ -368,23 +321,6 @@ export class Users<SecurityDataType = unknown> {
       path: `/users/${userId}/posts`,
       method: 'GET',
       query: query,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description removes role from user
-   *
-   * @tags Users
-   * @name UsersRemoveRoleFromUser
-   * @summary Remove role from user
-   * @request DELETE:/users/{userId}/roles/{roleId}
-   * @response `200` `PbRemoveRoleFromUserResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  usersRemoveRoleFromUser = (userId: number, roleId: number, params: RequestParams = {}) =>
-    this.http.request<PbRemoveRoleFromUserResponse, RpcStatus>({
-      path: `/users/${userId}/roles/${roleId}`,
-      method: 'DELETE',
       format: 'json',
       ...params,
     });

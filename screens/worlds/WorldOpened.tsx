@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useGetWorldById } from '../../api/worlds/useGetWorldById';
 import { useDispatch } from 'react-redux';
 import { setHeaderImage } from '../../store/globalSlice';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
+import { useWorld } from '../../hooks/useWorld';
 
 interface WorldOpenedProps {
   worldId: number;
@@ -10,14 +10,14 @@ interface WorldOpenedProps {
 
 const WorldOpened: React.FC<WorldOpenedProps> = ({ worldId }) => {
   const dispatch = useDispatch();
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { module } = useWorld(worldId);
 
   useEffect(() => {
-    if (worldData?.imageHeader) {
-      dispatch(setHeaderImage(imageModifyVariant(worldData.imageHeader, ImageVariant['1920x300'])));
-      console.log('worldData?.imageHeader: ', worldData?.imageHeader);
+    if (module?.headerImgUrl) {
+      dispatch(setHeaderImage(imageModifyVariant(module?.headerImgUrl, ImageVariant['1920x300'])));
+      console.log('worldData?.imageHeader: ', module?.headerImgUrl);
     }
-  }, [dispatch, worldData?.imageHeader]);
+  }, [dispatch, module?.headerImgUrl]);
 
   return null;
 };

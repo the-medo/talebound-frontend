@@ -13,6 +13,7 @@ import {
   PbGetModuleAdminsResponse,
   PbGetModuleIdResponse,
   PbModuleAdmin,
+  PbViewModule,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -30,7 +31,7 @@ export class Modules<SecurityDataType = unknown> {
    * @tags Modules
    * @name ModulesGetModuleId
    * @summary Get id of the module
-   * @request GET:/modules/id
+   * @request GET:/modules/get/id
    * @response `200` `PbGetModuleIdResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
@@ -48,9 +49,26 @@ export class Modules<SecurityDataType = unknown> {
     params: RequestParams = {},
   ) =>
     this.http.request<PbGetModuleIdResponse, RpcStatus>({
-      path: `/modules/id`,
+      path: `/modules/get/id`,
       method: 'GET',
       query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description gets module by id
+   *
+   * @tags Modules
+   * @name ModulesGetModuleById
+   * @summary Get module by id
+   * @request GET:/modules/{moduleId}
+   * @response `200` `PbViewModule` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesGetModuleById = (moduleId: number, params: RequestParams = {}) =>
+    this.http.request<PbViewModule, RpcStatus>({
+      path: `/modules/${moduleId}`,
+      method: 'GET',
       format: 'json',
       ...params,
     });

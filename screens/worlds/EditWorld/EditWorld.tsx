@@ -12,17 +12,16 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
-import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import WorldImages from './WorldImages';
 import ModuleTags from './ModuleTags';
 import Loading from '../../../components/Loading/Loading';
 import ActionBoxWorld from '../ActionBoxWorld';
 import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
-import { PbEntityType, PbModuleType } from '../../../generated/api-types/data-contracts';
-import { useModule } from '../../../hooks/useModule';
+import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { Text } from '../../../components/Typography/Text';
 import ModuleEntityTagAdministration from '../../../component-sections/Module/ModuleEntityTagAdministration/ModuleEntityTagAdministration';
+import { useWorld } from '../../../hooks/useWorld';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -31,8 +30,7 @@ interface EditWorldProps {
 }
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
-  const [module, moduleId] = useModule(PbEntityType.ENTITY_TYPE_UNKNOWN);
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { world, module, moduleId } = useWorld(worldId);
   const role = useMyWorldRole(worldId);
   const updateWorldMutation = useUpdateWorld();
   const disabled = useMemo(() => role !== WorldAdminRole.SUPER_COLLABORATOR, [role]);
@@ -55,16 +53,16 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   } = useInput<string>('');
 
   useEffect(() => {
-    setNameValue(worldData?.name ?? '');
-  }, [setNameValue, worldData?.name]);
+    setNameValue(world?.name ?? '');
+  }, [setNameValue, world?.name]);
 
   useEffect(() => {
-    setBasedOnValue(worldData?.basedOn ?? '');
-  }, [setBasedOnValue, worldData?.basedOn]);
+    setBasedOnValue(world?.basedOn ?? '');
+  }, [setBasedOnValue, world?.basedOn]);
 
   useEffect(() => {
-    setShortDescriptionValue(worldData?.shortDescription ?? '');
-  }, [setShortDescriptionValue, worldData?.shortDescription]);
+    setShortDescriptionValue(world?.shortDescription ?? '');
+  }, [setShortDescriptionValue, world?.shortDescription]);
 
   const helperNameMessage: HelperMessage = useMemo(
     () => validateString(nameValue, 3, 64),
@@ -87,7 +85,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
     });
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
 
-  const tags = useMemo(() => worldData?.tags ?? [], [worldData?.tags]);
+  const tags = useMemo(() => module?.tags ?? [], [module?.tags]);
 
   return (
     <>
@@ -158,7 +156,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                       activityCount={12}
                       playModeCount={2}
                       imgSrc={
-                        worldData?.imageThumbnail ??
+                        module?.thumbnailImgUrl ??
                         'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'
                       }
                       href="#"
@@ -177,13 +175,15 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                     Select tags that describe your world. This will make it easier for other users
                     to find it.
                   </Text>
-                  <ModuleTags
-                    moduleType={PbModuleType.MODULE_TYPE_WORLD}
-                    moduleId={moduleId}
-                    module={module}
-                    tags={tags}
-                    disabled={disabled}
-                  />
+                  {module && (
+                    <ModuleTags
+                      moduleType={PbModuleType.MODULE_TYPE_WORLD}
+                      moduleId={moduleId}
+                      module={module}
+                      tags={tags}
+                      disabled={disabled}
+                    />
+                  )}
                 </ContentSection>
                 <ContentSection
                   flexWrap="wrap"

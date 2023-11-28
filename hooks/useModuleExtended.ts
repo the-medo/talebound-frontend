@@ -1,8 +1,7 @@
-import { moduleSelectors } from './ModuleAdapter';
-import { store } from '../store';
-import { PbModule, PbModuleType, PbWorld } from '../generated/api-types/data-contracts';
-import { worldSelectors } from './WorldAdapter';
+import { PbModuleType, PbViewModule, PbWorld } from '../generated/api-types/data-contracts';
 import { useMemo } from 'react';
+import { useGetModuleById } from '../api/modules/useGetModuleById';
+import { useGetWorldById } from '../api/worlds/useGetWorldById';
 
 const urlParts: Record<PbModuleType, string> = {
   [PbModuleType.MODULE_TYPE_WORLD]: 'worlds',
@@ -12,18 +11,17 @@ const urlParts: Record<PbModuleType, string> = {
   [PbModuleType.MODULE_TYPE_UNKNOWN]: '-',
 };
 
-interface UseModuleResponse {
-  module: PbModule | undefined;
+interface UseModuleExtendedResponse {
+  module: PbViewModule | undefined;
   world: PbWorld | undefined;
   name: string;
   moduleTypeId: number;
   urlPart: string;
 }
 
-export const useModule = (moduleId: number): UseModuleResponse => {
-  const module = moduleSelectors.selectById(store.getState(), moduleId);
-
-  const world = worldSelectors.selectById(store.getState(), module?.worldId ?? 0);
+export const useModuleExtended = (moduleId: number): UseModuleExtendedResponse => {
+  const { data: module } = useGetModuleById({ variables: moduleId });
+  const { data: world } = useGetWorldById({ variables: module?.worldId ?? 0 });
 
   return useMemo(
     () => ({

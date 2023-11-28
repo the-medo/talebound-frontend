@@ -16,6 +16,7 @@ import { Modules } from '../generated/api-types/Modules';
 import { Auth } from '../generated/api-types/Auth';
 import { Fetcher } from '../generated/api-types/Fetcher';
 import { fetcherInterceptor } from './fetcherInterceptor';
+import { UserRoles } from '../generated/api-types/UserRoles';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -44,4 +45,5 @@ export const ModulesCollection = new Modules(API);
 export const PostsCollection = new Posts(API);
 export const TagsCollection = new Tags(API);
 export const UsersCollection = new Users(API);
+export const UserRolesCollection = new UserRoles(API);
 export const WorldsCollection = new Worlds(API);

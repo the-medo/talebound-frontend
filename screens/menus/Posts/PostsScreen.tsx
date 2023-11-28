@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useModule } from '../../../hooks/useModule';
+import { useModuleRoute } from '../../../hooks/useModuleRoute';
 import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -14,7 +14,7 @@ interface PostsScreenProps {
 }
 
 const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
-  const [module] = useModule(PbEntityType.ENTITY_TYPE_POST);
+  const [module] = useModuleRoute(PbEntityType.ENTITY_TYPE_POST);
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);

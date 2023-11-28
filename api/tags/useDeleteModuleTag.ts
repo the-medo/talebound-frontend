@@ -2,12 +2,12 @@ import { createMutation, inferData } from 'react-query-kit';
 import { TagsCollection } from '../collections';
 import { useGetWorldById } from '../worlds/useGetWorldById';
 import { queryClient } from '../../pages/_app';
-import { PbModule, PbModuleType } from '../../generated/api-types/data-contracts';
+import { PbModuleType, PbViewModule } from '../../generated/api-types/data-contracts';
 
 interface DeleteModuleTagParams {
   moduleType: PbModuleType;
   moduleId: number;
-  module: PbModule;
+  module: PbViewModule;
   tagId: number;
 }
 

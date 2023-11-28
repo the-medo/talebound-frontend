@@ -12,7 +12,7 @@
 import {
   PbCreateLocationRequest,
   PbGetLocationsResponse,
-  PbViewLocation,
+  PbLocation,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -84,15 +84,32 @@ export class Locations<SecurityDataType = unknown> {
    * @name LocationsCreateLocation
    * @summary Create location
    * @request POST:/locations
-   * @response `200` `PbViewLocation` A successful response.
+   * @response `200` `PbLocation` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   locationsCreateLocation = (body: PbCreateLocationRequest, params: RequestParams = {}) =>
-    this.http.request<PbViewLocation, RpcStatus>({
+    this.http.request<PbLocation, RpcStatus>({
       path: `/locations`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description get location by id
+   *
+   * @tags Locations
+   * @name LocationsGetLocationById
+   * @summary Get location by id
+   * @request GET:/locations/{locationId}
+   * @response `200` `PbLocation` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  locationsGetLocationById = (locationId: number, params: RequestParams = {}) =>
+    this.http.request<PbLocation, RpcStatus>({
+      path: `/locations/${locationId}`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
@@ -120,7 +137,7 @@ export class Locations<SecurityDataType = unknown> {
    * @name LocationsUpdateLocation
    * @summary Update location
    * @request PATCH:/locations/{locationId}
-   * @response `200` `PbViewLocation` A successful response.
+   * @response `200` `PbLocation` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   locationsUpdateLocation = (
@@ -135,7 +152,7 @@ export class Locations<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewLocation, RpcStatus>({
+    this.http.request<PbLocation, RpcStatus>({
       path: `/locations/${locationId}`,
       method: 'PATCH',
       body: body,
@@ -150,11 +167,11 @@ export class Locations<SecurityDataType = unknown> {
    * @name LocationsCreateLocationPost
    * @summary Create post for location
    * @request POST:/locations/{locationId}/posts
-   * @response `200` `PbViewLocation` A successful response.
+   * @response `200` `PbLocation` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   locationsCreateLocationPost = (locationId: number, params: RequestParams = {}) =>
-    this.http.request<PbViewLocation, RpcStatus>({
+    this.http.request<PbLocation, RpcStatus>({
       path: `/locations/${locationId}/posts`,
       method: 'POST',
       format: 'json',

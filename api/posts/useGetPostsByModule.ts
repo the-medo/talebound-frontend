@@ -1,12 +1,12 @@
 import { createInfiniteQuery, InfiniteQueryHook, Middleware } from 'react-query-kit';
 import { PostsCollection } from '../collections';
 import { expandDataForInfiniteQuery, InfiniteResponse } from '../apiLib';
-import { PbGetPostsByModuleResponse, PbModule } from '../../generated/api-types/data-contracts';
+import { PbGetPostsByModuleResponse, PbViewModule } from '../../generated/api-types/data-contracts';
 
 export const PAGE_SIZE_POSTS = 3;
 
 const queryModuleMiddleware: Middleware<
-  InfiniteQueryHook<InfiniteResponse<PbGetPostsByModuleResponse>, PbModule, Error>
+  InfiniteQueryHook<InfiniteResponse<PbGetPostsByModuleResponse>, PbViewModule, Error>
 > = (useQueryNext) => {
   return (options) => {
     const { variables } = options;
@@ -22,7 +22,7 @@ const queryModuleMiddleware: Middleware<
 
 export const useGetPostsByModule = createInfiniteQuery<
   InfiniteResponse<PbGetPostsByModuleResponse>,
-  PbModule,
+  PbViewModule,
   Error,
   number
 >({

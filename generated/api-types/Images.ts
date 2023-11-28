@@ -68,4 +68,21 @@ export class Images<SecurityDataType = unknown> {
       format: 'json',
       ...params,
     });
+  /**
+   * @description get image by id
+   *
+   * @tags Images
+   * @name ImagesGetImageById
+   * @summary Get image by id
+   * @request GET:/images/{imageId}
+   * @response `200` `PbImage` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  imagesGetImageById = (imageId: number, params: RequestParams = {}) =>
+    this.http.request<PbImage, RpcStatus>({
+      path: `/images/${imageId}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
 }

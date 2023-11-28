@@ -43,6 +43,7 @@ export const fetcherInterceptor = async (response: AxiosResponse) => {
     if (fetcherData.entities) {
       console.log('Saving entities to store ', fetcherData.entities);
       store.dispatch(entityAdapterSlice.actions.upsertEntities(fetcherData.entities));
+      store.dispatch(mappingSlice.actions.mapEntities(fetcherData.entities));
     }
     if (fetcherData.posts) {
       console.log('Saving posts to store ', fetcherData.posts);

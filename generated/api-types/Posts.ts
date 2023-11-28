@@ -14,8 +14,8 @@ import {
   PbDeletePostResponse,
   PbGetPostHistoryResponse,
   PbGetPostsByModuleResponse,
+  PbPost,
   PbPostHistory,
-  PbViewPost,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -68,11 +68,11 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsCreatePost
    * @summary Create post
    * @request POST:/posts
-   * @response `200` `PbViewPost` A successful response.
+   * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsCreatePost = (body: PbCreatePostRequest, params: RequestParams = {}) =>
-    this.http.request<PbViewPost, RpcStatus>({
+    this.http.request<PbPost, RpcStatus>({
       path: `/posts`,
       method: 'POST',
       body: body,
@@ -87,11 +87,11 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsGetPostById
    * @summary Get post by id
    * @request GET:/posts/{postId}
-   * @response `200` `PbViewPost` A successful response.
+   * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsGetPostById = (postId: number, params: RequestParams = {}) =>
-    this.http.request<PbViewPost, RpcStatus>({
+    this.http.request<PbPost, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'GET',
       format: 'json',
@@ -121,7 +121,7 @@ export class Posts<SecurityDataType = unknown> {
    * @name PostsUpdatePost
    * @summary Update post
    * @request PATCH:/posts/{postId}
-   * @response `200` `PbViewPost` A successful response.
+   * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   postsUpdatePost = (
@@ -137,7 +137,7 @@ export class Posts<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewPost, RpcStatus>({
+    this.http.request<PbPost, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'PATCH',
       body: body,

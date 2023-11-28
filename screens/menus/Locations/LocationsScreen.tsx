@@ -7,7 +7,7 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import { TbPlus } from 'react-icons/tb';
 import LocationFormModal from '../../../component-sections/Location/LocationFormModal';
-import { useModule } from '../../../hooks/useModule';
+import { useModuleRoute } from '../../../hooks/useModuleRoute';
 import { PbEntityType } from '../../../generated/api-types/data-contracts';
 
 interface LocationsScreenProps {
@@ -15,7 +15,7 @@ interface LocationsScreenProps {
 }
 
 const LocationsScreen: React.FC<LocationsScreenProps> = ({ canEdit }) => {
-  const [module] = useModule(PbEntityType.ENTITY_TYPE_LOCATION);
+  const [module] = useModuleRoute(PbEntityType.ENTITY_TYPE_LOCATION);
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);

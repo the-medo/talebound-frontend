@@ -2,7 +2,7 @@ import React from 'react';
 import AspectDiamond from '../ControlPanel/AspectDiamond';
 import { store } from '../../../store';
 import { imageSelectors } from '../../../adapters/ImageAdapter';
-import { useModule } from '../../../adapters/useModule';
+import { useModuleExtended } from '../../../hooks/useModuleExtended';
 
 interface ModuleAspectDiamondProps {
   moduleId: number;
@@ -15,10 +15,14 @@ const ModuleAspectDiamond: React.FC<ModuleAspectDiamondProps> = ({
   totalCount,
   index,
 }) => {
-  const module = useModule(moduleId);
-  const avatar = imageSelectors.selectById(store.getState(), module.module?.avatarImgId ?? 0);
+  const moduleExtended = useModuleExtended(moduleId);
 
-  if (!module) {
+  const avatar = imageSelectors.selectById(
+    store.getState(),
+    moduleExtended.module?.avatarImgId ?? 0,
+  );
+
+  if (!moduleExtended) {
     return null;
   }
 
@@ -28,9 +32,9 @@ const ModuleAspectDiamond: React.FC<ModuleAspectDiamondProps> = ({
       imgIdx={0}
       totalCount={totalCount}
       avatarUrl={avatar?.url}
-      linkUrl={`/${module.urlPart}/${module.moduleTypeId}/detail`}
-      name={module.name}
-      entityId={module.moduleTypeId}
+      linkUrl={`/${moduleExtended.urlPart}/${moduleExtended.moduleTypeId}/detail`}
+      name={moduleExtended.name}
+      entityId={moduleExtended.moduleTypeId}
       index={index}
       x="right"
       y="top"

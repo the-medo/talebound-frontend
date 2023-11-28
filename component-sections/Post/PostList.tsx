@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useModule } from '../../hooks/useModule';
+import { useModuleRoute } from '../../hooks/useModuleRoute';
 import { PAGE_SIZE_POSTS, useGetPostsByModule } from '../../api/posts/useGetPostsByModule';
 import PostsTable from './PostsTable';
 import { PbEntityType } from '../../generated/api-types/data-contracts';
@@ -9,7 +9,7 @@ interface PostListProps {
 }
 
 const PostList: React.FC<PostListProps> = ({ canEdit }) => {
-  const [module] = useModule(PbEntityType.ENTITY_TYPE_POST);
+  const [module] = useModuleRoute(PbEntityType.ENTITY_TYPE_POST);
   const [openedPage, setOpenedPage] = useState(1);
 
   const {

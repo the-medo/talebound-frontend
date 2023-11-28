@@ -13,6 +13,7 @@ import {
   PbCreateEntityGroupRequest,
   PbEntityGroup,
   PbEntityGroupContent,
+  PbViewEntity,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -30,13 +31,13 @@ export class Entities<SecurityDataType = unknown> {
    * @tags Entities
    * @name EntitiesCreateEntityGroup
    * @summary Create entity group
-   * @request POST:/entities/groups
+   * @request POST:/entities/groups/create
    * @response `200` `PbEntityGroup` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   entitiesCreateEntityGroup = (body: PbCreateEntityGroupRequest, params: RequestParams = {}) =>
     this.http.request<PbEntityGroup, RpcStatus>({
-      path: `/entities/groups`,
+      path: `/entities/groups/create`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
@@ -167,6 +168,23 @@ export class Entities<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description gets entity by id
+   *
+   * @tags Entities
+   * @name EntitiesGetEntityById
+   * @summary Get entity by id
+   * @request GET:/entities/{entityId}
+   * @response `200` `PbViewEntity` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  entitiesGetEntityById = (entityId: number, params: RequestParams = {}) =>
+    this.http.request<PbViewEntity, RpcStatus>({
+      path: `/entities/${entityId}`,
+      method: 'GET',
       format: 'json',
       ...params,
     });

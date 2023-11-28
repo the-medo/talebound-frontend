@@ -5,7 +5,7 @@ import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUr
 import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 import { store } from '../../store';
 import { imageSelectors } from '../../adapters/ImageAdapter';
-import { useWorld } from '../../adapters/useWorld';
+import { useWorld } from '../../hooks/useWorld';
 
 interface WorldCardProps {
   worldId: number;

@@ -2,16 +2,15 @@ import React, { useCallback } from 'react';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { useCreateModuleTag } from '../../../api/tags/useCreateModuleTag';
 import { useDeleteModuleTag } from '../../../api/tags/useDeleteModuleTag';
-import { TitleH2 } from '../../../components/Typography/Title';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';
-import { PbModule, PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
+import { PbModuleType, PbViewModule, PbViewTag } from '../../../generated/api-types/data-contracts';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface ModuleTagsProps {
   moduleType: PbModuleType;
   moduleId: number;
-  module: PbModule;
+  module: PbViewModule;
   disabled?: boolean;
   tags: number[];
 }

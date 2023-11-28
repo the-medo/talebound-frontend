@@ -5,13 +5,13 @@ import Layout from '../../../components/Layout/Layout';
 import ActionBoxWorld from '../ActionBoxWorld';
 import LeftNavbarWorld from '../../../components/LeftNavbar/LeftNavbarWorld';
 import Loading from '../../../components/Loading/Loading';
-import { useGetWorldById } from '../../../api/worlds/useGetWorldById';
 import MiniStatistic from '../../../components/MiniStatistic/MiniStatistic';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Text } from '../../../components/Typography/Text';
 import TagRow from '../../../components/TagRow/TagRow';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
+import { useWorld } from '../../../hooks/useWorld';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -20,31 +20,30 @@ interface DetailWorldProps {
 }
 
 const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId });
+  const { world, module } = useWorld(worldId);
 
   const navbar = useMemo(() => <LeftNavbarWorld worldId={worldId} />, [worldId]);
+
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
+
+  console.log('module', module);
 
   return (
     <Layout vertical={true} navbar={navbar}>
       <ActionBoxWorld worldId={worldId} activeButton="edit" />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection
-            flexWrap="wrap"
-            direction="column"
-            cornerImage={worldData?.imageThumbnail}
-          >
+          <ContentSection flexWrap="wrap" direction="column" cornerImage={module?.thumbnailImgUrl}>
             <Row wrap gap="md" fullWidth alignItems="start" justifyContent="between">
               <Row gap="md">
-                <TitleH2>{worldData?.name}</TitleH2>
+                <TitleH2>{world?.name}</TitleH2>
               </Row>
               <TagRow
                 availableTags={availableTags}
                 colorNonactive="primaryOutline"
-                tagIds={worldData?.tags ?? []}
+                tagIds={module?.tags ?? []}
                 width={500}
               />
               <Row gap="md">
@@ -64,7 +63,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
             flexWrap="wrap"
             direction="column"
             header="Quests"
-            cornerImage={worldData?.imageThumbnail}
+            cornerImage={module?.thumbnailImgUrl}
           >
             <Text>Currently no quests playing in this world</Text>
           </ContentSection>
@@ -72,7 +71,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
             flexWrap="wrap"
             direction="column"
             header="Characters"
-            cornerImage={worldData?.imageThumbnail}
+            cornerImage={module?.thumbnailImgUrl}
           >
             <Text>Currently no characters playing in this world</Text>
           </ContentSection>

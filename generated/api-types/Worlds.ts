@@ -14,8 +14,8 @@ import {
   PbCreateWorldResponse,
   PbGetWorldsResponse,
   PbImage,
-  PbViewPost,
-  PbViewWorld,
+  PbPost,
+  PbWorld,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -82,11 +82,11 @@ export class Worlds<SecurityDataType = unknown> {
    * @name WorldsGetWorldById
    * @summary Get world by ID
    * @request GET:/worlds/{worldId}
-   * @response `200` `PbViewWorld` A successful response.
+   * @response `200` `PbWorld` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   worldsGetWorldById = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbViewWorld, RpcStatus>({
+    this.http.request<PbWorld, RpcStatus>({
       path: `/worlds/${worldId}`,
       method: 'GET',
       format: 'json',
@@ -99,7 +99,7 @@ export class Worlds<SecurityDataType = unknown> {
    * @name WorldsUpdateWorld
    * @summary Update world
    * @request PATCH:/worlds/{worldId}
-   * @response `200` `PbViewWorld` A successful response.
+   * @response `200` `PbWorld` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   worldsUpdateWorld = (
@@ -114,7 +114,7 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewWorld, RpcStatus>({
+    this.http.request<PbWorld, RpcStatus>({
       path: `/worlds/${worldId}`,
       method: 'PATCH',
       body: body,
@@ -157,7 +157,7 @@ export class Worlds<SecurityDataType = unknown> {
    * @name WorldsUpdateWorldIntroduction
    * @summary Update world introduction
    * @request PATCH:/worlds/{worldId}/introduction
-   * @response `200` `PbViewPost` A successful response.
+   * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   worldsUpdateWorldIntroduction = (
@@ -167,7 +167,7 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbViewPost, RpcStatus>({
+    this.http.request<PbPost, RpcStatus>({
       path: `/worlds/${worldId}/introduction`,
       method: 'PATCH',
       body: body,
