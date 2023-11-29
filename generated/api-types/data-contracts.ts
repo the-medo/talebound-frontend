@@ -810,13 +810,10 @@ export interface PbViewModule {
   menuId?: number;
   /** @format int32 */
   headerImgId?: number;
-  headerImgUrl?: string;
   /** @format int32 */
   thumbnailImgId?: number;
-  thumbnailImgUrl?: string;
   /** @format int32 */
   avatarImgId?: number;
-  avatarImgUrl?: string;
   tags?: number[];
 }
 

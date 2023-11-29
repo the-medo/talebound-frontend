@@ -22,6 +22,7 @@ import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { Text } from '../../../components/Typography/Text';
 import ModuleEntityTagAdministration from '../../../component-sections/Module/ModuleEntityTagAdministration/ModuleEntityTagAdministration';
 import { useWorld } from '../../../hooks/useWorld';
+import { useImage } from '../../../hooks/useImage';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -39,6 +40,8 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
+
+  const { image: thumbnailImg } = useImage(module?.thumbnailImgId ?? 0);
 
   const {
     value: basedOnValue,
@@ -149,20 +152,22 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                 <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
                   <Col gap="md" alignItems="center">
                     <TitleH2 marginBottom="md">World preview</TitleH2>
-                    <ImageCard
-                      title={nameValue ?? 'World name'}
-                      basedOn={basedOnValue}
-                      questCount={3}
-                      activityCount={12}
-                      playModeCount={2}
-                      imgSrc={
-                        module?.thumbnailImgUrl ??
-                        'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'
-                      }
-                      href="#"
-                      availableTags={availableTags}
-                      tags={tags}
-                    />
+                    <Suspense fallback={<Loading />}>
+                      <ImageCard
+                        title={nameValue ?? 'World name'}
+                        basedOn={basedOnValue}
+                        questCount={3}
+                        activityCount={12}
+                        playModeCount={2}
+                        imgSrc={
+                          thumbnailImg?.url ??
+                          'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'
+                        }
+                        href="#"
+                        availableTags={availableTags}
+                        tags={tags}
+                      />
+                    </Suspense>
                     <ErrorText error={updateWorldMutation.error} />
                   </Col>
                 </Col>{' '}

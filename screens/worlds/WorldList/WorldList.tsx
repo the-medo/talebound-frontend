@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { Suspense, useCallback } from 'react';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
@@ -68,7 +68,11 @@ const WorldList: React.FC = () => {
             <Row gap="md" alignItems="start" wrap>
               {worldsData?.pages.map(
                 (page) =>
-                  page.worldIds?.map((worldId) => <WorldCard key={worldId} worldId={worldId} />),
+                  page.worldIds?.map((worldId) => (
+                    <Suspense fallback={null} key={worldId}>
+                      <WorldCard worldId={worldId} />
+                    </Suspense>
+                  )),
               )}
               {hasNextPage && !isFetching && (
                 <InfiniteScrollObserver runOnObserve={fetchNextPage} />

@@ -13,6 +13,7 @@ import {
   IMAGE_DEFAULT_WORLD_THUMBNAIL,
 } from '../../../utils/images/imageDefaultUrls';
 import { useWorld } from '../../../hooks/useWorld';
+import { useImage } from '../../../hooks/useImage';
 
 interface WorldImagesProps {
   worldId: number;
@@ -67,6 +68,10 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalType, setModalType] = useState<WorldImageType>(WorldImageType.imageThumbnail);
 
+  const { image: thumbnailImg } = useImage(module?.thumbnailImgId ?? 0);
+  const { image: avatarImg } = useImage(module?.avatarImgId ?? 0);
+  const { image: headerImg } = useImage(module?.headerImgId ?? 0);
+
   const updateWorldMutation = useUpdateWorld();
 
   const changeWorldImage = useCallback(
@@ -108,7 +113,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalThumbnail}
             size="xl"
-            url={module?.thumbnailImgUrl ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
+            url={thumbnailImg?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
           />
           <Label css={{ width: 'auto' }}>Thumbnail</Label>
         </ImageColWrapper>
@@ -116,7 +121,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalAvatar}
             size="xl"
-            url={module?.avatarImgUrl ?? IMAGE_DEFAULT_WORLD_AVATAR}
+            url={avatarImg?.url ?? IMAGE_DEFAULT_WORLD_AVATAR}
           />
           <Label css={{ width: 'auto' }}>Avatar</Label>
         </ImageColWrapper>
@@ -124,7 +129,7 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           <Avatar
             onClick={openModalHeader}
             size="xl"
-            url={module?.headerImgUrl ?? IMAGE_DEFAULT_WORLD_HEADER}
+            url={headerImg?.url ?? IMAGE_DEFAULT_WORLD_HEADER}
           />
           <Label css={{ width: 'auto' }}>Header</Label>
         </ImageColWrapper>

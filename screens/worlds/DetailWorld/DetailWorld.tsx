@@ -12,6 +12,7 @@ import TagRow from '../../../components/TagRow/TagRow';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { useWorld } from '../../../hooks/useWorld';
+import { useImage } from '../../../hooks/useImage';
 
 const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
 
@@ -28,14 +29,16 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
 
-  console.log('module', module);
+  const { image: thumbnailImg } = useImage(module?.thumbnailImgId ?? 0);
+
+  console.log('module', module, thumbnailImg);
 
   return (
     <Layout vertical={true} navbar={navbar}>
       <ActionBoxWorld worldId={worldId} activeButton="edit" />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection flexWrap="wrap" direction="column" cornerImage={module?.thumbnailImgUrl}>
+          <ContentSection flexWrap="wrap" direction="column" cornerImage={thumbnailImg?.url}>
             <Row wrap gap="md" fullWidth alignItems="start" justifyContent="between">
               <Row gap="md">
                 <TitleH2>{world?.name}</TitleH2>
@@ -63,7 +66,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
             flexWrap="wrap"
             direction="column"
             header="Quests"
-            cornerImage={module?.thumbnailImgUrl}
+            cornerImage={thumbnailImg?.url}
           >
             <Text>Currently no quests playing in this world</Text>
           </ContentSection>
@@ -71,7 +74,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
             flexWrap="wrap"
             direction="column"
             header="Characters"
-            cornerImage={module?.thumbnailImgUrl}
+            cornerImage={thumbnailImg?.url}
           >
             <Text>Currently no characters playing in this world</Text>
           </ContentSection>
