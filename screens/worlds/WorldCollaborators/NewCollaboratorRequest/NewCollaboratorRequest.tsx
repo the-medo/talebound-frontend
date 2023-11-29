@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { Button } from '../../../../components/Button/Button';
 import Textarea from '../../../../components/Textarea/Textarea';
-import { useCreateWorldAdmin } from '../../../../api/worlds/useCreateWorldAdmin';
+import { useCreateModuleAdmin } from '../../../../api/modules/useCreateModuleAdmin';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
 import { useInput } from '../../../../hooks/useInput';
 import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
@@ -21,7 +21,7 @@ const textareaPlaceholder =
 const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
   const { isLoggedIn } = useAuth();
-  const { mutate: createWorldAdmin, isPending, error } = useCreateWorldAdmin();
+  const { mutate: createWorldAdmin, isPending, error } = useCreateModuleAdmin();
   const { value: motivation, onChange } = useInput<string, HTMLTextAreaElement>('');
 
   const sendCollaboratorRequest = useCallback(() => {

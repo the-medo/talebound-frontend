@@ -1,4 +1,4 @@
-import { useGetWorldAdmins } from '../api/worlds/useGetWorldAdmins';
+import { useGetModuleAdmins } from '../api/modules/useGetModuleAdmins';
 import { PbWorldAdmin } from '../generated/api-types/data-contracts';
 import { useSelector } from 'react-redux';
 import { UserRole } from '../utils/auth/userUtils';
@@ -12,7 +12,7 @@ export enum WorldAdminRole {
 }
 
 export function useWorldAdmins(worldId: number): PbWorldAdmin[] {
-  const { data: worldAdminData } = useGetWorldAdmins({
+  const { data: worldAdminData } = useGetModuleAdmins({
     variables: worldId ?? 0,
   });
 

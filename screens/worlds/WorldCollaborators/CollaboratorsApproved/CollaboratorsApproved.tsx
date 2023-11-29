@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useGetWorldAdmins } from '../../../../api/worlds/useGetWorldAdmins';
+import { useGetModuleAdmins } from '../../../../api/modules/useGetModuleAdmins';
 import CollaboratorRowApproved from './CollaboratorRowApproved';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 
@@ -8,7 +8,7 @@ interface CollaboratorsApprovedProps {
 }
 
 const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }) => {
-  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isPending } = useGetModuleAdmins({
     variables: worldId,
   });
 

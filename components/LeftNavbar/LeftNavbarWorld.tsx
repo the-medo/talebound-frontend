@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
-import { useGetWorldById } from '../../api/worlds/useGetWorldById';
 import Navbar, { NavbarItem } from './Navbar';
 import { isWorldCollaborator, useMyWorldRole } from '../../hooks/useWorldAdmins';
+import { useWorld } from '../../hooks/useWorld';
 
 interface LeftNavbarWorldProps {
   worldId: number;
 }
 
 const LeftNavbarWorld: React.FC<LeftNavbarWorldProps> = ({ worldId }) => {
-  const { data: worldData } = useGetWorldById({ variables: worldId });
-  const menuId = worldData?.worldMenuId ?? 0;
+  const { module } = useWorld(worldId);
+  const menuId = module?.menuId ?? 0;
   const role = useMyWorldRole(worldId);
 
   const postfixItems: NavbarItem[] = useMemo(() => {

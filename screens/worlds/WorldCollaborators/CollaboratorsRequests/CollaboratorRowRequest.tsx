@@ -8,7 +8,7 @@ import { TbShieldCheck, TbShieldOff, TbShieldQuestion } from 'react-icons/tb';
 import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
-import { useUpdateWorldAdmin } from '../../../../api/worlds/useUpdateWorldAdmin';
+import { useUpdateModuleAdmin } from '../../../../api/modules/useUpdateModuleAdmin';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
 
 interface PropsByApprovedState {
@@ -45,7 +45,7 @@ const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data })
     mutate: updateWorldAdmin,
     isPending: isPendingUpdate,
     error: errorUpdate,
-  } = useUpdateWorldAdmin();
+  } = useUpdateModuleAdmin();
 
   const doRequest = useCallback(
     (approved: number) => {

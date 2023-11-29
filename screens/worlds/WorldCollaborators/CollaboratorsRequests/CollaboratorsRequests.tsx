@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useGetWorldAdmins } from '../../../../api/worlds/useGetWorldAdmins';
+import { useGetModuleAdmins } from '../../../../api/modules/useGetModuleAdmins';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import CollaboratorRowRequest from './CollaboratorRowRequest';
 import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
@@ -12,7 +12,7 @@ interface CollaboratorsRequestsProps {
 
 const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }) => {
   const role = useMyWorldRole(worldId);
-  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
+  const { data: worldAdmins = [], isPending } = useGetModuleAdmins({
     variables: worldId,
   });
 

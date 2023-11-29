@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Head from 'next/head';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
@@ -15,7 +15,11 @@ const Worlds: React.FC = () => {
       <Head>
         <title>Worlds</title>
       </Head>
-      {worldId && <WorldOpened worldId={worldId} />}
+      {worldId && (
+        <Suspense fallback={null}>
+          <WorldOpened worldId={worldId} />
+        </Suspense>
+      )}
       <Layout vertical={true} navbar={<LeftNavbar />}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>

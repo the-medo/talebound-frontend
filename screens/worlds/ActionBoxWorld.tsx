@@ -6,7 +6,7 @@ import { Col, Row } from '../../components/Flex/Flex';
 import { TbMenuOrder, TbPencil, TbUsersGroup } from 'react-icons/tb';
 import { isWorldCollaborator, useMyWorldRole, WorldAdminRole } from '../../hooks/useWorldAdmins';
 import { TitleH4 } from '../../components/Typography/Title';
-import { useGetWorldAdmins } from '../../api/worlds/useGetWorldAdmins';
+import { useGetModuleAdmins } from '../../api/modules/useGetModuleAdmins';
 import Avatar from '../../components/Avatar/Avatar';
 import Loading from '../../components/Loading/Loading';
 import { Text } from '../../components/Typography/Text';
@@ -21,21 +21,21 @@ interface ActionBoxWorldProps {
 const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }) => {
   const role = useMyWorldRole(worldId);
 
-  const { data: worldAdmins = [], isPending } = useGetWorldAdmins({
+  const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
     variables: worldId,
   });
 
   const worldAdminApproved = useMemo(
     () =>
-      worldAdmins
+      moduleAdmins
         .filter((wa) => wa.approved === 1)
         .sort((a, b) => (a.createdAt ?? '').localeCompare(b.createdAt ?? '')),
-    [worldAdmins],
+    [moduleAdmins],
   );
 
   const worldAdminRequests = useMemo(
-    () => worldAdmins.filter((wa) => wa.approved === 2),
-    [worldAdmins],
+    () => moduleAdmins.filter((wa) => wa.approved === 2),
+    [moduleAdmins],
   );
 
   return (

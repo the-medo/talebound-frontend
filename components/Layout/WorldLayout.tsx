@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { PropsWithChildren, Suspense, useMemo } from 'react';
 import Layout from './Layout';
 import LeftNavbarWorld from '../LeftNavbar/LeftNavbarWorld';
 import useNumericParam from '../../hooks/useNumericParam';
@@ -12,7 +12,11 @@ const WorldLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <Layout vertical={true} navbar={navbar}>
-      {worldId && <WorldOpened worldId={worldId} />}
+      {worldId && (
+        <Suspense fallback={null}>
+          <WorldOpened worldId={worldId} />
+        </Suspense>
+      )}
       <ActionBoxWorld worldId={worldId} />
       {children}
     </Layout>

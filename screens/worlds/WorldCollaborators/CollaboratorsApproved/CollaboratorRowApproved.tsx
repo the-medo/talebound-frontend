@@ -9,8 +9,8 @@ import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
 import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
-import { useUpdateWorldAdmin } from '../../../../api/worlds/useUpdateWorldAdmin';
-import { useDeleteWorldAdmin } from '../../../../api/worlds/useDeleteWorldAdmin';
+import { useUpdateModuleAdmin } from '../../../../api/modules/useUpdateModuleAdmin';
+import { useDeleteModuleAdmin } from '../../../../api/modules/useDeleteModuleAdmin';
 import AlertDialog from '../../../../components/AlertDialog/AlertDialog';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
 import { useSelector } from 'react-redux';
@@ -36,13 +36,13 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
     mutate: updateWorldAdmin,
     isPending: isPendingUpdate,
     error: errorUpdate,
-  } = useUpdateWorldAdmin();
+  } = useUpdateModuleAdmin();
 
   const {
     mutate: deleteWorldAdmin,
     isPending: isPendingDelete,
     error: errorDelete,
-  } = useDeleteWorldAdmin();
+  } = useDeleteModuleAdmin();
 
   const doRequest = useCallback(
     (superAdmin: boolean) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Head from 'next/head';
 import EditWorld from '../../../../screens/worlds/EditWorld/EditWorld';
 import useNumericParam from '../../../../hooks/useNumericParam';
@@ -12,8 +12,16 @@ const Worlds: React.FC = () => {
       <Head>
         <title>Worlds</title>
       </Head>
-      {worldId && <WorldOpened worldId={worldId} />}
-      {worldId && <EditWorld worldId={worldId} />}
+      {worldId && (
+        <Suspense fallback={null}>
+          <WorldOpened worldId={worldId} />
+        </Suspense>
+      )}
+      {worldId && (
+        <Suspense fallback={null}>
+          <EditWorld worldId={worldId} />
+        </Suspense>
+      )}
     </>
   );
 };

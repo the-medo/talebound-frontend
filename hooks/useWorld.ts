@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useGetWorldById } from '../api/worlds/useGetWorldById';
 import { TaleboundError } from '../utils/types/error';
 import { useModule } from './useModule';
+import { useGetModuleId } from '../api/modules/useGetModuleId';
 
 interface UseWorldResponse {
   moduleId: number;
@@ -21,7 +22,11 @@ export const useWorld = (worldId: number): UseWorldResponse => {
     error: errorWorld,
   } = useGetWorldById({ variables: worldId });
 
-  const moduleId = useSelector((state: ReduxState) => state.mapping.worldsModule[worldId] ?? 0);
+  const moduleId1 = useSelector((state: ReduxState) => state.mapping.worldsModule[worldId] ?? 0);
+
+  const { data: moduleId2 } = useGetModuleId({ variables: { worldId } });
+
+  const moduleId = moduleId1 ?? moduleId2 ?? 0;
 
   const { module, isFetching: isFetchingModule, error: errorModule } = useModule(moduleId);
 
