@@ -2,26 +2,25 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setHeaderImage } from '../../store/globalSlice';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
-import { useWorld } from '../../hooks/useWorld';
 import { useImage } from '../../hooks/useImage';
+import { useModule } from '../../hooks/useModule';
 
-interface WorldOpenedProps {
-  worldId: number;
+interface ModuleOpenedProps {
+  moduleId: number;
 }
 
-const WorldOpened: React.FC<WorldOpenedProps> = ({ worldId }) => {
+const ModuleOpened: React.FC<ModuleOpenedProps> = ({ moduleId }) => {
   const dispatch = useDispatch();
-  const { module } = useWorld(worldId);
+  const { module } = useModule(moduleId);
   const { image: headerImg } = useImage(module?.headerImgId);
 
   useEffect(() => {
     if (headerImg?.url) {
       dispatch(setHeaderImage(imageModifyVariant(headerImg?.url, ImageVariant['1920x300'])));
-      console.log('worldData?.imageHeader: ', headerImg?.url);
     }
   }, [dispatch, headerImg?.url]);
 
   return null;
 };
 
-export default WorldOpened;
+export default ModuleOpened;

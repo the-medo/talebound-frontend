@@ -8,7 +8,7 @@ import { TbShield, TbShieldOff, TbShieldStar } from 'react-icons/tb';
 import { Button } from '../../../../components/Button/Button';
 import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
-import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
+import { useMyModuleRole, ModuleAdminRole } from '../../../../hooks/useModuleAdmins';
 import { useUpdateModuleAdmin } from '../../../../api/modules/useUpdateModuleAdmin';
 import { useDeleteModuleAdmin } from '../../../../api/modules/useDeleteModuleAdmin';
 import AlertDialog from '../../../../components/AlertDialog/AlertDialog';
@@ -27,7 +27,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
   data,
   canLeave = true,
 }) => {
-  const role = useMyWorldRole(data.worldId ?? 0);
+  const role = useMyModuleRole(data.worldId ?? 0);
   const userId = useSelector((state: ReduxState) => state.auth.user?.id);
   const isMyRow = data.user?.id === userId;
   const profileLink = `/user/${data.user?.id}/profile`;
@@ -108,7 +108,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
         </Text>
       </Col>
       <Row gap="md">
-        {role === WorldAdminRole.SUPER_COLLABORATOR && !isMyRow && (
+        {role === ModuleAdminRole.SUPER_COLLABORATOR && !isMyRow && (
           <>
             {data.superAdmin ? (
               <Button size="sm" onClick={makeBasicCollaborator} loading={isPendingUpdate}>
@@ -130,7 +130,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
             />
           </>
         )}
-        {(canLeave || role !== WorldAdminRole.SUPER_COLLABORATOR) && isMyRow && (
+        {(canLeave || role !== ModuleAdminRole.SUPER_COLLABORATOR) && isMyRow && (
           <AlertDialog
             triggerElement={leaveButton}
             title={`Leave world`}

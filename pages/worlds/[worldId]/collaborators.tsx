@@ -1,23 +1,23 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
-import useNumericParam from '../../../hooks/useNumericParam';
-import WorldOpened from '../../../screens/worlds/WorldOpened';
-import WorldCollaborators from '../../../screens/worlds/WorldCollaborators/WorldCollaborators';
+import ModuleOpened from '../../../screens/worlds/ModuleOpened';
+import ModuleCollaborators from '../../../screens/worlds/WorldCollaborators/ModuleCollaborators';
+import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
 
 const Worlds: React.FC = () => {
-  const worldId = useNumericParam('worldId');
+  const moduleId = useUrlModuleId();
 
   return (
     <>
       <Head>
-        <title>Worlds - collaborators</title>
+        <title>Collaborators</title>
       </Head>
-      {worldId && (
+      {moduleId && (
         <Suspense fallback={null}>
-          <WorldOpened worldId={worldId} />
+          <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
-      {worldId && <WorldCollaborators worldId={worldId} />}
+      {moduleId && <ModuleCollaborators moduleId={moduleId} />}
     </>
   );
 };

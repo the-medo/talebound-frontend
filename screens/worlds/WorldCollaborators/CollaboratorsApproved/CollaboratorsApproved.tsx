@@ -4,28 +4,28 @@ import CollaboratorRowApproved from './CollaboratorRowApproved';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 
 interface CollaboratorsApprovedProps {
-  worldId: number;
+  moduleId: number;
 }
 
-const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ worldId }) => {
-  const { data: worldAdmins = [], isPending } = useGetModuleAdmins({
-    variables: worldId,
+const CollaboratorsApproved: React.FC<CollaboratorsApprovedProps> = ({ moduleId }) => {
+  const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
+    variables: moduleId,
   });
 
-  const worldAdminApproved = useMemo(
+  const moduleAdminsApproved = useMemo(
     () =>
-      worldAdmins
+      moduleAdmins
         .filter((wa) => wa.approved === 1)
         .sort((a, b) => (a.createdAt ?? '').localeCompare(b.createdAt ?? '')),
-    [worldAdmins],
+    [moduleAdmins],
   );
 
-  const canLeave = worldAdminApproved.filter((wa) => wa.superAdmin).length > 1;
+  const canLeave = moduleAdminsApproved.filter((wa) => wa.superAdmin).length > 1;
 
   return (
     <ContentSection loading={isPending} flexWrap="wrap" direction="column" header="Collaborators">
-      {worldAdminApproved.map((worldAdmin) => (
-        <CollaboratorRowApproved data={worldAdmin} key={worldAdmin.userId} canLeave={canLeave} />
+      {moduleAdminsApproved.map((moduleAdmin) => (
+        <CollaboratorRowApproved data={moduleAdmin} key={moduleAdmin.userId} canLeave={canLeave} />
       ))}
     </ContentSection>
   );

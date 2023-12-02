@@ -1,10 +1,12 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
 import useNumericParam from '../../../hooks/useNumericParam';
-import WorldOpened from '../../../screens/worlds/WorldOpened';
+import ModuleOpened from '../../../screens/worlds/ModuleOpened';
 import DetailWorld from '../../../screens/worlds/DetailWorld/DetailWorld';
+import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
 
 const Worlds: React.FC = () => {
+  const moduleId = useUrlModuleId();
   const worldId = useNumericParam('worldId');
 
   return (
@@ -14,10 +16,14 @@ const Worlds: React.FC = () => {
       </Head>
       {worldId && (
         <Suspense fallback={null}>
-          <WorldOpened worldId={worldId} />
+          <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
-      {worldId && <DetailWorld worldId={worldId} />}
+      {worldId && (
+        <Suspense fallback={null}>
+          <DetailWorld worldId={worldId} />
+        </Suspense>
+      )}
     </>
   );
 };

@@ -3,6 +3,10 @@ import { PbViewEntity, PbViewModule } from '../generated/api-types/data-contract
 
 export interface MappingState {
   worldsModule: Record<number, number | undefined>;
+  questsModule: Record<number, number | undefined>;
+  systemsModule: Record<number, number | undefined>;
+  charactersModule: Record<number, number | undefined>;
+
   postEntity: Record<number, number | undefined>;
   imageEntity: Record<number, number | undefined>;
   mapEntity: Record<number, number | undefined>;
@@ -11,6 +15,10 @@ export interface MappingState {
 
 const initialState: MappingState = {
   worldsModule: {},
+  questsModule: {},
+  systemsModule: {},
+  charactersModule: {},
+
   postEntity: {},
   imageEntity: {},
   mapEntity: {},

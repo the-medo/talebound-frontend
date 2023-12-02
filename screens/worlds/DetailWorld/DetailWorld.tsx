@@ -2,8 +2,8 @@ import React, { Suspense, useMemo } from 'react';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
 import Layout from '../../../components/Layout/Layout';
-import ActionBoxWorld from '../ActionBoxWorld';
-import LeftNavbarWorld from '../../../components/LeftNavbar/LeftNavbarWorld';
+import ActionBoxModule from '../ActionBoxModule';
+import LeftNavbarModule from '../../../components/LeftNavbar/LeftNavbarModule';
 import Loading from '../../../components/Loading/Loading';
 import MiniStatistic from '../../../components/MiniStatistic/MiniStatistic';
 import { TitleH2 } from '../../../components/Typography/Title';
@@ -23,7 +23,7 @@ interface DetailWorldProps {
 const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
   const { world, module } = useWorld(worldId);
 
-  const navbar = useMemo(() => <LeftNavbarWorld worldId={worldId} />, [worldId]);
+  const navbar = useMemo(() => <LeftNavbarModule moduleId={worldId} />, [worldId]);
 
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
@@ -35,7 +35,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
 
   return (
     <Layout vertical={true} navbar={navbar}>
-      <ActionBoxWorld worldId={worldId} activeButton="edit" />
+      <ActionBoxModule moduleId={worldId} activeButton="edit" />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
           <ContentSection flexWrap="wrap" direction="column" cornerImage={thumbnailImg?.url}>

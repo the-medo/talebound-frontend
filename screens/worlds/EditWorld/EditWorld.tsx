@@ -15,8 +15,8 @@ import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import WorldImages from './WorldImages';
 import ModuleTags from './ModuleTags';
 import Loading from '../../../components/Loading/Loading';
-import ActionBoxWorld from '../ActionBoxWorld';
-import { useMyWorldRole, WorldAdminRole } from '../../../hooks/useWorldAdmins';
+import ActionBoxModule from '../ActionBoxModule';
+import { useMyModuleRole, ModuleAdminRole } from '../../../hooks/useModuleAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { Text } from '../../../components/Typography/Text';
@@ -32,9 +32,9 @@ interface EditWorldProps {
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { world, module, moduleId } = useWorld(worldId);
-  const role = useMyWorldRole(worldId);
+  const role = useMyModuleRole(worldId);
   const updateWorldMutation = useUpdateWorld();
-  const disabled = useMemo(() => role !== WorldAdminRole.SUPER_COLLABORATOR, [role]);
+  const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 
   const { value: nameValue, onChange: onChangeName, setValue: setNameValue } = useInput<string>('');
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
@@ -213,7 +213,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           </Col>
         </Row>
       </Layout>
-      <ActionBoxWorld worldId={worldId} activeButton="edit" />
+      <ActionBoxModule moduleId={worldId} activeButton="edit" />
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import Head from 'next/head';
 import EditWorld from '../../../../screens/worlds/EditWorld/EditWorld';
 import useNumericParam from '../../../../hooks/useNumericParam';
-import WorldOpened from '../../../../screens/worlds/WorldOpened';
+import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
 
 const Worlds: React.FC = () => {
   const worldId = useNumericParam('worldId');
@@ -14,7 +14,7 @@ const Worlds: React.FC = () => {
       </Head>
       {worldId && (
         <Suspense fallback={null}>
-          <WorldOpened worldId={worldId} />
+          <ModuleOpened moduleId={worldId} />
         </Suspense>
       )}
       {worldId && (

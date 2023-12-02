@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { Button } from '../../components/Button/Button';
 import { Col, Row } from '../../components/Flex/Flex';
 import { TbMenuOrder, TbPencil, TbUsersGroup } from 'react-icons/tb';
-import { isWorldCollaborator, useMyWorldRole, WorldAdminRole } from '../../hooks/useWorldAdmins';
+import {
+  isModuleCollaborator,
+  useMyModuleRole,
+  ModuleAdminRole,
+} from '../../hooks/useModuleAdmins';
 import { TitleH4 } from '../../components/Typography/Title';
 import { useGetModuleAdmins } from '../../api/modules/useGetModuleAdmins';
 import Avatar from '../../components/Avatar/Avatar';
@@ -13,19 +17,19 @@ import { Text } from '../../components/Typography/Text';
 import { Badge } from 'antd';
 import { theme } from '../../styles/stitches.config';
 
-interface ActionBoxWorldProps {
-  worldId: number;
+interface ActionBoxModuleProps {
+  moduleId: number;
   activeButton?: 'edit' | 'collaborators' | 'menu';
 }
 
-const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }) => {
-  const role = useMyWorldRole(worldId);
+const ActionBoxModule: React.FC<ActionBoxModuleProps> = ({ moduleId, activeButton }) => {
+  const role = useMyModuleRole(moduleId);
 
   const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
-    variables: worldId,
+    variables: moduleId,
   });
 
-  const worldAdminApproved = useMemo(
+  const moduleAdminApproved = useMemo(
     () =>
       moduleAdmins
         .filter((wa) => wa.approved === 1)
@@ -39,23 +43,23 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
   );
 
   return (
-    <ActionBox key={`world-${worldId}`} identifier={`action-box-world-edit_${activeButton}`}>
+    <ActionBox key={`world-${moduleId}`} identifier={`action-box-module-edit_${activeButton}`}>
       <Col fullWidth css={{ height: '100%' }} gap="md" justifyContent="between">
         <Col gap="md">
           <Row gap="md">
             <TitleH4>World collaborators</TitleH4>
-            <Link href={`/worlds/${worldId}/collaborators`}>
-              {role === WorldAdminRole.REQUESTED && (
+            <Link href={`/worlds/${moduleId}/collaborators`}>
+              {role === ModuleAdminRole.REQUESTED && (
                 <Text i u>
                   (collaboration requested)
                 </Text>
               )}
-              {role === WorldAdminRole.DENIED && (
+              {role === ModuleAdminRole.DENIED && (
                 <Text i u>
                   (collaboration denied)
                 </Text>
               )}
-              {role === WorldAdminRole.NONE && (
+              {role === ModuleAdminRole.NONE && (
                 <Text i u>
                   (want to collaborate?)
                 </Text>
@@ -64,7 +68,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
           </Row>
           <Row gap="md">
             {isPending && <Loading size="sm" />}
-            {worldAdminApproved.map((worldAdmin) => (
+            {moduleAdminApproved.map((worldAdmin) => (
               <Link
                 key={worldAdmin.userId}
                 href={`/user/${worldAdmin.userId}/profile`}
@@ -76,8 +80,8 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
           </Row>
         </Col>
         <Row gap="md" wrap={true} alignSelf="center">
-          {isWorldCollaborator(role) && (
-            <Link href={`/worlds/${worldId}/edit`}>
+          {isModuleCollaborator(role) && (
+            <Link href={`/worlds/${moduleId}/edit`}>
               <Button size="md" color={activeButton === 'edit' ? 'primaryOutline' : 'semiGhost'}>
                 <TbPencil />
                 Edit world
@@ -92,7 +96,7 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
               worldAdminRequests.length > 1 ? 's' : ''
             }`}
           >
-            <Link href={`/worlds/${worldId}/collaborators`}>
+            <Link href={`/worlds/${moduleId}/collaborators`}>
               <Button
                 size="md"
                 color={activeButton === 'collaborators' ? 'primaryOutline' : 'semiGhost'}
@@ -102,8 +106,8 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
               </Button>
             </Link>
           </Badge>
-          {isWorldCollaborator(role) && (
-            <Link href={`/worlds/${worldId}/edit/menu`}>
+          {isModuleCollaborator(role) && (
+            <Link href={`/worlds/${moduleId}/edit/menu`}>
               <Button size="md" color={activeButton === 'menu' ? 'primaryOutline' : 'semiGhost'}>
                 <TbMenuOrder />
                 Menu administration
@@ -116,4 +120,4 @@ const ActionBoxWorld: React.FC<ActionBoxWorldProps> = ({ worldId, activeButton }
   );
 };
 
-export default ActionBoxWorld;
+export default ActionBoxModule;

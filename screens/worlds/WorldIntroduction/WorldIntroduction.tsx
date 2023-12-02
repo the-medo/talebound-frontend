@@ -7,7 +7,7 @@ import {
   UpdateWorldIntroductionRequest,
   useUpdateWorldIntroduction,
 } from '../../../api/worlds/useUpdateWorldIntroduction';
-import { isWorldCollaborator, useMyWorldRole } from '../../../hooks/useWorldAdmins';
+import { isModuleCollaborator, useMyModuleRole } from '../../../hooks/useModuleAdmins';
 import { useWorld } from '../../../hooks/useWorld';
 import { usePost } from '../../../hooks/usePost';
 
@@ -17,8 +17,8 @@ type WorldIntroductionProps = {
 };
 
 const WorldIntroduction: React.FC<WorldIntroductionProps> = ({ worldId, postViewOnly = false }) => {
-  const role = useMyWorldRole(worldId);
-  const hasRightToEdit = isWorldCollaborator(role);
+  const role = useMyModuleRole(worldId);
+  const hasRightToEdit = isModuleCollaborator(role);
 
   const { world, isFetching: isFetchingWorld } = useWorld(worldId);
 

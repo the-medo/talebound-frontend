@@ -2,49 +2,49 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useGetModuleAdmins } from '../../../../api/modules/useGetModuleAdmins';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import CollaboratorRowRequest from './CollaboratorRowRequest';
-import { useMyWorldRole, WorldAdminRole } from '../../../../hooks/useWorldAdmins';
+import { useMyModuleRole, ModuleAdminRole } from '../../../../hooks/useModuleAdmins';
 import { Row } from '../../../../components/Flex/Flex';
 import { Button } from '../../../../components/Button/Button';
 
 interface CollaboratorsRequestsProps {
-  worldId: number;
+  moduleId: number;
 }
 
-const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ worldId }) => {
-  const role = useMyWorldRole(worldId);
-  const { data: worldAdmins = [], isPending } = useGetModuleAdmins({
-    variables: worldId,
+const CollaboratorsRequests: React.FC<CollaboratorsRequestsProps> = ({ moduleId }) => {
+  const role = useMyModuleRole(moduleId);
+  const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
+    variables: moduleId,
   });
 
   const [showDenied, setShowDenied] = useState(false);
 
-  const worldAdminRequestsWaiting = useMemo(
-    () => worldAdmins.filter((wa) => wa.approved === 2),
-    [worldAdmins],
+  const moduleAdminRequestsWaiting = useMemo(
+    () => moduleAdmins.filter((wa) => wa.approved === 2),
+    [moduleAdmins],
   );
 
-  const worldAdminRequestsDenied = useMemo(
-    () => worldAdmins.filter((wa) => wa.approved === 0 || !wa.approved),
-    [worldAdmins],
+  const moduleAdminRequestsDenied = useMemo(
+    () => moduleAdmins.filter((wa) => wa.approved === 0 || !wa.approved),
+    [moduleAdmins],
   );
 
   const toggleShowDenied = useCallback(() => {
     setShowDenied((p) => !p);
   }, []);
 
-  if (role !== WorldAdminRole.SUPER_COLLABORATOR) {
+  if (role !== ModuleAdminRole.SUPER_COLLABORATOR) {
     return null;
   }
 
   return (
     <ContentSection loading={isPending} flexWrap="wrap" direction="column" header="Requests">
-      {worldAdminRequestsWaiting.length === 0 && <p>No pending collaboration requests</p>}
-      {worldAdminRequestsWaiting.map((wa) => (
+      {moduleAdminRequestsWaiting.length === 0 && <p>No pending collaboration requests</p>}
+      {moduleAdminRequestsWaiting.map((wa) => (
         <CollaboratorRowRequest data={wa} key={wa.userId} />
       ))}
       {showDenied &&
-        worldAdminRequestsDenied.map((wa) => <CollaboratorRowRequest data={wa} key={wa.userId} />)}
-      {worldAdminRequestsDenied.length > 0 && (
+        moduleAdminRequestsDenied.map((wa) => <CollaboratorRowRequest data={wa} key={wa.userId} />)}
+      {moduleAdminRequestsDenied.length > 0 && (
         <Row alignSelf="end">
           <Button color="primaryOutline" size="sm" onClick={toggleShowDenied}>
             {showDenied ? 'Hide' : 'Show'} already denied requests
