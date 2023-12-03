@@ -22,19 +22,25 @@ export class Images<SecurityDataType = unknown> {
   /**
    * @description get images - paginated, filterable by user and image type
    *
-   * @tags Talebound
-   * @name TaleboundGetImages
+   * @tags Images
+   * @name ImagesGetImages
    * @summary Get images
    * @request GET:/images
    * @response `200` `PbGetImagesResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetImages = (
+  imagesGetImages = (
     query?: {
       /** @format int32 */
-      userId?: number;
+      moduleId?: number;
       /** @format int32 */
-      imageTypeId?: number;
+      userId?: number;
+      tags?: number[];
+      orderBy?: string;
+      /** @format int32 */
+      width?: number;
+      /** @format int32 */
+      height?: number;
       /** @format int32 */
       limit?: number;
       /** @format int32 */
@@ -52,19 +58,36 @@ export class Images<SecurityDataType = unknown> {
   /**
    * @description uploads an image file
    *
-   * @tags Talebound
-   * @name TaleboundUploadDefaultImage
+   * @tags Images
+   * @name ImagesUploadDefaultImage
    * @summary Upload image
    * @request POST:/images
    * @response `200` `PbImage` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUploadDefaultImage = (body: PbUploadImageRequest, params: RequestParams = {}) =>
+  imagesUploadDefaultImage = (body: PbUploadImageRequest, params: RequestParams = {}) =>
     this.http.request<PbImage, RpcStatus>({
       path: `/images`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description get image by id
+   *
+   * @tags Images
+   * @name ImagesGetImageById
+   * @summary Get image by id
+   * @request GET:/images/{imageId}
+   * @response `200` `PbImage` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  imagesGetImageById = (imageId: number, params: RequestParams = {}) =>
+    this.http.request<PbImage, RpcStatus>({
+      path: `/images/${imageId}`,
+      method: 'GET',
       format: 'json',
       ...params,
     });

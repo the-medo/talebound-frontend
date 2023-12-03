@@ -1,17 +1,16 @@
 import React, { useCallback, useMemo } from 'react';
 import { Col } from '../../components/Flex/Flex';
-import { useGetUserById } from '../../api/useGetUserById';
+import { useGetUserById } from '../../api/users/useGetUserById';
 import { useAuth } from '../../hooks/useAuth';
 import { UserProfileProps } from './UserProfile';
-import { useGetPostById } from '../../api/useGetPostById';
+import { useGetPostById } from '../../api/posts/useGetPostById';
 import {
   UpdateUserIntroductionRequest,
   useUpdateUserIntroduction,
-} from '../../api/useUpdateUserIntroduction';
+} from '../../api/users/useUpdateUserIntroduction';
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { parseError } from '../../utils/types/error';
 import { EMPTY_EDITOR_STATE } from '../../components/Editor/utils/emptyEditorState';
-import { PostTypeEnum, usePostType } from '../../hooks/usePostType';
 
 type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
   postViewOnly?: boolean;
@@ -19,11 +18,9 @@ type UserIntroductionProps = Pick<UserProfileProps, 'userId'> & {
 
 const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnly = false }) => {
   const { user, isLoggedIn: _isLoggedIn } = useAuth();
-  const postType = usePostType(PostTypeEnum.UserIntroduction);
 
-  const { data: userData, isLoading: isLoadingUser } = useGetUserById({
+  const { data: userData, isPending: isPendingUser } = useGetUserById({
     variables: userId,
-    suspense: true,
   });
 
   const loadIntroductionData = useMemo(
@@ -31,17 +28,16 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
     [userData?.introductionPostId],
   );
 
-  const { data: postData, isLoading: isLoadingIntroduction } = useGetPostById({
-    enabled: loadIntroductionData,
+  const { data: postData, isPending: isPendingIntroduction } = useGetPostById({
+    // use: [globalQueryMiddleware], //getMiddlewareEnabled(loadIntroductionData)
     variables: userData?.introductionPostId ?? 0,
-    suspense: true,
   });
 
   const updateUserIntroduction = useUpdateUserIntroduction();
 
-  const isLoading = isLoadingUser || (isLoadingIntroduction && loadIntroductionData);
+  const isPending = isPendingUser || (isPendingIntroduction && loadIntroductionData);
 
-  const hasIntroduction = !isLoading && postData?.post?.content !== undefined;
+  const hasIntroduction = !isPending && postData?.content !== undefined;
 
   const isMyPost = useMemo(
     () => user?.id === userData?.id && user?.id !== undefined,
@@ -75,14 +71,14 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
   );
 
   const editorState = useMemo(() => {
-    if (!isLoading && userData?.introductionPostId !== undefined) {
-      return postData?.post?.content;
+    if (!isPending && userData?.introductionPostId !== undefined) {
+      return postData?.content;
     } else if (!hasIntroduction) {
       return EMPTY_EDITOR_STATE;
     } else {
       return undefined;
     }
-  }, [hasIntroduction, isLoading, userData?.introductionPostId, postData?.post?.content]);
+  }, [hasIntroduction, isPending, userData?.introductionPostId, postData?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updateUserIntroduction.reset();
@@ -91,15 +87,15 @@ const UserIntroduction: React.FC<UserIntroductionProps> = ({ userId, postViewOnl
   return (
     <Col fullWidth>
       <Editor
-        loading={updateUserIntroduction.isLoading}
+        loading={updateUserIntroduction.isPending}
         hasRightToEdit={isMyPost}
         editorState={editorState}
         disabled={false}
         editable={!postViewOnly}
         defaultPostViewType={PostViewType.POST}
-        isDraft={postData?.post?.isDraft ?? false}
-        alreadyExists={postData?.post?.id !== undefined}
-        draftable={postData?.postType?.draftable ?? postType?.draftable ?? false}
+        isDraft={postData?.isDraft ?? false}
+        alreadyExists={postData?.id !== undefined}
+        draftable={false}
         onSaveAction={onSave}
         error={parseError(updateUserIntroduction.error)}
         resetError={resetErrorHandler}

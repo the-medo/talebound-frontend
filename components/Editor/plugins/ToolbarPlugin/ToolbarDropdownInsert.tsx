@@ -10,7 +10,7 @@ import { DropdownMenuCheckboxItem } from '../../../../components-radix-ui/Dropdo
 import { DropdownMenuItemIndicator } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuItemIndicator';
 import { DropdownMenuPortal } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuPortal';
 import { DropdownMenuContent } from '../../../../components-radix-ui/DropdownMenu/DropdownMenuContent';
-import ImageModal from '../../nodes/ImageModal/ImageModal';
+import EditorImageModal from '../../nodes/ImageModal/EditorImageModal';
 import TableModal from '../../nodes/TableModal/TableModal';
 
 interface ToolbarDropdownInsertProps {
@@ -63,7 +63,7 @@ const ToolbarDropdownInsert: React.FC<ToolbarDropdownInsertProps> = ({ trigger, 
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenuRoot>
-      <ImageModal
+      <EditorImageModal
         open={showImageModal}
         setOpen={setShowImageModal}
         editor={editor}

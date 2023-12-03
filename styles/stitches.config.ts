@@ -1,5 +1,15 @@
 import { createStitches } from '@stitches/react';
 
+export const COLORS = {
+  primary: '#36866f',
+  secondary: '#78959a',
+  tertiary: '#5b6b82',
+  success: '#45a359',
+  danger: '#f44336',
+  info: '#028FCC',
+  warning: '#c39321',
+};
+
 export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme, config } =
   createStitches({
     theme: {
@@ -7,14 +17,14 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         black: '#202729',
         white: '#F8F6F8',
 
-        primary: '#36866f',
-        secondary: '#78959a',
-        tertiary: '#5b6b82',
+        primary: COLORS.primary,
+        secondary: COLORS.secondary,
+        tertiary: COLORS.tertiary,
 
-        success: '#45a359',
-        danger: '#f44336',
-        info: '#028FCC',
-        warning: '#c39321',
+        success: COLORS.success,
+        danger: COLORS.danger,
+        info: COLORS.info,
+        warning: COLORS.warning,
 
         pageBackground: '$white',
         navbarBackground: '#2f3738',
@@ -157,6 +167,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         '9xl': '8rem' /* 128px */,
       },
       sizes: {
+        navbarWidth: '250px',
         xs: '0.75rem' /* 12px */,
         sm: '0.875rem' /* 14px */,
         base: '1rem' /* 16px */,
@@ -343,3 +354,102 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
       xlMax: '(max-width: 1920px)',
     },
   });
+
+/*export const paddingStyles = css({
+  variants: {
+    padding: {
+      none: {
+        padding: '0',
+      },
+      xs: {
+        padding: '$xs',
+      },
+      sm: {
+        padding: '$sm',
+      },
+      md: {
+        padding: '$md',
+      },
+      lg: {
+        padding: '$lg',
+      },
+      xl: {
+        padding: '$xl',
+      },
+    },
+  },
+});*/
+
+export const paddingStyles = {
+  padding: {
+    none: {
+      padding: '0',
+    },
+    xs: {
+      padding: '$xs',
+    },
+    sm: {
+      padding: '$sm',
+    },
+    md: {
+      padding: '$md',
+    },
+    lg: {
+      padding: '$lg',
+    },
+    xl: {
+      padding: '$xl',
+    },
+    '2xl': {
+      padding: '$2xl',
+    },
+  },
+
+  paddingRight: {
+    none: {
+      paddingRight: '0',
+    },
+    xs: {
+      paddingRight: '$xs',
+    },
+    sm: {
+      paddingRight: '$sm',
+    },
+    md: {
+      paddingRight: '$md',
+    },
+    lg: {
+      paddingRight: '$lg',
+    },
+    xl: {
+      paddingRight: '$xl',
+    },
+    '2xl': {
+      paddingRight: '$2xl',
+    },
+  },
+
+  paddingLeft: {
+    none: {
+      paddingLeft: '0',
+    },
+    xs: {
+      paddingLeft: '$xs',
+    },
+    sm: {
+      paddingLeft: '$sm',
+    },
+    md: {
+      paddingLeft: '$md',
+    },
+    lg: {
+      paddingLeft: '$lg',
+    },
+    xl: {
+      paddingLeft: '$xl',
+    },
+    '2xl': {
+      paddingLeft: '$2xl',
+    },
+  },
+} as const;

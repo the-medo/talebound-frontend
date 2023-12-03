@@ -8,9 +8,12 @@ import {
   getAspectDiamondPosition,
 } from './utilsAspectDiamond';
 import { AspectDiamondText } from './AspectDiamondText';
+import { ModuleData } from './utilsAspectBox';
+import Link from 'next/link';
 
-interface AspectDiamondProps {
-  imgIdx?: number;
+type MarkerType = ModuleData['marker'][number];
+
+interface AspectDiamondProps extends MarkerType {
   text?: string;
   index: number;
   totalCount: number;
@@ -25,6 +28,10 @@ const AspectDiamond: React.FC<AspectDiamondProps> = ({
   totalCount,
   x,
   y,
+  avatarUrl,
+  linkUrl,
+  name,
+  entityId,
 }) => {
   return (
     <AspectDiamondWrapper
@@ -35,11 +42,14 @@ const AspectDiamond: React.FC<AspectDiamondProps> = ({
       text={!!text}
     >
       {!text && (
-        <AspectDiamondIcon
-          large={totalCount === 1}
-          src={ASPECT_DIAMOND_TEMP_IMAGES[imgIdx]}
-          alt={'Marker'}
-        />
+        <Link href={linkUrl ?? `/worlds`}>
+          <AspectDiamondIcon
+            large={totalCount === 1}
+            src={avatarUrl ?? ASPECT_DIAMOND_TEMP_IMAGES[imgIdx]}
+            alt={'Marker'}
+            title={`${name} #${entityId}`}
+          />
+        </Link>
       )}
       {text && <AspectDiamondText>{text}</AspectDiamondText>}
     </AspectDiamondWrapper>

@@ -13,8 +13,9 @@ import {
   PbCreatePostRequest,
   PbDeletePostResponse,
   PbGetPostHistoryResponse,
-  PbHistoryPost,
+  PbGetPostsResponse,
   PbPost,
+  PbPostHistory,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
@@ -27,16 +28,50 @@ export class Posts<SecurityDataType = unknown> {
   }
 
   /**
+   * @description returns posts based on module
+   *
+   * @tags Posts
+   * @name PostsGetPosts
+   * @summary Get posts
+   * @request GET:/posts
+   * @response `200` `PbGetPostsResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  postsGetPosts = (
+    query?: {
+      /** @format int32 */
+      moduleId?: number;
+      /** @format int32 */
+      userId?: number;
+      tags?: number[];
+      orderBy?: string;
+      isDraft?: boolean;
+      isPrivate?: boolean;
+      /** @format int32 */
+      limit?: number;
+      /** @format int32 */
+      offset?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbGetPostsResponse, RpcStatus>({
+      path: `/posts`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description create completely new post
    *
-   * @tags Talebound
-   * @name TaleboundCreatePost
+   * @tags Posts
+   * @name PostsCreatePost
    * @summary Create post
    * @request POST:/posts
    * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundCreatePost = (body: PbCreatePostRequest, params: RequestParams = {}) =>
+  postsCreatePost = (body: PbCreatePostRequest, params: RequestParams = {}) =>
     this.http.request<PbPost, RpcStatus>({
       path: `/posts`,
       method: 'POST',
@@ -48,14 +83,14 @@ export class Posts<SecurityDataType = unknown> {
   /**
    * @description get content of post by its ID
    *
-   * @tags Talebound
-   * @name TaleboundGetPostById
+   * @tags Posts
+   * @name PostsGetPostById
    * @summary Get post by id
    * @request GET:/posts/{postId}
    * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetPostById = (postId: number, params: RequestParams = {}) =>
+  postsGetPostById = (postId: number, params: RequestParams = {}) =>
     this.http.request<PbPost, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'GET',
@@ -65,14 +100,14 @@ export class Posts<SecurityDataType = unknown> {
   /**
    * @description deletes post
    *
-   * @tags Talebound
-   * @name TaleboundDeletePost
+   * @tags Posts
+   * @name PostsDeletePost
    * @summary Delete post
    * @request DELETE:/posts/{postId}
    * @response `200` `PbDeletePostResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundDeletePost = (postId: number, params: RequestParams = {}) =>
+  postsDeletePost = (postId: number, params: RequestParams = {}) =>
     this.http.request<PbDeletePostResponse, RpcStatus>({
       path: `/posts/${postId}`,
       method: 'DELETE',
@@ -82,22 +117,23 @@ export class Posts<SecurityDataType = unknown> {
   /**
    * @description update title or content of the post
    *
-   * @tags Talebound
-   * @name TaleboundUpdatePost
+   * @tags Posts
+   * @name PostsUpdatePost
    * @summary Update post
    * @request PATCH:/posts/{postId}
    * @response `200` `PbPost` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundUpdatePost = (
+  postsUpdatePost = (
     postId: number,
     body: {
       title?: string;
       content?: string;
-      /** @format int32 */
-      postTypeId?: number;
+      description?: string;
       isDraft?: boolean;
       isPrivate?: boolean;
+      /** @format int32 */
+      imageThumbnailId?: number;
     },
     params: RequestParams = {},
   ) =>
@@ -112,14 +148,14 @@ export class Posts<SecurityDataType = unknown> {
   /**
    * @description get list of history changes of post by its ID - without content
    *
-   * @tags Talebound
-   * @name TaleboundGetPostHistory
+   * @tags Posts
+   * @name PostsGetPostHistory
    * @summary Get post history
    * @request GET:/posts/{postId}/history
    * @response `200` `PbGetPostHistoryResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetPostHistory = (postId: number, params: RequestParams = {}) =>
+  postsGetPostHistory = (postId: number, params: RequestParams = {}) =>
     this.http.request<PbGetPostHistoryResponse, RpcStatus>({
       path: `/posts/${postId}/history`,
       method: 'GET',
@@ -129,19 +165,15 @@ export class Posts<SecurityDataType = unknown> {
   /**
    * @description get content of single update iteration of post
    *
-   * @tags Talebound
-   * @name TaleboundGetPostHistoryById
+   * @tags Posts
+   * @name PostsGetPostHistoryById
    * @summary Get post history content
    * @request GET:/posts/{postId}/history/{postHistoryId}/content
-   * @response `200` `PbHistoryPost` A successful response.
+   * @response `200` `PbPostHistory` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  taleboundGetPostHistoryById = (
-    postId: number,
-    postHistoryId: number,
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbHistoryPost, RpcStatus>({
+  postsGetPostHistoryById = (postId: number, postHistoryId: number, params: RequestParams = {}) =>
+    this.http.request<PbPostHistory, RpcStatus>({
       path: `/posts/${postId}/history/${postHistoryId}/content`,
       method: 'GET',
       format: 'json',

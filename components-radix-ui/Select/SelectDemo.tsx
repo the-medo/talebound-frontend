@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Select from '@radix-ui/react-select';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectContent } from './SelectContent';
 import { SelectViewport } from './SelectViewport';

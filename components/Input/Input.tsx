@@ -1,5 +1,5 @@
 import { styled } from '../../styles/stitches.config';
-import React, { useMemo } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import Stitches from '@stitches/react';
 import { Col, Flex } from '../Flex/Flex';
 import { Label } from '../Typography/Label';
@@ -15,10 +15,18 @@ export const StyledInput = styled('input', {
   transition: 'all 0.2s ease-in-out',
   color: '$primary900',
   border: '1px solid transparent',
+  backgroundColor: '$white200',
 
   '&:focus': {
     outline: 'none',
     boxShadow: '$md',
+    backgroundColor: '$white100',
+  },
+
+  '&:disabled': {
+    opacity: 0.7,
+    backgroundColor: '$white300',
+    cursor: 'not-allowed',
   },
 
   variants: {
@@ -40,10 +48,22 @@ export const StyledInput = styled('input', {
       },
       white: {
         borderColor: '$primary300',
-        backgroundColor: '$white200',
         '&:focus': {
           border: '1px solid $primary500',
-          backgroundColor: '$white100',
+        },
+      },
+      info: {
+        borderColor: '$info400',
+        color: '$info700',
+        '&:focus': {
+          border: '1px solid $info500',
+        },
+      },
+      error: {
+        borderColor: '$danger400',
+        color: '$danger700',
+        '&:focus': {
+          border: '1px solid $danger500',
         },
       },
     },
@@ -60,39 +80,56 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
   id: string;
   label?: string;
   labelDirection?: 'row' | 'column';
+  displayHelpers?: boolean;
   helperText?: string;
   helperType?: HelperType;
 }
 
-const Input: React.FC<InputProps> = ({
-  id,
-  label,
-  labelDirection = 'column',
-  helperText,
-  helperType,
-  ...otherProps
-}) => {
-  const labelId = `${id}-label`;
-  const helperId = `${id}-helper`;
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      id,
+      label,
+      labelDirection = 'column',
+      displayHelpers = true,
+      helperText,
+      helperType,
+      ...otherProps
+    },
+    ref,
+  ) => {
+    const labelId = `${id}-label`;
+    const helperId = `${id}-helper`;
 
-  const input = useMemo(
-    () => (
-      <StyledInput aria-labelledby={`${labelId} ${helperId}`} id={id} name={id} {...otherProps} />
-    ),
-    [helperId, id, labelId, otherProps],
-  );
+    const input = useMemo(
+      () => (
+        <StyledInput
+          aria-labelledby={`${labelId} ${helperId}`}
+          id={id}
+          name={id}
+          ref={ref}
+          {...otherProps}
+        />
+      ),
+      [helperId, id, labelId, otherProps, ref],
+    );
 
-  return (
-    <Col alignItems="end" fullWidth gap="xs">
-      <Flex gap="xs" fullWidth direction={labelDirection}>
-        {label && <Label id={labelId}>{label}</Label>}
-        {input}
-      </Flex>
-      <Text color={helperType} size="xs" id={helperId}>
-        &nbsp;{helperText}
-      </Text>
-    </Col>
-  );
-};
+    return (
+      <Col alignItems="end" fullWidth gap="xs">
+        <Flex gap="xs" fullWidth direction={labelDirection}>
+          {label && <Label id={labelId}>{label}</Label>}
+          {input}
+        </Flex>
+        {displayHelpers && (
+          <Text color={helperType} size="xs" id={helperId}>
+            &nbsp;{helperText}
+          </Text>
+        )}
+      </Col>
+    );
+  },
+);
+
+Input.displayName = 'Input';
 
 export default Input;

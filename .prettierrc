@@ -8,5 +8,13 @@
   "singleQuote": true,
   "jsxSingleQuote": false,
   "bracketSpacing": true,
-  "jsxBracketSameLine": false
+  "jsxBracketSameLine": false,
+  "overrides": [
+    {
+      "files": "*.mdx",
+      "options": {
+        "parser": "mdx"
+      }
+    }
+  ]
 }

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   useResetPasswordVerifyCode,
   useResetPasswordVerifyCodeValidity,
-} from '../api/useResetPassword';
+} from '../api/auth/useResetPassword';
 import { useRouter } from 'next/router';
 import PasswordChangeInputs, {
   PasswordChangeStatus,
@@ -64,8 +64,8 @@ export default function ResetPasswordVerify() {
   }, [secretCode]);
 
   const buttonDisabled = useMemo(
-    () => resetPassword.isLoading || externalButtonDisabled,
-    [resetPassword.isLoading, externalButtonDisabled],
+    () => resetPassword.isPending || externalButtonDisabled,
+    [resetPassword.isPending, externalButtonDisabled],
   );
 
   const submitResetPassword = useCallback(() => {
@@ -80,13 +80,13 @@ export default function ResetPasswordVerify() {
 
   const display: PasswordChangeStatus = useMemo(() => {
     if (resetPassword.isSuccess) return PasswordChangeStatus.PasswordSuccess;
-    if (resetPasswordVerifyCodeValidity.isLoading) return PasswordChangeStatus.CodeVerify;
+    if (resetPasswordVerifyCodeValidity.isPending) return PasswordChangeStatus.CodeVerify;
     if (resetPasswordVerifyCodeValidity.isError || wrongCodeParam || !codeValid)
       return PasswordChangeStatus.CodeInvalid;
     return PasswordChangeStatus.PasswordForm;
   }, [
     resetPassword.isSuccess,
-    resetPasswordVerifyCodeValidity.isLoading,
+    resetPasswordVerifyCodeValidity.isPending,
     resetPasswordVerifyCodeValidity.isError,
     wrongCodeParam,
     codeValid,
@@ -121,7 +121,7 @@ export default function ResetPasswordVerify() {
                 successMessage="Success! You can now sign in."
               />
               <Button disabled={buttonDisabled} onClick={submitResetPassword}>
-                {resetPassword.isLoading ? (
+                {resetPassword.isPending ? (
                   <Loading color="currentColor" size="sm" />
                 ) : (
                   <Text weight="bold" size="lg" color="white">

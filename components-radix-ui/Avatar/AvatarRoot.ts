@@ -39,6 +39,21 @@ export const AvatarRoot = styled(AvatarPrimitive.Root, {
         height: 200,
       },
     },
+
+    clickable: {
+      true: {
+        cursor: 'pointer',
+      },
+      false: {
+        // cursor: 'zoom-in',
+      },
+    },
+
+    loading: {
+      true: {
+        opacity: 0.5,
+      },
+    },
   },
 
   defaultVariants: {

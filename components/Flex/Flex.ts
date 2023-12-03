@@ -1,27 +1,23 @@
-import { styled } from '../../styles/stitches.config';
+import { paddingStyles, styled } from '../../styles/stitches.config';
 
 export const Flex = styled('div', {
   display: 'flex',
   position: 'relative',
 
   variants: {
-    // loading: {
-    //   true: {
-    //     '&:after': {
-    //       content: `Loading`,
-    //       fontSize: '$xl',
-    //       display: 'flex',
-    //       alignItems: 'center',
-    //       justifyContent: 'center',
-    //       position: 'absolute',
-    //       top: '0',
-    //       left: '0',
-    //       width: '100%',
-    //       height: '100%',
-    //       backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    //     },
-    //   },
-    // },
+    ...paddingStyles,
+
+    loading: {
+      true: {
+        opacity: 0.5,
+      },
+    },
+
+    noSelect: {
+      true: {
+        userSelect: 'none',
+      },
+    },
 
     fullWidth: {
       true: {
@@ -47,27 +43,6 @@ export const Flex = styled('div', {
       },
       xl: {
         gap: '$xl',
-      },
-    },
-
-    padding: {
-      none: {
-        gap: '0',
-      },
-      xs: {
-        padding: '$xs',
-      },
-      sm: {
-        padding: '$sm',
-      },
-      md: {
-        padding: '$md',
-      },
-      lg: {
-        padding: '$lg',
-      },
-      xl: {
-        padding: '$xl',
       },
     },
 

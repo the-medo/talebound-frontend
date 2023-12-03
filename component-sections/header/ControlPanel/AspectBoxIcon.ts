@@ -2,7 +2,6 @@ import { styled } from '../../../styles/stitches.config';
 
 const ICON_SIZE = 25;
 const PADDING_SIZE = 3;
-const MENU_HEIGHT = 50;
 
 export const AspectBoxIcon = styled('div', {
   display: 'flex',

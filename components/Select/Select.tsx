@@ -31,6 +31,7 @@ export interface SelectProps
   labelDirection?: 'row' | 'column';
   helperText?: string;
   helperType?: HelperType;
+  noHelper?: boolean;
   placeholder?: string;
   options: SelectOptions;
 
@@ -47,6 +48,7 @@ const Select: React.FC<SelectProps> = ({
   labelDirection = 'column',
   helperText,
   helperType,
+  noHelper = true,
   placeholder,
   options,
 
@@ -135,9 +137,11 @@ const Select: React.FC<SelectProps> = ({
           </SelectPortal>
         </SelectRoot>
       </Flex>
-      <Text color={helperType} size="xs" id={helperId}>
-        &nbsp;{helperText}
-      </Text>
+      {!helperText && !noHelper && (
+        <Text color={helperType} size="xs" id={helperId}>
+          &nbsp;{helperText}
+        </Text>
+      )}
     </Col>
   );
 };

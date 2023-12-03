@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   BsChatSquareQuote,
   BsChevronDown,
@@ -124,13 +124,19 @@ const ToolbarButtonBlockType: React.FC<ToolbarButtonBlockTypeProps> = ({
   blockType,
   editor,
 }) => {
+  useEffect(() => {
+    if (!blockTypeToBlockName[blockType]) {
+      console.error(`Unsupported block type: ${blockType}`);
+    }
+  }, [blockType]);
+
   return (
     <>
       <ToolbarDropdownBlockType
         trigger={
           <ToolbarItemButton disabled={disabled} aria-label="Formatting Options">
-            <IconWrapper>{blockTypeToBlockName[blockType].iconName}</IconWrapper>
-            <TextWrapper>{blockTypeToBlockName[blockType].name}</TextWrapper>
+            <IconWrapper>{blockTypeToBlockName[blockType]?.iconName ?? 'A'}</IconWrapper>
+            <TextWrapper>{blockTypeToBlockName[blockType]?.name ?? 'a'}</TextWrapper>
             <ChevronWrapper>
               <BsChevronDown />
             </ChevronWrapper>

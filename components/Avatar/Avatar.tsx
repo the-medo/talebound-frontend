@@ -3,16 +3,25 @@ import { AvatarRoot } from '../../components-radix-ui/Avatar/AvatarRoot';
 import { AvatarImage } from '../../components-radix-ui/Avatar/AvatarImage';
 import { AvatarFallback } from '../../components-radix-ui/Avatar/AvatarFallback';
 import { AvatarSize, AvatarType, emptyUrlByType } from './avatarLib';
-import { ImageVariant, imageModifyVariant } from '../../utils/images/image_utils';
+import { ImageVariant, imageModifyVariant } from '../../utils/images/imageUtils';
 
-interface AvatarProps {
+export interface AvatarProps {
   url?: string;
+  loading?: boolean;
   type?: AvatarType;
   size?: AvatarSize;
   fallbackText?: string;
+  onClick?: () => void;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ url, type = 'unknown', size = 'lg', fallbackText }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  url,
+  loading,
+  type = 'unknown',
+  size = 'lg',
+  fallbackText,
+  onClick,
+}) => {
   const optimizedUrl = useMemo(() => {
     if (!url) return undefined;
 
@@ -22,15 +31,16 @@ const Avatar: React.FC<AvatarProps> = ({ url, type = 'unknown', size = 'lg', fal
         return imageModifyVariant(url, ImageVariant['30x30']);
       case 'md':
       case 'lg':
-      case 'xl':
         return imageModifyVariant(url, ImageVariant['100x100']);
+      case 'xl':
+        return imageModifyVariant(url, ImageVariant['150x150']);
       case '2xl':
         return imageModifyVariant(url, ImageVariant['200x200']);
     }
   }, [url, size]);
 
   return (
-    <AvatarRoot size={size}>
+    <AvatarRoot clickable={!!onClick} onClick={onClick} size={size} loading={loading}>
       <AvatarImage src={optimizedUrl ?? emptyUrlByType[type]} alt={`Avatar ${fallbackText}`} />
       {fallbackText && <AvatarFallback delayMs={600}>{fallbackText}</AvatarFallback>}
     </AvatarRoot>

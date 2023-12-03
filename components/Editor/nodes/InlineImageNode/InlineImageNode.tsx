@@ -13,7 +13,7 @@ import type {
 import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import * as React from 'react';
 import { Suspense } from 'react';
-import { getImageVariantFromUrl, ImageVariantWidths } from '../../../../utils/images/image_utils';
+import { getImageVariantFromUrl, ImageVariantWidths } from '../../../../utils/images/imageUtils';
 
 const InlineImageComponent = React.lazy(
   () => import('../InlineImageComponent/InlineImageComponent'),

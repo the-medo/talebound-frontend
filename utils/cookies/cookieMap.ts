@@ -4,6 +4,6 @@ enum PossibleCookies {
 }
 
 export type CookieMap = {
-  [PossibleCookies.ACCESS_TOKEN_PRESENT]?: 'true';
-  [PossibleCookies.REFRESH_TOKEN_PRESENT]?: 'true';
+  [PossibleCookies.ACCESS_TOKEN_PRESENT]?: true;
+  [PossibleCookies.REFRESH_TOKEN_PRESENT]?: true;
 };

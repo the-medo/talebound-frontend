@@ -1,10 +1,5 @@
 import * as DialogRadix from '@radix-ui/react-dialog';
 import { styled } from '../../styles/stitches.config';
+import { modalTitleStyles } from '../styles';
 
-export const ModalTitle = styled(DialogRadix.Title, {
-  margin: 0,
-  marginTop: '-10px',
-  fontWeight: 600,
-  color: '$primary800',
-  fontSize: 20,
-});
+export const ModalTitle = styled(DialogRadix.Title, modalTitleStyles);

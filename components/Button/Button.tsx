@@ -1,5 +1,5 @@
 import { styled } from '../../styles/stitches.config';
-import React, { MutableRefObject, PropsWithChildren, useMemo } from 'react';
+import React, { forwardRef, PropsWithChildren, useMemo } from 'react';
 import Stitches from '@stitches/react';
 import Loading from '../Loading/Loading';
 
@@ -18,7 +18,8 @@ const LoadingOverlay = styled('div', {
 
 const StyledButton = styled('button', {
   position: 'relative',
-  display: 'flex',
+  display: 'inline-flex',
+  whiteSpace: 'nowrap',
   alignItems: 'center',
   justifyContent: 'center',
   gap: '$sm',
@@ -212,6 +213,12 @@ const StyledButton = styled('button', {
         color: 'transparent',
       },
     },
+
+    invisible: {
+      true: {
+        visibility: 'hidden',
+      },
+    },
   },
 
   compoundVariants: [
@@ -267,43 +274,41 @@ export interface ButtonProps extends PropsWithChildren, ButtonVariants {
   loading?: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  ref?: MutableRefObject<HTMLButtonElement | null>;
   css?: Stitches.CSS;
+  title?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  children,
-  loading = false,
-  disabled = false,
-  css,
-  ...rest
-}) => {
-  const loadingColor = useMemo(() => {
-    switch (rest.color) {
-      case 'primaryFill':
-      case 'secondaryFill':
-      case 'dangerFill':
-        return 'white';
-      case 'primaryOutline':
-      case 'ghost':
-        return 'primary';
-      case 'secondaryOutline':
-        return 'secondary';
-      case 'dangerOutline':
-        return 'danger';
-      default:
-        return 'white';
-    }
-  }, [rest.color]);
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, loading = false, disabled = false, css, ...rest }, _ref) => {
+    const loadingColor = useMemo(() => {
+      switch (rest.color) {
+        case 'primaryFill':
+        case 'secondaryFill':
+        case 'dangerFill':
+          return 'white';
+        case 'primaryOutline':
+        case 'ghost':
+          return 'primary';
+        case 'secondaryOutline':
+          return 'secondary';
+        case 'dangerOutline':
+          return 'danger';
+        default:
+          return 'white';
+      }
+    }, [rest.color]);
 
-  return (
-    <StyledButton loading={loading} disabled={disabled} css={css} {...rest}>
-      {children}
-      {loading && (
-        <LoadingOverlay>
-          <Loading size="xs" color={loadingColor} />
-        </LoadingOverlay>
-      )}
-    </StyledButton>
-  );
-};
+    return (
+      <StyledButton loading={loading} disabled={disabled} css={css} {...rest}>
+        {children}
+        {loading && (
+          <LoadingOverlay>
+            <Loading size="xs" color={loadingColor} />
+          </LoadingOverlay>
+        )}
+      </StyledButton>
+    );
+  },
+);
+
+Button.displayName = 'Button';

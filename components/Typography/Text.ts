@@ -78,6 +78,12 @@ export const Text = styled('span', {
       },
     },
 
+    u: {
+      true: {
+        textDecoration: 'underline',
+      },
+    },
+
     b: {
       true: {
         fontWeight: '$bold',
