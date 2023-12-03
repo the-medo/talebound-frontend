@@ -1,23 +1,23 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
-import useNumericParam from '../../../../hooks/useNumericParam';
 import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
 import EditModuleMenu from '../../../../screens/worlds/EditWorldMenu/EditModuleMenu';
+import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
 
 const Worlds: React.FC = () => {
-  const worldId = useNumericParam('worldId');
+  const moduleId = useUrlModuleId();
 
   return (
     <>
       <Head>
         <title>Worlds - menu administration</title>
       </Head>
-      {worldId && (
+      {moduleId && (
         <Suspense fallback={null}>
-          <ModuleOpened moduleId={worldId} />
+          <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
-      {worldId && <EditModuleMenu moduleId={worldId} />}
+      {moduleId && <EditModuleMenu moduleId={moduleId} />}
     </>
   );
 };

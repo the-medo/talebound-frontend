@@ -1,23 +1,23 @@
 import React, { PropsWithChildren, Suspense, useMemo } from 'react';
 import Layout from './Layout';
 import LeftNavbarModule from '../LeftNavbar/LeftNavbarModule';
-import useNumericParam from '../../hooks/useNumericParam';
 import ActionBoxModule from '../../screens/worlds/ActionBoxModule';
 import ModuleOpened from '../../screens/worlds/ModuleOpened';
+import { useUrlModuleId } from '../../hooks/useUrlModuleId';
 
 const ModuleLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  const worldId = useNumericParam('worldId') ?? 0;
+  const moduleId = useUrlModuleId();
 
-  const navbar = useMemo(() => <LeftNavbarModule moduleId={worldId} />, [worldId]);
+  const navbar = useMemo(() => <LeftNavbarModule moduleId={moduleId} />, [moduleId]);
 
   return (
     <Layout vertical={true} navbar={navbar}>
-      {worldId && (
+      {moduleId && (
         <Suspense fallback={null}>
-          <ModuleOpened moduleId={worldId} />
+          <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
-      <ActionBoxModule moduleId={worldId} />
+      <ActionBoxModule moduleId={moduleId} />
       {children}
     </Layout>
   );

@@ -1,15 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useModuleRoute } from '../../hooks/useModuleRoute';
-import { PAGE_SIZE_POSTS, useGetPostsByModule } from '../../api/posts/useGetPostsByModule';
+import { PAGE_SIZE_POSTS, useGetPosts } from '../../api/posts/useGetPosts';
 import PostsTable from './PostsTable';
-import { PbEntityType } from '../../generated/api-types/data-contracts';
 
 interface PostListProps {
   canEdit?: boolean;
+  moduleId?: number;
 }
 
-const PostList: React.FC<PostListProps> = ({ canEdit }) => {
-  const [module] = useModuleRoute(PbEntityType.ENTITY_TYPE_POST);
+const PostList: React.FC<PostListProps> = ({ canEdit, moduleId }) => {
   const [openedPage, setOpenedPage] = useState(1);
 
   const {
@@ -17,15 +15,10 @@ const PostList: React.FC<PostListProps> = ({ canEdit }) => {
     isFetching: isFetchingPosts,
     fetchNextPage,
     hasNextPage,
-  } = useGetPostsByModule({ variables: module });
+  } = useGetPosts({ variables: { moduleId } });
 
   const postsData = useMemo(() => {
-    return (
-      postsDataPages?.pages
-        ?.map((page) => page.posts)
-        .flat()
-        .map((p) => p!.post!) ?? []
-    );
+    return postsDataPages?.pages?.map((page) => page.posts!).flat() ?? [];
   }, [postsDataPages]);
 
   useEffect(() => {
@@ -52,7 +45,6 @@ const PostList: React.FC<PostListProps> = ({ canEdit }) => {
       loading={isFetchingPosts}
       data={postsData}
       canEdit={canEdit}
-      module={module}
       onPageChange={onPageChange}
     />
   );

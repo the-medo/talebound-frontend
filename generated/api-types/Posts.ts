@@ -13,7 +13,7 @@ import {
   PbCreatePostRequest,
   PbDeletePostResponse,
   PbGetPostHistoryResponse,
-  PbGetPostsByModuleResponse,
+  PbGetPostsResponse,
   PbPost,
   PbPostHistory,
   RpcStatus,
@@ -31,22 +31,22 @@ export class Posts<SecurityDataType = unknown> {
    * @description returns posts based on module
    *
    * @tags Posts
-   * @name PostsGetPostsByModule
+   * @name PostsGetPosts
    * @summary Get posts
    * @request GET:/posts
-   * @response `200` `PbGetPostsByModuleResponse` A successful response.
+   * @response `200` `PbGetPostsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  postsGetPostsByModule = (
+  postsGetPosts = (
     query?: {
       /** @format int32 */
-      worldId?: number;
+      moduleId?: number;
       /** @format int32 */
-      questId?: number;
-      /** @format int32 */
-      characterId?: number;
-      /** @format int32 */
-      systemId?: number;
+      userId?: number;
+      tags?: number[];
+      orderBy?: string;
+      isDraft?: boolean;
+      isPrivate?: boolean;
       /** @format int32 */
       limit?: number;
       /** @format int32 */
@@ -54,7 +54,7 @@ export class Posts<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbGetPostsByModuleResponse, RpcStatus>({
+    this.http.request<PbGetPostsResponse, RpcStatus>({
       path: `/posts`,
       method: 'GET',
       query: query,

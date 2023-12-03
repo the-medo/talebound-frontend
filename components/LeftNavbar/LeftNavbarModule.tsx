@@ -8,7 +8,7 @@ interface LeftNavbarModuleProps {
 }
 
 const LeftNavbarModule: React.FC<LeftNavbarModuleProps> = ({ moduleId }) => {
-  const { module } = useModule(moduleId);
+  const { module, moduleTypeId, linkPrefix } = useModule(moduleId);
   const menuId = module?.menuId ?? 0;
   const role = useMyModuleRole(moduleId);
 
@@ -18,28 +18,28 @@ const LeftNavbarModule: React.FC<LeftNavbarModuleProps> = ({ moduleId }) => {
         {
           key: 'posts',
           title: 'Posts',
-          url: `/worlds/${moduleId}/posts`,
+          url: `/${linkPrefix}/${moduleTypeId}/posts`,
         },
         {
           key: 'maps',
           title: 'Maps',
-          url: `/worlds/${moduleId}/maps`,
+          url: `/${linkPrefix}/${moduleTypeId}/maps`,
         },
         {
           key: 'locations',
           title: 'Locations',
-          url: `/worlds/${moduleId}/locations`,
+          url: `/${linkPrefix}/${moduleTypeId}/locations`,
         },
       ];
     }
 
     return [];
-  }, [role, moduleId]);
+  }, [role, linkPrefix, moduleTypeId]);
 
   return (
     <Navbar
       menuId={menuId}
-      urlPrefix={`/worlds/${moduleId}/c`}
+      urlPrefix={`/${linkPrefix}/${moduleTypeId}/c`}
       postfixItemsTitle="Admin"
       postfixItems={postfixItems}
     />

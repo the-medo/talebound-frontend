@@ -9,8 +9,9 @@ export const useGetModuleId = createQuery<number, UseGetModuleIdRequest, Talebou
   primaryKey: 'useGetModuleId',
   queryFn: async ({ queryKey: [_, variables] }) => {
     if (typeof variables === 'string') return 0;
-
     const { worldId, systemId, questId, characterId } = variables;
+    if (!worldId && !systemId && !questId && !characterId) return 0;
+
     const mapping = store.getState().mapping;
     let moduleId = 0;
 

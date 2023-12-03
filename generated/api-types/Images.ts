@@ -32,9 +32,15 @@ export class Images<SecurityDataType = unknown> {
   imagesGetImages = (
     query?: {
       /** @format int32 */
-      userId?: number;
+      moduleId?: number;
       /** @format int32 */
-      imageTypeId?: number;
+      userId?: number;
+      tags?: number[];
+      orderBy?: string;
+      /** @format int32 */
+      width?: number;
+      /** @format int32 */
+      height?: number;
       /** @format int32 */
       limit?: number;
       /** @format int32 */

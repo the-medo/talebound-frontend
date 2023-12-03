@@ -1,23 +1,23 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import { ColumnType } from 'antd/es/table';
 import Avatar from '../../components/Avatar/Avatar';
 import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdEdit, MdOpenInNew } from 'react-icons/md';
-import { PbDataPost, PbModule } from '../../generated/api-types/data-contracts';
+import { PbPost } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
 import PostFormModal from './PostFormModal';
-import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPostsByModule';
+import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPosts';
 import { formatDate } from '../../utils/functions/formatDate';
 import PostDetailModal from './PostDetailModal';
+import AvatarById from '../../components/AvatarById/AvatarById';
 
 interface PostsTableProps {
-  data: PbDataPost[];
+  data: PbPost[];
   totalCount: number;
   canEdit?: boolean;
   loading?: boolean;
-  module: PbModule;
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
   onPageChange: (page: number, pageSize: number) => void;
@@ -27,14 +27,13 @@ const PostsTable: React.FC<PostsTableProps> = ({
   data,
   totalCount,
   canEdit,
-  module,
   loading,
   isSelectionTable = false,
   isSelectionMultiple = false,
   onPageChange,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [updatePost, setUpdatePost] = useState<PbDataPost>();
+  const [updatePost, setUpdatePost] = useState<PbPost>();
   const [detailModalPostId, setDetailModalPostId] = useState<number>();
 
   canEdit = canEdit && !isSelectionTable;
@@ -47,7 +46,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
     setSelectedRowKeys(newSelectedRowKeys);
   }, []);
 
-  const rowSelection: TableProps<PbDataPost>['rowSelection'] = useMemo(
+  const rowSelection: TableProps<PbPost>['rowSelection'] = useMemo(
     () =>
       canEdit || isSelectionTable
         ? {
@@ -59,10 +58,10 @@ const PostsTable: React.FC<PostsTableProps> = ({
     [canEdit, selectedRowKeys, onSelectChange, isSelectionTable, isSelectionMultiple],
   );
 
-  const openEditModal = useCallback((record: PbDataPost) => setUpdatePost(record), []);
+  const openEditModal = useCallback((record: PbPost) => setUpdatePost(record), []);
 
   const actionButtons = useCallback(
-    (record: PbDataPost) => {
+    (record: PbPost) => {
       const updateHandler = () => openEditModal(record);
 
       return (
@@ -76,7 +75,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
     [openEditModal],
   );
 
-  const openPostModalButtons = useCallback((record: PbDataPost) => {
+  const openPostModalButtons = useCallback((record: PbPost) => {
     const openHandler = () => setDetailModalPostId(record.id!);
 
     return (
@@ -86,13 +85,17 @@ const PostsTable: React.FC<PostsTableProps> = ({
     );
   }, []);
 
-  const columns: ColumnType<PbDataPost>[] = useMemo(() => {
-    const cols: ColumnType<PbDataPost>[] = [
+  const columns: ColumnType<PbPost>[] = useMemo(() => {
+    const cols: ColumnType<PbPost>[] = [
       {
         title: '',
-        key: 'imageThumbnailUrl',
-        dataIndex: 'imageThumbnailUrl',
-        render: (value: string) => <Avatar size="md" url={value} />,
+        key: 'imageThumbnailId',
+        dataIndex: 'imageThumbnailId',
+        render: (value: number) => (
+          <Suspense fallback={null}>
+            <AvatarById size="md" imageId={value} />
+          </Suspense>
+        ),
         width: '40px',
       },
       {
@@ -146,8 +149,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
     return cols;
   }, [canEdit, actionButtons, openPostModalButtons]);
 
-  const onRow: TableProps<PbDataPost>['onRow'] = useCallback(
-    (record: PbDataPost) => {
+  const onRow: TableProps<PbPost>['onRow'] = useCallback(
+    (record: PbPost) => {
       if (!isSelectionTable) return {};
 
       return {
@@ -174,7 +177,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
   return (
     <>
       <Col fullWidth>
-        <Table<PbDataPost>
+        <Table<PbPost>
           loading={loading}
           rowSelection={rowSelection}
           pagination={paginationConfig}
@@ -188,7 +191,6 @@ const PostsTable: React.FC<PostsTableProps> = ({
       </Col>
       {/*<ErrorText error={errorDelete} />*/}
       <PostFormModal
-        module={module}
         trigger={undefined}
         post={updatePost}
         open={!!updatePost}

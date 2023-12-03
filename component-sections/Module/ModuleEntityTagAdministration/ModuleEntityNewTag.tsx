@@ -1,7 +1,6 @@
-import React, { KeyboardEventHandler, useCallback, useEffect } from 'react';
+import React, { KeyboardEventHandler, useCallback } from 'react';
 import { Row } from '../../../components/Flex/Flex';
 import Input from '../../../components/Input/Input';
-import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Button } from '../../../components/Button/Button';
 import { useInput } from '../../../hooks/useInput';
 import ErrorText from '../../../components/ErrorText/ErrorText';
@@ -12,16 +11,9 @@ interface ModuleEntityNewTagProps {
 }
 
 const ModuleEntityNewTag: React.FC<ModuleEntityNewTagProps> = ({ moduleId }) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
   const { value: tagValue, onChange: onChangeTag, setValue: setTagValue } = useInput<string>('');
 
   const { mutate: createNewTag, isPending, error } = useCreateModuleEntityAvailableTag();
-
-  useEffect(() => {
-    if (!isPending) {
-      inputRef.current?.focus();
-    }
-  }, [isPending]);
 
   const handleNewTag = useCallback(() => {
     createNewTag(
@@ -56,7 +48,6 @@ const ModuleEntityNewTag: React.FC<ModuleEntityNewTagProps> = ({ moduleId }) => 
           value={tagValue}
           onChange={onChangeTag}
           onKeyDown={handleKeyDown}
-          ref={inputRef}
           displayHelpers={false}
         />
         <Button loading={isPending} onClick={handleNewTag}>

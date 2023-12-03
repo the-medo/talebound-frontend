@@ -5,7 +5,7 @@ import { AvatarFallback } from '../../components-radix-ui/Avatar/AvatarFallback'
 import { AvatarSize, AvatarType, emptyUrlByType } from './avatarLib';
 import { ImageVariant, imageModifyVariant } from '../../utils/images/imageUtils';
 
-interface AvatarProps {
+export interface AvatarProps {
   url?: string;
   loading?: boolean;
   type?: AvatarType;

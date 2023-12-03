@@ -5,8 +5,8 @@ import { TaleboundError } from '../utils/types/error';
 
 interface UseModuleResponse {
   module: PbViewModule | undefined;
-  moduleTypeId: number;
-  linkPrefix: string;
+  moduleTypeId: number | undefined;
+  linkPrefix: string | undefined;
   isFetching: boolean;
   error: TaleboundError | null;
 }
@@ -15,6 +15,7 @@ export const useModule = (moduleId: number): UseModuleResponse => {
   const { data: module, isFetching, error } = useGetModuleById({ variables: moduleId });
 
   const moduleTypeId = useMemo(() => {
+    if (!module?.moduleType) return undefined;
     switch (module?.moduleType) {
       case PbModuleType.MODULE_TYPE_WORLD:
         return module?.worldId ?? 0;
@@ -24,6 +25,7 @@ export const useModule = (moduleId: number): UseModuleResponse => {
   }, [module?.moduleType, module?.worldId]);
 
   const linkPrefix = useMemo(() => {
+    if (!module?.moduleType) return undefined;
     switch (module?.moduleType) {
       case PbModuleType.MODULE_TYPE_WORLD:
         return 'worlds';

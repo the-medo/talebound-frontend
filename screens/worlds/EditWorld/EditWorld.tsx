@@ -32,7 +32,7 @@ interface EditWorldProps {
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { world, module, moduleId } = useWorld(worldId);
-  const role = useMyModuleRole(worldId);
+  const role = useMyModuleRole(moduleId);
   const updateWorldMutation = useUpdateWorld();
   const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 
@@ -213,7 +213,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           </Col>
         </Row>
       </Layout>
-      <ActionBoxModule moduleId={worldId} activeButton="edit" />
+      <ActionBoxModule moduleId={moduleId} activeButton="edit" />
     </>
   );
 };

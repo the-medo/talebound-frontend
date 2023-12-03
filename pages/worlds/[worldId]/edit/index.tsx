@@ -3,8 +3,10 @@ import Head from 'next/head';
 import EditWorld from '../../../../screens/worlds/EditWorld/EditWorld';
 import useNumericParam from '../../../../hooks/useNumericParam';
 import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
+import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
 
 const Worlds: React.FC = () => {
+  const moduleId = useUrlModuleId();
   const worldId = useNumericParam('worldId');
 
   return (
@@ -14,7 +16,7 @@ const Worlds: React.FC = () => {
       </Head>
       {worldId && (
         <Suspense fallback={null}>
-          <ModuleOpened moduleId={worldId} />
+          <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
       {worldId && (

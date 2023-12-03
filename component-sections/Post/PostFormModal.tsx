@@ -1,24 +1,23 @@
 import React, { useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
-import { PbDataPost, PbModule } from '../../generated/api-types/data-contracts';
+import { PbPost } from '../../generated/api-types/data-contracts';
 import PostForm from './PostForm';
 
 interface PostFormModalProps {
-  module: PbModule;
-  post?: PbDataPost;
+  post?: PbPost;
   trigger: React.ReactNode;
   open?: boolean;
   setOpen: (v: boolean) => void;
 }
 
-const PostFormModal: React.FC<PostFormModalProps> = ({ module, post, trigger, open, setOpen }) => {
+const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setOpen }) => {
   const onFinishCallback = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
 
   const content = useMemo(
-    () => <PostForm post={post} module={module} onFinishCallback={onFinishCallback} />,
-    [post, onFinishCallback, module],
+    () => <PostForm post={post} onFinishCallback={onFinishCallback} />,
+    [post, onFinishCallback],
   );
 
   return (

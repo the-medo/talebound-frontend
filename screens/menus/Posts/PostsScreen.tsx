@@ -14,7 +14,6 @@ interface PostsScreenProps {
 }
 
 const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
-  const [module] = useModuleRoute(PbEntityType.ENTITY_TYPE_POST);
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);
@@ -37,7 +36,6 @@ const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
             {canEdit && (
               <Row gap="md">
                 <PostFormModal
-                  module={module}
                   trigger={modalTriggerCreate}
                   open={createModal}
                   setOpen={setCreateModal}

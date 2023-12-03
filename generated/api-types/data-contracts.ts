@@ -310,8 +310,8 @@ export interface PbGetPostHistoryResponse {
   historyPosts?: PbPostHistory[];
 }
 
-export interface PbGetPostsByModuleResponse {
-  posts?: PbViewPost[];
+export interface PbGetPostsResponse {
+  posts?: PbPost[];
   /** @format int32 */
   totalCount?: number;
 }

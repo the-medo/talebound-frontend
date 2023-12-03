@@ -21,7 +21,7 @@ interface DetailWorldProps {
 }
 
 const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
-  const { world, module } = useWorld(worldId);
+  const { world, module, moduleId } = useWorld(worldId);
 
   const navbar = useMemo(() => <LeftNavbarModule moduleId={worldId} />, [worldId]);
 
@@ -31,11 +31,9 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
 
   const { image: thumbnailImg } = useImage(module?.thumbnailImgId ?? 0);
 
-  console.log('module', module, thumbnailImg);
-
   return (
     <Layout vertical={true} navbar={navbar}>
-      <ActionBoxModule moduleId={worldId} activeButton="edit" />
+      <ActionBoxModule moduleId={moduleId} activeButton="edit" />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
           <ContentSection flexWrap="wrap" direction="column" cornerImage={thumbnailImg?.url}>
