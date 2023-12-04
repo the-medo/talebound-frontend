@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import ActionBoxModule from '../ActionBoxModule';
 import Layout from '../../../components/Layout/Layout';
 import MenuAdministration from '../../menus/MenuAdministration/MenuAdministration';
@@ -18,7 +18,14 @@ const EditModuleMenu: React.FC<EditModuleMenuProps> = ({ moduleId }) => {
   const { module } = useModule(moduleId);
   const menuId = module?.menuId ?? 0;
 
-  const navbar = useMemo(() => <LeftNavbarModule moduleId={moduleId} />, [moduleId]);
+  const navbar = useMemo(
+    () => (
+      <Suspense fallback={null}>
+        <LeftNavbarModule moduleId={moduleId} />
+      </Suspense>
+    ),
+    [moduleId],
+  );
 
   return (
     <>

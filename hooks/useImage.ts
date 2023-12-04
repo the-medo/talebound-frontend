@@ -2,6 +2,8 @@ import { PbImage } from '../generated/api-types/data-contracts';
 import { useMemo } from 'react';
 import { TaleboundError } from '../utils/types/error';
 import { useGetImageById } from '../api/images/useGetImageById';
+import { useSelector } from 'react-redux';
+import { imageSelectors } from '../adapters/ImageAdapter';
 
 interface UseImageResponse {
   image: PbImage | undefined;
@@ -10,7 +12,8 @@ interface UseImageResponse {
 }
 
 export const useImage = (imageId: number | undefined): UseImageResponse => {
-  const { data: image, isFetching, error } = useGetImageById({ variables: imageId });
+  const { isFetching, error } = useGetImageById({ variables: imageId });
+  const image = useSelector((state) => imageSelectors.selectById(state, imageId ?? 0));
 
   return useMemo(
     () => ({

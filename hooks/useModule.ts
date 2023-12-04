@@ -2,6 +2,8 @@ import { PbModuleType, PbViewModule } from '../generated/api-types/data-contract
 import { useMemo } from 'react';
 import { useGetModuleById } from '../api/modules/useGetModuleById';
 import { TaleboundError } from '../utils/types/error';
+import { useSelector } from 'react-redux';
+import { moduleSelectors } from '../adapters/ModuleAdapter';
 
 interface UseModuleResponse {
   module: PbViewModule | undefined;
@@ -12,7 +14,8 @@ interface UseModuleResponse {
 }
 
 export const useModule = (moduleId: number): UseModuleResponse => {
-  const { data: module, isFetching, error } = useGetModuleById({ variables: moduleId });
+  const { isFetching, error } = useGetModuleById({ variables: moduleId });
+  const module = useSelector((state) => moduleSelectors.selectById(state, moduleId));
 
   const moduleTypeId = useMemo(() => {
     if (!module?.moduleType) return undefined;

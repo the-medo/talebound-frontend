@@ -14,7 +14,7 @@ const Worlds: React.FC = () => {
       <Head>
         <title>World detail</title>
       </Head>
-      {worldId && (
+      {moduleId && (
         <Suspense fallback={null}>
           <ModuleOpened moduleId={moduleId} />
         </Suspense>

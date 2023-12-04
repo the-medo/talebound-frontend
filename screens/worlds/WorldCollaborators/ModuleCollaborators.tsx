@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import ActionBoxModule from '../ActionBoxModule';
 import Layout from '../../../components/Layout/Layout';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -16,11 +16,20 @@ interface ModuleCollaboratorsProps {
 
 const ModuleCollaborators: React.FC<ModuleCollaboratorsProps> = ({ moduleId }) => {
   const { module } = useModule(moduleId);
-  const navbar = useMemo(() => <LeftNavbarModule moduleId={moduleId} />, [moduleId]);
+  const navbar = useMemo(
+    () => (
+      <Suspense fallback={null}>
+        <LeftNavbarModule moduleId={moduleId} />
+      </Suspense>
+    ),
+    [moduleId],
+  );
 
   return (
     <>
-      <ActionBoxModule moduleId={moduleId} activeButton="collaborators" />
+      <Suspense fallback={null}>
+        <ActionBoxModule moduleId={moduleId} activeButton="collaborators" />
+      </Suspense>
       <Layout vertical={true} navbar={navbar}>
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>

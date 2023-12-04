@@ -2,6 +2,8 @@ import { PbModuleType, PbViewModule, PbWorld } from '../generated/api-types/data
 import { useMemo } from 'react';
 import { useGetModuleById } from '../api/modules/useGetModuleById';
 import { useGetWorldById } from '../api/worlds/useGetWorldById';
+import { useSelector } from 'react-redux';
+import { moduleSelectors } from '../adapters/ModuleAdapter';
 
 const urlParts: Record<PbModuleType, string> = {
   [PbModuleType.MODULE_TYPE_WORLD]: 'worlds',
@@ -20,7 +22,8 @@ interface UseModuleExtendedResponse {
 }
 
 export const useModuleExtended = (moduleId: number): UseModuleExtendedResponse => {
-  const { data: module } = useGetModuleById({ variables: moduleId });
+  useGetModuleById({ variables: moduleId });
+  const module = useSelector((state) => moduleSelectors.selectById(state, moduleId));
   const { data: world } = useGetWorldById({ variables: module?.worldId ?? 0 });
 
   return useMemo(

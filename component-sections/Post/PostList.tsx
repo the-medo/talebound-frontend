@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { PAGE_SIZE_POSTS, useGetPosts } from '../../api/posts/useGetPosts';
 import PostsTable from './PostsTable';
+import { selectPostsByIds } from '../../adapters/PostAdapter';
+import { ReduxState } from '../../store';
+import { PbPost } from '../../generated/api-types/data-contracts';
+import { useSelector } from 'react-redux';
 
 interface PostListProps {
   canEdit?: boolean;
@@ -17,9 +21,17 @@ const PostList: React.FC<PostListProps> = ({ canEdit, moduleId }) => {
     hasNextPage,
   } = useGetPosts({ variables: { moduleId } });
 
-  const postsData = useMemo(() => {
-    return postsDataPages?.pages?.map((page) => page.posts!).flat() ?? [];
-  }, [postsDataPages]);
+  const postIds = useMemo(
+    () => postsDataPages?.pages?.map((page) => page.postIds ?? []).flat() ?? [],
+    [postsDataPages],
+  );
+
+  const postsData = useSelector(
+    (state: ReduxState) => {
+      return selectPostsByIds(state, postIds).filter((post): post is PbPost => Boolean(post));
+    },
+    [postIds],
+  );
 
   useEffect(() => {
     if (

@@ -8,7 +8,14 @@ import { useUrlModuleId } from '../../hooks/useUrlModuleId';
 const ModuleLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const moduleId = useUrlModuleId();
 
-  const navbar = useMemo(() => <LeftNavbarModule moduleId={moduleId} />, [moduleId]);
+  const navbar = useMemo(
+    () => (
+      <Suspense fallback={null}>
+        <LeftNavbarModule moduleId={moduleId} />
+      </Suspense>
+    ),
+    [moduleId],
+  );
 
   return (
     <Layout vertical={true} navbar={navbar}>
@@ -17,7 +24,9 @@ const ModuleLayout: React.FC<PropsWithChildren> = ({ children }) => {
           <ModuleOpened moduleId={moduleId} />
         </Suspense>
       )}
-      <ActionBoxModule moduleId={moduleId} />
+      <Suspense fallback={null}>
+        <ActionBoxModule moduleId={moduleId} />
+      </Suspense>
       {children}
     </Layout>
   );

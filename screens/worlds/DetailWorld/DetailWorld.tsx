@@ -23,7 +23,14 @@ interface DetailWorldProps {
 const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
   const { world, module, moduleId } = useWorld(worldId);
 
-  const navbar = useMemo(() => <LeftNavbarModule moduleId={worldId} />, [worldId]);
+  const navbar = useMemo(
+    () => (
+      <Suspense fallback={null}>
+        <LeftNavbarModule moduleId={moduleId} />
+      </Suspense>
+    ),
+    [moduleId],
+  );
 
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
