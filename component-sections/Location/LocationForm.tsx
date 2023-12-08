@@ -102,7 +102,6 @@ const LocationForm: React.FC<LocationFormProps> = ({
         //create
         createLocation(
           {
-            module,
             ...body,
           },
           options,

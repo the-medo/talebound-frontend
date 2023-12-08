@@ -14,7 +14,6 @@ import {
   PbCreateWorldResponse,
   PbGetWorldsResponse,
   PbImage,
-  PbPost,
   PbWorld,
   RpcStatus,
 } from './data-contracts';
@@ -109,8 +108,6 @@ export class Worlds<SecurityDataType = unknown> {
       shortDescription?: string;
       public?: boolean;
       basedOn?: string;
-      /** @format int32 */
-      descriptionPostId?: number;
     },
     params: RequestParams = {},
   ) =>
@@ -145,31 +142,6 @@ export class Worlds<SecurityDataType = unknown> {
     this.http.request<PbImage, RpcStatus>({
       path: `/worlds/${worldId}/images`,
       method: 'POST',
-      body: body,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description creates/updates world introduction
-   *
-   * @tags Worlds
-   * @name WorldsUpdateWorldIntroduction
-   * @summary Update world introduction
-   * @request PATCH:/worlds/{worldId}/introduction
-   * @response `200` `PbPost` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  worldsUpdateWorldIntroduction = (
-    worldId: number,
-    body: {
-      content?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbPost, RpcStatus>({
-      path: `/worlds/${worldId}/introduction`,
-      method: 'PATCH',
       body: body,
       type: ContentType.Json,
       format: 'json',

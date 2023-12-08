@@ -276,14 +276,6 @@ export interface PbGetMenuItemContentResponse {
   entityList?: PbEntityList;
 }
 
-export interface PbGetMenuItemPostsByMenuIdResponse {
-  menuItemPosts?: PbMenuItemPost[];
-}
-
-export interface PbGetMenuItemPostsResponse {
-  menuItemPosts?: PbMenuItemPost[];
-}
-
 export interface PbGetMenuItemsResponse {
   menuItems?: PbMenuItem[];
 }
@@ -427,16 +419,6 @@ export interface PbMenuItem {
   descriptionPostId?: number;
   /** @format int32 */
   entityGroupId?: number;
-}
-
-export interface PbMenuItemPost {
-  /** @format int32 */
-  menuItemId?: number;
-  /** @format int32 */
-  postId?: number;
-  /** @format int32 */
-  position?: number;
-  post?: PbPost;
 }
 
 export interface PbModuleAdmin {
@@ -605,10 +587,6 @@ export interface PbTag {
 
 export interface PbUpdateMapPinTypeResponse {
   pinType?: PbMapPinType;
-}
-
-export interface PbUpdateMenuPostsResponse {
-  menuItemPosts?: PbMenuItemPost[];
 }
 
 export interface PbUpdateUserRequest {
@@ -814,6 +792,8 @@ export interface PbViewModule {
   thumbnailImgId?: number;
   /** @format int32 */
   avatarImgId?: number;
+  /** @format int32 */
+  descriptionPostId?: number;
   tags?: number[];
 }
 
@@ -866,8 +846,6 @@ export interface PbWorld {
   createdAt?: string;
   basedOn?: string;
   shortDescription?: string;
-  /** @format int32 */
-  descriptionPostId?: number;
 }
 
 export interface ProtobufAny {

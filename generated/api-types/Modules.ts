@@ -73,6 +73,38 @@ export class Modules<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description updates module (images and description post id)
+   *
+   * @tags Modules
+   * @name ModulesUpdateModule
+   * @summary Update module
+   * @request PATCH:/modules/{moduleId}
+   * @response `200` `PbViewModule` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  modulesUpdateModule = (
+    moduleId: number,
+    body: {
+      /** @format int32 */
+      headerImgId?: number;
+      /** @format int32 */
+      thumbnailImgId?: number;
+      /** @format int32 */
+      avatarImgId?: number;
+      /** @format int32 */
+      descriptionPostId?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbViewModule, RpcStatus>({
+      path: `/modules/${moduleId}`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description returns admins and admin requests for module
    *
    * @tags Modules

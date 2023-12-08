@@ -3,6 +3,8 @@ import { PostsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
 import { useGetPostById } from './useGetPostById';
 import { useGetMenuItemPosts } from '../menus/useGetMenuItemPosts';
+import { store } from '../../store';
+import { postAdapterSlice } from '../../adapters/PostAdapter';
 
 export interface UpdatePostCacheHelper {
   menuId: number;
@@ -26,6 +28,7 @@ export const useUpdatePost = createMutation({
       queryClient.setQueryData<inferData<typeof useGetPostById>>(postQueryKey, () => {
         return data.data;
       });
+      store.dispatch(postAdapterSlice.actions.upsertPost(data.data));
     }
     if (cacheHelper) {
       const getMenuItemPostsQueryKey = useGetMenuItemPosts.getKey({

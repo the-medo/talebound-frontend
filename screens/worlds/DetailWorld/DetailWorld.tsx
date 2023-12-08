@@ -14,7 +14,7 @@ import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { useWorld } from '../../../hooks/useWorld';
 import { useImage } from '../../../hooks/useImage';
 
-const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
+const ModuleIntroduction = React.lazy(() => import('../ModuleIntroduction/ModuleIntroduction'));
 
 interface DetailWorldProps {
   worldId: number;
@@ -61,7 +61,7 @@ const DetailWorld: React.FC<DetailWorldProps> = ({ worldId }) => {
               </Row>
             </Row>
             <Suspense fallback={<Loading />}>
-              <WorldIntroduction worldId={worldId} postViewOnly={false} />
+              <ModuleIntroduction moduleId={moduleId} postViewOnly={false} />
             </Suspense>
           </ContentSection>
         </Col>

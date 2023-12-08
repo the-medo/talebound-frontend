@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { Label } from '../../../components/Typography/Label';
 import Avatar from '../../../components/Avatar/Avatar';
@@ -12,15 +11,11 @@ import {
   IMAGE_DEFAULT_WORLD_HEADER,
   IMAGE_DEFAULT_WORLD_THUMBNAIL,
 } from '../../../utils/images/imageDefaultUrls';
-import { useWorld } from '../../../hooks/useWorld';
 import { useImage } from '../../../hooks/useImage';
+import { useUpdateModule } from '../../../api/modules/useUpdateModule';
+import { useModule } from '../../../hooks/useModule';
 
-interface WorldImagesProps {
-  worldId: number;
-  disabled?: boolean;
-}
-
-const WorldImagesWrapper = styled(Row, {
+const ModuleImagesWrapper = styled(Row, {
   defaultVariants: {
     gap: 'md',
     justifyContent: 'between',
@@ -37,10 +32,10 @@ const ImageColWrapper = styled(Col, {
   },
 });
 
-enum WorldImageType {
-  imageThumbnail = 'imageThumbnail',
-  imageAvatar = 'imageAvatar',
-  imageHeader = 'imageHeader',
+enum ModuleImageType {
+  thumbnailImg = 'thumbnailImg',
+  avatarImg = 'avatarImg',
+  headerImg = 'headerImg',
 }
 
 interface ImageTypeInfo {
@@ -48,46 +43,51 @@ interface ImageTypeInfo {
   imageTypeId: number;
 }
 
-const imageTypeInfo: Record<WorldImageType, ImageTypeInfo> = {
-  [WorldImageType.imageThumbnail]: {
-    filename: 'world-thumbnail',
+const imageTypeInfo: Record<ModuleImageType, ImageTypeInfo> = {
+  [ModuleImageType.thumbnailImg]: {
+    filename: 'module-thumbnail',
     imageTypeId: 1200,
   },
-  [WorldImageType.imageAvatar]: {
-    filename: 'world-avatar',
+  [ModuleImageType.avatarImg]: {
+    filename: 'module-avatar',
     imageTypeId: 400,
   },
-  [WorldImageType.imageHeader]: {
-    filename: 'world-header',
+  [ModuleImageType.headerImg]: {
+    filename: 'module-header',
     imageTypeId: 300,
   },
 };
 
-const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
-  const { module } = useWorld(worldId);
+interface ModuleImagesProps {
+  moduleId: number;
+  disabled?: boolean;
+}
+
+const ModuleImages: React.FC<ModuleImagesProps> = ({ moduleId, disabled }) => {
+  const { module } = useModule(moduleId);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [modalType, setModalType] = useState<WorldImageType>(WorldImageType.imageThumbnail);
+  const [modalType, setModalType] = useState<ModuleImageType>(ModuleImageType.thumbnailImg);
 
   const { image: thumbnailImg } = useImage(module?.thumbnailImgId ?? 0);
   const { image: avatarImg } = useImage(module?.avatarImgId ?? 0);
   const { image: headerImg } = useImage(module?.headerImgId ?? 0);
 
-  const updateWorldMutation = useUpdateWorld();
+  const updateModuleMutation = useUpdateModule();
 
-  const changeWorldImage = useCallback(
+  const changeModuleImage = useCallback(
     (image: PbImage) => {
-      updateWorldMutation.mutate({
-        worldId: worldId,
+      updateModuleMutation.mutate({
+        moduleId: moduleId,
         body: {
           [`${modalType}Id`]: image.id,
         },
       });
     },
-    [modalType, updateWorldMutation, worldId],
+    [modalType, updateModuleMutation, moduleId],
   );
 
   const openModal = useCallback(
-    (imageType: WorldImageType) => {
+    (imageType: ModuleImageType) => {
       if (!disabled) {
         setModalType(imageType);
         setShowImageModal(true);
@@ -97,18 +97,18 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
   );
 
   const openModalThumbnail = useCallback(
-    () => openModal(WorldImageType.imageThumbnail),
+    () => openModal(ModuleImageType.thumbnailImg),
     [openModal],
   );
-  const openModalAvatar = useCallback(() => openModal(WorldImageType.imageAvatar), [openModal]);
-  const openModalHeader = useCallback(() => openModal(WorldImageType.imageHeader), [openModal]);
+  const openModalAvatar = useCallback(() => openModal(ModuleImageType.avatarImg), [openModal]);
+  const openModalHeader = useCallback(() => openModal(ModuleImageType.headerImg), [openModal]);
 
   return (
     <>
       <TitleH2 css={{ marginTop: '$lg' }} marginBottom="md">
         Images
       </TitleH2>
-      <WorldImagesWrapper>
+      <ModuleImagesWrapper>
         <ImageColWrapper>
           <Avatar
             onClick={openModalThumbnail}
@@ -133,12 +133,12 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
           />
           <Label css={{ width: 'auto' }}>Header</Label>
         </ImageColWrapper>
-      </WorldImagesWrapper>
+      </ModuleImagesWrapper>
       <ImageModal
         open={showImageModal}
         setOpen={setShowImageModal}
         trigger={null}
-        onSubmit={changeWorldImage}
+        onSubmit={changeModuleImage}
         uploadedFilename={imageTypeInfo[modalType].filename}
         uploadedImageTypeId={imageTypeInfo[modalType].imageTypeId}
       />
@@ -146,4 +146,4 @@ const WorldImages: React.FC<WorldImagesProps> = ({ worldId, disabled }) => {
   );
 };
 
-export default WorldImages;
+export default ModuleImages;

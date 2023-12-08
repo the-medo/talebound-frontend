@@ -12,7 +12,7 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
-import WorldImages from './WorldImages';
+import ModuleImages from './ModuleImages';
 import ModuleTags from './ModuleTags';
 import Loading from '../../../components/Loading/Loading';
 import ActionBoxModule from '../ActionBoxModule';
@@ -24,7 +24,7 @@ import ModuleEntityTagAdministration from '../../../component-sections/Module/Mo
 import { useWorld } from '../../../hooks/useWorld';
 import { useImage } from '../../../hooks/useImage';
 
-const WorldIntroduction = React.lazy(() => import('../WorldIntroduction/WorldIntroduction'));
+const ModuleIntroduction = React.lazy(() => import('../ModuleIntroduction/ModuleIntroduction'));
 
 interface EditWorldProps {
   worldId: number;
@@ -147,7 +147,9 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                   >
                     Update world
                   </Button>
-                  <WorldImages worldId={worldId} disabled={disabled} />
+                  <Suspense fallback={<Loading />}>
+                    <ModuleImages moduleId={moduleId} disabled={disabled} />
+                  </Suspense>
                 </Col>
                 <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
                   <Col gap="md" alignItems="center">
@@ -207,7 +209,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
           <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
             <ContentSection direction="column" header="Introduction">
               <Suspense fallback={<Loading />}>
-                <WorldIntroduction worldId={worldId} postViewOnly={false} />
+                <ModuleIntroduction moduleId={moduleId} postViewOnly={false} />
               </Suspense>
             </ContentSection>
           </Col>

@@ -9,7 +9,7 @@ export const useCreateLocation = createMutation({
     LocationsCollection.locationsCreateLocation(variables),
   onSuccess: (data, variables) => {
     const newLocation = data.data;
-    if (newLocation && variables.module) {
+    if (newLocation && variables.moduleId) {
       const getLocationsQueryKey = useGetLocations.getKey(variables.module);
       queryClient.setQueryData<inferData<typeof useGetLocations>>(
         getLocationsQueryKey,

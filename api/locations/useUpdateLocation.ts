@@ -2,11 +2,13 @@ import { LocationsCollection } from '../collections';
 import { createMutation, inferData } from 'react-query-kit';
 import { queryClient } from '../../pages/_app';
 import { useGetLocations } from './useGetLocations';
-import { PbModule } from '../../generated/api-types/data-contracts';
+import { PbViewModule } from '../../generated/api-types/data-contracts';
+import { store } from '../../store';
+import { locationAdapterSlice } from '../../adapters/LocationAdapter';
 
 type UpdateLocationParams = {
   locationId: number;
-  module?: PbModule;
+  module?: PbViewModule;
   body: Parameters<typeof LocationsCollection.locationsUpdateLocation>[1];
 };
 
@@ -32,6 +34,7 @@ export const useUpdateLocation = createMutation({
           );
         },
       );
+      store.dispatch(locationAdapterSlice.actions.upsertLocation(data.data));
     }
   },
 });

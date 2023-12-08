@@ -3,6 +3,8 @@ import { ImagesCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
 import { useGetImages } from './useGetImages';
 import { PbUploadImageRequest } from '../../generated/api-types/data-contracts';
+import { store } from '../../store';
+import { imageAdapterSlice } from '../../adapters/ImageAdapter';
 
 export interface ExpandedUploadImageRequest extends PbUploadImageRequest {
   userId?: number;
@@ -14,6 +16,7 @@ export const useUploadImage = createMutation({
 
   onSuccess: (data, variables) => {
     const queryKeys = [];
+    store.dispatch(imageAdapterSlice.actions.upsertImage(data.data));
 
     if (variables.userId && variables.imageTypeId) {
       queryKeys.push(
