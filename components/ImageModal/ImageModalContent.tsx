@@ -20,9 +20,10 @@ enum ImageModalTabs {
 
 export interface ImageModalContentProps {
   setOpen: (v: boolean) => void;
-  onSubmit: (image: PbImage, selectedVariant: ImageVariant) => void;
+  onSubmit: (image: PbImage | undefined, selectedVariant: ImageVariant) => void;
   uploadedFilename: string;
   uploadedImageTypeId: number;
+  isNullable?: boolean;
 }
 
 const PreviewImage = styled('img', {
@@ -34,6 +35,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
   onSubmit,
   uploadedFilename,
   uploadedImageTypeId,
+  isNullable = false,
 }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(ImageModalTabs.Upload);
@@ -64,6 +66,13 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
     }
     setOpen(false);
   }, [onSubmit, selectedImage, setOpen, selectedVariant]);
+
+  const clearHandler = useCallback(() => {
+    if (onSubmit) {
+      onSubmit(undefined, ImageVariant.original);
+    }
+    setOpen(false);
+  }, [onSubmit, setOpen]);
 
   const handleImageChange = useCallback(
     (image: PbImage) => {
@@ -149,6 +158,7 @@ const ImageModalContent: React.FC<ImageModalContentProps> = ({
         </Col>
       )}
       <Row gap="md" alignSelf="end">
+        {isNullable && <Button onClick={clearHandler}>Clear image</Button>}
         <Button onClick={submitHandler}>Set image</Button>
       </Row>
     </Col>

@@ -32,6 +32,12 @@ const StyledSection = styled('section', {
         width: '100%',
       },
     },
+    transparent: {
+      true: {
+        boxShadow: 'none',
+        backgroundColor: '$transparent',
+      },
+    },
     noMargin: {
       true: {
         margin: 0,

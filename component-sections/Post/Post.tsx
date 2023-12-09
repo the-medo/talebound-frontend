@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useGetPostById } from '../../api/posts/useGetPostById';
 import {
   UpdatePostCacheHelper,
   UpdatePostRequest,
@@ -16,6 +15,8 @@ import { TbAlignBoxLeftTop, TbPencil } from 'react-icons/tb';
 import PostEditMode from './PostEditMode';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
+import { usePost } from '../../hooks/usePost';
+import { useImage } from '../../hooks/useImage';
 
 interface PostProps {
   postId: number;
@@ -25,7 +26,9 @@ interface PostProps {
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
+  showTitle?: boolean;
   isModal?: boolean;
+  transparent?: boolean;
 }
 
 const Post: React.FC<PostProps> = ({
@@ -36,14 +39,18 @@ const Post: React.FC<PostProps> = ({
   canChangeTitle,
   canChangeDescription,
   canChangeThumbnail,
+  showTitle = true,
   isModal = false,
+  transparent = false,
 }) => {
   const [editModeDetails, setEditModeDetails] = useState(false);
   const [editModeContent, setEditModeContent] = useState(false);
-  const { data: postData, isPending: isPendingPost } = useGetPostById({
-    variables: postId,
-  });
+  // const { data: postData, isPending: isPendingPost } = useGetPostById({
+  //   variables: postId,
+  // });
 
+  const { post: postData, isFetching: isPendingPost } = usePost(postId);
+  const { image: imageThumbnail } = useImage(postData?.imageThumbnailId ?? 0);
   const updatePost = useUpdatePost();
 
   const onSave: EditorOnSaveAction = useCallback(
@@ -74,11 +81,11 @@ const Post: React.FC<PostProps> = ({
 
   const editorState = useMemo(() => {
     if (!isPendingPost && postId !== undefined) {
-      return postData?.post?.content;
+      return postData?.content;
     } else {
       return undefined;
     }
-  }, [isPendingPost, postId, postData?.post?.content]);
+  }, [isPendingPost, postId, postData?.content]);
 
   const resetErrorHandler = useCallback(() => {
     updatePost.reset();
@@ -93,10 +100,10 @@ const Post: React.FC<PostProps> = ({
   }, []);
 
   const thumbnailImage = useMemo(() => {
-    const img = postData?.post?.imageThumbnailUrl;
+    const img = imageThumbnail?.url;
     if (img) return imageModifyVariant(img, ImageVariant['600x400']);
     return undefined;
-  }, [postData?.post?.imageThumbnailUrl]);
+  }, [imageThumbnail?.url]);
 
   if (isPendingPost) return <LoadingText />;
 
@@ -107,38 +114,44 @@ const Post: React.FC<PostProps> = ({
         direction="column"
         cornerImage={thumbnailImage}
         noMargin={isModal}
+        transparent={transparent}
       >
         <Col fullWidth gap="md">
-          <Row gap="md" fullWidth justifyContent="between" wrap>
-            <TitleH2>{customTitle ?? postData?.post?.title}</TitleH2>
-            {canEdit && (
-              <Row gap="md" paddingRight={isModal ? '2xl' : undefined}>
-                <Button
-                  color={editModeDetails ? 'primaryFill' : 'semiGhost'}
-                  onClick={toggleEditModeDetails}
-                >
-                  <TbPencil />
-                  Edit details
-                </Button>
-                <Button
-                  color={editModeContent ? 'primaryFill' : 'semiGhost'}
-                  onClick={toggleEditModeContent}
-                >
-                  <TbAlignBoxLeftTop />
-                  Edit content
-                </Button>
+          {(showTitle || canEdit) && (
+            <>
+              <Row gap="md" fullWidth justifyContent="between" wrap>
+                {showTitle && <TitleH2>{customTitle ?? postData?.title}</TitleH2>}
+                {!showTitle && canEdit && <span />}
+                {canEdit && (
+                  <Row gap="md" paddingRight={isModal ? '2xl' : undefined}>
+                    <Button
+                      color={editModeDetails ? 'primaryFill' : 'semiGhost'}
+                      onClick={toggleEditModeDetails}
+                    >
+                      <TbPencil />
+                      Edit details
+                    </Button>
+                    <Button
+                      color={editModeContent ? 'primaryFill' : 'semiGhost'}
+                      onClick={toggleEditModeContent}
+                    >
+                      <TbAlignBoxLeftTop />
+                      Edit content
+                    </Button>
+                  </Row>
+                )}
               </Row>
-            )}
-          </Row>
-          {editModeDetails && (
-            <PostEditMode
-              key={`post-edit-mode-${postId}`}
-              postId={postId}
-              cacheHelper={cacheHelper}
-              canChangeTitle={canChangeTitle}
-              canChangeDescription={canChangeDescription}
-              canChangeThumbnail={canChangeThumbnail}
-            />
+              {editModeDetails && (
+                <PostEditMode
+                  key={`post-edit-mode-${postId}`}
+                  postId={postId}
+                  cacheHelper={cacheHelper}
+                  canChangeTitle={canChangeTitle}
+                  canChangeDescription={canChangeDescription}
+                  canChangeThumbnail={canChangeThumbnail}
+                />
+              )}
+            </>
           )}
           <Editor
             key={postId}

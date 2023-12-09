@@ -25,9 +25,7 @@ export const useUpdatePost = createMutation({
     console.log('TEST2', variables);
     if (postId) {
       const postQueryKey = useGetPostById.getKey(postId);
-      queryClient.setQueryData<inferData<typeof useGetPostById>>(postQueryKey, () => {
-        return data.data;
-      });
+      queryClient.setQueryData<inferData<typeof useGetPostById>>(postQueryKey, () => data.data);
       store.dispatch(postAdapterSlice.actions.upsertPost(data.data));
     }
     if (cacheHelper) {
@@ -44,7 +42,7 @@ export const useUpdatePost = createMutation({
           return oldData?.map((menuItemPost) => {
             return {
               ...menuItemPost,
-              post: menuItemPost.postId === postId ? data.data.post : menuItemPost.post,
+              post: menuItemPost.postId === postId ? data.data : menuItemPost.post,
             };
           });
         },
