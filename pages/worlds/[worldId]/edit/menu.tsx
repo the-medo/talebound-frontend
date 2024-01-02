@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
 import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
-import EditModuleMenu from '../../../../screens/worlds/EditWorldMenu/EditModuleMenu';
 import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
+import EditModuleMenu from '../../../../screens/worlds/EditModuleMenu/EditModuleMenu';
 
 const Worlds: React.FC = () => {
   const moduleId = useUrlModuleId();
@@ -15,9 +15,9 @@ const Worlds: React.FC = () => {
       {moduleId && (
         <Suspense fallback={null}>
           <ModuleOpened moduleId={moduleId} />
+          <EditModuleMenu moduleId={moduleId} />
         </Suspense>
       )}
-      {moduleId && <EditModuleMenu moduleId={moduleId} />}
     </>
   );
 };

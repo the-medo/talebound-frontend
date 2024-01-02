@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { PbWorldAdmin } from '../../../../generated/api-types/data-contracts';
+import { PbModuleAdmin } from '../../../../generated/api-types/data-contracts';
 import Avatar from '../../../../components/Avatar/Avatar';
 import { TitleH4 } from '../../../../components/Typography/Title';
 import { Col, Row } from '../../../../components/Flex/Flex';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { formatDate } from '../../../../utils/functions/formatDate';
 import { useUpdateModuleAdmin } from '../../../../api/modules/useUpdateModuleAdmin';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
+import { useImage } from '../../../../hooks/useImage';
 
 interface PropsByApprovedState {
   color: 'danger' | 'secondary';
@@ -37,21 +38,22 @@ const propsByApprovedState: {
 };
 
 interface CollaboratorRowRequestProps {
-  data: PbWorldAdmin;
+  data: PbModuleAdmin;
 }
 
 const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data }) => {
   const {
-    mutate: updateWorldAdmin,
+    mutate: updateModuleAdmin,
     isPending: isPendingUpdate,
     error: errorUpdate,
   } = useUpdateModuleAdmin();
+  const { image: imageAvatar } = useImage(data?.user?.imgId ?? 0);
 
   const doRequest = useCallback(
     (approved: number) => {
-      if (data.worldId && data.userId) {
-        updateWorldAdmin({
-          worldId: data.worldId,
+      if (data.moduleId && data.userId) {
+        updateModuleAdmin({
+          moduleId: data.moduleId,
           body: {
             userId: data.userId,
             approved,
@@ -59,7 +61,7 @@ const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data })
         });
       }
     },
-    [data.userId, data.worldId, updateWorldAdmin],
+    [data.userId, data.moduleId, updateModuleAdmin],
   );
 
   const approveRequest = useCallback(() => {
@@ -76,7 +78,7 @@ const CollaboratorRowRequest: React.FC<CollaboratorRowRequestProps> = ({ data })
   return (
     <Row gap="md" alignItems="start" wrap>
       <Link href={profileLink}>
-        <Avatar type="user" url={data.user?.avatarImageUrl} />
+        <Avatar type="user" url={imageAvatar?.url} />
       </Link>
       <Text color={props.color}>{props.icon}</Text>
       <Col css={{ width: '250px' }}>

@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
 import ModuleOpened from '../../../screens/worlds/ModuleOpened';
-import ModuleCollaborators from '../../../screens/worlds/WorldCollaborators/ModuleCollaborators';
 import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
+import ModuleCollaborators from '../../../screens/worlds/ModuleCollaborators/ModuleCollaborators';
 
 const Worlds: React.FC = () => {
   const moduleId = useUrlModuleId();
@@ -15,9 +15,9 @@ const Worlds: React.FC = () => {
       {moduleId && (
         <Suspense fallback={null}>
           <ModuleOpened moduleId={moduleId} />
+          <ModuleCollaborators moduleId={moduleId} />
         </Suspense>
       )}
-      {moduleId && <ModuleCollaborators moduleId={moduleId} />}
     </>
   );
 };

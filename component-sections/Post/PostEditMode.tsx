@@ -9,7 +9,7 @@ import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUr
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
 import { PbImage } from '../../generated/api-types/data-contracts';
-import { UpdatePostCacheHelper, useUpdatePost } from '../../api/posts/useUpdatePost';
+import { useUpdatePost } from '../../api/posts/useUpdatePost';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { usePost } from '../../hooks/usePost';
@@ -20,7 +20,6 @@ const textareaPlaceholder =
 
 interface PostEditModeProps {
   postId: number;
-  cacheHelper?: UpdatePostCacheHelper;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
@@ -28,7 +27,6 @@ interface PostEditModeProps {
 
 const PostEditMode: React.FC<PostEditModeProps> = ({
   postId,
-  cacheHelper,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
@@ -52,26 +50,24 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
       if (canChangeThumbnail) {
         updatePost({
           postId,
-          cacheHelper,
           body: {
             imageThumbnailId: image?.id ?? 0,
           },
         });
       }
     },
-    [cacheHelper, canChangeThumbnail, postId, updatePost],
+    [canChangeThumbnail, postId, updatePost],
   );
 
   const updatePostHandler = useCallback(() => {
     updatePost({
       postId,
-      cacheHelper,
       body: {
         title: canChangeTitle ? title : undefined,
         description: canChangeDescription ? description : undefined,
       },
     });
-  }, [cacheHelper, canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
+  }, [canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
 
   const loading = isPendingPost || isPending;
 

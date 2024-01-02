@@ -15,6 +15,7 @@ import AlertDialog from '../../../../components/AlertDialog/AlertDialog';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
+import { useImage } from '../../../../hooks/useImage';
 
 interface CollaboratorRowApprovedProps {
   data: PbModuleAdmin;
@@ -27,28 +28,29 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
   data,
   canLeave = true,
 }) => {
-  const role = useMyModuleRole(data.worldId ?? 0);
+  const role = useMyModuleRole(data.moduleId ?? 0);
   const userId = useSelector((state: ReduxState) => state.auth.user?.id);
   const isMyRow = data.user?.id === userId;
   const profileLink = `/user/${data.user?.id}/profile`;
+  const { image: imageAvatar } = useImage(data?.user?.imgId ?? 0);
 
   const {
-    mutate: updateWorldAdmin,
+    mutate: updateModuleAdmin,
     isPending: isPendingUpdate,
     error: errorUpdate,
   } = useUpdateModuleAdmin();
 
   const {
-    mutate: deleteWorldAdmin,
+    mutate: deleteModuleAdmin,
     isPending: isPendingDelete,
     error: errorDelete,
   } = useDeleteModuleAdmin();
 
   const doRequest = useCallback(
     (superAdmin: boolean) => {
-      if (data.worldId && data.userId) {
-        updateWorldAdmin({
-          worldId: data.worldId,
+      if (data.moduleId && data.userId) {
+        updateModuleAdmin({
+          moduleId: data.moduleId,
           body: {
             userId: data.userId,
             superAdmin,
@@ -56,20 +58,20 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
         });
       }
     },
-    [data.userId, data.worldId, updateWorldAdmin],
+    [data.userId, data.moduleId, updateModuleAdmin],
   );
 
   const makeSuperCollaborator = useCallback(() => doRequest(true), [doRequest]);
   const makeBasicCollaborator = useCallback(() => doRequest(false), [doRequest]);
 
   const deleteSuperCollaborator = useCallback(() => {
-    if (data.worldId && data.userId) {
-      deleteWorldAdmin({
-        worldId: data.worldId,
+    if (data.moduleId && data.userId) {
+      deleteModuleAdmin({
+        moduleId: data.moduleId,
         userId: data.userId,
       });
     }
-  }, [data.userId, data.worldId, deleteWorldAdmin]);
+  }, [data.userId, data.moduleId, deleteModuleAdmin]);
 
   const deleteButton = useMemo(
     () => (
@@ -85,7 +87,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
     () => (
       <Button color="dangerOutline" size="sm" loading={isPendingDelete}>
         <TbShieldOff />
-        Leave world
+        Leave
       </Button>
     ),
     [isPendingDelete],
@@ -94,7 +96,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
   return (
     <Row gap="md">
       <Link href={profileLink}>
-        <Avatar type="user" url={data.user?.avatarImageUrl} />
+        <Avatar type="user" url={imageAvatar?.url} />
       </Link>
       <Text color={data.superAdmin ? 'warning' : 'primary'}>
         {data.superAdmin ? <TbShieldStar size={30} /> : <TbShield size={30} />}
@@ -124,7 +126,7 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
             <AlertDialog
               triggerElement={deleteButton}
               title={`Remove "${data.user?.username}" from collaborators?`}
-              description="User will no longer be able to edit this world, but can send request for collaboration again."
+              description="User will no longer be able to edit this module, but can send request for collaboration again."
               dangerButtonText="Remove collaborator"
               submitAction={deleteSuperCollaborator}
             />
@@ -133,9 +135,9 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
         {(canLeave || role !== ModuleAdminRole.SUPER_COLLABORATOR) && isMyRow && (
           <AlertDialog
             triggerElement={leaveButton}
-            title={`Leave world`}
-            description="You will no longer be able to edit this world. You can send request to be collaborator again."
-            dangerButtonText="Leave world"
+            title={`Leave module`}
+            description="You will no longer be able to edit this module. You can send request to be collaborator again."
+            dangerButtonText="Leave"
             submitAction={deleteSuperCollaborator}
           />
         )}

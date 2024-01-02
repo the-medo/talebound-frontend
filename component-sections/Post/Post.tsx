@@ -1,9 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import {
-  UpdatePostCacheHelper,
-  UpdatePostRequest,
-  useUpdatePost,
-} from '../../api/posts/useUpdatePost';
+import { UpdatePostRequest, useUpdatePost } from '../../api/posts/useUpdatePost';
 import Editor, { EditorOnSaveAction, PostViewType } from '../../components/Editor/Editor';
 import { Col, Row } from '../../components/Flex/Flex';
 import { parseError } from '../../utils/types/error';
@@ -21,7 +17,6 @@ import { useImage } from '../../hooks/useImage';
 interface PostProps {
   postId: number;
   canEdit: boolean;
-  cacheHelper?: UpdatePostCacheHelper;
   customTitle?: string;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
@@ -34,7 +29,6 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({
   postId,
   canEdit,
-  cacheHelper,
   customTitle,
   canChangeTitle,
   canChangeDescription,
@@ -57,7 +51,6 @@ const Post: React.FC<PostProps> = ({
     (editorState, _editor, _draft, successAction, errorAction, settleAction) => {
       const props: UpdatePostRequest = {
         postId: postId,
-        cacheHelper,
         body: {
           content: JSON.stringify(editorState),
         },
@@ -76,7 +69,7 @@ const Post: React.FC<PostProps> = ({
         },
       });
     },
-    [cacheHelper, postId, updatePost],
+    [postId, updatePost],
   );
 
   const editorState = useMemo(() => {
@@ -145,7 +138,6 @@ const Post: React.FC<PostProps> = ({
                 <PostEditMode
                   key={`post-edit-mode-${postId}`}
                   postId={postId}
-                  cacheHelper={cacheHelper}
                   canChangeTitle={canChangeTitle}
                   canChangeDescription={canChangeDescription}
                   canChangeThumbnail={canChangeThumbnail}

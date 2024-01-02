@@ -3,18 +3,14 @@ import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
-import { useCreateMenuItemPost } from '../../../api/menus/useCreateMenuItemPost';
-import { useGetMenuItemPosts } from '../../../api/menus/useGetMenuItemPosts';
 import LoadingText from '../../../components/Loading/LoadingText';
-import { UpdatePostCacheHelper } from '../../../api/posts/useUpdatePost';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
 import { Reorder } from 'framer-motion';
-import { PbMenuItemPost } from '../../../generated/api-types/data-contracts';
 import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import PostFormOld from '../../../component-sections/Post/PostFormOld';
+import { PbEntity, PbViewEntity } from '../../../generated/api-types/data-contracts';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -37,7 +33,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 }) => {
   const [rearrangeMode, setRearrangeMode] = React.useState(false);
   const [createPostMode, setCreatePostMode] = React.useState(false);
-  const createMenuItemPost = useCreateMenuItemPost();
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const menuItem = useMemo(() => {
@@ -45,19 +40,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   }, [menuItemCode, menuItemsData]);
 
   const menuItemId = menuItem?.id ?? 0;
-
-  const { data: menuItemPostsData = [], isFetching: isFetchingMenuItemPosts } = useGetMenuItemPosts(
-    {
-      variables: {
-        menuId,
-        menuItemId,
-      },
-    },
-  );
-
-  const menuItemPost = useMemo(() => {
-    return menuItemPostsData.find((item) => item.postId === postId);
-  }, [postId, menuItemPostsData]);
 
   const descriptionPostId = useMemo(() => {
     return menuItem?.descriptionPostId ?? 0;
@@ -68,15 +50,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     return menuItemPost?.postId ?? 0;
   }, [descriptionPostId, menuItemPost?.postId, postId]);
 
-  const createDescriptionPostHandler = useCallback(() => {
-    createMenuItemPost.mutate({
-      menuId: menuId,
-      menuItemId: menuItemId,
-      body: {
-        isMenuItemDescriptionPost: true,
-      },
-    });
-  }, [createMenuItemPost, menuId, menuItemId]);
+  const createDescriptionPostHandler = useCallback(() => {}, []);
 
   const toggleRearrangeMode = useCallback(() => {
     setRearrangeMode((p) => !p);
@@ -86,29 +60,17 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     setCreatePostMode((p) => !p);
   }, []);
 
-  const postCreatedCallback = useCallback(() => {
-    setCreatePostMode(false);
-  }, []);
-
-  const cacheHelper: UpdatePostCacheHelper = useMemo(
-    () => ({
-      menuId,
-      menuItemId,
-    }),
-    [menuId, menuItemId],
-  );
-
   //====================================================================================================
-  const [items, setItems] = useState<PbMenuItemPost[]>([]);
+  const [items, setItems] = useState<PbViewEntity[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
-    setItems(menuItemPostsData);
-  }, [menuItemPostsData]);
+    setItems([]);
+  }, []);
 
   const onReorder = useCallback(
-    (x: PbMenuItemPost[]) => {
+    (x: PbViewEntity[]) => {
       if (rearrangeMode) {
         setItems(x);
       }
@@ -134,7 +96,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           {displayPostId > 0 && (
             <Suspense fallback={<LoadingText />}>
               <Post
-                cacheHelper={cacheHelper}
                 customTitle={descriptionPostId === displayPostId ? menuItem.name : undefined}
                 postId={displayPostId}
                 canEdit={canEdit}
@@ -149,7 +110,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               <Link href={linkPrefix}>
                 <TitleH2>{menuItem.name}</TitleH2>
               </Link>
-              {isFetchingMenuItemPosts && <LoadingText />}
 
               {canEdit && (
                 <Row gap="md">
@@ -170,33 +130,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
                 </Row>
               )}
             </Row>
-            {createPostMode && (
-              <PostFormOld
-                menuId={menuId}
-                menuItemId={menuItemId}
-                position={menuItemPostsData.length + 1}
-                onFinishCallback={postCreatedCallback}
-              />
-            )}
           </ContentSection>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
             <Col loading={loading}>
-              {items.map((menuItemPost, i) => {
-                const { post } = menuItemPost;
-                if (!post) return null;
-                return (
-                  <MenuItemPostThumbnail
-                    key={post.id}
-                    menuId={menuId}
-                    data={menuItemPost}
-                    highlighted={post.id === displayPostId}
-                    linkPrefix={linkPrefix}
-                    currentIndex={i + 1}
-                    rearrangeMode={rearrangeMode}
-                    setLoading={setLoading}
-                    setError={setError}
-                  />
-                );
+              {items.map((viewEntity, i) => {
+                return viewEntity.id;
               })}
             </Col>
           </Reorder.Group>

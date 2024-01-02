@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { useGetMenuItemPostsByMenuId } from '../../../api/menus/useGetMenuItemPostsByMenuId';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
@@ -18,7 +17,6 @@ import Select from '../../../components/Select/Select';
 import { useUpdateMenuPosts } from '../../../api/menus/useUpdateMenuPosts';
 import { Text } from '../../../components/Typography/Text';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import PostFormOld from '../../../component-sections/Post/PostFormOld';
 
 interface PbMenuItemWithParent {
   item: PbMenuItem;
@@ -268,7 +266,6 @@ const MenuPosts: React.FC<MenuPostsProps> = ({ menuId, canEdit }) => {
               </Row>
             )}
           </Row>
-          {createPostMode && <PostFormOld menuId={menuId} menuItemId={0} />}
         </ContentSection>
       </Col>
     </Row>
