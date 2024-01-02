@@ -4,24 +4,16 @@ import { useCreateModuleTag } from '../../../api/tags/useCreateModuleTag';
 import { useDeleteModuleTag } from '../../../api/tags/useDeleteModuleTag';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';
-import { PbModuleType, PbViewModule, PbViewTag } from '../../../generated/api-types/data-contracts';
+import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface ModuleTagsProps {
-  moduleType: PbModuleType;
   moduleId: number;
-  module: PbViewModule;
   disabled?: boolean;
   tags: number[];
 }
 
-const ModuleTags: React.FC<ModuleTagsProps> = ({
-  moduleType,
-  moduleId,
-  module,
-  disabled,
-  tags,
-}) => {
+const ModuleTags: React.FC<ModuleTagsProps> = ({ moduleId, disabled, tags }) => {
   const { data: availableTags = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
@@ -37,12 +29,12 @@ const ModuleTags: React.FC<ModuleTagsProps> = ({
     (tag: PbViewTag) => {
       if (!tag.tag || !tag.id) return;
       if (tag.id && tags.includes(tag.id)) {
-        deleteTag({ moduleType, moduleId, module, tagId: tag.id });
+        deleteTag({ moduleId, tagId: tag.id });
       } else {
-        createTag({ moduleType, moduleId, module, tagId: tag.id });
+        createTag({ moduleId, tagId: tag.id });
       }
     },
-    [moduleType, createTag, deleteTag, tags, moduleId, module],
+    [createTag, deleteTag, tags, moduleId],
   );
 
   const isPending = isPendingAdd || isPendingGet || isPendingRemove;

@@ -1,13 +1,10 @@
-import { createMutation, inferData } from 'react-query-kit';
+import { createMutation } from 'react-query-kit';
 import { TagsCollection } from '../collections';
-import { useGetWorldById } from '../worlds/useGetWorldById';
-import { queryClient } from '../../pages/_app';
-import { PbModuleType, PbViewModule } from '../../generated/api-types/data-contracts';
+import { moduleAdapterSlice, moduleSelectors } from '../../adapters/ModuleAdapter';
+import { store } from '../../store';
 
 interface DeleteModuleTagParams {
-  moduleType: PbModuleType;
   moduleId: number;
-  module: PbViewModule;
   tagId: number;
 }
 
@@ -15,22 +12,14 @@ export const useDeleteModuleTag = createMutation({
   mutationFn: async (variables: DeleteModuleTagParams) =>
     TagsCollection.tagsDeleteModuleTag(variables.moduleId, variables.tagId),
   onSuccess: (_, variables) => {
-    if (variables.moduleType === PbModuleType.MODULE_TYPE_WORLD) {
-      const worldId = variables.module.worldId ?? 0;
-      if (worldId > 0) {
-        const getWorldByIdKey = useGetWorldById.getKey(variables.moduleId);
-
-        queryClient.setQueryData<inferData<typeof useGetWorldById>>(getWorldByIdKey, (oldData) => {
-          return {
-            ...oldData,
-            tags: oldData?.tags?.filter((tag) => tag !== variables.tagId),
-          };
-        });
-
-        queryClient
-          .invalidateQueries({ queryKey: ['useGetWorlds'] })
-          .then((r) => console.log('invalidateQueries', r));
-      }
+    const module = moduleSelectors.selectById(store.getState(), variables.moduleId);
+    if (module) {
+      store.dispatch(
+        moduleAdapterSlice.actions.upsertModule({
+          ...module,
+          tags: [...(module.tags?.filter((tag) => tag !== variables.tagId) ?? [])],
+        }),
+      );
     }
   },
 });

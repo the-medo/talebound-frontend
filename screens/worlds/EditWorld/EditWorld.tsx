@@ -182,25 +182,14 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                     Select tags that describe your world. This will make it easier for other users
                     to find it.
                   </Text>
-                  {module && (
-                    <ModuleTags
-                      moduleType={PbModuleType.MODULE_TYPE_WORLD}
-                      moduleId={moduleId}
-                      module={module}
-                      tags={tags}
-                      disabled={disabled}
-                    />
-                  )}
+                  {module && <ModuleTags moduleId={moduleId} tags={tags} disabled={disabled} />}
                 </ContentSection>
                 <ContentSection
                   flexWrap="wrap"
                   direction="column"
                   header="Entity tag administration"
                 >
-                  <ModuleEntityTagAdministration
-                    moduleType={PbModuleType.MODULE_TYPE_WORLD}
-                    moduleId={moduleId}
-                  />
+                  <ModuleEntityTagAdministration moduleId={moduleId} />
                 </ContentSection>
               </>
             )}
