@@ -16,13 +16,54 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
   return parseInt(p[0]) ?? 0;
 };
 
-const idUsageForModuleType: Record<PbEntityType, ModuleIdsToUse[]> = {
-  [PbEntityType.ENTITY_TYPE_UNKNOWN]: ['worldId', 'questId', 'systemId', 'characterId'],
-  [PbEntityType.ENTITY_TYPE_LOCATION]: ['worldId', 'questId'],
-  [PbEntityType.ENTITY_TYPE_MAP]: ['worldId', 'questId'],
-  [PbEntityType.ENTITY_TYPE_POST]: ['worldId', 'questId', 'systemId', 'characterId'],
-  [PbEntityType.ENTITY_TYPE_IMAGE]: ['worldId', 'questId', 'systemId', 'characterId'],
+export const modulesOfEntities: Record<PbEntityType, PbModuleType[]> = {
+  [PbEntityType.ENTITY_TYPE_UNKNOWN]: [
+    PbModuleType.MODULE_TYPE_WORLD,
+    PbModuleType.MODULE_TYPE_QUEST,
+    PbModuleType.MODULE_TYPE_SYSTEM,
+    PbModuleType.MODULE_TYPE_CHARACTER,
+  ],
+  [PbEntityType.ENTITY_TYPE_LOCATION]: [
+    PbModuleType.MODULE_TYPE_WORLD,
+    PbModuleType.MODULE_TYPE_QUEST,
+  ],
+  [PbEntityType.ENTITY_TYPE_MAP]: [PbModuleType.MODULE_TYPE_WORLD, PbModuleType.MODULE_TYPE_QUEST],
+  [PbEntityType.ENTITY_TYPE_POST]: [
+    PbModuleType.MODULE_TYPE_WORLD,
+    PbModuleType.MODULE_TYPE_QUEST,
+    PbModuleType.MODULE_TYPE_SYSTEM,
+    PbModuleType.MODULE_TYPE_CHARACTER,
+  ],
+  [PbEntityType.ENTITY_TYPE_IMAGE]: [
+    PbModuleType.MODULE_TYPE_WORLD,
+    PbModuleType.MODULE_TYPE_QUEST,
+    PbModuleType.MODULE_TYPE_SYSTEM,
+    PbModuleType.MODULE_TYPE_CHARACTER,
+  ],
   [PbEntityType.ENTITY_TYPE_CHARACTER]: [],
+};
+
+export const entitiesOfModules: Record<PbModuleType, PbEntityType[]> = {
+  [PbModuleType.MODULE_TYPE_WORLD]: [],
+  [PbModuleType.MODULE_TYPE_SYSTEM]: [],
+  [PbModuleType.MODULE_TYPE_QUEST]: [],
+  [PbModuleType.MODULE_TYPE_CHARACTER]: [],
+  [PbModuleType.MODULE_TYPE_UNKNOWN]: [],
+};
+
+for (const entityType in modulesOfEntities) {
+  const et = entityType as PbEntityType;
+  modulesOfEntities[et].forEach((mt) => {
+    entitiesOfModules[mt].push(et);
+  });
+}
+
+const idUsageForModuleType: Record<PbModuleType, ModuleIdsToUse | undefined> = {
+  [PbModuleType.MODULE_TYPE_WORLD]: 'worldId',
+  [PbModuleType.MODULE_TYPE_SYSTEM]: 'systemId',
+  [PbModuleType.MODULE_TYPE_QUEST]: 'questId',
+  [PbModuleType.MODULE_TYPE_CHARACTER]: 'characterId',
+  [PbModuleType.MODULE_TYPE_UNKNOWN]: undefined,
 };
 
 const idToModuleType: Record<ModuleIdsToUse, PbModuleType> = {
@@ -50,11 +91,14 @@ export const useModuleRoute = (type: PbEntityType): [PbViewModule, number, PbMod
   const keyParts: string[] = [];
   const moduleObject: PbViewModule = {};
 
-  for (const idToUse of idUsageForModuleType[type]) {
-    const id = parseRouterParam(router.query[idToUse]);
-    keyParts.push(`${keyShortcuts[idToUse]}${id ?? 0}`);
-    moduleObject[idToUse] = zeroIsUndefined(id);
-    if (id > 0) moduleType = idToModuleType[idToUse]; //at least one positive ID to have valid module
+  for (const mt of modulesOfEntities[type]) {
+    const idToUse = idUsageForModuleType[mt];
+    if (idToUse) {
+      const id = parseRouterParam(router.query[idToUse]);
+      keyParts.push(`${keyShortcuts[idToUse]}${id ?? 0}`);
+      moduleObject[idToUse] = zeroIsUndefined(id);
+      if (id > 0) moduleType = idToModuleType[idToUse]; //at least one positive ID to have valid module
+    }
   }
 
   const key = keyParts.join('-');

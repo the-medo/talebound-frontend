@@ -10,6 +10,7 @@
  */
 
 import {
+  PbEntityTypeList,
   PbGetModuleAdminsResponse,
   PbGetModuleIdResponse,
   PbModuleAdmin,
@@ -190,6 +191,8 @@ export class Modules<SecurityDataType = unknown> {
       /** @format int32 */
       approved?: number;
       motivationalLetter?: string;
+      allowedEntityTypes?: PbEntityTypeList;
+      allowedMenu?: boolean;
     },
     params: RequestParams = {},
   ) =>

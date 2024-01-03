@@ -197,6 +197,10 @@ export enum PbEntityType {
   ENTITY_TYPE_IMAGE = 'ENTITY_TYPE_IMAGE',
 }
 
+export interface PbEntityTypeList {
+  entityTypes?: PbEntityType[];
+}
+
 export interface PbEvaluation {
   /** @format int32 */
   id?: number;
