@@ -1,7 +1,8 @@
-import { PbEntityType, PbViewModule, PbModuleType } from '../generated/api-types/data-contracts';
+import { PbEntityType, PbModuleType, PbViewModule } from '../generated/api-types/data-contracts';
 import { useRouter } from 'next/router';
 import { useGetModuleId } from '../api/modules/useGetModuleId';
 import { useMemo } from 'react';
+import { modulesOfEntities } from '../utils/modulesAndEntities';
 
 export type EntityType = 'location' | 'map' | 'post';
 export type ModuleIdsToUse = keyof Pick<
@@ -15,48 +16,6 @@ const parseRouterParam = (p: string | string[] | undefined): number => {
   if (p.length === 0) return 0;
   return parseInt(p[0]) ?? 0;
 };
-
-export const modulesOfEntities: Record<PbEntityType, PbModuleType[]> = {
-  [PbEntityType.ENTITY_TYPE_UNKNOWN]: [
-    PbModuleType.MODULE_TYPE_WORLD,
-    PbModuleType.MODULE_TYPE_QUEST,
-    PbModuleType.MODULE_TYPE_SYSTEM,
-    PbModuleType.MODULE_TYPE_CHARACTER,
-  ],
-  [PbEntityType.ENTITY_TYPE_LOCATION]: [
-    PbModuleType.MODULE_TYPE_WORLD,
-    PbModuleType.MODULE_TYPE_QUEST,
-  ],
-  [PbEntityType.ENTITY_TYPE_MAP]: [PbModuleType.MODULE_TYPE_WORLD, PbModuleType.MODULE_TYPE_QUEST],
-  [PbEntityType.ENTITY_TYPE_POST]: [
-    PbModuleType.MODULE_TYPE_WORLD,
-    PbModuleType.MODULE_TYPE_QUEST,
-    PbModuleType.MODULE_TYPE_SYSTEM,
-    PbModuleType.MODULE_TYPE_CHARACTER,
-  ],
-  [PbEntityType.ENTITY_TYPE_IMAGE]: [
-    PbModuleType.MODULE_TYPE_WORLD,
-    PbModuleType.MODULE_TYPE_QUEST,
-    PbModuleType.MODULE_TYPE_SYSTEM,
-    PbModuleType.MODULE_TYPE_CHARACTER,
-  ],
-  [PbEntityType.ENTITY_TYPE_CHARACTER]: [],
-};
-
-export const entitiesOfModules: Record<PbModuleType, PbEntityType[]> = {
-  [PbModuleType.MODULE_TYPE_WORLD]: [],
-  [PbModuleType.MODULE_TYPE_SYSTEM]: [],
-  [PbModuleType.MODULE_TYPE_QUEST]: [],
-  [PbModuleType.MODULE_TYPE_CHARACTER]: [],
-  [PbModuleType.MODULE_TYPE_UNKNOWN]: [],
-};
-
-for (const entityType in modulesOfEntities) {
-  const et = entityType as PbEntityType;
-  modulesOfEntities[et].forEach((mt) => {
-    entitiesOfModules[mt].push(et);
-  });
-}
 
 const idUsageForModuleType: Record<PbModuleType, ModuleIdsToUse | undefined> = {
   [PbModuleType.MODULE_TYPE_WORLD]: 'worldId',

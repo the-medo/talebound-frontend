@@ -16,6 +16,9 @@ import ErrorText from '../../../../components/ErrorText/ErrorText';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../../store';
 import { useImage } from '../../../../hooks/useImage';
+import { useModule } from '../../../../hooks/useModule';
+import { entitiesOfModules, entityTypeTitle } from '../../../../utils/modulesAndEntities';
+import CollaboratorPrivilegeCheckbox from './CollaboratorPrivilegeCheckbox';
 
 interface CollaboratorRowApprovedProps {
   data: PbModuleAdmin;
@@ -28,7 +31,9 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
   data,
   canLeave = true,
 }) => {
-  const role = useMyModuleRole(data.moduleId ?? 0);
+  const moduleId = data.moduleId ?? 0;
+  const { module } = useModule(moduleId);
+  const role = useMyModuleRole(moduleId);
   const userId = useSelector((state: ReduxState) => state.auth.user?.id);
   const isMyRow = data.user?.id === userId;
   const profileLink = `/user/${data.user?.id}/profile`;
@@ -48,17 +53,22 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
 
   const doRequest = useCallback(
     (superAdmin: boolean) => {
-      if (data.moduleId && data.userId) {
+      if (data.moduleId && data.userId && module?.moduleType) {
         updateModuleAdmin({
           moduleId: data.moduleId,
           body: {
             userId: data.userId,
             superAdmin,
+            allowedEntityTypes: {
+              entityTypes: superAdmin
+                ? entitiesOfModules[module.moduleType]
+                : data.allowedEntityTypes,
+            },
           },
         });
       }
     },
-    [data.userId, data.moduleId, updateModuleAdmin],
+    [data.moduleId, data.userId, data.allowedEntityTypes, module?.moduleType, updateModuleAdmin],
   );
 
   const makeSuperCollaborator = useCallback(() => doRequest(true), [doRequest]);
@@ -94,55 +104,76 @@ const CollaboratorRowApproved: React.FC<CollaboratorRowApprovedProps> = ({
   );
 
   return (
-    <Row gap="md">
-      <Link href={profileLink}>
-        <Avatar type="user" url={imageAvatar?.url} />
-      </Link>
-      <Text color={data.superAdmin ? 'warning' : 'primary'}>
-        {data.superAdmin ? <TbShieldStar size={30} /> : <TbShield size={30} />}
-      </Text>
-      <Col css={{ width: '250px' }}>
+    <Row gap="md" justifyContent="start" alignItems="start">
+      <Row gap="md" alignItems="start">
         <Link href={profileLink}>
-          <TitleH4 color={data.superAdmin ? 'warning' : undefined}>{data.user?.username}</TitleH4>
+          <Avatar type="user" url={imageAvatar?.url} />
         </Link>
-        <Text i size="sm">
-          from: {formatDate(data.createdAt, false, 'week')}
+        <Text color={data.superAdmin ? 'warning' : 'primary'}>
+          {data.superAdmin ? <TbShieldStar size={30} /> : <TbShield size={30} />}
         </Text>
-      </Col>
-      <Row gap="md">
-        {role === ModuleAdminRole.SUPER_COLLABORATOR && !isMyRow && (
-          <>
-            {data.superAdmin ? (
-              <Button size="sm" onClick={makeBasicCollaborator} loading={isPendingUpdate}>
-                <TbShield />
-                Make basic
-              </Button>
-            ) : (
-              <Button size="sm" onClick={makeSuperCollaborator} loading={isPendingUpdate}>
-                <TbShieldStar />
-                Make super
-              </Button>
-            )}
+        <Col css={{ width: '250px' }}>
+          <Link href={profileLink}>
+            <TitleH4 color={data.superAdmin ? 'warning' : undefined}>{data.user?.username}</TitleH4>
+          </Link>
+          <Text i size="sm">
+            from: {formatDate(data.createdAt, false, 'week')}
+          </Text>
+        </Col>
+      </Row>
+      <Col gap="md">
+        <Row gap="md">
+          {role === ModuleAdminRole.SUPER_COLLABORATOR && !isMyRow && (
+            <>
+              {data.superAdmin ? (
+                <Button size="sm" onClick={makeBasicCollaborator} loading={isPendingUpdate}>
+                  <TbShield />
+                  Make basic
+                </Button>
+              ) : (
+                <Button size="sm" onClick={makeSuperCollaborator} loading={isPendingUpdate}>
+                  <TbShieldStar />
+                  Make super
+                </Button>
+              )}
+              <AlertDialog
+                triggerElement={deleteButton}
+                title={`Remove "${data.user?.username}" from collaborators?`}
+                description="User will no longer be able to edit this module, but can send request for collaboration again."
+                dangerButtonText="Remove collaborator"
+                submitAction={deleteSuperCollaborator}
+              />
+            </>
+          )}
+          {(canLeave || role !== ModuleAdminRole.SUPER_COLLABORATOR) && isMyRow && (
             <AlertDialog
-              triggerElement={deleteButton}
-              title={`Remove "${data.user?.username}" from collaborators?`}
-              description="User will no longer be able to edit this module, but can send request for collaboration again."
-              dangerButtonText="Remove collaborator"
+              triggerElement={leaveButton}
+              title={`Leave module`}
+              description="You will no longer be able to edit this module. You can send request to be collaborator again."
+              dangerButtonText="Leave"
               submitAction={deleteSuperCollaborator}
             />
-          </>
+          )}
+          <ErrorText error={errorUpdate ?? errorDelete} />
+        </Row>
+        {module?.moduleType && (
+          <Row gap="md">
+            <Text b>Privileges: </Text>
+            {data.superAdmin
+              ? 'All'
+              : entitiesOfModules[module.moduleType].map((e) => (
+                  <Row gap="sm" key={e}>
+                    <CollaboratorPrivilegeCheckbox
+                      disabled={role !== ModuleAdminRole.SUPER_COLLABORATOR}
+                      entityType={e}
+                      data={data}
+                    />
+                    {entityTypeTitle(e, true)}
+                  </Row>
+                ))}
+          </Row>
         )}
-        {(canLeave || role !== ModuleAdminRole.SUPER_COLLABORATOR) && isMyRow && (
-          <AlertDialog
-            triggerElement={leaveButton}
-            title={`Leave module`}
-            description="You will no longer be able to edit this module. You can send request to be collaborator again."
-            dangerButtonText="Leave"
-            submitAction={deleteSuperCollaborator}
-          />
-        )}
-        <ErrorText error={errorUpdate ?? errorDelete} />
-      </Row>
+      </Col>
     </Row>
   );
 };

@@ -35,6 +35,11 @@ export const CheckboxRoot = styled(CheckboxRadix.Root, {
         },
       },
     },
+    error: {
+      true: {
+        borderColor: '$danger500',
+      },
+    },
   },
 
   defaultVariants: {
