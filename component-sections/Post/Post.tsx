@@ -73,11 +73,10 @@ const Post: React.FC<PostProps> = ({
   );
 
   const editorState = useMemo(() => {
-    if (!isPendingPost && postId !== undefined) {
+    if (!isPendingPost && postId !== undefined && postData?.content !== '') {
       return postData?.content;
-    } else {
-      return undefined;
     }
+    return undefined;
   }, [isPendingPost, postId, postData?.content]);
 
   const resetErrorHandler = useCallback(() => {

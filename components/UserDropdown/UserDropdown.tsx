@@ -11,11 +11,13 @@ import Avatar from '../Avatar/Avatar';
 import { DropdownMenuTrigger } from '../../components-radix-ui/DropdownMenu/DropdownMenuTrigger';
 import { DropdownMenuRoot } from '../../components-radix-ui/DropdownMenu/DropdownMenuRoot';
 import { DropdownMenuPortal } from '../../components-radix-ui/DropdownMenu/DropdownMenuPortal';
+import { useImage } from '../../hooks/useImage';
 
 const UserDropdown: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const { image } = useImage(user?.imgId ?? 0);
 
   const logout = useLogout({
     onSuccess: () => {
@@ -39,7 +41,7 @@ const UserDropdown: React.FC = () => {
   return (
     <DropdownMenuRoot>
       <DropdownMenuTrigger circle>
-        <Avatar size="md" type="user" url={user?.img?.url} />
+        <Avatar size="md" type="user" url={image?.url} />
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>

@@ -14,7 +14,7 @@ const ModulePosts: React.FC<ModulePostsProps> = ({ moduleId }) => {
 
   return (
     <ModuleLayout>
-      <PostsScreen canEdit={canEdit} />
+      <PostsScreen canEdit={canEdit} moduleId={moduleId} />
     </ModuleLayout>
   );
 };

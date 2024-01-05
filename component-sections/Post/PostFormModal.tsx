@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { Suspense, useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { PbPost } from '../../generated/api-types/data-contracts';
 import PostForm from './PostForm';
@@ -16,7 +16,11 @@ const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setO
   }, [setOpen]);
 
   const content = useMemo(
-    () => <PostForm post={post} onFinishCallback={onFinishCallback} />,
+    () => (
+      <Suspense fallback={null}>
+        <PostForm post={post} onFinishCallback={onFinishCallback} />
+      </Suspense>
+    ),
     [post, onFinishCallback],
   );
 

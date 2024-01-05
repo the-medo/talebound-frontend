@@ -9,9 +9,10 @@ import PostList from '../../../component-sections/Post/PostList';
 
 interface PostsScreenProps {
   canEdit?: boolean;
+  moduleId?: number;
 }
 
-const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
+const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit, moduleId }) => {
   const [createModal, setCreateModal] = useState(false);
 
   const openModal = useCallback(() => setCreateModal(true), []);
@@ -41,7 +42,7 @@ const PostsScreen: React.FC<PostsScreenProps> = ({ canEdit }) => {
               </Row>
             )}
           </Row>
-          <PostList canEdit={canEdit} />
+          <PostList canEdit={canEdit} moduleId={moduleId} />
         </ContentSection>
       </Col>
       <Col css={{ flexGrow: 0, flexBasis: '600px' }}></Col>
