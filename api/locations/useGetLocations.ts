@@ -1,19 +1,52 @@
-import { createQuery } from 'react-query-kit';
-import { PbModule, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { createInfiniteQuery } from 'react-query-kit';
 import { LocationsCollection } from '../collections';
-import { TaleboundError } from '../../utils/types/error';
+import { expandDataForInfiniteQuery, InfiniteResponse } from '../apiLib';
+import { store } from '../../store';
+import { locationAdapterSlice } from '../../adapters/LocationAdapter';
 
-// export type GetLocationsParams = Exclude<
-//   Parameters<typeof LocationsCollection.locationsGetLocations>[0],
-//   undefined
-// >;
+export const PAGE_SIZE_POSTS = 3;
 
-export const useGetLocations = createQuery<PbViewLocation[], PbModule, TaleboundError>({
+type GetLocationsParams = NonNullable<
+  Parameters<typeof LocationsCollection.locationsGetLocations>[0]
+>;
+
+export interface GetLocationsResponse {
+  locationIds: number[];
+  totalCount: number;
+}
+
+export const useGetLocations = createInfiniteQuery<
+  InfiniteResponse<GetLocationsResponse>,
+  GetLocationsParams,
+  Error,
+  number
+>({
   primaryKey: 'useGetLocations',
-  queryFn: async ({ queryKey: [, variables] }) => {
-    console.log('useGetLocations', variables);
-    if (!variables) return [];
-    const { data } = await LocationsCollection.locationsGetLocations(variables);
-    return data.locations ?? [];
+  queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
+    const { data } = await LocationsCollection.locationsGetLocations({
+      ...variables,
+      limit: PAGE_SIZE_POSTS,
+      offset,
+    });
+
+    if (data.locations) {
+      store.dispatch(locationAdapterSlice.actions.upsertLocations(data.locations));
+    }
+
+    return expandDataForInfiniteQuery(
+      {
+        locationIds: (data.locations ?? []).map((p) => p.id ?? 0),
+        totalCount: data.totalCount ?? 0,
+      },
+      offset,
+      PAGE_SIZE_POSTS,
+      data.totalCount,
+    );
   },
+
+  getNextPageParam: (lastPage, _pages) => {
+    return lastPage.newOffset;
+  },
+
+  initialPageParam: 0,
 });

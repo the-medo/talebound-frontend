@@ -6,7 +6,7 @@ import { TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import LocationFormModal from './LocationFormModal';
-import { PbModule, PbViewLocation } from '../../generated/api-types/data-contracts';
+import { PbViewLocation, PbViewModule } from '../../generated/api-types/data-contracts';
 import { useDeleteBulkLocation } from '../../api/locations/useDeleteBulkLocation';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Row } from '../../components/Flex/Flex';
@@ -17,7 +17,7 @@ import LocationTablePostCell from './LocationTablePostCell';
 interface LocationTableProps {
   data: PbViewLocation[];
   canEdit?: boolean;
-  module: PbModule;
+  module: PbViewModule;
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
 }
@@ -73,10 +73,10 @@ const LocationTable: React.FC<LocationTableProps> = ({
     (record: PbViewLocation) => {
       const { id: locationId } = record;
       if (locationId) {
-        deleteLocation({ locationId, module });
+        deleteLocation({ locationId });
       }
     },
-    [deleteLocation, module],
+    [deleteLocation],
   );
 
   const actionButtons = useCallback(
@@ -136,7 +136,6 @@ const LocationTable: React.FC<LocationTableProps> = ({
           record.id && (
             <LocationTablePostCell
               locationId={record.id}
-              module={module}
               postId={record.postId}
               postTitle={record.postTitle}
               canEdit={canEdit}
@@ -156,7 +155,7 @@ const LocationTable: React.FC<LocationTableProps> = ({
     }
 
     return cols;
-  }, [canEdit, module, actionButtons]);
+  }, [canEdit, actionButtons]);
 
   const summary: TableProps<PbViewLocation>['summary'] = useCallback(() => {
     if (!canEdit) return undefined;

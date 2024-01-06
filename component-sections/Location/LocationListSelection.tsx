@@ -1,10 +1,10 @@
 import React from 'react';
 import { useGetLocations } from '../../api/locations/useGetLocations';
 import LocationTable from './LocationTable';
-import { PbModule } from '../../generated/api-types/data-contracts';
+import { PbViewModule } from '../../generated/api-types/data-contracts';
 
 interface LocationListSelectionProps {
-  module: PbModule;
+  module: PbViewModule;
   onSelect: (locationId: number[]) => void;
 }
 

@@ -37,13 +37,13 @@ export class Locations<SecurityDataType = unknown> {
   locationsGetLocations = (
     query?: {
       /** @format int32 */
-      worldId?: number;
+      moduleId?: number;
+      tags?: number[];
+      orderBy?: string;
       /** @format int32 */
-      questId?: number;
+      limit?: number;
       /** @format int32 */
-      characterId?: number;
-      /** @format int32 */
-      systemId?: number;
+      offset?: number;
     },
     params: RequestParams = {},
   ) =>

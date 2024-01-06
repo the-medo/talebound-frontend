@@ -46,13 +46,13 @@ export class Maps<SecurityDataType = unknown> {
   mapsGetMaps = (
     query?: {
       /** @format int32 */
-      moduleWorldId?: number;
+      moduleId?: number;
+      tags?: number[];
+      orderBy?: string;
       /** @format int32 */
-      moduleQuestId?: number;
+      limit?: number;
       /** @format int32 */
-      moduleCharacterId?: number;
-      /** @format int32 */
-      moduleSystemId?: number;
+      offset?: number;
     },
     params: RequestParams = {},
   ) =>

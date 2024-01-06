@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { PbModule } from '../../generated/api-types/data-contracts';
 import { MdAdd } from 'react-icons/md';
 import { useCreateLocationPost } from '../../api/locations/useCreateLocationPost';
 import AssignPostModal from '../Post/AssignPostModal/AssignPostModal';
@@ -8,7 +7,6 @@ import ErrorText from '../../components/ErrorText/ErrorText';
 
 interface LocationTablePostCellProps {
   locationId: number;
-  module: PbModule;
   postId?: number;
   postTitle?: string;
   canEdit?: boolean;
@@ -16,7 +14,6 @@ interface LocationTablePostCellProps {
 
 const LocationTablePostCell: React.FC<LocationTablePostCellProps> = ({
   locationId,
-  module,
   postId,
   postTitle,
   canEdit,
@@ -32,9 +29,8 @@ const LocationTablePostCell: React.FC<LocationTablePostCellProps> = ({
   const createNewPostCallback = useCallback(() => {
     createLocationPost({
       locationId,
-      module,
     });
-  }, [createLocationPost, locationId, module]);
+  }, [createLocationPost, locationId]);
 
   const trigger = useMemo(
     () => (

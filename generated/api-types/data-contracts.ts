@@ -255,7 +255,9 @@ export interface PbGetImagesResponse {
 }
 
 export interface PbGetLocationsResponse {
-  locations?: PbViewLocation[];
+  locations?: PbLocation[];
+  /** @format int32 */
+  totalCount?: number;
 }
 
 export interface PbGetMapLayersResponse {
@@ -271,7 +273,9 @@ export interface PbGetMapPinsResponse {
 }
 
 export interface PbGetMapsResponse {
-  maps?: PbViewMap[];
+  maps?: PbMap[];
+  /** @format int32 */
+  totalCount?: number;
 }
 
 export interface PbGetMenuItemContentResponse {
@@ -439,17 +443,6 @@ export interface PbModuleAdmin {
   motivationalLetter?: string;
   allowedEntityTypes?: PbEntityType[];
   allowedMenu?: boolean;
-}
-
-export interface PbModuleDefinition {
-  /** @format int32 */
-  worldId?: number;
-  /** @format int32 */
-  questId?: number;
-  /** @format int32 */
-  characterId?: number;
-  /** @format int32 */
-  systemId?: number;
 }
 
 /** @default "MODULE_TYPE_UNKNOWN" */
