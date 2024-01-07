@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ModuleCategory from '../../../../../component-sections/Module/ModuleCategory';
 
 interface MenuCategoryProps {
@@ -6,7 +6,11 @@ interface MenuCategoryProps {
 }
 
 const MenuCategoryPageWorlds: React.FC<MenuCategoryProps> = ({ postId }) => {
-  return <ModuleCategory postId={postId} />;
+  return (
+    <Suspense fallback={null}>
+      <ModuleCategory postId={postId} />
+    </Suspense>
+  );
 };
 
 export default MenuCategoryPageWorlds;

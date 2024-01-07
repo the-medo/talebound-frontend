@@ -27,7 +27,7 @@ const ModuleLayout: React.FC<PropsWithChildren> = ({ children }) => {
       <Suspense fallback={null}>
         <ActionBoxModule moduleId={moduleId} />
       </Suspense>
-      {children}
+      <Suspense fallback={null}>{children}</Suspense>
     </Layout>
   );
 };

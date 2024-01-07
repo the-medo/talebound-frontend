@@ -39,16 +39,14 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     return menuItemsData.find((item) => item.code === menuItemCode);
   }, [menuItemCode, menuItemsData]);
 
-  const menuItemId = menuItem?.id ?? 0;
-
   const descriptionPostId = useMemo(() => {
     return menuItem?.descriptionPostId ?? 0;
   }, [menuItem?.descriptionPostId]);
 
   const displayPostId = useMemo(() => {
     if (postId === descriptionPostId || !postId) return descriptionPostId;
-    return menuItemPost?.postId ?? 0;
-  }, [descriptionPostId, menuItemPost?.postId, postId]);
+    return 0;
+  }, [descriptionPostId, postId]);
 
   const createDescriptionPostHandler = useCallback(() => {}, []);
 
@@ -133,7 +131,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           </ContentSection>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
             <Col loading={loading}>
-              {items.map((viewEntity, i) => {
+              {items.map((viewEntity) => {
                 return viewEntity.id;
               })}
             </Col>

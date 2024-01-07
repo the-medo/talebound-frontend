@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useUrlModuleId } from '../../hooks/useUrlModuleId';
 import ModuleLayout from '../../components/Layout/ModuleLayout';
 import MenuCategoryPage from '../Menu/MenuCategoryPage';
@@ -19,12 +19,14 @@ const ModuleCategory: React.FC<ModuleCategoryProps> = ({ postId }) => {
   return (
     <>
       <ModuleLayout>
-        <MenuCategoryPage
-          menuId={menuId}
-          postId={postId}
-          linkPrefix={`/${linkPrefix}/${moduleTypeId}`}
-          canEdit={canEdit}
-        />
+        <Suspense fallback={null}>
+          <MenuCategoryPage
+            menuId={menuId}
+            postId={postId}
+            linkPrefix={`/${linkPrefix}/${moduleTypeId}`}
+            canEdit={canEdit}
+          />
+        </Suspense>
       </ModuleLayout>
     </>
   );
