@@ -13,6 +13,8 @@ import {
   PbCreateEntityGroupRequest,
   PbEntityGroup,
   PbEntityGroupContent,
+  PbEntityGroupDirection,
+  PbEntityGroupStyle,
   PbViewEntity,
   RpcStatus,
 } from './data-contracts';
@@ -76,8 +78,8 @@ export class Entities<SecurityDataType = unknown> {
     body: {
       name?: string;
       description?: string;
-      style?: string;
-      direction?: string;
+      style?: PbEntityGroupStyle;
+      direction?: PbEntityGroupDirection;
     },
     params: RequestParams = {},
   ) =>

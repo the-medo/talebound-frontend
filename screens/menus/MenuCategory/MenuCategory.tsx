@@ -8,9 +8,9 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
 import { Reorder } from 'framer-motion';
-import MenuItemPostThumbnail from './MenuItemPostThumbnail';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import { PbEntity, PbViewEntity } from '../../../generated/api-types/data-contracts';
+import { PbViewEntity } from '../../../generated/api-types/data-contracts';
+import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -38,6 +38,12 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const menuItem = useMemo(() => {
     return menuItemsData.find((item) => item.code === menuItemCode);
   }, [menuItemCode, menuItemsData]);
+
+  const { data: menuItemContent } = useGetMenuItemContent({
+    variables: { menuId, menuItemId: menuItem?.id ?? 0 },
+  });
+
+  console.log('MENU ITEM CONTENT: ', menuItemContent);
 
   const descriptionPostId = useMemo(() => {
     return menuItem?.descriptionPostId ?? 0;

@@ -38,8 +38,8 @@ export interface PbCreateEntityGroupRequest {
   parentEntityGroupId?: number;
   name?: string;
   description?: string;
-  style?: string;
-  direction?: string;
+  style?: PbEntityGroupStyle;
+  direction?: PbEntityGroupDirection;
 }
 
 export interface PbCreateEntityTagResponse {
@@ -135,27 +135,13 @@ export interface PbDeletePostResponse {
   message?: string;
 }
 
-export interface PbEntity {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  moduleId?: number;
-  type?: PbEntityType;
-  /** @format int32 */
-  postId?: number;
-  /** @format int32 */
-  mapId?: number;
-  /** @format int32 */
-  locationId?: number;
-  /** @format int32 */
-  imageId?: number;
-}
-
 export interface PbEntityGroup {
   /** @format int32 */
   id?: number;
   name?: string;
   description?: string;
+  style?: PbEntityGroupStyle;
+  direction?: PbEntityGroupDirection;
 }
 
 export interface PbEntityGroupContent {
@@ -171,12 +157,18 @@ export interface PbEntityGroupContent {
   contentEntityGroupId?: number;
 }
 
-export interface PbEntityList {
-  entities?: PbEntity[];
-  posts?: PbViewPost[];
-  maps?: PbViewMap[];
-  locations?: PbViewLocation[];
-  images?: PbImage[];
+/** @default "ENTITY_GROUP_DIRECTION_UNKNOWN" */
+export enum PbEntityGroupDirection {
+  ENTITY_GROUP_DIRECTION_UNKNOWN = 'ENTITY_GROUP_DIRECTION_UNKNOWN',
+  ENTITY_GROUP_DIRECTION_VERTICAL = 'ENTITY_GROUP_DIRECTION_VERTICAL',
+  ENTITY_GROUP_DIRECTION_HORIZONTAL = 'ENTITY_GROUP_DIRECTION_HORIZONTAL',
+}
+
+/** @default "ENTITY_GROUP_STYLE_UNKNOWN" */
+export enum PbEntityGroupStyle {
+  ENTITY_GROUP_STYLE_UNKNOWN = 'ENTITY_GROUP_STYLE_UNKNOWN',
+  ENTITY_GROUP_STYLE_FRAMED = 'ENTITY_GROUP_STYLE_FRAMED',
+  ENTITY_GROUP_STYLE_NOT_FRAMED = 'ENTITY_GROUP_STYLE_NOT_FRAMED',
 }
 
 export interface PbEntityTagAvailable {
@@ -279,9 +271,10 @@ export interface PbGetMapsResponse {
 }
 
 export interface PbGetMenuItemContentResponse {
-  menuItemEntityGroups?: number[];
-  content?: PbEntityGroupContent[];
-  entityList?: PbEntityList;
+  /** @format int32 */
+  mainGroupId?: number;
+  groups?: PbEntityGroup[];
+  contents?: PbEntityGroupContent[];
 }
 
 export interface PbGetMenuItemsResponse {
@@ -669,50 +662,6 @@ export interface PbViewEntity {
   locationId?: number;
   /** @format int32 */
   imageId?: number;
-  /** @format int32 */
-  moduleId?: number;
-  moduleType?: PbModuleType;
-  /** @format int32 */
-  moduleTypeId?: number;
-  tags?: number[];
-}
-
-export interface PbViewLocation {
-  /** @format int32 */
-  id?: number;
-  name?: string;
-  description?: string;
-  /** @format int32 */
-  postId?: number;
-  postTitle?: string;
-  /** @format int32 */
-  thumbnailImageId?: number;
-  thumbnailImageUrl?: string;
-  /** @format int32 */
-  entityId?: number;
-  /** @format int32 */
-  moduleId?: number;
-  moduleType?: PbModuleType;
-  /** @format int32 */
-  moduleTypeId?: number;
-  tags?: number[];
-}
-
-export interface PbViewMap {
-  /** @format int32 */
-  id?: number;
-  name?: string;
-  type?: string;
-  description?: string;
-  /** @format int32 */
-  width?: number;
-  /** @format int32 */
-  height?: number;
-  /** @format int32 */
-  thumbnailImageId?: number;
-  thumbnailImageUrl?: string;
-  /** @format int32 */
-  entityId?: number;
   /** @format int32 */
   moduleId?: number;
   moduleType?: PbModuleType;
