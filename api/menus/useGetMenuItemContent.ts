@@ -8,21 +8,27 @@ interface GetMenuItemContentRequest {
   menuItemId: number;
 }
 
+export type EntityGroupContentHierarchyEntityGroup = {
+  type: 'GROUP';
+  entityGroupId: number;
+  position: number;
+  children: EntityGroupContentHierarchy[];
+};
+
+export type EntityGroupContentHierarchyEntity = {
+  type: 'ENTITY';
+  entityId: number;
+  position: number;
+};
+
 export type EntityGroupContentHierarchy =
-  | {
-      type: 'GROUP';
-      entityGroupId: number;
-      position: number;
-      children: EntityGroupContentHierarchy[];
-    }
-  | {
-      type: 'ENTITY';
-      entityId: number;
-      position: number;
-    };
+  | EntityGroupContentHierarchyEntityGroup
+  | EntityGroupContentHierarchyEntity;
+
+export type EntityGroupObject = Record<number, PbEntityGroup | undefined>;
 
 type GetMenuItemContentResponse = {
-  entityGroups: Record<number, PbEntityGroup>;
+  entityGroups: EntityGroupObject;
   hierarchy: EntityGroupContentHierarchy;
 };
 

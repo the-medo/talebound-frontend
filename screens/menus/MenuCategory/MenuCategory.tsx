@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { PbViewEntity } from '../../../generated/api-types/data-contracts';
-import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
+import MenuCategoryContent from './MenuCategoryContent';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -38,12 +38,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const menuItem = useMemo(() => {
     return menuItemsData.find((item) => item.code === menuItemCode);
   }, [menuItemCode, menuItemsData]);
-
-  const { data: menuItemContent } = useGetMenuItemContent({
-    variables: { menuId, menuItemId: menuItem?.id ?? 0 },
-  });
-
-  console.log('MENU ITEM CONTENT: ', menuItemContent);
 
   const descriptionPostId = useMemo(() => {
     return menuItem?.descriptionPostId ?? 0;
@@ -135,6 +129,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               )}
             </Row>
           </ContentSection>
+          <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
             <Col loading={loading}>
               {items.map((viewEntity) => {
