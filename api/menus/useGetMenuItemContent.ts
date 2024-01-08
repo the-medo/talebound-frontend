@@ -1,6 +1,6 @@
 import { createQuery } from 'react-query-kit';
 import { TaleboundError } from '../../utils/types/error';
-import { PbEntityGroup } from '../../generated/api-types/data-contracts';
+import { PbEntityGroup, PbEntityGroupContent } from '../../generated/api-types/data-contracts';
 import { MenusCollection } from '../collections';
 
 interface GetMenuItemContentRequest {
@@ -53,10 +53,13 @@ export const useGetMenuItemContent = createQuery<
 
     const { data } = await MenusCollection.menusGetMenuItemContent(menuId, menuItemId);
 
-    const obj: Record<number, EntityGroupContentHierarchy | undefined> = {};
+    const obj: Record<string, EntityGroupContentHierarchy | undefined> = {};
+
+    const getId = (egc: PbEntityGroupContent) =>
+      egc.contentEntityId ? `e-${egc.contentEntityId}` : `g-${egc.contentEntityGroupId}`;
 
     data.contents?.forEach((c) => {
-      const id = c.contentEntityId ?? c.contentEntityGroupId;
+      const id = getId(c);
       if (id) {
         if (!obj[id]) {
           if (c.contentEntityId) {
@@ -73,14 +76,19 @@ export const useGetMenuItemContent = createQuery<
               children: [],
             };
           }
+        } else {
+          const asdf = obj[id];
+          if (asdf?.type === 'GROUP') {
+            asdf.entityGroupId = c.entityGroupId ?? 0;
+          }
         }
         const thisObj = obj[id]!;
         if (c.entityGroupId) {
-          const parent = obj[c.entityGroupId];
+          const parent = obj[`g-${c.entityGroupId}`];
           if (!parent) {
-            obj[c.entityGroupId] = {
+            obj[`g-${c.entityGroupId}`] = {
               type: 'GROUP',
-              entityGroupId: c.entityGroupId,
+              entityGroupId: 0,
               position: 1,
               children: [thisObj],
             };
@@ -91,7 +99,7 @@ export const useGetMenuItemContent = createQuery<
       }
     });
 
-    const mainHierarchy = obj[data.mainGroupId!];
+    const mainHierarchy = obj[`g-${data.mainGroupId!}`];
 
     const rsp: GetMenuItemContentResponse = {
       entityGroups: {},
