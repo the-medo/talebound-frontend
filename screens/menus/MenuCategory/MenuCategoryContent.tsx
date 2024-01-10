@@ -16,6 +16,16 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
 
   if (!menuItemContent?.hierarchy) return null;
 
+  /*if (menuItemContent.hierarchy.type === 'GROUP') {
+    return menuItemContent.hierarchy.children.map((c) => (
+      <MenuItemContentElement
+        key={c.position}
+        content={c}
+        entityGroupObject={menuItemContent.entityGroups}
+      />
+    ));
+  }*/
+
   return (
     <MenuItemContentElement
       content={menuItemContent.hierarchy}

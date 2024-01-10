@@ -17,10 +17,15 @@ import { imageAdapterSlice } from '../adapters/ImageAdapter';
 import { postAdapterSlice } from '../adapters/PostAdapter';
 import { mapAdapterSlice } from '../adapters/MapAdapter';
 import { mappingReducer, mappingSlice } from '../adapters/mappingSlice';
+import {
+  menuCategoryReducer,
+  menuCategorySlice,
+} from '../screens/menus/MenuCategory/menuCategorySlice';
 
 export const store = configureStore({
   reducer: {
     [mappingSlice.name]: mappingReducer,
+    [menuCategorySlice.name]: menuCategoryReducer,
 
     [userSlice.name]: userReducer,
     [globalSlice.name]: globalReducer,

@@ -11,6 +11,10 @@ import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { PbViewEntity } from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReduxState } from '../../../store';
+import { setRearrangeMode } from './menuCategorySlice';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -31,7 +35,8 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   worldImageThumbnail,
   canEdit = false,
 }) => {
-  const [rearrangeMode, setRearrangeMode] = React.useState(false);
+  const dispatch = useDispatch();
+  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
   const [createPostMode, setCreatePostMode] = React.useState(false);
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
@@ -51,8 +56,8 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const createDescriptionPostHandler = useCallback(() => {}, []);
 
   const toggleRearrangeMode = useCallback(() => {
-    setRearrangeMode((p) => !p);
-  }, []);
+    dispatch(setRearrangeMode(!rearrangeMode));
+  }, [dispatch, rearrangeMode]);
 
   const toggleCreatePostMode = useCallback(() => {
     setCreatePostMode((p) => !p);
@@ -76,6 +81,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     [rearrangeMode],
   );
   //====================================================================================================
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { over } = event;
+    console.log(event, over);
+  }
 
   if (!menuItem) {
     return <div>404 - not found!</div>;
@@ -129,7 +139,9 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               )}
             </Row>
           </ContentSection>
-          <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
+          <DndContext onDragEnd={handleDragEnd}>
+            <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
+          </DndContext>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
             <Col loading={loading}>
               {items.map((viewEntity) => {

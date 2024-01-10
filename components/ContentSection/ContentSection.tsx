@@ -144,6 +144,7 @@ const StyledSectionContent = styled('div', {
 });
 
 interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
+  setRef?: (element: HTMLElement | null) => void;
   direction?: 'row' | 'column';
   header?: string;
   alignItems?: CSSProperties['alignItems'];
@@ -159,6 +160,7 @@ interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
+  setRef,
   direction = 'column',
   header,
   alignItems = 'flex-start',
@@ -183,6 +185,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 
   return (
     <StyledSection
+      ref={setRef}
       fullWidth={fullWidth}
       highlighted={highlighted}
       error={error}

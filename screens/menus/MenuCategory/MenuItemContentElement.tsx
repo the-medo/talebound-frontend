@@ -9,15 +9,17 @@ import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGro
 interface MenuItemContentElementProps {
   content: EntityGroupContentHierarchy;
   entityGroupObject: EntityGroupObject;
+  isOver: boolean;
 }
 
 const MenuItemContentElement: React.FC<MenuItemContentElementProps> = ({
   content,
   entityGroupObject,
+  isOver,
 }) => {
   switch (content.type) {
     case 'ENTITY':
-      return <MenuItemContentElementEntity content={content} />;
+      return <MenuItemContentElementEntity content={content} isOver={isOver} />;
     case 'GROUP':
       return (
         <MenuItemContentElementEntityGroup
