@@ -7,7 +7,7 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { useDroppable } from '@dnd-kit/core';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -18,9 +18,20 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   content,
   entityGroupObject,
 }) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id: `entity-group-${content.entityGroupId}`,
+  // const { isOver, setNodeRef: setDroppableRef } = useDroppable({
+  //   id: `entity-group-droppable-${content.entityGroupId}`,
+  // });
+  const entityDraggableId = `entity-group-draggable-${content.entityGroupId}`;
+  const {
+    attributes,
+    listeners,
+    setNodeRef: setDraggableRef,
+    transform,
+    isDragging,
+  } = useDraggable({
+    id: entityDraggableId,
   });
+
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
 
   const children = useMemo(
@@ -30,21 +41,32 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           key={c.position}
           content={c}
           entityGroupObject={entityGroupObject}
-          isOver={isOver}
+          isOver={false}
         />
       )),
-    [content.children, entityGroupObject, isOver],
+    [content.children, entityGroupObject /*isOver*/],
   );
 
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        width: '100%',
+      }
+    : {
+        width: '100%',
+      };
+
   return (
-    <ContentSection
-      setRef={rearrangeMode ? setNodeRef : undefined}
-      direction={'column'}
-      header={`Group ${content.entityGroupId}`}
-      highlighted={rearrangeMode && isOver}
-    >
-      {children}
-    </ContentSection>
+    <div ref={setDraggableRef} style={style} {...listeners} {...attributes}>
+      <ContentSection
+        // setRef={rearrangeMode ? setDroppableRef : undefined}
+        direction={'column'}
+        header={`Group ${content.entityGroupId}`}
+        highlighted={false}
+      >
+        {children}
+      </ContentSection>
+    </div>
   );
 };
 
