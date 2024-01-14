@@ -6,6 +6,7 @@ import Loading from '../Loading/Loading';
 import { Text } from '../Typography/Text';
 import Link from 'next/link';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
+import { Row } from '../Flex/Flex';
 
 export const SECTION_CORNER_IMAGE = (url: string) => ({
   backgroundImage: `linear-gradient(to bottom left, transparent 0%, rgba(255,255,255,0.65) 25%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,1) 50%), url('${imageModifyVariant(
@@ -144,7 +145,6 @@ const StyledSectionContent = styled('div', {
 });
 
 interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
-  setRef?: (element: HTMLElement | null) => void;
   direction?: 'row' | 'column';
   header?: string;
   alignItems?: CSSProperties['alignItems'];
@@ -157,10 +157,10 @@ interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
   highlighted?: boolean;
   error?: boolean;
   fullWidth?: boolean;
+  titlePrefix?: React.ReactNode;
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({
-  setRef,
   direction = 'column',
   header,
   alignItems = 'flex-start',
@@ -174,6 +174,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   highlighted,
   error,
   fullWidth,
+  titlePrefix,
   ...styledSectionProps
 }) => {
   const cornerImageCss = useMemo(
@@ -185,7 +186,6 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 
   return (
     <StyledSection
-      ref={setRef}
       fullWidth={fullWidth}
       highlighted={highlighted}
       error={error}
@@ -193,12 +193,15 @@ const ContentSection: React.FC<ContentSectionProps> = ({
       css={cornerImageCss}
       {...styledSectionProps}
     >
-      {header && href && (
-        <Link href={href}>
-          <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>
-        </Link>
-      )}
-      {header && !href && <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>}
+      <Row gap="sm">
+        {titlePrefix}
+        {header && href && (
+          <Link href={href}>
+            <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>
+          </Link>
+        )}
+        {header && !href && <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>}
+      </Row>
       {hasChildren && (
         <StyledSectionContent
           direction={direction}

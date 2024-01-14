@@ -11,10 +11,11 @@ import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { PbViewEntity } from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { setRearrangeMode } from './menuCategorySlice';
+import { setDraggingData, setRearrangeMode } from './menuCategorySlice';
+import { EntityGroupContentHierarchy } from '../../../api/menus/useGetMenuItemContent';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -82,10 +83,23 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   );
   //====================================================================================================
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { over } = event;
-    console.log(event, over);
-  }
+  const handleDragStart = useCallback(
+    (event: DragStartEvent) => {
+      const { active } = event;
+      dispatch(setDraggingData(active.data.current as EntityGroupContentHierarchy));
+      console.log('START!', event.active.rect.current.initial, active);
+    },
+    [dispatch],
+  );
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { over } = event;
+      dispatch(setDraggingData(undefined));
+      console.log(event, over);
+    },
+    [dispatch],
+  );
 
   if (!menuItem) {
     return <div>404 - not found!</div>;
@@ -139,7 +153,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               )}
             </Row>
           </ContentSection>
-          <DndContext onDragEnd={handleDragEnd}>
+          <DndContext
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            collisionDetection={pointerWithin}
+          >
             <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
           </DndContext>
           <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>

@@ -7,7 +7,11 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { useDraggable, useDroppable } from '@dnd-kit/core';
+import { useDraggable } from '@dnd-kit/core';
+import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
+import { MdDragIndicator } from 'react-icons/md';
+import { TitleH2 } from '../../../components/Typography/Title';
+import { Row } from '../../../components/Flex/Flex';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -18,6 +22,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   content,
   entityGroupObject,
 }) => {
+  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
   // const { isOver, setNodeRef: setDroppableRef } = useDroppable({
   //   id: `entity-group-droppable-${content.entityGroupId}`,
   // });
@@ -30,9 +35,9 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     isDragging,
   } = useDraggable({
     id: entityDraggableId,
+    data: content,
+    disabled: !rearrangeMode,
   });
-
-  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
 
   const children = useMemo(
     () =>
@@ -41,32 +46,29 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           key={c.position}
           content={c}
           entityGroupObject={entityGroupObject}
-          isOver={false}
         />
       )),
     [content.children, entityGroupObject /*isOver*/],
   );
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        width: '100%',
-      }
-    : {
-        width: '100%',
-      };
+  const dragHandle = useMemo(
+    () =>
+      rearrangeMode ? (
+        <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
+          <MdDragIndicator size={20} />
+        </DragHandle>
+      ) : null,
+    [attributes, listeners, rearrangeMode, setDraggableRef],
+  );
 
   return (
-    <div ref={setDraggableRef} style={style} {...listeners} {...attributes}>
-      <ContentSection
-        // setRef={rearrangeMode ? setDroppableRef : undefined}
-        direction={'column'}
-        header={`Group ${content.entityGroupId}`}
-        highlighted={false}
-      >
-        {children}
-      </ContentSection>
-    </div>
+    <ContentSection direction={'column'} highlighted={false} fullWidth noMargin>
+      <Row gap="sm">
+        {dragHandle}
+        <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
+      </Row>
+      {children}
+    </ContentSection>
   );
 };
 
