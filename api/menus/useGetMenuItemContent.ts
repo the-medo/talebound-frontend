@@ -10,6 +10,7 @@ interface GetMenuItemContentRequest {
 
 export type EntityGroupContentHierarchyEntityGroup = {
   type: 'GROUP';
+  hierarchyId: string;
   entityGroupId: number;
   position: number;
   children: EntityGroupContentHierarchy[];
@@ -17,6 +18,7 @@ export type EntityGroupContentHierarchyEntityGroup = {
 
 export type EntityGroupContentHierarchyEntity = {
   type: 'ENTITY';
+  hierarchyId: string;
   entityId: number;
   position: number;
 };
@@ -36,6 +38,7 @@ const emptyResponse: GetMenuItemContentResponse = {
   entityGroups: {},
   hierarchy: {
     type: 'GROUP',
+    hierarchyId: 'g1',
     entityGroupId: 0,
     position: 1,
     children: [],
@@ -56,7 +59,7 @@ export const useGetMenuItemContent = createQuery<
     const obj: Record<string, EntityGroupContentHierarchy | undefined> = {};
 
     const getId = (egc: PbEntityGroupContent) =>
-      egc.contentEntityId ? `e-${egc.contentEntityId}` : `g-${egc.contentEntityGroupId}`;
+      egc.contentEntityId ? `e${egc.contentEntityId}` : `g${egc.contentEntityGroupId}`;
 
     data.contents?.forEach((c) => {
       const id = getId(c);
@@ -65,12 +68,14 @@ export const useGetMenuItemContent = createQuery<
           if (c.contentEntityId) {
             obj[id] = {
               type: 'ENTITY',
+              hierarchyId: '',
               entityId: c.contentEntityId,
               position: c.position ?? 1,
             };
           } else if (c.contentEntityGroupId) {
             obj[id] = {
               type: 'GROUP',
+              hierarchyId: '',
               entityGroupId: c.contentEntityGroupId,
               position: c.position ?? 1,
               children: [],
@@ -84,22 +89,26 @@ export const useGetMenuItemContent = createQuery<
         }
         const thisObj = obj[id]!;
         if (c.entityGroupId) {
-          const parent = obj[`g-${c.entityGroupId}`];
+          const parentId = `g${c.entityGroupId}`;
+          let parent = obj[parentId];
           if (!parent) {
-            obj[`g-${c.entityGroupId}`] = {
+            obj[parentId] = {
               type: 'GROUP',
+              hierarchyId: `g${c.entityGroupId}`,
               entityGroupId: 0,
               position: 1,
               children: [thisObj],
             };
+            parent = obj[parentId];
           } else if (parent.type === 'GROUP') {
             parent.children.push(thisObj);
           }
+          thisObj.hierarchyId = `${parent?.hierarchyId}-${id}`;
         }
       }
     });
 
-    const mainHierarchy = obj[`g-${data.mainGroupId!}`];
+    const mainHierarchy = obj[`g${data.mainGroupId!}`];
 
     const rsp: GetMenuItemContentResponse = {
       entityGroups: {},

@@ -9,26 +9,34 @@ import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { Col, Row } from '../../../components/Flex/Flex';
 
 interface MenuItemContentElementEntityProps {
+  showHandles: boolean;
   content: EntityGroupContentHierarchyEntity;
 }
 
-const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> = ({ content }) => {
+const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> = ({
+  content,
+  showHandles,
+}) => {
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
 
-  const entityDroppableId = `entity-droppable-${content.entityId}`;
-  const { isOver, setNodeRef: setDroppableRef } = useDroppable({
-    id: entityDroppableId,
+  const {
+    isOver,
+    setNodeRef: setDroppableRef,
+    active,
+  } = useDroppable({
+    id: content.hierarchyId + 'asd',
     data: content,
   });
+  const canDropHere = !content.hierarchyId.startsWith(`${active?.id}-`);
 
-  const entityDraggableId = `entity-draggable-${content.entityId}`;
   const {
     attributes,
     listeners,
     setNodeRef: setDraggableRef,
+    isDragging,
   } = useDraggable({
-    id: entityDraggableId,
-    disabled: !rearrangeMode,
+    id: content.hierarchyId,
+    disabled: !rearrangeMode || !canDropHere,
     data: content,
     attributes: {},
   });
@@ -36,29 +44,27 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   return (
     <>
       <Col fullWidth ref={setDroppableRef}>
-        <Row
-          style={{
-            border: '1px solid blue',
-          }}
-        >
-          {rearrangeMode && (
+        <Row semiTransparent={isDragging}>
+          {rearrangeMode && showHandles && (
             <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
               <MdDragIndicator size={20} />
             </DragHandle>
           )}
           Entity {content.entityId}
         </Row>
-        <div
-          style={{
-            padding: '3px',
-            width: '100%',
-            border: '1px solid green',
-            backgroundColor: 'lightgreen',
-            display: isOver ? 'block' : 'none',
-          }}
-        >
-          drop here{' '}
-        </div>
+        {canDropHere && (
+          <div
+            style={{
+              padding: '3px',
+              width: '100%',
+              border: '1px solid green',
+              backgroundColor: 'lightgreen',
+              display: isOver ? 'block' : 'none',
+            }}
+          >
+            drop here{' '}
+          </div>
+        )}
       </Col>
     </>
   );

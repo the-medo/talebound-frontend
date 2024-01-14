@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import {
-  EntityGroupContentHierarchy,
-  useGetMenuItemContent,
-} from '../../../api/menus/useGetMenuItemContent';
+import React from 'react';
+import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
 import MenuItemContentElement from './MenuItemContentElement';
 import { DragOverlay } from '@dnd-kit/core';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
+import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGroup';
 
 interface MenuCategoryContentProps {
   menuId: number;
@@ -24,27 +22,22 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
 
   if (!menuItemContent?.hierarchy) return null;
 
-  /*if (menuItemContent.hierarchy.type === 'GROUP') {
-    return menuItemContent.hierarchy.children.map((c) => (
-      <MenuItemContentElement
-        key={c.position}
-        content={c}
-        entityGroupObject={menuItemContent.entityGroups}
-      />
-    ));
-  }*/
-
   return (
     <>
-      <MenuItemContentElement
-        content={menuItemContent.hierarchy}
-        entityGroupObject={menuItemContent.entityGroups}
-      />
+      {menuItemContent.hierarchy.type === 'GROUP' && (
+        <MenuItemContentElementEntityGroup
+          isTopLevelGroup={true}
+          showHandles={true}
+          content={menuItemContent.hierarchy}
+          entityGroupObject={menuItemContent.entityGroups}
+        />
+      )}
       {rearrangeMode && (
         <DragOverlay>
           {draggingData ? (
             <div style={{ width: '500px' }}>
               <MenuItemContentElement
+                showHandles={false}
                 content={draggingData}
                 entityGroupObject={menuItemContent.entityGroups}
               />

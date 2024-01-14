@@ -25,6 +25,12 @@ export const Flex = styled('div', {
       },
     },
 
+    semiTransparent: {
+      true: {
+        opacity: 0.5,
+      },
+    },
+
     gap: {
       none: {
         gap: '0',

@@ -16,25 +16,28 @@ import { Row } from '../../../components/Flex/Flex';
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
   entityGroupObject: EntityGroupObject;
+  showHandles: boolean;
+  isTopLevelGroup?: boolean;
 }
 
 const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGroupProps> = ({
   content,
   entityGroupObject,
+  showHandles,
+  isTopLevelGroup = false,
 }) => {
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
   // const { isOver, setNodeRef: setDroppableRef } = useDroppable({
   //   id: `entity-group-droppable-${content.entityGroupId}`,
   // });
-  const entityDraggableId = `entity-group-draggable-${content.entityGroupId}`;
   const {
     attributes,
     listeners,
     setNodeRef: setDraggableRef,
-    transform,
     isDragging,
+    active,
   } = useDraggable({
-    id: entityDraggableId,
+    id: content.hierarchyId,
     data: content,
     disabled: !rearrangeMode,
   });
@@ -44,25 +47,32 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       content.children.map((c) => (
         <MenuItemContentElement
           key={c.position}
+          showHandles={showHandles}
           content={c}
           entityGroupObject={entityGroupObject}
         />
       )),
-    [content.children, entityGroupObject /*isOver*/],
+    [showHandles, content.children, entityGroupObject /*isOver*/],
   );
 
   const dragHandle = useMemo(
     () =>
-      rearrangeMode ? (
+      rearrangeMode && !isTopLevelGroup && showHandles ? (
         <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
           <MdDragIndicator size={20} />
         </DragHandle>
       ) : null,
-    [attributes, listeners, rearrangeMode, setDraggableRef],
+    [isTopLevelGroup, showHandles, attributes, listeners, rearrangeMode, setDraggableRef],
   );
 
   return (
-    <ContentSection direction={'column'} highlighted={false} fullWidth noMargin>
+    <ContentSection
+      direction={'column'}
+      highlighted={false}
+      fullWidth={!isTopLevelGroup}
+      noMargin={!isTopLevelGroup}
+      semiTransparent={isDragging}
+    >
       <Row gap="sm">
         {dragHandle}
         <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>

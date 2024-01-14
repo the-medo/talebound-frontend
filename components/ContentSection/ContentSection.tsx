@@ -50,6 +50,11 @@ const StyledSection = styled('section', {
         opacity: 0.8,
       },
     },
+    semiTransparent: {
+      true: {
+        opacity: 0.5,
+      },
+    },
     error: {
       true: {
         outline: '2px solid $danger',
