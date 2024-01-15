@@ -7,11 +7,13 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { useDraggable } from '@dnd-kit/core';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { MdDragIndicator } from 'react-icons/md';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { Row } from '../../../components/Flex/Flex';
+import { Col, Row } from '../../../components/Flex/Flex';
+import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
+import { isOverCheck } from './menuCategoryUtils';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -27,9 +29,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   isTopLevelGroup = false,
 }) => {
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
-  // const { isOver, setNodeRef: setDroppableRef } = useDroppable({
-  //   id: `entity-group-droppable-${content.entityGroupId}`,
-  // });
+
+  const { over, setNodeRef: setDroppableRef } = useDroppable({
+    id: content.hierarchyId + '-drop-move',
+    data: { ...content, dropType: 'move' },
+  });
+
   const {
     attributes,
     listeners,
@@ -41,6 +46,8 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     data: content,
     disabled: !rearrangeMode,
   });
+
+  const canDropHere = !content.hierarchyId.startsWith(`${active?.id}-`);
 
   const children = useMemo(
     () =>
@@ -65,6 +72,8 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     [isTopLevelGroup, showHandles, attributes, listeners, rearrangeMode, setDraggableRef],
   );
 
+  const isOver = isOverCheck(content.hierarchyId, over?.id);
+
   return (
     <ContentSection
       direction={'column'}
@@ -73,10 +82,13 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       noMargin={!isTopLevelGroup}
       semiTransparent={isDragging}
     >
-      <Row gap="sm">
-        {dragHandle}
-        <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
-      </Row>
+      <Col gap="sm" fullWidth ref={setDroppableRef}>
+        <Row gap="sm">
+          {dragHandle}
+          <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
+        </Row>
+        {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
+      </Col>
       {children}
     </ContentSection>
   );

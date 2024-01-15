@@ -1,12 +1,13 @@
 import React from 'react';
 import { EntityGroupContentHierarchyEntity } from '../../../api/menus/useGetMenuItemContent';
-import ContentSection from '../../../components/ContentSection/ContentSection';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { MdDragIndicator } from 'react-icons/md';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { Col, Row } from '../../../components/Flex/Flex';
+import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
+import { isOverCheck } from './menuCategoryUtils';
 
 interface MenuItemContentElementEntityProps {
   showHandles: boolean;
@@ -20,11 +21,11 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
 
   const {
-    isOver,
+    over,
     setNodeRef: setDroppableRef,
     active,
   } = useDroppable({
-    id: content.hierarchyId + 'asd',
+    id: content.hierarchyId + '-drop-move',
     data: content,
   });
   const canDropHere = !content.hierarchyId.startsWith(`${active?.id}-`);
@@ -41,9 +42,13 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     attributes: {},
   });
 
+  console.log(content.hierarchyId, over?.id, over?.data?.current?.hierarchyId);
+
+  const isOver = isOverCheck(content.hierarchyId, over?.id);
+
   return (
     <>
-      <Col fullWidth ref={setDroppableRef}>
+      <Col gap="sm" fullWidth ref={setDroppableRef}>
         <Row semiTransparent={isDragging}>
           {rearrangeMode && showHandles && (
             <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
@@ -52,19 +57,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
           )}
           Entity {content.entityId}
         </Row>
-        {canDropHere && (
-          <div
-            style={{
-              padding: '3px',
-              width: '100%',
-              border: '1px solid green',
-              backgroundColor: 'lightgreen',
-              display: isOver ? 'block' : 'none',
-            }}
-          >
-            drop here{' '}
-          </div>
-        )}
+        {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>
     </>
   );

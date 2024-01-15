@@ -35,7 +35,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
       {rearrangeMode && (
         <DragOverlay>
           {draggingData ? (
-            <div style={{ width: '500px' }}>
+            <div style={{ width: '500px', opacity: 0.5 }}>
               <MenuItemContentElement
                 showHandles={false}
                 content={draggingData}
