@@ -31,7 +31,7 @@ export type EntityGroupObject = Record<number, PbEntityGroup | undefined>;
 
 type GetMenuItemContentResponse = {
   entityGroups: EntityGroupObject;
-  hierarchy: EntityGroupContentHierarchy;
+  hierarchy: EntityGroupContentHierarchyEntityGroup;
 };
 
 const emptyResponse: GetMenuItemContentResponse = {

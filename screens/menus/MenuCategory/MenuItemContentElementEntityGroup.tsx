@@ -13,7 +13,7 @@ import { MdDragIndicator } from 'react-icons/md';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
-import { isOverCheck } from './menuCategoryUtils';
+import { DropType, isOverCheck } from './menuCategoryUtils';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -31,8 +31,8 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
 
   const { over, setNodeRef: setDroppableRef } = useDroppable({
-    id: content.hierarchyId + '-drop-move',
-    data: { ...content, dropType: 'move' },
+    id: content.hierarchyId + '-drop_move',
+    data: { ...content, dropType: DropType.MOVE },
   });
 
   const {

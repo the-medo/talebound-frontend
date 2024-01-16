@@ -3,6 +3,7 @@ import { Row } from '../../../components/Flex/Flex';
 import { styled } from '../../../styles/stitches.config';
 import { useDroppable } from '@dnd-kit/core';
 import { EntityGroupContentHierarchy } from '../../../api/menus/useGetMenuItemContent';
+import { DropType } from './menuCategoryUtils';
 
 export const MoveDropArea = styled(Row, {
   backgroundColor: '$white',
@@ -43,8 +44,8 @@ interface MenuCategoryEntityDropAreaProps {
 
 const MenuCategoryEntityDropArea: React.FC<MenuCategoryEntityDropAreaProps> = ({ content }) => {
   const { isOver, setNodeRef: setDroppableRef } = useDroppable({
-    id: content.hierarchyId + '-drop-new-group',
-    data: { ...content, dropType: 'new-group' },
+    id: content.hierarchyId + '-drop_new_group',
+    data: { ...content, dropType: DropType.NEW_GROUP },
   });
 
   return (

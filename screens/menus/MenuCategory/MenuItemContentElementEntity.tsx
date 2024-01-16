@@ -25,7 +25,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     setNodeRef: setDroppableRef,
     active,
   } = useDroppable({
-    id: content.hierarchyId + '-drop-move',
+    id: content.hierarchyId + '-drop_move',
     data: content,
   });
   const canDropHere = !content.hierarchyId.startsWith(`${active?.id}-`);
@@ -39,10 +39,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     id: content.hierarchyId,
     disabled: !rearrangeMode || !canDropHere,
     data: content,
-    attributes: {},
   });
-
-  console.log(content.hierarchyId, over?.id, over?.data?.current?.hierarchyId);
 
   const isOver = isOverCheck(content.hierarchyId, over?.id);
 
