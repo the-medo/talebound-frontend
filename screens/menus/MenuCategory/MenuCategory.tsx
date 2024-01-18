@@ -9,21 +9,18 @@ import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
 import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import { PbViewEntity } from '../../../generated/api-types/data-contracts';
+import { PbEntityGroupContent, PbViewEntity } from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { setDraggingData, setRearrangeMode } from './menuCategorySlice';
-import {
-  EntityGroupContentHierarchy,
-  EntityGroupContentHierarchyEntityGroup,
-  useGetMenuItemContent,
-} from '../../../api/menus/useGetMenuItemContent';
-import { useGetModuleEntityAvailableTags } from '../../../api/tags/useGetModuleEntityAvailableTags';
+import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
 import { DropType } from './menuCategoryUtils';
+import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { sortByPosition } from '../../../utils/functions/sortByPosition';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -126,83 +123,57 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
       queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
         getMenuItemContentQueryKey,
         (oldData) => {
-          if (!oldData) return;
+          if (!oldData?.contents) return;
           console.log('++++++++++++++++++++++++ START +++++++++++++++++++++++++++++++');
           const s = start.data.current as EntityGroupContentHierarchy;
           const e = end.data.current as EntityGroupContentHierarchy & { dropType: DropType };
 
-          let item: EntityGroupContentHierarchyEntityGroup = oldData.hierarchy;
-          let sParent: EntityGroupContentHierarchyEntityGroup | null = null;
-          while (item) {
-            if (item.hierarchyId === s.hierarchyId) {
-              break;
-            }
-            const newItem = item.children.find(
-              (i) =>
-                s.hierarchyId === i.hierarchyId || s.hierarchyId.startsWith(`${i.hierarchyId}-`),
-            );
-            if (newItem?.type === 'GROUP') {
-              item = newItem;
-              sParent = item;
-              console.log('newItem?.hierarchyId', newItem?.hierarchyId);
-            } else {
-              if (!sParent) sParent = item;
-              break;
-            }
-          }
-          console.log('sParent: ', sParent);
+          const sParentId = getParentId(s, 'start');
+          const eParentId = getParentId(e, 'end');
 
-          let movedEntity = sParent?.children.find((c) => c.hierarchyId === s.hierarchyId);
-          console.log('movedEntity: ', movedEntity);
+          let ePosition = e.position + 1;
+          if (sParentId === eParentId && s.position <= e.position) ePosition--;
+          if (e.type === 'GROUP') ePosition = 1;
 
-          const ePosition = e.type === 'GROUP' ? 1 : e.position + 1;
+          console.log(
+            'sHierarchyId',
+            s.hierarchyId,
+            'eHierarchyId',
+            e.hierarchyId,
+            'ePosition: ',
+            ePosition,
+          );
 
-          if (movedEntity !== undefined) {
-            movedEntity = { ...movedEntity, position: ePosition };
-            item = oldData.hierarchy;
-            let eParent: EntityGroupContentHierarchyEntityGroup | null = null;
-            while (item) {
-              if (item.hierarchyId === e.hierarchyId) {
-                break;
+          const contents: PbEntityGroupContent[] = oldData.contents
+            .map((c) => {
+              if (
+                (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
+                (s.type === 'GROUP' && c.contentEntityGroupId === s.entityGroupId)
+              ) {
+                return {
+                  ...c,
+                  entityGroupId: eParentId,
+                  position: ePosition,
+                };
               }
-              const newItem = item.children.find(
-                (i) =>
-                  e.hierarchyId === i.hierarchyId || e.hierarchyId.startsWith(`${i.hierarchyId}-`),
-              );
-              if (newItem?.type === 'GROUP') {
-                item = newItem;
-                eParent = item;
-                console.log('newItem?.hierarchyId', newItem?.hierarchyId);
-              } else {
-                if (!eParent) eParent = item;
-                break;
+
+              let position = c.position!;
+              if (sParentId === c.entityGroupId) {
+                if (position > s.position) position--;
               }
-            }
-
-            if (sParent) {
-              sParent.children.forEach((c) => {
-                if (c.position > s.position) c.position--;
-              });
-              sParent.children = sParent.children.filter((c) => c.hierarchyId !== s.hierarchyId);
-            }
-
-            if (eParent) {
-              eParent.children.forEach((c) => {
-                if (c.position >= ePosition) c.position++;
-              });
-
-              const newChildren: EntityGroupContentHierarchyEntityGroup['children'] = [];
-              if (ePosition === 1) newChildren.push(movedEntity);
-              eParent.children.forEach((c) => {
-                newChildren.push(c);
-                if (c.position + 1 === ePosition) newChildren.push(movedEntity);
-              });
-              eParent.children = newChildren;
-            }
-          }
+              if (eParentId === c.entityGroupId) {
+                if (position >= ePosition) position++;
+              }
+              return { ...c, position };
+            })
+            .sort((a, b) => {
+              const diff = a.entityGroupId! - b.entityGroupId!;
+              return diff !== 0 ? diff : a.position - b.position;
+            });
+          console.log('Contents', contents);
 
           console.log('+++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++');
-          return oldData;
+          return { ...oldData, contents };
         },
       );
     },

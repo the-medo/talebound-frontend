@@ -5,7 +5,10 @@ export enum DropType {
   NEW_GROUP = 'new_group',
 }
 
-export const isOverCheck = (contentHierarchyId: string, overId: UniqueIdentifier | undefined): boolean =>
+export const isOverCheck = (
+  contentHierarchyId: string,
+  overId: UniqueIdentifier | undefined,
+): boolean =>
   (
     [
       contentHierarchyId + '-drop_move',
