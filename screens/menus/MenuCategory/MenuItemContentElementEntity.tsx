@@ -1,5 +1,4 @@
 import React from 'react';
-import { EntityGroupContentHierarchyEntity } from '../../../api/menus/useGetMenuItemContent';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
@@ -8,6 +7,7 @@ import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
 import { isOverCheck } from './menuCategoryUtils';
+import { EntityGroupContentHierarchyEntity } from '../../../hooks/useGetMenuItemContentHierarchy';
 
 interface MenuItemContentElementEntityProps {
   showHandles: boolean;
@@ -28,7 +28,8 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     id: content.hierarchyId + '-drop_move',
     data: content,
   });
-  const canDropHere = !content.hierarchyId.startsWith(`${active?.id}-`);
+  const canDropHere =
+    !content.hierarchyId.startsWith(`${active?.id}-`) && content.hierarchyId !== active?.id;
 
   const {
     attributes,
@@ -52,7 +53,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
               <MdDragIndicator size={20} />
             </DragHandle>
           )}
-          Entity {content.entityId}
+          Entity {content.entityId} - {content.hierarchyId} [{active?.id}]
         </Row>
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>

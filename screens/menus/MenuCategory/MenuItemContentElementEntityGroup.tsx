@@ -1,8 +1,4 @@
 import React, { useMemo } from 'react';
-import {
-  EntityGroupContentHierarchyEntityGroup,
-  EntityGroupObject,
-} from '../../../api/menus/useGetMenuItemContent';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
 import { useSelector } from 'react-redux';
@@ -14,6 +10,10 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
 import { DropType, isOverCheck } from './menuCategoryUtils';
+import {
+  EntityGroupContentHierarchyEntityGroup,
+  EntityGroupObject,
+} from '../../../hooks/useGetMenuItemContentHierarchy';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -87,7 +87,9 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       <Col gap="sm" fullWidth ref={setDroppableRef}>
         <Row gap="sm">
           {dragHandle}
-          <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
+          <TitleH2 marginBottom="none">
+            Group {content.entityGroupId} - {content.hierarchyId} [{active?.id}]
+          </TitleH2>
         </Row>
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>

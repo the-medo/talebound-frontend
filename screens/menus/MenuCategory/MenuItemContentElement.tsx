@@ -1,10 +1,10 @@
 import React from 'react';
+import MenuItemContentElementEntity from './MenuItemContentElementEntity';
+import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGroup';
 import {
   EntityGroupContentHierarchy,
   EntityGroupObject,
-} from '../../../api/menus/useGetMenuItemContent';
-import MenuItemContentElementEntity from './MenuItemContentElementEntity';
-import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGroup';
+} from '../../../hooks/useGetMenuItemContentHierarchy';
 
 interface MenuItemContentElementProps {
   showHandles: boolean;

@@ -131,6 +131,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           const sParentId = getParentId(s, 'start');
           const eParentId = getParentId(e, 'end');
 
+          if (`${e.hierarchyId}-`.startsWith(s.hierarchyId)) return;
           let ePosition = e.position + 1;
           if (sParentId === eParentId && s.position <= e.position) ePosition--;
           if (e.type === 'GROUP') ePosition = 1;
