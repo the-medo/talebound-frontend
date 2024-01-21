@@ -9,7 +9,12 @@ import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
 import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import { PbEntityGroupContent, PbViewEntity } from '../../../generated/api-types/data-contracts';
+import {
+  PbEntityGroupContent,
+  PbEntityGroupDirection,
+  PbEntityGroupStyle,
+  PbViewEntity,
+} from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +25,6 @@ import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
 import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
-import { sortByPosition } from '../../../utils/functions/sortByPosition';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -145,32 +149,54 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             ePosition,
           );
 
-          const contents: PbEntityGroupContent[] = oldData.contents
-            .map((c) => {
-              if (
-                (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
-                (s.type === 'GROUP' && c.contentEntityGroupId === s.entityGroupId)
-              ) {
-                return {
-                  ...c,
-                  entityGroupId: eParentId,
-                  position: ePosition,
-                };
-              }
+          /* This data will be provided from API response, this is just a mockup */
+          const newGroupId = Date.now();
+          const newGroup: PbEntityGroupContent = {
+            id: newGroupId,
+            entityGroupId: eParentId,
+            position: ePosition,
+            contentEntityId: undefined,
+            contentEntityGroupId: newGroupId,
+          };
 
-              let position = c.position!;
-              if (sParentId === c.entityGroupId) {
-                if (position > s.position) position--;
-              }
-              if (eParentId === c.entityGroupId) {
-                if (position >= ePosition) position++;
-              }
-              return { ...c, position };
-            })
-            .sort((a, b) => {
-              const diff = a.entityGroupId! - b.entityGroupId!;
-              return diff !== 0 ? diff : a.position - b.position;
+          let contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
+            if (
+              (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
+              (s.type === 'GROUP' && c.contentEntityGroupId === s.entityGroupId)
+            ) {
+              return {
+                ...c,
+                entityGroupId: e.dropType === DropType.NEW_GROUP ? newGroupId : eParentId,
+                position: e.dropType === DropType.NEW_GROUP ? 1 : ePosition,
+              };
+            }
+
+            let position = c.position!;
+            if (sParentId === c.entityGroupId) {
+              if (position > s.position) position--;
+            }
+            if (eParentId === c.entityGroupId) {
+              if (position >= ePosition) position++;
+            }
+            return { ...c, position };
+          });
+
+          if (e.dropType === DropType.NEW_GROUP) {
+            contents.push(newGroup);
+
+            oldData.groups?.push({
+              id: newGroupId,
+              name: `Group ${newGroupId}`,
+              description: '',
+              style: PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED,
+              direction: PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL,
             });
+          }
+
+          contents = contents.sort((a, b) => {
+            const diff = a.entityGroupId! - b.entityGroupId!;
+            return diff !== 0 ? diff : a.position - b.position;
+          });
           console.log('Contents', contents);
 
           console.log('+++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++');
