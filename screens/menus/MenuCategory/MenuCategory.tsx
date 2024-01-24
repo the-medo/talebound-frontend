@@ -19,7 +19,7 @@ import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { setDraggingData, setRearrangeMode } from './menuCategorySlice';
+import { setDraggingData, setMenuData, setRearrangeMode } from './menuCategorySlice';
 import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
@@ -74,22 +74,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   }, []);
 
   //====================================================================================================
-  const [items, setItems] = useState<PbViewEntity[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
-
-  useEffect(() => {
-    setItems([]);
-  }, []);
-
-  const onReorder = useCallback(
-    (x: PbViewEntity[]) => {
-      if (rearrangeMode) {
-        setItems(x);
-      }
-    },
-    [rearrangeMode],
-  );
   //====================================================================================================
 
   const handleDragStart = useCallback(
@@ -100,6 +85,15 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    dispatch(
+      setMenuData({
+        menuId: menuId,
+        menuItemId: menuItem?.id ?? 0,
+      }),
+    );
+  }, [dispatch, menuId, menuItem?.id]);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -266,13 +260,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           >
             <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
           </DndContext>
-          <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
-            <Col loading={loading}>
-              {items.map((viewEntity) => {
-                return viewEntity.id;
-              })}
-            </Col>
-          </Reorder.Group>
           <ErrorText error={error} />
         </Col>
       </Row>

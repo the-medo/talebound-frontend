@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdClose, MdDragIndicator } from 'react-icons/md';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
 import { isOverCheck } from './menuCategoryUtils';
 import { EntityGroupContentHierarchyEntity } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { Button } from '../../../components/Button/Button';
+import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
+import { queryClient } from '../../../pages/_app';
+import { inferData } from 'react-query-kit';
+import { PbEntityGroupContent } from '../../../generated/api-types/data-contracts';
 
 interface MenuItemContentElementEntityProps {
   showHandles: boolean;
@@ -19,6 +24,8 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   showHandles,
 }) => {
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
+  const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
+  const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
 
   const {
     over,
@@ -42,18 +49,57 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     data: content,
   });
 
+  const handleRemoveEntity = useCallback(() => {
+    const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
+      menuId,
+      menuItemId,
+    });
+
+    queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
+      getMenuItemContentQueryKey,
+      (oldData) => {
+        if (!oldData?.contents) return;
+
+        const foundEntity = oldData.contents.find((e) => e.contentEntityId === content.entityId);
+        console.log('FOUND ENTITY: ', foundEntity);
+        if (!foundEntity) return;
+
+        const contents: PbEntityGroupContent[] = oldData.contents
+          .map((c) => {
+            const position = c.position ?? 0;
+            return {
+              ...c,
+              position:
+                c.entityGroupId === foundEntity.entityGroupId &&
+                position >= (foundEntity?.position ?? 0)
+                  ? position - 1
+                  : position,
+            };
+          })
+          .filter((c) => c.contentEntityId !== content.entityId);
+
+        return { ...oldData, contents };
+      },
+    );
+  }, [content.entityId, menuId, menuItemId]);
+
   const isOver = isOverCheck(content.hierarchyId, over?.id);
 
   return (
     <>
       <Col gap="sm" fullWidth ref={setDroppableRef}>
-        <Row semiTransparent={isDragging}>
-          {rearrangeMode && showHandles && (
-            <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
-              <MdDragIndicator size={20} />
-            </DragHandle>
-          )}
-          Entity {content.entityId} - {content.hierarchyId} [{active?.id}]
+        <Row justifyContent="between" semiTransparent={isDragging}>
+          <Row>
+            {rearrangeMode && showHandles && (
+              <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
+                <MdDragIndicator size={20} />
+              </DragHandle>
+            )}
+            Entity {content.entityId} - {content.hierarchyId} [{active?.id}]
+          </Row>
+          <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">
+            <MdClose />
+          </Button>
         </Row>
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>
