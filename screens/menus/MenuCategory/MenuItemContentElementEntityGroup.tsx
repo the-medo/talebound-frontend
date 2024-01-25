@@ -86,56 +86,90 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
 
   const isOver = isOverCheck(content.hierarchyId, over?.id);
 
-  const handleRemoveGroup = useCallback(() => {
-    const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-      menuId,
-      menuItemId,
-    });
+  const handleRemoveGroup = useCallback(
+    (deleteType: 'deleteChildren' | 'keepChildren') => {
+      const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
+        menuId,
+        menuItemId,
+      });
 
-    queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
-      getMenuItemContentQueryKey,
-      (oldData) => {
-        if (!oldData?.contents) return;
+      queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
+        getMenuItemContentQueryKey,
+        (oldData) => {
+          if (!oldData?.contents) return;
 
-        const foundEntityGroup = oldData.contents.find(
-          (e) => e.contentEntityGroupId === content.entityGroupId,
-        );
-        console.log('FOUND ENTITY GROUP: ', foundEntityGroup);
-        if (!foundEntityGroup) return;
+          const foundEntityGroup = oldData.contents.find(
+            (e) => e.contentEntityGroupId === content.entityGroupId,
+          );
+          console.log('FOUND ENTITY GROUP: ', foundEntityGroup);
+          if (!foundEntityGroup) return;
 
-        const groupChildrenCount = oldData.contents.filter(
-          (c) => c.entityGroupId === content.entityGroupId,
-        ).length;
+          const groupChildren = oldData.contents.filter(
+            (c) => c.entityGroupId === content.entityGroupId,
+          );
 
-        const contents: PbEntityGroupContent[] = [];
-
-        oldData.contents.forEach((c) => {
-          const position = c.position ?? 0;
-          if (c.entityGroupId === content.entityGroupId) {
-            contents.push({
-              ...c,
-              entityGroupId: foundEntityGroup.entityGroupId,
-              position: position - 1 + content.position,
-            });
-          } else if (
-            position > content.position &&
-            foundEntityGroup.entityGroupId === c.entityGroupId
-          ) {
-            contents.push({
-              ...c,
-              position: position - 1 + groupChildrenCount,
-            });
-          } else if (content.entityGroupId !== c.contentEntityGroupId) {
-            contents.push(c);
+          const childrenToDeleteIds: number[] = [];
+          if (deleteType === 'deleteChildren') {
+            const queue = [...groupChildren];
+            while (queue.length > 0) {
+              const element = queue.pop();
+              if (element?.id) {
+                childrenToDeleteIds.push(element.id);
+                if (element.contentEntityGroupId) {
+                  queue.push(
+                    ...oldData.contents.filter(
+                      (c) => c.entityGroupId === element.contentEntityGroupId,
+                    ),
+                  );
+                }
+              }
+            }
           }
-        });
 
-        console.log('NEW CONTENTS: ', contents);
+          const contents: PbEntityGroupContent[] = [];
 
-        return { ...oldData, contents: sortGetMenuItemContent(contents) };
-      },
-    );
-  }, [content.entityGroupId, content.position, menuId, menuItemId]);
+          oldData.contents.forEach((c) => {
+            if (deleteType === 'deleteChildren' && childrenToDeleteIds.includes(c.id ?? 0)) return;
+
+            const position = c.position ?? 0;
+            if (c.entityGroupId === content.entityGroupId) {
+              contents.push({
+                ...c,
+                entityGroupId: foundEntityGroup.entityGroupId,
+                position: position - 1 + content.position,
+              });
+            } else if (
+              position > content.position &&
+              foundEntityGroup.entityGroupId === c.entityGroupId
+            ) {
+              contents.push({
+                ...c,
+                position:
+                  position - 1 + (deleteType === 'deleteChildren' ? 0 : groupChildren.length),
+              });
+            } else if (content.entityGroupId !== c.contentEntityGroupId) {
+              contents.push(c);
+            }
+          });
+
+          console.log('NEW CONTENTS: ', contents);
+
+          return { ...oldData, contents: sortGetMenuItemContent(contents) };
+        },
+      );
+    },
+    [content.entityGroupId, content.position, menuId, menuItemId],
+  );
+
+  const handleRemoveGroupButKeepEntities = useCallback(
+    () => handleRemoveGroup('keepChildren'),
+    [handleRemoveGroup],
+  );
+
+  const handleRemoveGroupAndItsEntities = useCallback(
+    () => handleRemoveGroup('deleteChildren'),
+    [handleRemoveGroup],
+  );
 
   return (
     <ContentSection
@@ -157,7 +191,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
             <Row gap="sm">
               <Button
                 icon
-                onClick={handleRemoveGroup}
+                onClick={handleRemoveGroupButKeepEntities}
                 size="sm"
                 color="dangerOutline"
                 title="Remove with entities"
@@ -166,7 +200,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
               </Button>
               <Button
                 icon
-                onClick={undefined}
+                onClick={handleRemoveGroupAndItsEntities}
                 size="sm"
                 color="dangerOutline"
                 title="Remove only group, entities will go to parent"
