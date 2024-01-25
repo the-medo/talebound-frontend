@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdClose, MdDragIndicator, MdPlaylistRemove } from 'react-icons/md';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
@@ -14,6 +14,14 @@ import {
   EntityGroupContentHierarchyEntityGroup,
   EntityGroupObject,
 } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { Button } from '../../../components/Button/Button';
+import {
+  sortGetMenuItemContent,
+  useGetMenuItemContent,
+} from '../../../api/menus/useGetMenuItemContent';
+import { queryClient } from '../../../pages/_app';
+import { inferData } from 'react-query-kit';
+import { PbEntityGroupContent } from '../../../generated/api-types/data-contracts';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -29,6 +37,8 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   isTopLevelGroup = false,
 }) => {
   const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
+  const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
+  const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
 
   const {
     attributes,
@@ -76,6 +86,57 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
 
   const isOver = isOverCheck(content.hierarchyId, over?.id);
 
+  const handleRemoveGroup = useCallback(() => {
+    const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
+      menuId,
+      menuItemId,
+    });
+
+    queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
+      getMenuItemContentQueryKey,
+      (oldData) => {
+        if (!oldData?.contents) return;
+
+        const foundEntityGroup = oldData.contents.find(
+          (e) => e.contentEntityGroupId === content.entityGroupId,
+        );
+        console.log('FOUND ENTITY GROUP: ', foundEntityGroup);
+        if (!foundEntityGroup) return;
+
+        const groupChildrenCount = oldData.contents.filter(
+          (c) => c.entityGroupId === content.entityGroupId,
+        ).length;
+
+        const contents: PbEntityGroupContent[] = [];
+
+        oldData.contents.forEach((c) => {
+          const position = c.position ?? 0;
+          if (c.entityGroupId === content.entityGroupId) {
+            contents.push({
+              ...c,
+              entityGroupId: foundEntityGroup.entityGroupId,
+              position: position - 1 + content.position,
+            });
+          } else if (
+            position > content.position &&
+            foundEntityGroup.entityGroupId === c.entityGroupId
+          ) {
+            contents.push({
+              ...c,
+              position: position - 1 + groupChildrenCount,
+            });
+          } else if (content.entityGroupId !== c.contentEntityGroupId) {
+            contents.push(c);
+          }
+        });
+
+        console.log('NEW CONTENTS: ', contents);
+
+        return { ...oldData, contents: sortGetMenuItemContent(contents) };
+      },
+    );
+  }, [content.entityGroupId, content.position, menuId, menuItemId]);
+
   return (
     <ContentSection
       direction={'column'}
@@ -85,11 +146,35 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       semiTransparent={isDragging}
     >
       <Col gap="sm" fullWidth ref={setDroppableRef}>
-        <Row gap="sm">
-          {dragHandle}
-          <TitleH2 marginBottom="none">
-            Group {content.entityGroupId} - {content.hierarchyId} [{active?.id}]
-          </TitleH2>
+        <Row justifyContent="between" semiTransparent={isDragging}>
+          <Row gap="sm">
+            {dragHandle}
+            <TitleH2 marginBottom="none">
+              Group {content.entityGroupId} - {content.hierarchyId} [{active?.id}]
+            </TitleH2>
+          </Row>
+          {!isTopLevelGroup && (
+            <Row gap="sm">
+              <Button
+                icon
+                onClick={handleRemoveGroup}
+                size="sm"
+                color="dangerOutline"
+                title="Remove with entities"
+              >
+                <MdPlaylistRemove />
+              </Button>
+              <Button
+                icon
+                onClick={undefined}
+                size="sm"
+                color="dangerOutline"
+                title="Remove only group, entities will go to parent"
+              >
+                <MdClose />
+              </Button>
+            </Row>
+          )}
         </Row>
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>
