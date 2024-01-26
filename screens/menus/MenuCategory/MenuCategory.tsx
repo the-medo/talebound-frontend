@@ -5,26 +5,27 @@ import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
 import LoadingText from '../../../components/Loading/LoadingText';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { TbMenuOrder, TbPlus } from 'react-icons/tb';
 import Link from 'next/link';
-import { Reorder } from 'framer-motion';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import {
   PbEntityGroupContent,
   PbEntityGroupDirection,
   PbEntityGroupStyle,
-  PbViewEntity,
 } from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { setDraggingData, setMenuData, setRearrangeMode } from './menuCategorySlice';
-import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
+import { setDraggingData, setMenuData, setEditMode } from './menuCategorySlice';
+import {
+  sortGetMenuItemContent,
+  useGetMenuItemContent,
+} from '../../../api/menus/useGetMenuItemContent';
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
 import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { MdEdit } from 'react-icons/md';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -46,8 +47,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   canEdit = false,
 }) => {
   const dispatch = useDispatch();
-  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
-  const [createPostMode, setCreatePostMode] = React.useState(false);
+  const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const menuItem = useMemo(() => {
@@ -65,13 +65,9 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 
   const createDescriptionPostHandler = useCallback(() => {}, []);
 
-  const toggleRearrangeMode = useCallback(() => {
-    dispatch(setRearrangeMode(!rearrangeMode));
-  }, [dispatch, rearrangeMode]);
-
-  const toggleCreatePostMode = useCallback(() => {
-    setCreatePostMode((p) => !p);
-  }, []);
+  const toggleEditMode = useCallback(() => {
+    dispatch(setEditMode(!editMode));
+  }, [dispatch, editMode]);
 
   //====================================================================================================
   const [error, setError] = useState<unknown>();
@@ -153,7 +149,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             contentEntityGroupId: newGroupId,
           };
 
-          let contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
+          const contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
             if (
               (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
               (s.type === 'GROUP' && c.contentEntityGroupId === s.entityGroupId)
@@ -187,14 +183,8 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             });
           }
 
-          contents = contents.sort((a, b) => {
-            const diff = a.entityGroupId! - b.entityGroupId!;
-            return diff !== 0 ? diff : a.position - b.position;
-          });
-          console.log('Contents', contents);
-
           console.log('+++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++');
-          return { ...oldData, contents };
+          return { ...oldData, contents: sortGetMenuItemContent(contents) };
         },
       );
     },
@@ -227,7 +217,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         </Col>
 
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ContentSection highlighted={descriptionPostId === displayPostId && !createPostMode}>
+          <ContentSection highlighted={descriptionPostId === displayPostId}>
             <Row gap="md" fullWidth justifyContent="between">
               <Link href={linkPrefix}>
                 <TitleH2>{menuItem.name}</TitleH2>
@@ -236,18 +226,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               {canEdit && (
                 <Row gap="md">
                   <Button
-                    color={createPostMode ? 'primaryFill' : 'primaryOutline'}
-                    onClick={toggleCreatePostMode}
+                    color={editMode ? 'primaryFill' : 'primaryOutline'}
+                    onClick={toggleEditMode}
                   >
-                    <TbPlus />
-                    Create post
-                  </Button>
-                  <Button
-                    color={rearrangeMode ? 'primaryFill' : 'primaryOutline'}
-                    onClick={toggleRearrangeMode}
-                  >
-                    <TbMenuOrder />
-                    Rearrange
+                    <MdEdit />
+                    Edit mode
                   </Button>
                 </Row>
               )}

@@ -36,7 +36,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   showHandles,
   isTopLevelGroup = false,
 }) => {
-  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
+  const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
   const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
 
@@ -49,7 +49,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   } = useDraggable({
     id: content.hierarchyId,
     data: content,
-    disabled: !rearrangeMode,
+    disabled: !editMode,
   });
 
   const canDropHere =
@@ -76,12 +76,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
 
   const dragHandle = useMemo(
     () =>
-      rearrangeMode && !isTopLevelGroup && showHandles ? (
+      editMode && !isTopLevelGroup && showHandles ? (
         <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
           <MdDragIndicator size={20} />
         </DragHandle>
       ) : null,
-    [isTopLevelGroup, showHandles, attributes, listeners, rearrangeMode, setDraggableRef],
+    [isTopLevelGroup, showHandles, attributes, listeners, editMode, setDraggableRef],
   );
 
   const isOver = isOverCheck(content.hierarchyId, over?.id);
@@ -183,11 +183,9 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
         <Row justifyContent="between" semiTransparent={isDragging}>
           <Row gap="sm">
             {dragHandle}
-            <TitleH2 marginBottom="none">
-              Group {content.entityGroupId} - {content.hierarchyId} [{active?.id}]
-            </TitleH2>
+            <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
           </Row>
-          {!isTopLevelGroup && (
+          {!isTopLevelGroup && editMode && (
             <Row gap="sm">
               <Button
                 icon

@@ -23,7 +23,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   content,
   showHandles,
 }) => {
-  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
+  const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
   const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
 
@@ -45,7 +45,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     isDragging,
   } = useDraggable({
     id: content.hierarchyId,
-    disabled: !rearrangeMode || !canDropHere,
+    disabled: !editMode || !canDropHere,
     data: content,
   });
 
@@ -90,16 +90,18 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
       <Col gap="sm" fullWidth ref={setDroppableRef}>
         <Row justifyContent="between" semiTransparent={isDragging}>
           <Row>
-            {rearrangeMode && showHandles && (
+            {editMode && showHandles && (
               <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
                 <MdDragIndicator size={20} />
               </DragHandle>
             )}
-            Entity {content.entityId} - {content.hierarchyId} [{active?.id}]
+            Entity {content.entityId}
           </Row>
-          <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">
-            <MdClose />
-          </Button>
+          {editMode && (
+            <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">
+              <MdClose />
+            </Button>
+          )}
         </Row>
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>

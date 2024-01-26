@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 
 export interface MenuCategoryState {
-  rearrangeMode: boolean;
+  editMode: boolean;
   draggingData: EntityGroupContentHierarchy | undefined;
   menuId: number;
   menuItemId: number;
 }
 
 const initialState: MenuCategoryState = {
-  rearrangeMode: false,
+  editMode: false,
   draggingData: undefined,
   menuId: 0,
   menuItemId: 0,
@@ -19,8 +19,8 @@ export const menuCategorySlice = createSlice({
   name: 'menuCategory',
   initialState,
   reducers: {
-    setRearrangeMode: (state, action: PayloadAction<boolean>) => {
-      state.rearrangeMode = action.payload;
+    setEditMode: (state, action: PayloadAction<boolean>) => {
+      state.editMode = action.payload;
     },
     setDraggingData: (state, action: PayloadAction<MenuCategoryState['draggingData']>) => {
       state.draggingData = action.payload;
@@ -32,6 +32,6 @@ export const menuCategorySlice = createSlice({
   },
 });
 
-export const { setRearrangeMode, setDraggingData, setMenuData } = menuCategorySlice.actions;
+export const { setEditMode, setDraggingData, setMenuData } = menuCategorySlice.actions;
 
 export const menuCategoryReducer = menuCategorySlice.reducer;

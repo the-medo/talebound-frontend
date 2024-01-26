@@ -12,7 +12,7 @@ interface MenuCategoryContentProps {
 }
 
 const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuItemId }) => {
-  const rearrangeMode = useSelector((state: ReduxState) => state.menuCategory.rearrangeMode);
+  const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const draggingData = useSelector((state: ReduxState) => state.menuCategory.draggingData);
   const menuItemContent = useGetMenuItemContentHierarchy(menuId, menuItemId);
 
@@ -30,7 +30,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
           entityGroupObject={menuItemContent.entityGroups}
         />
       )}
-      {rearrangeMode && (
+      {editMode && (
         <DragOverlay>
           {draggingData ? (
             <div style={{ width: '500px', opacity: 0.5 }}>
