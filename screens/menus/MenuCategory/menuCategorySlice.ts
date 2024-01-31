@@ -6,6 +6,7 @@ export interface MenuCategoryState {
   draggingData: EntityGroupContentHierarchy | undefined;
   menuId: number;
   menuItemId: number;
+  editEntityGroupId: number | undefined;
 }
 
 const initialState: MenuCategoryState = {
@@ -13,6 +14,7 @@ const initialState: MenuCategoryState = {
   draggingData: undefined,
   menuId: 0,
   menuItemId: 0,
+  editEntityGroupId: undefined,
 };
 
 export const menuCategorySlice = createSlice({
@@ -29,9 +31,13 @@ export const menuCategorySlice = createSlice({
       state.menuId = action.payload.menuId;
       state.menuItemId = action.payload.menuItemId;
     },
+    setEditEntityGroupId: (state, action: PayloadAction<number | undefined>) => {
+      state.editEntityGroupId = action.payload;
+    },
   },
 });
 
-export const { setEditMode, setDraggingData, setMenuData } = menuCategorySlice.actions;
+export const { setEditMode, setDraggingData, setMenuData, setEditEntityGroupId } =
+  menuCategorySlice.actions;
 
 export const menuCategoryReducer = menuCategorySlice.reducer;

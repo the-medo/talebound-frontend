@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import MenuItemContentElement from './MenuItemContentElement';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
-import { MdClose, MdDragIndicator, MdPlaylistRemove } from 'react-icons/md';
+import { MdClose, MdDragIndicator, MdEdit, MdPlaylistRemove } from 'react-icons/md';
 import { TitleH2 } from '../../../components/Typography/Title';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
@@ -22,6 +22,7 @@ import {
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
 import { PbEntityGroupContent } from '../../../generated/api-types/data-contracts';
+import { setEditEntityGroupId } from './menuCategorySlice';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -36,6 +37,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   showHandles,
   isTopLevelGroup = false,
 }) => {
+  const dispatch = useDispatch();
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
   const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
@@ -161,6 +163,11 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     [content.entityGroupId, content.position, menuId, menuItemId],
   );
 
+  const handleEditGroup = useCallback(
+    () => dispatch(setEditEntityGroupId(content.entityGroupId)),
+    [handleRemoveGroup],
+  );
+
   const handleRemoveGroupButKeepEntities = useCallback(
     () => handleRemoveGroup('keepChildren'),
     [handleRemoveGroup],
@@ -187,6 +194,15 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           </Row>
           {!isTopLevelGroup && editMode && (
             <Row gap="sm">
+              <Button
+                icon
+                onClick={handleEditGroup}
+                size="sm"
+                color="primaryOutline"
+                title="Edit group"
+              >
+                <MdEdit />
+              </Button>
               <Button
                 icon
                 onClick={handleRemoveGroupButKeepEntities}
