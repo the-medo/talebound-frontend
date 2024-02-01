@@ -3,16 +3,21 @@ import Modal from '../../../components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { setEditEntityGroupId } from './menuCategorySlice';
+import { EntityGroupObject } from '../../../hooks/useGetMenuItemContentHierarchy';
+import EntityGroupForm from './EntityGroupForm';
 
-interface PostFormModalProps {
+interface EditEntityGroupModalProps {
   trigger: React.ReactNode;
+  entityGroups: EntityGroupObject;
 }
 
-const EditGroupModal: React.FC<PostFormModalProps> = ({ trigger }) => {
+const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({ trigger, entityGroups }) => {
   const dispatch = useDispatch();
   const editEntityGroupId = useSelector(
     (state: ReduxState) => state.menuCategory.editEntityGroupId,
   );
+
+  const entityGroup = editEntityGroupId ? entityGroups[editEntityGroupId] : undefined;
 
   const closeModal = useCallback(() => dispatch(setEditEntityGroupId(undefined)), []);
 
@@ -20,7 +25,14 @@ const EditGroupModal: React.FC<PostFormModalProps> = ({ trigger }) => {
     closeModal();
   }, [closeModal]);
 
-  const content = useMemo(() => <Suspense fallback={null}></Suspense>, [onFinishCallback]);
+  const content = useMemo(
+    () => (
+      <Suspense fallback={null}>
+        {entityGroup && <EntityGroupForm entityGroup={entityGroup} />}
+      </Suspense>
+    ),
+    [entityGroup, onFinishCallback],
+  );
 
   return (
     <Modal
@@ -34,4 +46,4 @@ const EditGroupModal: React.FC<PostFormModalProps> = ({ trigger }) => {
   );
 };
 
-export default EditGroupModal;
+export default EditEntityGroupModal;

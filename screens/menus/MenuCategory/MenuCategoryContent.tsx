@@ -1,12 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import MenuItemContentElement from './MenuItemContentElement';
 import { DragOverlay } from '@dnd-kit/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGroup';
 import { useGetMenuItemContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
-import EditGroupModal from './EditGroupModal';
-import { setEditEntityGroupId } from './menuCategorySlice';
+import EditEntityGroupModal from './EditEntityGroupModal';
 
 interface MenuCategoryContentProps {
   menuId: number;
@@ -45,7 +44,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
           ) : null}
         </DragOverlay>
       )}
-      <EditGroupModal trigger={undefined} />
+      <EditEntityGroupModal trigger={undefined} entityGroups={menuItemContent.entityGroups} />
     </>
   );
 };
