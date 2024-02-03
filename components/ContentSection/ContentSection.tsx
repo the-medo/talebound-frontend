@@ -60,6 +60,11 @@ const StyledSection = styled('section', {
         outline: '2px solid $danger',
       },
     },
+    hasShadow: {
+      false: {
+        boxShadow: 'none',
+      },
+    },
     hasCornerImage: {
       true: {
         overflow: 'hidden',

@@ -7,7 +7,7 @@ import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { MdClose, MdDragIndicator, MdEdit, MdPlaylistRemove } from 'react-icons/md';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { Col, Row } from '../../../components/Flex/Flex';
+import { Col, Flex, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
 import { DropType, isOverCheck } from './menuCategoryUtils';
 import {
@@ -21,7 +21,11 @@ import {
 } from '../../../api/menus/useGetMenuItemContent';
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
-import { PbEntityGroupContent } from '../../../generated/api-types/data-contracts';
+import {
+  PbEntityGroupContent,
+  PbEntityGroupDirection,
+  PbEntityGroupStyle,
+} from '../../../generated/api-types/data-contracts';
 import { setEditEntityGroupId } from './menuCategorySlice';
 
 interface MenuItemContentElementEntityGroupProps {
@@ -64,16 +68,29 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   });
 
   const children = useMemo(
-    () =>
-      content.children.map((c) => (
-        <MenuItemContentElement
-          key={c.position}
-          showHandles={showHandles}
-          content={c}
-          entityGroupObject={entityGroupObject}
-        />
-      )),
-    [showHandles, content.children, entityGroupObject /*isOver*/],
+    () => (
+      <Flex
+        fullWidth
+        gap="sm"
+        direction={
+          editMode ||
+          entityGroupObject[content.entityGroupId]?.direction ===
+            PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL
+            ? 'column'
+            : 'row'
+        }
+      >
+        {content.children.map((c) => (
+          <MenuItemContentElement
+            key={c.position}
+            showHandles={showHandles}
+            content={c}
+            entityGroupObject={entityGroupObject}
+          />
+        ))}
+      </Flex>
+    ),
+    [editMode, entityGroupObject, content.entityGroupId, content.children, showHandles],
   );
 
   const dragHandle = useMemo(
@@ -91,7 +108,6 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   const handleRemoveGroup = useCallback(
     (deleteType: 'deleteChildren' | 'keepChildren') => {
       const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-        menuId,
         menuItemId,
       });
 
@@ -160,12 +176,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
         },
       );
     },
-    [content.entityGroupId, content.position, menuId, menuItemId],
+    [content.entityGroupId, content.position, menuItemId],
   );
 
   const handleEditGroup = useCallback(
     () => dispatch(setEditEntityGroupId(content.entityGroupId)),
-    [handleRemoveGroup],
+    [content.entityGroupId, dispatch],
   );
 
   const handleRemoveGroupButKeepEntities = useCallback(
@@ -185,14 +201,20 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       fullWidth={!isTopLevelGroup}
       noMargin={!isTopLevelGroup}
       semiTransparent={isDragging}
+      hasShadow={
+        entityGroupObject[content.entityGroupId]?.style ===
+        PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED
+      }
     >
       <Col gap="sm" fullWidth ref={setDroppableRef}>
         <Row justifyContent="between" semiTransparent={isDragging}>
           <Row gap="sm">
             {dragHandle}
-            <TitleH2 marginBottom="none">Group {content.entityGroupId}</TitleH2>
+            <TitleH2 marginBottom="none">
+              Group {content.entityGroupId} - {entityGroupObject[content.entityGroupId]?.name}
+            </TitleH2>
           </Row>
-          {!isTopLevelGroup && editMode && (
+          {editMode && (
             <Row gap="sm">
               <Button
                 icon
@@ -203,24 +225,28 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
               >
                 <MdEdit />
               </Button>
-              <Button
-                icon
-                onClick={handleRemoveGroupButKeepEntities}
-                size="sm"
-                color="dangerOutline"
-                title="Remove with entities"
-              >
-                <MdPlaylistRemove />
-              </Button>
-              <Button
-                icon
-                onClick={handleRemoveGroupAndItsEntities}
-                size="sm"
-                color="dangerOutline"
-                title="Remove only group, entities will go to parent"
-              >
-                <MdClose />
-              </Button>
+              {!isTopLevelGroup && (
+                <>
+                  <Button
+                    icon
+                    onClick={handleRemoveGroupButKeepEntities}
+                    size="sm"
+                    color="dangerOutline"
+                    title="Remove with entities"
+                  >
+                    <MdPlaylistRemove />
+                  </Button>
+                  <Button
+                    icon
+                    onClick={handleRemoveGroupAndItsEntities}
+                    size="sm"
+                    color="dangerOutline"
+                    title="Remove only group, entities will go to parent"
+                  >
+                    <MdClose />
+                  </Button>
+                </>
+              )}
             </Row>
           )}
         </Row>
