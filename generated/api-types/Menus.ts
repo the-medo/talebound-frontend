@@ -26,6 +26,23 @@ export class Menus<SecurityDataType = unknown> {
   }
 
   /**
+   * @description gets list of entities for menu item - posts, maps, locations,...
+   *
+   * @tags Menus
+   * @name MenusGetMenuItemContent
+   * @summary Get all entities for menu item
+   * @request GET:/menus/items/content/{menuItemId}
+   * @response `200` `PbGetMenuItemContentResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  menusGetMenuItemContent = (menuItemId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetMenuItemContentResponse, RpcStatus>({
+      path: `/menus/items/content/${menuItemId}`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description gets menu by ID
    *
    * @tags Menus
@@ -133,23 +150,6 @@ export class Menus<SecurityDataType = unknown> {
       method: 'POST',
       body: body,
       type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description gets list of entities for menu item - posts, maps, locations,...
-   *
-   * @tags Menus
-   * @name MenusGetMenuItemContent
-   * @summary Get all entities for menu item
-   * @request GET:/menus/{menuId}/items/{menuItemId}
-   * @response `200` `PbGetMenuItemContentResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  menusGetMenuItemContent = (menuId: number, menuItemId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetMenuItemContentResponse, RpcStatus>({
-      path: `/menus/${menuId}/items/${menuItemId}`,
-      method: 'GET',
       format: 'json',
       ...params,
     });

@@ -8,14 +8,13 @@ import { useGetMenuItemContentHierarchy } from '../../../hooks/useGetMenuItemCon
 import EditEntityGroupModal from './EditEntityGroupModal';
 
 interface MenuCategoryContentProps {
-  menuId: number;
   menuItemId: number;
 }
 
-const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuItemId }) => {
+const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuItemId }) => {
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const draggingData = useSelector((state: ReduxState) => state.menuCategory.draggingData);
-  const menuItemContent = useGetMenuItemContentHierarchy(menuId, menuItemId);
+  const menuItemContent = useGetMenuItemContentHierarchy(menuItemId);
 
   console.log('MENU ITEM CONTENT: ', menuItemContent);
 
@@ -44,7 +43,11 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuId, menuI
           ) : null}
         </DragOverlay>
       )}
-      <EditEntityGroupModal trigger={undefined} entityGroups={menuItemContent.entityGroups} />
+      <EditEntityGroupModal
+        trigger={undefined}
+        entityGroups={menuItemContent.entityGroups}
+        menuItemId={menuItemId}
+      />
     </>
   );
 };

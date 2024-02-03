@@ -9,9 +9,14 @@ import EntityGroupForm from './EntityGroupForm';
 interface EditEntityGroupModalProps {
   trigger: React.ReactNode;
   entityGroups: EntityGroupObject;
+  menuItemId: number;
 }
 
-const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({ trigger, entityGroups }) => {
+const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({
+  trigger,
+  entityGroups,
+  menuItemId,
+}) => {
   const dispatch = useDispatch();
   const editEntityGroupId = useSelector(
     (state: ReduxState) => state.menuCategory.editEntityGroupId,
@@ -19,19 +24,21 @@ const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({ trigger, en
 
   const entityGroup = editEntityGroupId ? entityGroups[editEntityGroupId] : undefined;
 
-  const closeModal = useCallback(() => dispatch(setEditEntityGroupId(undefined)), []);
-
-  const onFinishCallback = useCallback(() => {
-    closeModal();
-  }, [closeModal]);
+  const closeModal = useCallback(() => dispatch(setEditEntityGroupId(undefined)), [dispatch]);
 
   const content = useMemo(
     () => (
       <Suspense fallback={null}>
-        {entityGroup && <EntityGroupForm entityGroup={entityGroup} />}
+        {entityGroup && (
+          <EntityGroupForm
+            entityGroup={entityGroup}
+            menuItemId={menuItemId}
+            onFinishCallback={closeModal}
+          />
+        )}
       </Suspense>
     ),
-    [entityGroup, onFinishCallback],
+    [closeModal, entityGroup, menuItemId],
   );
 
   return (

@@ -39,12 +39,9 @@ const emptyResponse: MenuItemContentHierarchy = {
   },
 };
 
-export const useGetMenuItemContentHierarchy = (
-  menuId: number,
-  menuItemId: number,
-): MenuItemContentHierarchy => {
+export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemContentHierarchy => {
   const { data: menuItemContent } = useGetMenuItemContent({
-    variables: { menuId, menuItemId },
+    variables: { menuItemId },
   });
 
   return useMemo(() => {

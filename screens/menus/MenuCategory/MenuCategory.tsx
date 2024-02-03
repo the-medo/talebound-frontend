@@ -98,7 +98,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
       console.log('START:', start, 'END:', end);
 
       const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-        menuId,
         menuItemId: menuItem?.id ?? 0,
       });
 
@@ -241,7 +240,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             onDragEnd={handleDragEnd}
             collisionDetection={pointerWithin}
           >
-            <MenuCategoryContent menuId={menuId} menuItemId={menuItem?.id ?? 0} />
+            <MenuCategoryContent menuItemId={menuItem?.id ?? 0} />
           </DndContext>
           <ErrorText error={error} />
         </Col>

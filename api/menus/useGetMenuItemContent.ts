@@ -7,7 +7,6 @@ import {
 import { MenusCollection } from '../collections';
 
 interface GetMenuItemContentRequest {
-  menuId: number;
   menuItemId: number;
 }
 
@@ -26,15 +25,15 @@ export const useGetMenuItemContent = createQuery<
   TaleboundError
 >({
   primaryKey: 'useGetMenuItemContent',
-  queryFn: async ({ queryKey: [_, { menuId, menuItemId }] }) => {
-    if (menuId === 0 || menuItemId === 0)
+  queryFn: async ({ queryKey: [_, { menuItemId }] }) => {
+    if (menuItemId === 0)
       return {
         mainGroupId: 0,
         groups: [],
         contents: [],
       };
 
-    const { data } = await MenusCollection.menusGetMenuItemContent(menuId, menuItemId);
+    const { data } = await MenusCollection.menusGetMenuItemContent(menuItemId);
 
     return data;
   },

@@ -11,7 +11,6 @@ import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
 import Select from '../../../components/Select/Select';
 import { SelectOptions } from '../../../components-radix-ui/Select/selectLib';
-import { useUpdateMenuItem } from '../../../api/menus/useUpdateMenuItem';
 import { useUpdateEntityGroup } from '../../../api/entities/useUpdateEntityGroup';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 
@@ -41,12 +40,15 @@ interface EntityGroupFormProps {
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   onFinishCallback?: () => void;
+  menuItemId: number;
 }
 
 const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
   entityGroup,
   canChangeTitle = true,
   canChangeDescription = true,
+  onFinishCallback,
+  menuItemId,
 }) => {
   const { value: name, onChange: onChangeName } = useInput<string>(entityGroup?.name ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
@@ -71,17 +73,30 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
 
   const updateEntityGroupHandler = useCallback(() => {
     if (entityGroup?.id) {
-      updateEntityGroup({
-        entityGroupId: entityGroup.id,
-        body: {
-          name,
-          description,
-          style: style as PbEntityGroupStyle,
-          direction: direction as PbEntityGroupDirection,
+      updateEntityGroup(
+        {
+          menuItemId,
+          entityGroupId: entityGroup.id,
+          body: {
+            name,
+            description,
+            style: style as PbEntityGroupStyle,
+            direction: direction as PbEntityGroupDirection,
+          },
         },
-      });
+        { onSuccess: onFinishCallback },
+      );
     }
-  }, [description, direction, entityGroup, name, style, updateEntityGroup]);
+  }, [
+    entityGroup.id,
+    updateEntityGroup,
+    menuItemId,
+    name,
+    description,
+    style,
+    direction,
+    onFinishCallback,
+  ]);
 
   if (!canChangeTitle && !canChangeDescription) return null;
 

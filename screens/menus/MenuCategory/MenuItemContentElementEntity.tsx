@@ -51,7 +51,6 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
 
   const handleRemoveEntity = useCallback(() => {
     const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-      menuId,
       menuItemId,
     });
 
