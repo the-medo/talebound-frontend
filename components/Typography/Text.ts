@@ -56,7 +56,7 @@ export const Text = styled('span', {
         color: '$danger',
       },
       info: {
-        color: '$info',
+        color: '$primary300',
       },
       warning: {
         color: '$warning',

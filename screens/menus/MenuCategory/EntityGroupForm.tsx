@@ -13,6 +13,7 @@ import Select from '../../../components/Select/Select';
 import { SelectOptions } from '../../../components-radix-ui/Select/selectLib';
 import { useUpdateEntityGroup } from '../../../api/entities/useUpdateEntityGroup';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import { HelperType } from '../../../utils/form/helperTypes';
 
 const textareaPlaceholder = 'Description of the group. What information does this post contain?';
 
@@ -39,6 +40,8 @@ interface EntityGroupFormProps {
   entityGroup?: PbEntityGroup;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
+  canChangeStyle?: boolean;
+  canChangeDirection?: boolean;
   onFinishCallback?: () => void;
   menuItemId: number;
 }
@@ -47,6 +50,8 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
   entityGroup,
   canChangeTitle = true,
   canChangeDescription = true,
+  canChangeStyle = true,
+  canChangeDirection = true,
   onFinishCallback,
   menuItemId,
 }) => {
@@ -88,7 +93,7 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
       );
     }
   }, [
-    entityGroup.id,
+    entityGroup?.id,
     updateEntityGroup,
     menuItemId,
     name,
@@ -105,7 +110,16 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
       <Row fullWidth gap="md" alignItems="start">
         <Col fullWidth gap="md">
           {canChangeTitle && (
-            <Input id="name" label="Name" onChange={onChangeName} value={name} required fullWidth />
+            <Input
+              id="name"
+              label="Name"
+              helperText="Empty value means title won't be displayed in real-mode"
+              helperType={HelperType.Info}
+              onChange={onChangeName}
+              value={name}
+              required
+              fullWidth
+            />
           )}
           {canChangeDescription && (
             <Textarea
@@ -117,25 +131,37 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
               onChange={onChange}
             />
           )}
-          <Select
-            id="style"
-            label="Style of group"
-            fullWidth={true}
-            onValueChange={setStyle}
-            value={style}
-            options={optionsStyle}
-          />
-          <Select
-            id="direction"
-            label="Direction of items"
-            fullWidth={true}
-            onValueChange={setDirection}
-            value={direction}
-            options={optionsDirection}
-          />
-          <Button onClick={updateEntityGroupHandler} loading={pending}>
-            {entityGroup ? 'Update' : 'Create'}
-          </Button>
+          {canChangeStyle && (
+            <Select
+              id="style"
+              label="Style of group"
+              noHelper={false}
+              helperText="You will need to turn off edit mode to see this change."
+              helperType={HelperType.Info}
+              fullWidth={true}
+              onValueChange={setStyle}
+              value={style}
+              options={optionsStyle}
+            />
+          )}
+          {canChangeDirection && (
+            <Select
+              id="direction"
+              label="Direction of items"
+              noHelper={false}
+              helperText="You will need to turn off edit mode to see this change."
+              helperType={HelperType.Info}
+              fullWidth={true}
+              onValueChange={setDirection}
+              value={direction}
+              options={optionsDirection}
+            />
+          )}
+          <Row alignSelf="end">
+            <Button onClick={updateEntityGroupHandler} loading={pending}>
+              {entityGroup ? 'Update' : 'Create'}
+            </Button>
+          </Row>
           <ErrorText error={errorUpdate} />
         </Col>
       </Row>

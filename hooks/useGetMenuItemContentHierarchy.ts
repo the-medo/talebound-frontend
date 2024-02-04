@@ -86,7 +86,7 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
               obj[parentId] = {
                 type: 'GROUP',
                 hierarchyId: `g${c.entityGroupId}`,
-                entityGroupId: 0,
+                entityGroupId: c.entityGroupId,
                 position: 1,
                 children: [thisObj],
               };

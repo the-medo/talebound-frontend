@@ -202,8 +202,9 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       noMargin={!isTopLevelGroup}
       semiTransparent={isDragging}
       hasShadow={
+        editMode ||
         entityGroupObject[content.entityGroupId]?.style ===
-        PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED
+          PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED
       }
     >
       <Col gap="sm" fullWidth ref={setDroppableRef}>
@@ -211,7 +212,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           <Row gap="sm">
             {dragHandle}
             <TitleH2 marginBottom="none">
-              Group {content.entityGroupId} - {entityGroupObject[content.entityGroupId]?.name}
+              {entityGroupObject[content.entityGroupId]?.name ?? `Group ${content.entityGroupId}`}
             </TitleH2>
           </Row>
           {editMode && (

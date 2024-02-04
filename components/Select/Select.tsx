@@ -137,7 +137,7 @@ const Select: React.FC<SelectProps> = ({
           </SelectPortal>
         </SelectRoot>
       </Flex>
-      {!helperText && !noHelper && (
+      {helperText && !noHelper && (
         <Text color={helperType} size="xs" id={helperId}>
           &nbsp;{helperText}
         </Text>

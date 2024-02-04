@@ -48,7 +48,7 @@ const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({
       title={`Edit group ${editEntityGroupId}`}
       content={content}
       onOpenChange={closeModal}
-      size="sm"
+      size="md"
     />
   );
 };
