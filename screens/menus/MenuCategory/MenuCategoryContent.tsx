@@ -6,6 +6,7 @@ import { ReduxState } from '../../../store';
 import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGroup';
 import { useGetMenuItemContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 import EditEntityGroupModal from './EditEntityGroupModal';
+import CreateEntityGroupModal from './CreateEntityGroupModal';
 
 interface MenuCategoryContentProps {
   menuItemId: number;
@@ -44,6 +45,11 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuItemId })
         </DragOverlay>
       )}
       <EditEntityGroupModal
+        trigger={undefined}
+        entityGroups={menuItemContent.entityGroups}
+        menuItemId={menuItemId}
+      />
+      <CreateEntityGroupModal
         trigger={undefined}
         entityGroups={menuItemContent.entityGroups}
         menuItemId={menuItemId}

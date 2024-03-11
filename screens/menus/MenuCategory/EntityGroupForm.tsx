@@ -77,17 +77,19 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
   const pending = isPendingUpdate;
 
   const updateEntityGroupHandler = useCallback(() => {
+    const entityGroupData = {
+      name,
+      description,
+      style: style as PbEntityGroupStyle,
+      direction: direction as PbEntityGroupDirection,
+    };
+
     if (entityGroup?.id) {
       updateEntityGroup(
         {
           menuItemId,
           entityGroupId: entityGroup.id,
-          body: {
-            name,
-            description,
-            style: style as PbEntityGroupStyle,
-            direction: direction as PbEntityGroupDirection,
-          },
+          body: entityGroupData,
         },
         { onSuccess: onFinishCallback },
       );

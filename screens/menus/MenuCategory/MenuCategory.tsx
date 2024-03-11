@@ -16,7 +16,12 @@ import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
-import { setDraggingData, setMenuData, setEditMode } from './menuCategorySlice';
+import {
+  setDraggingData,
+  setMenuData,
+  setEditMode,
+  setNewEntityGroupData,
+} from './menuCategorySlice';
 import {
   sortGetMenuItemContent,
   useGetMenuItemContent,
@@ -128,6 +133,16 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           let ePosition = e.position + 1;
           if (sParentId === eParentId && s.position <= e.position) ePosition--;
           if (e.type === 'GROUP') ePosition = 1;
+
+          if (e.dropType === DropType.NEW_GROUP) {
+            dispatch(
+              setNewEntityGroupData({
+                targetEntityGroupId: eParentId,
+                targetPosition: ePosition,
+              }),
+            );
+            return;
+          }
 
           console.log(
             'sHierarchyId',
