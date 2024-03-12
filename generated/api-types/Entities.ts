@@ -11,6 +11,7 @@
 
 import {
   PbCreateEntityGroupRequest,
+  PbCreateEntityGroupResponse,
   PbEntityGroup,
   PbEntityGroupContent,
   PbEntityGroupDirection,
@@ -34,11 +35,11 @@ export class Entities<SecurityDataType = unknown> {
    * @name EntitiesCreateEntityGroup
    * @summary Create entity group
    * @request POST:/entities/groups/create
-   * @response `200` `PbEntityGroup` A successful response.
+   * @response `200` `PbCreateEntityGroupResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
   entitiesCreateEntityGroup = (body: PbCreateEntityGroupRequest, params: RequestParams = {}) =>
-    this.http.request<PbEntityGroup, RpcStatus>({
+    this.http.request<PbCreateEntityGroupResponse, RpcStatus>({
       path: `/entities/groups/create`,
       method: 'POST',
       body: body,
@@ -108,6 +109,8 @@ export class Entities<SecurityDataType = unknown> {
       contentEntityId?: number;
       /** @format int32 */
       contentEntityGroupId?: number;
+      /** @format int32 */
+      position?: number;
     },
     params: RequestParams = {},
   ) =>

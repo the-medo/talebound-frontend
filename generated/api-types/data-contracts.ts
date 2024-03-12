@@ -38,8 +38,15 @@ export interface PbCreateEntityGroupRequest {
   parentEntityGroupId?: number;
   name?: string;
   description?: string;
+  /** @format int32 */
+  position?: number;
   style?: PbEntityGroupStyle;
   direction?: PbEntityGroupDirection;
+}
+
+export interface PbCreateEntityGroupResponse {
+  entityGroup?: PbEntityGroup;
+  entityGroupContent?: PbEntityGroupContent;
 }
 
 export interface PbCreateEntityTagResponse {
