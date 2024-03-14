@@ -23,7 +23,9 @@ export const useUpdateEntityGroup = createMutation({
         getMenuItemContentQueryKey,
         (oldData) => ({
           ...oldData,
-          groups: oldData?.groups.map((g) => (g.id === variables.entityGroupId ? newData : g)),
+          groups: (oldData?.groups ?? []).map((g) =>
+            g.id === variables.entityGroupId ? newData : g,
+          ),
         }),
       );
     }
