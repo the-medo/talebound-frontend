@@ -137,21 +137,15 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           if (e.dropType === DropType.NEW_GROUP) {
             dispatch(
               setNewEntityGroupData({
+                // entityContentId: oldData.contents.find()
+                startEntityGroupId: sParentId,
+                startPosition: s.position,
                 targetEntityGroupId: eParentId,
                 targetPosition: ePosition,
               }),
             );
             return;
           }
-
-          console.log(
-            'sHierarchyId',
-            s.hierarchyId,
-            'eHierarchyId',
-            e.hierarchyId,
-            'ePosition: ',
-            ePosition,
-          );
 
           const contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
             if (

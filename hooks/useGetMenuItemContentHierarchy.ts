@@ -52,52 +52,54 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
       const getId = (egc: PbEntityGroupContent) =>
         egc.contentEntityId ? `e${egc.contentEntityId}` : `g${egc.contentEntityGroupId}`;
 
-      menuItemContent?.contents?.forEach((c) => {
-        const id = getId(c);
-        if (id) {
-          if (!obj[id]) {
-            if (c.contentEntityId) {
-              obj[id] = {
-                type: 'ENTITY',
-                hierarchyId: '',
-                entityId: c.contentEntityId,
-                position: c.position ?? 1,
-              };
-            } else if (c.contentEntityGroupId) {
-              obj[id] = {
-                type: 'GROUP',
-                hierarchyId: '',
-                entityGroupId: c.contentEntityGroupId,
-                position: c.position ?? 1,
-                children: [],
-              };
+      menuItemContent?.contents
+        ?.toSorted((a, b) => (a.position ?? 1) - (b.position ?? 1))
+        .forEach((c) => {
+          const id = getId(c);
+          if (id) {
+            if (!obj[id]) {
+              if (c.contentEntityId) {
+                obj[id] = {
+                  type: 'ENTITY',
+                  hierarchyId: '',
+                  entityId: c.contentEntityId,
+                  position: c.position ?? 1,
+                };
+              } else if (c.contentEntityGroupId) {
+                obj[id] = {
+                  type: 'GROUP',
+                  hierarchyId: '',
+                  entityGroupId: c.contentEntityGroupId,
+                  position: c.position ?? 1,
+                  children: [],
+                };
+              }
+            } else {
+              const asdf = obj[id];
+              if (asdf?.type === 'GROUP') {
+                asdf.entityGroupId = c.entityGroupId ?? 0;
+              }
             }
-          } else {
-            const asdf = obj[id];
-            if (asdf?.type === 'GROUP') {
-              asdf.entityGroupId = c.entityGroupId ?? 0;
+            const thisObj = obj[id]!;
+            if (c.entityGroupId) {
+              const parentId = `g${c.entityGroupId}`;
+              let parent = obj[parentId];
+              if (!parent) {
+                obj[parentId] = {
+                  type: 'GROUP',
+                  hierarchyId: `g${c.entityGroupId}`,
+                  entityGroupId: c.entityGroupId,
+                  position: 1,
+                  children: [thisObj],
+                };
+                parent = obj[parentId];
+              } else if (parent.type === 'GROUP') {
+                parent.children.push(thisObj);
+              }
+              thisObj.hierarchyId = `${parent?.hierarchyId}-${id}`;
             }
           }
-          const thisObj = obj[id]!;
-          if (c.entityGroupId) {
-            const parentId = `g${c.entityGroupId}`;
-            let parent = obj[parentId];
-            if (!parent) {
-              obj[parentId] = {
-                type: 'GROUP',
-                hierarchyId: `g${c.entityGroupId}`,
-                entityGroupId: c.entityGroupId,
-                position: 1,
-                children: [thisObj],
-              };
-              parent = obj[parentId];
-            } else if (parent.type === 'GROUP') {
-              parent.children.push(thisObj);
-            }
-            thisObj.hierarchyId = `${parent?.hierarchyId}-${id}`;
-          }
-        }
-      });
+        });
       const mainHierarchy = obj[`g${menuItemContent.mainGroupId!}`];
 
       if (mainHierarchy?.type === 'GROUP') rsp.hierarchy = mainHierarchy;

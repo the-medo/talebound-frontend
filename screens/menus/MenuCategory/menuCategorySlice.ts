@@ -3,6 +3,8 @@ import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemConten
 
 export type NewEntityGroupData =
   | {
+      startEntityGroupId: number;
+      startPosition: number;
       targetEntityGroupId: number;
       targetPosition: number;
     }

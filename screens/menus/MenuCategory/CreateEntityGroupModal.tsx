@@ -5,6 +5,10 @@ import { ReduxState } from '../../../store';
 import { setNewEntityGroupData } from './menuCategorySlice';
 import { EntityGroupObject } from '../../../hooks/useGetMenuItemContentHierarchy';
 import EntityGroupForm from './EntityGroupForm';
+import {
+  CreateEntityGroupParams,
+  useCreateEntityGroup,
+} from '../../../api/entities/useCreateEntityGroup';
 
 interface CreateEntityGroupModalProps {
   trigger: React.ReactNode;
@@ -18,6 +22,12 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
   menuItemId,
 }) => {
   const dispatch = useDispatch();
+  const startEntityGroupId = useSelector(
+    (state: ReduxState) => state.menuCategory.newEntityGroupData?.startEntityGroupId,
+  );
+  const startPosition = useSelector(
+    (state: ReduxState) => state.menuCategory.newEntityGroupData?.startPosition,
+  );
   const targetEntityGroupId = useSelector(
     (state: ReduxState) => state.menuCategory.newEntityGroupData?.targetEntityGroupId,
   );
@@ -25,18 +35,59 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
     (state: ReduxState) => state.menuCategory.newEntityGroupData?.targetPosition,
   );
 
+  const {
+    mutate: createEntityGroup,
+    isPending: isPendingCreate,
+    error: errorCreate,
+  } = useCreateEntityGroup();
+
   const closeModal = useCallback(() => dispatch(setNewEntityGroupData(undefined)), [dispatch]);
 
   const open = !!targetEntityGroupId && !!targetPosition;
+
+  const createEntityGroupHandler = useCallback(
+    (data: CreateEntityGroupParams['body']) => {
+      if (targetEntityGroupId) {
+        const entityGroupData: CreateEntityGroupParams['body'] = {
+          ...data,
+          parentEntityGroupId: targetEntityGroupId,
+          position: targetPosition,
+        };
+
+        createEntityGroup(
+          {
+            menuItemId,
+            startEntityGroupId,
+            startPosition,
+            body: entityGroupData,
+          },
+          { onSuccess: closeModal },
+        );
+      }
+    },
+    [
+      targetEntityGroupId,
+      targetPosition,
+      createEntityGroup,
+      menuItemId,
+      startEntityGroupId,
+      startPosition,
+      closeModal,
+    ],
+  );
 
   const content = useMemo(
     () =>
       open && (
         <Suspense fallback={null}>
-          <EntityGroupForm onSubmitCallback={closeModal} />
+          <EntityGroupForm
+            onSubmitCallback={createEntityGroupHandler}
+            submitPending={isPendingCreate}
+            submitError={errorCreate}
+          />
         </Suspense>
       ),
-    [open, closeModal, menuItemId],
+    [open, createEntityGroupHandler, isPendingCreate, errorCreate],
   );
 
   return (

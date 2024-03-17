@@ -71,7 +71,7 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
 
   const pending = submitPending;
 
-  const updateEntityGroupHandler = useCallback(() => {
+  const submitEntityGroupHandler = useCallback(() => {
     const entityGroupData = {
       name,
       description,
@@ -79,10 +79,8 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
       direction: direction as PbEntityGroupDirection,
     };
 
-    if (entityGroup?.id) {
-      onSubmitCallback(entityGroupData);
-    }
-  }, [name, description, style, direction, entityGroup?.id, onSubmitCallback]);
+    onSubmitCallback(entityGroupData);
+  }, [name, description, style, direction, onSubmitCallback]);
 
   if (!canChangeTitle && !canChangeDescription) return null;
 
@@ -139,7 +137,7 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
             />
           )}
           <Row alignSelf="end">
-            <Button onClick={updateEntityGroupHandler} loading={pending}>
+            <Button onClick={submitEntityGroupHandler} loading={pending}>
               {entityGroup ? 'Update' : 'Create'}
             </Button>
           </Row>
