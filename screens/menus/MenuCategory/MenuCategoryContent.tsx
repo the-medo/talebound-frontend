@@ -10,9 +10,13 @@ import CreateEntityGroupModal from './CreateEntityGroupModal';
 
 interface MenuCategoryContentProps {
   menuItemId: number;
+  isPending?: boolean;
 }
 
-const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuItemId }) => {
+const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({
+  menuItemId,
+  isPending = false,
+}) => {
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const draggingData = useSelector((state: ReduxState) => state.menuCategory.draggingData);
   const menuItemContent = useGetMenuItemContentHierarchy(menuItemId);
@@ -26,6 +30,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuItemId })
       {menuItemContent.hierarchy.type === 'GROUP' && (
         <MenuItemContentElementEntityGroup
           isTopLevelGroup={true}
+          isPending={isPending}
           showHandles={true}
           content={menuItemContent.hierarchy}
           entityGroupObject={menuItemContent.entityGroups}
@@ -49,11 +54,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({ menuItemId })
         entityGroups={menuItemContent.entityGroups}
         menuItemId={menuItemId}
       />
-      <CreateEntityGroupModal
-        trigger={undefined}
-        entityGroups={menuItemContent.entityGroups}
-        menuItemId={menuItemId}
-      />
+      <CreateEntityGroupModal trigger={undefined} menuItemId={menuItemId} />
     </>
   );
 };

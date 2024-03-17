@@ -6,7 +6,6 @@ import { useGetMenuItemContent } from '../menus/useGetMenuItemContent';
 export type CreateEntityGroupParams = {
   menuItemId: number;
   startEntityGroupId?: number;
-  startPosition?: number;
   body: Parameters<typeof EntitiesCollection.entitiesCreateEntityGroup>[0];
 };
 
@@ -23,35 +22,11 @@ export const useCreateEntityGroup = createMutation({
       });
 
       if (entityGroup && entityGroupContent) {
-        console.log('entityGroup', entityGroup, 'entityGroupContent', entityGroupContent);
         queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
           getMenuItemContentQueryKey,
           (oldData) => ({
             ...oldData,
-            contents: [
-              ...(oldData?.contents ?? []).map((c) => {
-                if (
-                  variables.startEntityGroupId === c.entityGroupId &&
-                  variables.startPosition &&
-                  c.position
-                ) {
-                  if (variables.startPosition === c.position) {
-                    return {
-                      ...c,
-                      entityGroupId: entityGroup.id,
-                      position: 1,
-                    };
-                  } else if (variables.startPosition < c.position) {
-                    return {
-                      ...c,
-                      position: c.position - 1,
-                    };
-                  }
-                }
-                return c;
-              }),
-              entityGroupContent,
-            ],
+            contents: [...(oldData?.contents ?? []), entityGroupContent],
             groups: [...(oldData?.groups ?? []), entityGroup],
           }),
         );

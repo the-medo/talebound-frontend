@@ -33,6 +33,7 @@ interface MenuItemContentElementEntityGroupProps {
   entityGroupObject: EntityGroupObject;
   showHandles: boolean;
   isTopLevelGroup?: boolean;
+  isPending?: boolean;
 }
 
 const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGroupProps> = ({
@@ -40,10 +41,10 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   entityGroupObject,
   showHandles,
   isTopLevelGroup = false,
+  isPending,
 }) => {
   const dispatch = useDispatch();
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
-  const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
   const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
 
   const {
@@ -200,7 +201,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       highlighted={false}
       fullWidth={!isTopLevelGroup}
       noMargin={!isTopLevelGroup}
-      semiTransparent={isDragging}
+      semiTransparent={isDragging || isPending}
       hasShadow={
         editMode ||
         entityGroupObject[content.entityGroupId]?.style ===

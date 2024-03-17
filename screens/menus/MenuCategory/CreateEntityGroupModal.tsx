@@ -3,30 +3,25 @@ import Modal from '../../../components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { setNewEntityGroupData } from './menuCategorySlice';
-import { EntityGroupObject } from '../../../hooks/useGetMenuItemContentHierarchy';
 import EntityGroupForm from './EntityGroupForm';
 import {
   CreateEntityGroupParams,
   useCreateEntityGroup,
 } from '../../../api/entities/useCreateEntityGroup';
+import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
 
 interface CreateEntityGroupModalProps {
   trigger: React.ReactNode;
-  entityGroups: EntityGroupObject;
   menuItemId: number;
 }
 
-const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
-  trigger,
-  entityGroups,
-  menuItemId,
-}) => {
+const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger, menuItemId }) => {
   const dispatch = useDispatch();
+  const contentId = useSelector(
+    (state: ReduxState) => state.menuCategory.newEntityGroupData?.contentId,
+  );
   const startEntityGroupId = useSelector(
     (state: ReduxState) => state.menuCategory.newEntityGroupData?.startEntityGroupId,
-  );
-  const startPosition = useSelector(
-    (state: ReduxState) => state.menuCategory.newEntityGroupData?.startPosition,
   );
   const targetEntityGroupId = useSelector(
     (state: ReduxState) => state.menuCategory.newEntityGroupData?.targetEntityGroupId,
@@ -41,6 +36,16 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
     error: errorCreate,
   } = useCreateEntityGroup();
 
+  const {
+    mutate: updateEntityGroupContent,
+    isPending: isPendingUpdateContent,
+    // isError: isErrorUpdate,
+    error: errorUpdateContent,
+  } = useUpdateEntityGroupContent();
+
+  const isPending = isPendingCreate || isPendingUpdateContent;
+  const error = errorCreate ?? errorUpdateContent;
+
   const closeModal = useCallback(() => dispatch(setNewEntityGroupData(undefined)), [dispatch]);
 
   const open = !!targetEntityGroupId && !!targetPosition;
@@ -54,24 +59,43 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
           position: targetPosition,
         };
 
-        createEntityGroup(
-          {
-            menuItemId,
-            startEntityGroupId,
-            startPosition,
-            body: entityGroupData,
+        const createEntityGroupArgs = {
+          menuItemId,
+          startEntityGroupId,
+          body: entityGroupData,
+        };
+        console.log('createEntityGroupArgs', createEntityGroupArgs);
+
+        createEntityGroup(createEntityGroupArgs, {
+          onSuccess: ({ data }) => {
+            if (contentId && startEntityGroupId && data.entityGroup) {
+              const updateEntityGroupContentArgs = {
+                menuItemId,
+                entityGroupId: startEntityGroupId,
+                contentId: contentId,
+                body: {
+                  newEntityGroupId: data.entityGroup.id,
+                  position: 1,
+                },
+              };
+              console.log('updateEntityGroupContentArgs', updateEntityGroupContentArgs);
+
+              updateEntityGroupContent(updateEntityGroupContentArgs, {
+                onSuccess: closeModal,
+              });
+            }
           },
-          { onSuccess: closeModal },
-        );
+        });
       }
     },
     [
       targetEntityGroupId,
       targetPosition,
-      createEntityGroup,
       menuItemId,
       startEntityGroupId,
-      startPosition,
+      createEntityGroup,
+      contentId,
+      updateEntityGroupContent,
       closeModal,
     ],
   );
@@ -82,12 +106,12 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
         <Suspense fallback={null}>
           <EntityGroupForm
             onSubmitCallback={createEntityGroupHandler}
-            submitPending={isPendingCreate}
-            submitError={errorCreate}
+            submitPending={isPending}
+            submitError={error}
           />
         </Suspense>
       ),
-    [open, createEntityGroupHandler, isPendingCreate, errorCreate],
+    [open, createEntityGroupHandler, isPending, error],
   );
 
   return (

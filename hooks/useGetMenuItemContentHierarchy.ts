@@ -3,6 +3,7 @@ import { PbEntityGroup, PbEntityGroupContent } from '../generated/api-types/data
 import { useMemo } from 'react';
 
 export type EntityGroupContentHierarchyEntityGroup = {
+  id: number;
   type: 'GROUP';
   hierarchyId: string;
   entityGroupId: number;
@@ -11,6 +12,7 @@ export type EntityGroupContentHierarchyEntityGroup = {
 };
 
 export type EntityGroupContentHierarchyEntity = {
+  id: number;
   type: 'ENTITY';
   hierarchyId: string;
   entityId: number;
@@ -31,6 +33,7 @@ export type MenuItemContentHierarchy = {
 const emptyResponse: MenuItemContentHierarchy = {
   entityGroups: {},
   hierarchy: {
+    id: 0,
     type: 'GROUP',
     hierarchyId: 'g1',
     entityGroupId: 0,
@@ -55,11 +58,13 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
       menuItemContent?.contents
         ?.toSorted((a, b) => (a.position ?? 1) - (b.position ?? 1))
         .forEach((c) => {
+          if (!c.id) return;
           const id = getId(c);
           if (id) {
             if (!obj[id]) {
               if (c.contentEntityId) {
                 obj[id] = {
+                  id: c.id,
                   type: 'ENTITY',
                   hierarchyId: '',
                   entityId: c.contentEntityId,
@@ -67,6 +72,7 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
                 };
               } else if (c.contentEntityGroupId) {
                 obj[id] = {
+                  id: c.id,
                   type: 'GROUP',
                   hierarchyId: '',
                   entityGroupId: c.contentEntityGroupId,
@@ -86,6 +92,7 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
               let parent = obj[parentId];
               if (!parent) {
                 obj[parentId] = {
+                  id: c.id,
                   type: 'GROUP',
                   hierarchyId: `g${c.entityGroupId}`,
                   entityGroupId: c.entityGroupId,

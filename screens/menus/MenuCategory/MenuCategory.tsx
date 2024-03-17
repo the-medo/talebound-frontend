@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo } from 'react';
 import { useGetMenuItems } from '../../../api/menus/useGetMenuItems';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
@@ -7,11 +7,6 @@ import LoadingText from '../../../components/Loading/LoadingText';
 import { TitleH2 } from '../../../components/Typography/Title';
 import Link from 'next/link';
 import ErrorText from '../../../components/ErrorText/ErrorText';
-import {
-  PbEntityGroupContent,
-  PbEntityGroupDirection,
-  PbEntityGroupStyle,
-} from '../../../generated/api-types/data-contracts';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,15 +17,10 @@ import {
   setEditMode,
   setNewEntityGroupData,
 } from './menuCategorySlice';
-import {
-  sortGetMenuItemContent,
-  useGetMenuItemContent,
-} from '../../../api/menus/useGetMenuItemContent';
-import { queryClient } from '../../../pages/_app';
-import { inferData } from 'react-query-kit';
 import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 import { MdEdit } from 'react-icons/md';
+import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -55,6 +45,13 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
+  const {
+    mutate: updateEntityGroupContent,
+    isPending: isPendingUpdateGroupContent,
+    // isError: isErrorUpdate,
+    error: errorUpdateGroupContent,
+  } = useUpdateEntityGroupContent();
+
   const menuItem = useMemo(() => {
     return menuItemsData.find((item) => item.code === menuItemCode);
   }, [menuItemCode, menuItemsData]);
@@ -75,7 +72,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   }, [dispatch, editMode]);
 
   //====================================================================================================
-  const [error, setError] = useState<unknown>();
+  const error = errorUpdateGroupContent;
   //====================================================================================================
 
   const handleDragStart = useCallback(
@@ -102,10 +99,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
       dispatch(setDraggingData(undefined));
       console.log('START:', start, 'END:', end);
 
-      const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-        menuItemId: menuItem?.id ?? 0,
-      });
-
       if (end === null) return;
 
       const getParentId = (x: EntityGroupContentHierarchy, startOrEnd: 'start' | 'end'): number => {
@@ -118,63 +111,40 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         return parseInt(hierarchyIdSplit[hierarchyIdSplit.length - 1]);
       };
 
-      queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
-        getMenuItemContentQueryKey,
-        (oldData) => {
-          if (!oldData?.contents) return;
-          console.log('++++++++++++++++++++++++ START +++++++++++++++++++++++++++++++');
-          const s = start.data.current as EntityGroupContentHierarchy;
-          const e = end.data.current as EntityGroupContentHierarchy & { dropType: DropType };
+      const s = start.data.current as EntityGroupContentHierarchy;
+      const e = end.data.current as EntityGroupContentHierarchy & { dropType: DropType };
 
-          const sParentId = getParentId(s, 'start');
-          const eParentId = getParentId(e, 'end');
+      const sParentId = getParentId(s, 'start');
+      const eParentId = getParentId(e, 'end');
 
-          if (`${e.hierarchyId}-`.startsWith(s.hierarchyId)) return;
-          let ePosition = e.position + 1;
-          if (sParentId === eParentId && s.position <= e.position) ePosition--;
-          if (e.type === 'GROUP') ePosition = 1;
+      let ePosition = e.type === 'GROUP' ? 1 : e.position + 1;
+      if (sParentId === eParentId && s.position <= e.position) ePosition--;
 
-          if (e.dropType === DropType.NEW_GROUP) {
-            dispatch(
-              setNewEntityGroupData({
-                // entityContentId: oldData.contents.find()
-                startEntityGroupId: sParentId,
-                startPosition: s.position,
-                targetEntityGroupId: eParentId,
-                targetPosition: ePosition,
-              }),
-            );
-            return;
-          }
-
-          const contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
-            if (
-              (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
-              (s.type === 'GROUP' && c.contentEntityGroupId === s.entityGroupId)
-            ) {
-              return {
-                ...c,
-                entityGroupId: eParentId,
-                position: ePosition,
-              };
-            }
-
-            let position = c.position!;
-            if (sParentId === c.entityGroupId) {
-              if (position > s.position) position--;
-            }
-            if (eParentId === c.entityGroupId) {
-              if (position >= ePosition) position++;
-            }
-            return { ...c, position };
-          });
-
-          console.log('+++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++');
-          return { ...oldData, contents: sortGetMenuItemContent(contents) };
-        },
-      );
+      if (e.dropType === DropType.NEW_GROUP) {
+        dispatch(
+          setNewEntityGroupData({
+            // entityContentId: oldData.contents.find()
+            contentId: s.id,
+            startEntityGroupId: sParentId,
+            startPosition: s.position,
+            targetEntityGroupId: eParentId,
+            targetPosition: ePosition,
+          }),
+        );
+        return;
+      } else {
+        updateEntityGroupContent({
+          menuItemId: menuItem?.id ?? 0,
+          entityGroupId: sParentId,
+          contentId: s.id,
+          body: {
+            newEntityGroupId: eParentId,
+            position: ePosition,
+          },
+        });
+      }
     },
-    [dispatch, menuId, menuItem?.id],
+    [dispatch, menuItem?.id, updateEntityGroupContent],
   );
 
   if (!menuItem) {
@@ -227,7 +197,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             onDragEnd={handleDragEnd}
             collisionDetection={pointerWithin}
           >
-            <MenuCategoryContent menuItemId={menuItem?.id ?? 0} />
+            <MenuCategoryContent
+              menuItemId={menuItem?.id ?? 0}
+              isPending={isPendingUpdateGroupContent}
+            />
           </DndContext>
           <ErrorText error={error} />
         </Col>
