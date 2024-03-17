@@ -11,7 +11,7 @@ import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
 import Select from '../../../components/Select/Select';
 import { SelectOptions } from '../../../components-radix-ui/Select/selectLib';
-import { useUpdateEntityGroup } from '../../../api/entities/useUpdateEntityGroup';
+import { UpdateEntityGroupParams } from '../../../api/entities/useUpdateEntityGroup';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { HelperType } from '../../../utils/form/helperTypes';
 
@@ -42,8 +42,9 @@ interface EntityGroupFormProps {
   canChangeDescription?: boolean;
   canChangeStyle?: boolean;
   canChangeDirection?: boolean;
-  onFinishCallback?: () => void;
-  menuItemId: number;
+  onSubmitCallback: (data: UpdateEntityGroupParams['body']) => void;
+  submitPending?: boolean;
+  submitError?: Error | null;
 }
 
 const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
@@ -52,20 +53,14 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
   canChangeDescription = true,
   canChangeStyle = true,
   canChangeDirection = true,
-  onFinishCallback,
-  menuItemId,
+  onSubmitCallback,
+  submitPending = false,
+  submitError,
 }) => {
   const { value: name, onChange: onChangeName } = useInput<string>(entityGroup?.name ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
     entityGroup?.description ?? '',
   );
-
-  const {
-    mutate: updateEntityGroup,
-    isPending: isPendingUpdate,
-    // isError: isErrorUpdate,
-    error: errorUpdate,
-  } = useUpdateEntityGroup();
 
   const [style, setStyle] = useState<string>(
     entityGroup?.style ?? PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED,
@@ -74,7 +69,7 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
     entityGroup?.direction ?? PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL,
   );
 
-  const pending = isPendingUpdate;
+  const pending = submitPending;
 
   const updateEntityGroupHandler = useCallback(() => {
     const entityGroupData = {
@@ -85,25 +80,9 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
     };
 
     if (entityGroup?.id) {
-      updateEntityGroup(
-        {
-          menuItemId,
-          entityGroupId: entityGroup.id,
-          body: entityGroupData,
-        },
-        { onSuccess: onFinishCallback },
-      );
+      onSubmitCallback(entityGroupData);
     }
-  }, [
-    entityGroup?.id,
-    updateEntityGroup,
-    menuItemId,
-    name,
-    description,
-    style,
-    direction,
-    onFinishCallback,
-  ]);
+  }, [name, description, style, direction, entityGroup?.id, onSubmitCallback]);
 
   if (!canChangeTitle && !canChangeDescription) return null;
 
@@ -164,7 +143,7 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
               {entityGroup ? 'Update' : 'Create'}
             </Button>
           </Row>
-          <ErrorText error={errorUpdate} />
+          <ErrorText error={submitError} />
         </Col>
       </Row>
     </>

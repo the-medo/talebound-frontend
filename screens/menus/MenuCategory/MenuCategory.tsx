@@ -153,16 +153,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             ePosition,
           );
 
-          /* This data will be provided from API response, this is just a mockup */
-          const newGroupId = Date.now();
-          const newGroup: PbEntityGroupContent = {
-            id: newGroupId,
-            entityGroupId: eParentId,
-            position: ePosition,
-            contentEntityId: undefined,
-            contentEntityGroupId: newGroupId,
-          };
-
           const contents: PbEntityGroupContent[] = oldData.contents.map((c) => {
             if (
               (s.type === 'ENTITY' && c.contentEntityId === s.entityId) ||
@@ -170,8 +160,8 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             ) {
               return {
                 ...c,
-                entityGroupId: e.dropType === DropType.NEW_GROUP ? newGroupId : eParentId,
-                position: e.dropType === DropType.NEW_GROUP ? 1 : ePosition,
+                entityGroupId: eParentId,
+                position: ePosition,
               };
             }
 
@@ -184,18 +174,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             }
             return { ...c, position };
           });
-
-          if (e.dropType === DropType.NEW_GROUP) {
-            contents.push(newGroup);
-
-            oldData.groups?.push({
-              id: newGroupId,
-              name: `Group ${newGroupId}`,
-              description: '',
-              style: PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED,
-              direction: PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL,
-            });
-          }
 
           console.log('+++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++');
           return { ...oldData, contents: sortGetMenuItemContent(contents) };

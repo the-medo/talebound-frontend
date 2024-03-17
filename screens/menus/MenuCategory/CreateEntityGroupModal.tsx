@@ -33,7 +33,7 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({
     () =>
       open && (
         <Suspense fallback={null}>
-          <EntityGroupForm menuItemId={menuItemId} onFinishCallback={closeModal} />
+          <EntityGroupForm onSubmitCallback={closeModal} />
         </Suspense>
       ),
     [open, closeModal, menuItemId],

@@ -5,6 +5,10 @@ import { ReduxState } from '../../../store';
 import { setEditEntityGroupId } from './menuCategorySlice';
 import { EntityGroupObject } from '../../../hooks/useGetMenuItemContentHierarchy';
 import EntityGroupForm from './EntityGroupForm';
+import {
+  UpdateEntityGroupParams,
+  useUpdateEntityGroup,
+} from '../../../api/entities/useUpdateEntityGroup';
 
 interface EditEntityGroupModalProps {
   trigger: React.ReactNode;
@@ -22,9 +26,39 @@ const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({
     (state: ReduxState) => state.menuCategory.editEntityGroupId,
   );
 
+  const {
+    mutate: updateEntityGroup,
+    isPending: isPendingUpdate,
+    // isError: isErrorUpdate,
+    error: errorUpdate,
+  } = useUpdateEntityGroup();
+
   const entityGroup = editEntityGroupId ? entityGroups[editEntityGroupId] : undefined;
 
   const closeModal = useCallback(() => dispatch(setEditEntityGroupId(undefined)), [dispatch]);
+
+  const updateEntityGroupHandler = useCallback(
+    (data: UpdateEntityGroupParams['body']) => {
+      const entityGroupData = {
+        name: data.name,
+        description: data.description,
+        style: data.style,
+        direction: data.direction,
+      };
+
+      if (entityGroup?.id) {
+        updateEntityGroup(
+          {
+            menuItemId,
+            entityGroupId: entityGroup.id,
+            body: entityGroupData,
+          },
+          { onSuccess: closeModal },
+        );
+      }
+    },
+    [entityGroup?.id, updateEntityGroup, menuItemId, closeModal],
+  );
 
   const content = useMemo(
     () => (
@@ -32,13 +66,14 @@ const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({
         {entityGroup && (
           <EntityGroupForm
             entityGroup={entityGroup}
-            menuItemId={menuItemId}
-            onFinishCallback={closeModal}
+            onSubmitCallback={updateEntityGroupHandler}
+            submitPending={isPendingUpdate}
+            submitError={errorUpdate}
           />
         )}
       </Suspense>
     ),
-    [closeModal, entityGroup, menuItemId],
+    [entityGroup, errorUpdate, isPendingUpdate, updateEntityGroupHandler],
   );
 
   return (
