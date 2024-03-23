@@ -16,17 +16,13 @@ import {
 } from '../../../hooks/useGetMenuItemContentHierarchy';
 import { Button } from '../../../components/Button/Button';
 import {
-  sortGetMenuItemContent,
-  useGetMenuItemContent,
-} from '../../../api/menus/useGetMenuItemContent';
-import { queryClient } from '../../../pages/_app';
-import { inferData } from 'react-query-kit';
-import {
-  PbEntityGroupContent,
+  PbDeleteEntityGroupContentAction,
   PbEntityGroupDirection,
   PbEntityGroupStyle,
 } from '../../../generated/api-types/data-contracts';
 import { setEditEntityGroupId } from './menuCategorySlice';
+import { useDeleteEntityGroup } from '../../../api/entities/useDeleteEntityGroup';
+import ErrorText from '../../../components/ErrorText/ErrorText';
 
 interface MenuItemContentElementEntityGroupProps {
   content: EntityGroupContentHierarchyEntityGroup;
@@ -59,6 +55,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     disabled: !editMode,
   });
 
+  const {
+    mutate: deleteEntityGroup,
+    isPending: isPendingDelete,
+    error: errorDelete,
+  } = useDeleteEntityGroup();
+
   const canDropHere =
     !content.hierarchyId.startsWith(`${active?.id}-`) && content.hierarchyId !== active?.id;
 
@@ -81,14 +83,16 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
             : 'row'
         }
       >
-        {content.children.map((c) => (
-          <MenuItemContentElement
-            key={c.position}
-            showHandles={showHandles}
-            content={c}
-            entityGroupObject={entityGroupObject}
-          />
-        ))}
+        {content.children
+          .sort((a, b) => a.position - b.position)
+          .map((c) => (
+            <MenuItemContentElement
+              key={c.id}
+              showHandles={showHandles}
+              content={c}
+              entityGroupObject={entityGroupObject}
+            />
+          ))}
       </Flex>
     ),
     [editMode, entityGroupObject, content.entityGroupId, content.children, showHandles],
@@ -107,77 +111,14 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   const isOver = isOverCheck(content.hierarchyId, over?.id);
 
   const handleRemoveGroup = useCallback(
-    (deleteType: 'deleteChildren' | 'keepChildren') => {
-      const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
+    (deleteType: PbDeleteEntityGroupContentAction) => {
+      deleteEntityGroup({
         menuItemId,
+        entityGroupId: content.entityGroupId,
+        deleteType,
       });
-
-      queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
-        getMenuItemContentQueryKey,
-        (oldData) => {
-          if (!oldData?.contents) return;
-
-          const foundEntityGroup = oldData.contents.find(
-            (e) => e.contentEntityGroupId === content.entityGroupId,
-          );
-          console.log('FOUND ENTITY GROUP: ', foundEntityGroup);
-          if (!foundEntityGroup) return;
-
-          const groupChildren = oldData.contents.filter(
-            (c) => c.entityGroupId === content.entityGroupId,
-          );
-
-          const childrenToDeleteIds: number[] = [];
-          if (deleteType === 'deleteChildren') {
-            const queue = [...groupChildren];
-            while (queue.length > 0) {
-              const element = queue.pop();
-              if (element?.id) {
-                childrenToDeleteIds.push(element.id);
-                if (element.contentEntityGroupId) {
-                  queue.push(
-                    ...oldData.contents.filter(
-                      (c) => c.entityGroupId === element.contentEntityGroupId,
-                    ),
-                  );
-                }
-              }
-            }
-          }
-
-          const contents: PbEntityGroupContent[] = [];
-
-          oldData.contents.forEach((c) => {
-            if (deleteType === 'deleteChildren' && childrenToDeleteIds.includes(c.id ?? 0)) return;
-
-            const position = c.position ?? 0;
-            if (c.entityGroupId === content.entityGroupId) {
-              contents.push({
-                ...c,
-                entityGroupId: foundEntityGroup.entityGroupId,
-                position: position - 1 + content.position,
-              });
-            } else if (
-              position > content.position &&
-              foundEntityGroup.entityGroupId === c.entityGroupId
-            ) {
-              contents.push({
-                ...c,
-                position:
-                  position - 1 + (deleteType === 'deleteChildren' ? 0 : groupChildren.length),
-              });
-            } else if (content.entityGroupId !== c.contentEntityGroupId) {
-              contents.push(c);
-            }
-          });
-
-          console.log('NEW CONTENTS: ', contents);
-
-          return { ...oldData, contents: sortGetMenuItemContent(contents) };
-        },
-      );
     },
-    [content.entityGroupId, content.position, menuItemId],
+    [content.entityGroupId, deleteEntityGroup, menuItemId],
   );
 
   const handleEditGroup = useCallback(
@@ -186,12 +127,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   );
 
   const handleRemoveGroupButKeepEntities = useCallback(
-    () => handleRemoveGroup('keepChildren'),
+    () => handleRemoveGroup(PbDeleteEntityGroupContentAction.DELETE_EGC_ACTION_MOVE_CHILDREN),
     [handleRemoveGroup],
   );
 
   const handleRemoveGroupAndItsEntities = useCallback(
-    () => handleRemoveGroup('deleteChildren'),
+    () => handleRemoveGroup(PbDeleteEntityGroupContentAction.DELETE_EGC_ACTION_DELETE_CHILDREN),
     [handleRemoveGroup],
   );
 
@@ -201,7 +142,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       highlighted={false}
       fullWidth={!isTopLevelGroup}
       noMargin={!isTopLevelGroup}
-      semiTransparent={isDragging || isPending}
+      semiTransparent={isDragging || isPending || isPendingDelete}
       hasShadow={
         editMode ||
         entityGroupObject[content.entityGroupId]?.style ===
@@ -252,6 +193,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
             </Row>
           )}
         </Row>
+        <ErrorText error={errorDelete} />
         {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
       </Col>
       {children}
