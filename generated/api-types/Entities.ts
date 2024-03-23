@@ -48,23 +48,6 @@ export class Entities<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description deletes an entity group
-   *
-   * @tags Entities
-   * @name EntitiesDeleteEntityGroup
-   * @summary Delete entity group
-   * @request DELETE:/entities/groups/{entityGroupId}
-   * @response `200` `object` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  entitiesDeleteEntityGroup = (entityGroupId: number, params: RequestParams = {}) =>
-    this.http.request<object, RpcStatus>({
-      path: `/entities/groups/${entityGroupId}`,
-      method: 'DELETE',
-      format: 'json',
-      ...params,
-    });
-  /**
    * @description updates entity group properties
    *
    * @tags Entities
@@ -173,6 +156,30 @@ export class Entities<SecurityDataType = unknown> {
       method: 'PATCH',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description deletes an entity group
+   *
+   * @tags Entities
+   * @name EntitiesDeleteEntityGroup
+   * @summary Delete entity group
+   * @request DELETE:/entities/groups/{entityGroupId}/delete_type/{deleteType}
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  entitiesDeleteEntityGroup = (
+    entityGroupId: number,
+    deleteType:
+      | 'DELETE_EGC_ACTION_UNKNOWN'
+      | 'DELETE_EGC_ACTION_DELETE_CHILDREN'
+      | 'DELETE_EGC_ACTION_MOVE_CHILDREN',
+    params: RequestParams = {},
+  ) =>
+    this.http.request<object, RpcStatus>({
+      path: `/entities/groups/${entityGroupId}/delete_type/${deleteType}`,
+      method: 'DELETE',
       format: 'json',
       ...params,
     });

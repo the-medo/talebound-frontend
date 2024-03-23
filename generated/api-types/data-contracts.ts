@@ -132,6 +132,13 @@ export interface PbCreateWorldResponse {
   module?: PbViewModule;
 }
 
+/** @default "DELETE_EGC_ACTION_UNKNOWN" */
+export enum PbDeleteEntityGroupContentAction {
+  DELETE_EGC_ACTION_UNKNOWN = 'DELETE_EGC_ACTION_UNKNOWN',
+  DELETE_EGC_ACTION_DELETE_CHILDREN = 'DELETE_EGC_ACTION_DELETE_CHILDREN',
+  DELETE_EGC_ACTION_MOVE_CHILDREN = 'DELETE_EGC_ACTION_MOVE_CHILDREN',
+}
+
 export interface PbDeleteEvaluationVoteResponse {
   success?: boolean;
   message?: string;
