@@ -55,63 +55,59 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
       const getId = (egc: PbEntityGroupContent) =>
         egc.contentEntityId ? `e${egc.contentEntityId}` : `g${egc.contentEntityGroupId}`;
 
-      menuItemContent?.contents?.forEach((c) => {
-        if (!c.id) return;
-        console.log('C ... ', c);
-        const id = getId(c);
-        if (id) {
-          if (!obj[id]) {
-            if (c.contentEntityId) {
-              obj[id] = {
-                id: c.id,
-                type: 'ENTITY',
-                hierarchyId: '',
-                entityId: c.contentEntityId,
-                position: c.position ?? 1,
-              };
-            } else if (c.contentEntityGroupId) {
-              obj[id] = {
-                id: c.id,
-                type: 'GROUP',
-                hierarchyId: '',
-                entityGroupId: c.contentEntityGroupId,
-                position: c.position ?? 1,
-                children: [],
-              };
-            }
-          } else {
-            const asdf = obj[id];
-            console.log('HERE!', asdf);
-            if (asdf?.type === 'GROUP') {
-              asdf.entityGroupId = c.entityGroupId ?? 0;
-            }
-          }
-          const thisObj = obj[id]!;
-          if (c.entityGroupId) {
-            const isTopLevelGroup = menuItemContent.mainGroupId === c.entityGroupId;
-            const parentId = `g${c.entityGroupId}`;
-            let parent = obj[parentId];
-            if (!parent) {
-              obj[parentId] = {
-                id: isTopLevelGroup ? 0 : c.id,
-                type: 'GROUP',
-                hierarchyId: parentId,
-                entityGroupId: isTopLevelGroup ? 0 : c.entityGroupId,
-                position: isTopLevelGroup ? 1 : c.position ?? 1,
-                children: [thisObj],
-              };
-              parent = obj[parentId];
-            } else if (parent.type === 'GROUP') {
-              parent.children.push(thisObj);
-            }
-            thisObj.hierarchyId = `${parent?.hierarchyId}-${id}`;
-          }
-        }
-      });
-      const mainHierarchy = obj[`g${menuItemContent.mainGroupId!}`];
-      console.log('obj', obj);
-      console.log('mainHierarchy', mainHierarchy);
+      const topLevelId = menuItemContent.mainGroupId;
+      const topLevelHierarchyId = `g${topLevelId}`;
+      obj[topLevelHierarchyId] = {
+        id: 0,
+        type: 'GROUP',
+        hierarchyId: topLevelHierarchyId,
+        entityGroupId: 0,
+        position: 1,
+        children: [],
+      };
 
+      const queue = [topLevelId];
+      while (queue.length > 0) {
+        const groupId = queue.shift();
+        if (!groupId) break;
+
+        const group = obj[`g${groupId}`];
+        if (!group) break;
+
+        const groupChildren =
+          menuItemContent?.contents?.filter((c) => c.entityGroupId === groupId) ?? [];
+        groupChildren.forEach((c) => {
+          if (!c.id) return;
+          const cId = getId(c);
+          const cHierarchyId = `${group.hierarchyId}-${cId}`;
+          if (c.contentEntityId) {
+            obj[cId] = {
+              id: c.id,
+              type: 'ENTITY',
+              hierarchyId: cHierarchyId,
+              entityId: c.contentEntityId,
+              position: c.position ?? 1,
+            };
+          } else if (c.contentEntityGroupId) {
+            obj[cId] = {
+              id: c.id,
+              type: 'GROUP',
+              hierarchyId: cHierarchyId,
+              entityGroupId: c.contentEntityGroupId,
+              position: c.position ?? 1,
+              children: [],
+            };
+            queue.push(c.contentEntityGroupId);
+          }
+
+          const thisObj = obj[cId];
+          if (group.type === 'GROUP' && thisObj) {
+            group.children.push(thisObj);
+          }
+        });
+      }
+
+      const mainHierarchy = obj[topLevelHierarchyId];
       if (mainHierarchy?.type === 'GROUP') rsp.hierarchy = mainHierarchy;
 
       menuItemContent.groups?.forEach((g) => {

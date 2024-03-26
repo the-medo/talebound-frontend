@@ -84,7 +84,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
         }
       >
         {content.children
-          .sort((a, b) => a.position - b.position)
+          .toSorted((a, b) => a.position - b.position)
           .map((c) => (
             <MenuItemContentElement
               key={c.id}
@@ -154,7 +154,8 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           <Row gap="sm">
             {dragHandle}
             <TitleH2 marginBottom="none">
-              {entityGroupObject[content.entityGroupId]?.name ?? `Group ${content.entityGroupId}`}
+              {entityGroupObject[content.entityGroupId]?.name ?? `Group ${content.entityGroupId}`} :{' '}
+              {content.hierarchyId}
             </TitleH2>
           </Row>
           {editMode && (
@@ -172,7 +173,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
                 <>
                   <Button
                     icon
-                    onClick={handleRemoveGroupButKeepEntities}
+                    onClick={handleRemoveGroupAndItsEntities}
                     size="sm"
                     color="dangerOutline"
                     title="Remove with entities"
@@ -181,7 +182,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
                   </Button>
                   <Button
                     icon
-                    onClick={handleRemoveGroupAndItsEntities}
+                    onClick={handleRemoveGroupButKeepEntities}
                     size="sm"
                     color="dangerOutline"
                     title="Remove only group, entities will go to parent"

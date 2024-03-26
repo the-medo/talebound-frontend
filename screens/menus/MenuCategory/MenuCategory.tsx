@@ -118,7 +118,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
       const eParentId = getParentId(e, 'end');
 
       let ePosition = e.type === 'GROUP' ? 1 : e.position + 1;
-      if (sParentId === eParentId && s.position <= e.position) ePosition--;
+      if (sParentId === eParentId && e.type !== 'GROUP' && s.position <= e.position) ePosition--;
 
       if (e.dropType === DropType.NEW_GROUP) {
         dispatch(

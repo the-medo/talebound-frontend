@@ -2,8 +2,8 @@ import React from 'react';
 import { Row } from '../../../components/Flex/Flex';
 import { styled } from '../../../styles/stitches.config';
 import { useDroppable } from '@dnd-kit/core';
-import { EntityGroupContentHierarchy } from '../../../api/menus/useGetMenuItemContent';
 import { DropType } from './menuCategoryUtils';
+import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 
 export const MoveDropArea = styled(Row, {
   backgroundColor: '$white',
