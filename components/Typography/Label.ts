@@ -7,4 +7,12 @@ export const Label = styled('label', {
   textTransform: 'uppercase',
   width: 'min(75%, 20rem)',
   marginBottom: '0',
+
+  variants: {
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+    },
+  },
 });

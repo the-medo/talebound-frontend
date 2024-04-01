@@ -3,7 +3,7 @@ import Modal from '../../../components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { setNewEntityGroupData } from './menuCategorySlice';
-import EntityGroupForm from './EntityGroupForm';
+import EntityGroupForm from './EntityGroupForm/EntityGroupForm';
 import {
   CreateEntityGroupParams,
   useCreateEntityGroup,

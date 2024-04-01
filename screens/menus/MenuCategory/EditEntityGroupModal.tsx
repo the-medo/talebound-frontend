@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import { setEditEntityGroupId } from './menuCategorySlice';
 import { EntityGroupObject } from '../../../hooks/useGetMenuItemContentHierarchy';
-import EntityGroupForm from './EntityGroupForm';
+import EntityGroupForm from './EntityGroupForm/EntityGroupForm';
 import {
   UpdateEntityGroupParams,
   useUpdateEntityGroup,

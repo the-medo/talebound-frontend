@@ -3,38 +3,19 @@ import {
   PbEntityGroup,
   PbEntityGroupDirection,
   PbEntityGroupStyle,
-} from '../../../generated/api-types/data-contracts';
-import { useInput } from '../../../hooks/useInput';
-import Textarea from '../../../components/Textarea/Textarea';
-import Input from '../../../components/Input/Input';
-import { Col, Row } from '../../../components/Flex/Flex';
-import { Button } from '../../../components/Button/Button';
-import Select from '../../../components/Select/Select';
-import { SelectOptions } from '../../../components-radix-ui/Select/selectLib';
-import { UpdateEntityGroupParams } from '../../../api/entities/useUpdateEntityGroup';
-import ErrorText from '../../../components/ErrorText/ErrorText';
-import { HelperType } from '../../../utils/form/helperTypes';
+} from '../../../../generated/api-types/data-contracts';
+import { useInput } from '../../../../hooks/useInput';
+import Textarea from '../../../../components/Textarea/Textarea';
+import Input from '../../../../components/Input/Input';
+import { Col, Row } from '../../../../components/Flex/Flex';
+import { Button } from '../../../../components/Button/Button';
+import { UpdateEntityGroupParams } from '../../../../api/entities/useUpdateEntityGroup';
+import ErrorText from '../../../../components/ErrorText/ErrorText';
+import { HelperType } from '../../../../utils/form/helperTypes';
+import GroupStyleSelector from './GroupStyleSelector';
+import ContentDirectionSelector from './ContentDirectionSelector';
 
 const textareaPlaceholder = 'Description of the group. What information does this post contain?';
-
-const optionsStyle: SelectOptions = {
-  type: 'options',
-  options: [
-    { value: PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED, label: 'Framed' },
-    { value: PbEntityGroupStyle.ENTITY_GROUP_STYLE_NOT_FRAMED, label: 'Not-framed' },
-  ],
-};
-
-const optionsDirection: SelectOptions = {
-  type: 'options',
-  options: [
-    {
-      value: PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_HORIZONTAL,
-      label: 'Horizontal',
-    },
-    { value: PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL, label: 'Vertical' },
-  ],
-};
 
 interface EntityGroupFormProps {
   entityGroup?: PbEntityGroup;
@@ -62,10 +43,10 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
     entityGroup?.description ?? '',
   );
 
-  const [style, setStyle] = useState<string>(
+  const [style, setStyle] = useState<PbEntityGroupStyle>(
     entityGroup?.style ?? PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED,
   );
-  const [direction, setDirection] = useState<string>(
+  const [direction, setDirection] = useState<PbEntityGroupDirection>(
     entityGroup?.direction ?? PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL,
   );
 
@@ -110,32 +91,12 @@ const EntityGroupForm: React.FC<EntityGroupFormProps> = ({
               onChange={onChange}
             />
           )}
-          {canChangeStyle && (
-            <Select
-              id="style"
-              label="Style of group"
-              noHelper={false}
-              helperText="You will need to turn off edit mode to see this change."
-              helperType={HelperType.Info}
-              fullWidth={true}
-              onValueChange={setStyle}
-              value={style}
-              options={optionsStyle}
-            />
-          )}
-          {canChangeDirection && (
-            <Select
-              id="direction"
-              label="Direction of items"
-              noHelper={false}
-              helperText="You will need to turn off edit mode to see this change."
-              helperType={HelperType.Info}
-              fullWidth={true}
-              onValueChange={setDirection}
-              value={direction}
-              options={optionsDirection}
-            />
-          )}
+          <Row gap="md" alignSelf="start">
+            {canChangeStyle && <GroupStyleSelector value={style} onValueChange={setStyle} />}
+            {canChangeDirection && (
+              <ContentDirectionSelector value={direction} onValueChange={setDirection} />
+            )}
+          </Row>
           <Row alignSelf="end">
             <Button onClick={submitEntityGroupHandler} loading={pending}>
               {entityGroup ? 'Update' : 'Create'}
