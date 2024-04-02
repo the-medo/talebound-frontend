@@ -44,6 +44,11 @@ const StyledSection = styled('section', {
         margin: 0,
       },
     },
+    noPadding: {
+      true: {
+        padding: 0,
+      },
+    },
     highlighted: {
       true: {
         outline: '2px solid $primary',

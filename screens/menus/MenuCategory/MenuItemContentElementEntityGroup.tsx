@@ -136,67 +136,73 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
     [handleRemoveGroup],
   );
 
+  const entityGroupName = entityGroupObject[content.entityGroupId]?.name ?? '';
+  const entityGroupStyle = entityGroupObject[content.entityGroupId]?.style;
+  const displayGroupName = editMode || entityGroupName.length > 0;
+
   return (
     <ContentSection
       direction={'column'}
       highlighted={false}
       fullWidth={!isTopLevelGroup}
-      noMargin={!isTopLevelGroup}
-      semiTransparent={isDragging || isPending || isPendingDelete}
-      hasShadow={
-        editMode ||
-        entityGroupObject[content.entityGroupId]?.style ===
-          PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED
+      noMargin={
+        !isTopLevelGroup ||
+        (!editMode && entityGroupStyle === PbEntityGroupStyle.ENTITY_GROUP_STYLE_NOT_FRAMED)
       }
+      noPadding={!editMode && entityGroupStyle === PbEntityGroupStyle.ENTITY_GROUP_STYLE_NOT_FRAMED}
+      semiTransparent={isDragging || isPending || isPendingDelete}
+      hasShadow={editMode || entityGroupStyle === PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED}
     >
-      <Col gap="sm" fullWidth ref={setDroppableRef}>
-        <Row justifyContent="between" semiTransparent={isDragging}>
-          <Row gap="sm">
-            {dragHandle}
-            <TitleH2 marginBottom="none">
-              {entityGroupObject[content.entityGroupId]?.name ?? `Group ${content.entityGroupId}`} :{' '}
-              {content.hierarchyId}
-            </TitleH2>
-          </Row>
-          {editMode && (
+      {displayGroupName && (
+        <Col gap="sm" fullWidth ref={setDroppableRef}>
+          <Row justifyContent="between" semiTransparent={isDragging}>
             <Row gap="sm">
-              <Button
-                icon
-                onClick={handleEditGroup}
-                size="sm"
-                color="primaryOutline"
-                title="Edit group"
-              >
-                <MdEdit />
-              </Button>
-              {!isTopLevelGroup && (
-                <>
-                  <Button
-                    icon
-                    onClick={handleRemoveGroupAndItsEntities}
-                    size="sm"
-                    color="dangerOutline"
-                    title="Remove with entities"
-                  >
-                    <MdPlaylistRemove />
-                  </Button>
-                  <Button
-                    icon
-                    onClick={handleRemoveGroupButKeepEntities}
-                    size="sm"
-                    color="dangerOutline"
-                    title="Remove only group, entities will go to parent"
-                  >
-                    <MdClose />
-                  </Button>
-                </>
-              )}
+              {dragHandle}
+              <TitleH2 marginBottom="none">
+                {editMode && entityGroupName.length === 0 ? <i>(Empty title)</i> : null}
+                {entityGroupName}
+              </TitleH2>
             </Row>
-          )}
-        </Row>
-        <ErrorText error={errorDelete} />
-        {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
-      </Col>
+            {editMode && (
+              <Row gap="sm">
+                <Button
+                  icon
+                  onClick={handleEditGroup}
+                  size="sm"
+                  color="primaryOutline"
+                  title="Edit group"
+                >
+                  <MdEdit />
+                </Button>
+                {!isTopLevelGroup && (
+                  <>
+                    <Button
+                      icon
+                      onClick={handleRemoveGroupAndItsEntities}
+                      size="sm"
+                      color="dangerOutline"
+                      title="Remove with entities"
+                    >
+                      <MdPlaylistRemove />
+                    </Button>
+                    <Button
+                      icon
+                      onClick={handleRemoveGroupButKeepEntities}
+                      size="sm"
+                      color="dangerOutline"
+                      title="Remove only group, entities will go to parent"
+                    >
+                      <MdClose />
+                    </Button>
+                  </>
+                )}
+              </Row>
+            )}
+          </Row>
+          <ErrorText error={errorDelete} />
+          {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
+        </Col>
+      )}
       {children}
     </ContentSection>
   );
