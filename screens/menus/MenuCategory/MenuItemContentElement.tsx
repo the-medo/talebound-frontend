@@ -4,6 +4,7 @@ import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGro
 import {
   EntityGroupContentHierarchy,
   EntityGroupObject,
+  getEntityParentGroupId,
 } from '../../../hooks/useGetMenuItemContentHierarchy';
 
 interface MenuItemContentElementProps {
@@ -19,7 +20,13 @@ const MenuItemContentElement: React.FC<MenuItemContentElementProps> = ({
 }) => {
   switch (content.type) {
     case 'ENTITY':
-      return <MenuItemContentElementEntity showHandles={showHandles} content={content} />;
+      return (
+        <MenuItemContentElementEntity
+          showHandles={showHandles}
+          content={content}
+          parentGroup={entityGroupObject[getEntityParentGroupId(content)]}
+        />
+      );
     case 'GROUP':
       return (
         <MenuItemContentElementEntityGroup

@@ -19,6 +19,15 @@ export type EntityGroupContentHierarchyEntity = {
   position: number;
 };
 
+export const getEntityParentGroupId = (e: EntityGroupContentHierarchyEntity) => {
+  const lastGroupId = e.hierarchyId
+    .split('-')
+    .findLast((s) => s[0] === 'g')
+    ?.slice(1);
+  if (lastGroupId) return parseInt(lastGroupId);
+  return -1;
+};
+
 export type EntityGroupContentHierarchy =
   | EntityGroupContentHierarchyEntityGroup
   | EntityGroupContentHierarchyEntity;

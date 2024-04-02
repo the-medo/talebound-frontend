@@ -3,6 +3,7 @@ import { paddingStyles, styled } from '../../styles/stitches.config';
 export const Flex = styled('div', {
   display: 'flex',
   position: 'relative',
+  transition: '0.3s all',
 
   variants: {
     ...paddingStyles,
@@ -22,6 +23,14 @@ export const Flex = styled('div', {
     fullWidth: {
       true: {
         width: '100%',
+      },
+    },
+
+    hoverHighlight: {
+      true: {
+        '&:hover': {
+          backgroundColor: '#f5f5f5',
+        },
       },
     },
 

@@ -12,20 +12,31 @@ import { Button } from '../../../components/Button/Button';
 import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
 import { queryClient } from '../../../pages/_app';
 import { inferData } from 'react-query-kit';
-import { PbEntityGroupContent } from '../../../generated/api-types/data-contracts';
+import {
+  PbEntityGroup,
+  PbEntityGroupContent,
+  PbEntityGroupDirection,
+  PbEntityGroupStyle,
+} from '../../../generated/api-types/data-contracts';
+import EntityComponent from './EntityComponent/EntityComponent';
 
 interface MenuItemContentElementEntityProps {
   showHandles: boolean;
   content: EntityGroupContentHierarchyEntity;
+  parentGroup?: PbEntityGroup;
 }
 
 const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> = ({
   content,
   showHandles,
+  parentGroup,
 }) => {
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
-  const menuId = useSelector((state: ReduxState) => state.menuCategory.menuId);
   const menuItemId = useSelector((state: ReduxState) => state.menuCategory.menuItemId);
+
+  const groupStyle = parentGroup?.style ?? PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED;
+  const groupDirection =
+    parentGroup?.direction ?? PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL;
 
   const {
     over,
@@ -80,9 +91,18 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
         return { ...oldData, contents };
       },
     );
-  }, [content.entityId, menuId, menuItemId]);
+  }, [content.entityId, menuItemId]);
 
   const isOver = isOverCheck(content.hierarchyId, over?.id);
+
+  if (!editMode)
+    return (
+      <EntityComponent
+        entityId={content.entityId}
+        groupStyle={groupStyle}
+        groupDirection={groupDirection}
+      />
+    );
 
   return (
     <>
@@ -90,11 +110,14 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
         <Row justifyContent="between" semiTransparent={isDragging}>
           <Row>
             {editMode && showHandles && (
-              <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
-                <MdDragIndicator size={20} />
-              </DragHandle>
-            )}
-            Entity {content.entityId}
+              <>
+                <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
+                  <MdDragIndicator size={20} />
+                </DragHandle>{' '}
+                (#{content.entityId})
+              </>
+            )}{' '}
+            Entity
           </Row>
           {editMode && (
             <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">
