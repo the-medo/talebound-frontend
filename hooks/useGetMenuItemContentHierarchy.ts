@@ -64,13 +64,14 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
       const getId = (egc: PbEntityGroupContent) =>
         egc.contentEntityId ? `e${egc.contentEntityId}` : `g${egc.contentEntityGroupId}`;
 
-      const topLevelId = menuItemContent.mainGroupId;
+      const topLevelId = menuItemContent.mainGroupId ?? 0;
+
       const topLevelHierarchyId = `g${topLevelId}`;
       obj[topLevelHierarchyId] = {
         id: 0,
         type: 'GROUP',
         hierarchyId: topLevelHierarchyId,
-        entityGroupId: 0,
+        entityGroupId: topLevelId,
         position: 1,
         children: [],
       };

@@ -33,7 +33,7 @@ const EditEntityGroupModal: React.FC<EditEntityGroupModalProps> = ({
     error: errorUpdate,
   } = useUpdateEntityGroup();
 
-  const entityGroup = editEntityGroupId ? entityGroups[editEntityGroupId] : undefined;
+  const entityGroup = editEntityGroupId !== undefined ? entityGroups[editEntityGroupId] : undefined;
 
   const closeModal = useCallback(() => dispatch(setEditEntityGroupId(undefined)), [dispatch]);
 

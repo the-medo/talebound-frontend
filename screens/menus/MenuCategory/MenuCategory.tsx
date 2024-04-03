@@ -193,31 +193,30 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             )}
           </Col>
 
-          <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-            <ContentSection highlighted={descriptionPostId === displayPostId}>
+          <Col gap="sm" css={{ flexGrow: 0, flexBasis: '600px' }}>
+            {/*<ContentSection highlighted={descriptionPostId === displayPostId}>
               <Row gap="md" fullWidth justifyContent="between">
                 <Link href={linkPrefix}>
                   <TitleH2>{menuItem.name}</TitleH2>
                 </Link>
-
-                {canEdit && (
-                  <Row gap="md">
-                    <Button
-                      color={editMode ? 'primaryFill' : 'primaryOutline'}
-                      onClick={toggleEditMode}
-                    >
-                      <MdEdit />
-                      Edit mode
-                    </Button>
-                  </Row>
-                )}
               </Row>
-            </ContentSection>
+            </ContentSection>*/}
             <MenuCategoryContent
               menuItemId={menuItem?.id ?? 0}
               isPending={isPendingUpdateGroupContent}
             />
             <ErrorText error={error} />
+            {canEdit && (
+              <Row gap="md" fullWidth justifyContent="center">
+                <Button
+                  color={editMode ? 'primaryFill' : 'primaryOutline'}
+                  onClick={toggleEditMode}
+                >
+                  <MdEdit />
+                  Edit mode
+                </Button>
+              </Row>
+            )}
           </Col>
         </Row>
       </DndContext>
