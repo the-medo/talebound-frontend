@@ -12,15 +12,19 @@ import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-ki
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../store';
 import {
+  MenuCategoryDraggingData,
   setDraggingData,
-  setMenuData,
   setEditMode,
+  setMenuData,
   setNewEntityGroupData,
 } from './menuCategorySlice';
 import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 import { MdEdit } from 'react-icons/md';
 import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
+import PostList from '../../../component-sections/Post/PostList';
+import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
+import { EntityTableType } from '../../../component-sections/Post/PostsTable';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -43,6 +47,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 }) => {
   const dispatch = useDispatch();
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
+  const moduleId = useUrlModuleId();
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const {
@@ -78,7 +83,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const handleDragStart = useCallback(
     (event: DragStartEvent) => {
       const { active } = event;
-      dispatch(setDraggingData(active.data.current as EntityGroupContentHierarchy));
+      dispatch(setDraggingData(active.data.current as MenuCategoryDraggingData));
       console.log('START!', event.active.rect.current.initial, active);
     },
     [dispatch],
@@ -153,58 +158,71 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 
   return (
     <>
-      <Row gap="md" alignItems="start" wrap>
-        <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          {canEdit && descriptionPostId === 0 && (
-            <ContentSection flexWrap="wrap" direction="column" cornerImage={worldImageThumbnail}>
-              <Button onClick={createDescriptionPostHandler}>Create description post</Button>
-            </ContentSection>
-          )}
-          {displayPostId === 0 && <TitleH2>404 - not found</TitleH2>}
-          {displayPostId > 0 && (
-            <Suspense fallback={<LoadingText />}>
-              <Post
-                customTitle={descriptionPostId === displayPostId ? menuItem.name : undefined}
-                postId={displayPostId}
-                canEdit={canEdit}
-              />
-            </Suspense>
-          )}
-        </Col>
-
-        <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ContentSection highlighted={descriptionPostId === displayPostId}>
-            <Row gap="md" fullWidth justifyContent="between">
-              <Link href={linkPrefix}>
-                <TitleH2>{menuItem.name}</TitleH2>
-              </Link>
-
-              {canEdit && (
-                <Row gap="md">
-                  <Button
-                    color={editMode ? 'primaryFill' : 'primaryOutline'}
-                    onClick={toggleEditMode}
+      <DndContext
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        collisionDetection={pointerWithin}
+      >
+        <Row gap="md" alignItems="start" wrap>
+          <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
+            {editMode && (
+              <>
+                <PostList tableType={EntityTableType.DRAG} canEdit={canEdit} moduleId={moduleId} />
+              </>
+            )}
+            {!editMode && (
+              <>
+                {canEdit && descriptionPostId === 0 && (
+                  <ContentSection
+                    flexWrap="wrap"
+                    direction="column"
+                    cornerImage={worldImageThumbnail}
                   >
-                    <MdEdit />
-                    Edit mode
-                  </Button>
-                </Row>
-              )}
-            </Row>
-          </ContentSection>
-          <DndContext
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            collisionDetection={pointerWithin}
-          >
+                    <Button onClick={createDescriptionPostHandler}>Create description post</Button>
+                  </ContentSection>
+                )}
+                {displayPostId === 0 && <TitleH2>404 - not found</TitleH2>}
+                {displayPostId > 0 && (
+                  <Suspense fallback={<LoadingText />}>
+                    <Post
+                      customTitle={descriptionPostId === displayPostId ? menuItem.name : undefined}
+                      postId={displayPostId}
+                      canEdit={canEdit}
+                    />
+                  </Suspense>
+                )}
+              </>
+            )}
+          </Col>
+
+          <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
+            <ContentSection highlighted={descriptionPostId === displayPostId}>
+              <Row gap="md" fullWidth justifyContent="between">
+                <Link href={linkPrefix}>
+                  <TitleH2>{menuItem.name}</TitleH2>
+                </Link>
+
+                {canEdit && (
+                  <Row gap="md">
+                    <Button
+                      color={editMode ? 'primaryFill' : 'primaryOutline'}
+                      onClick={toggleEditMode}
+                    >
+                      <MdEdit />
+                      Edit mode
+                    </Button>
+                  </Row>
+                )}
+              </Row>
+            </ContentSection>
             <MenuCategoryContent
               menuItemId={menuItem?.id ?? 0}
               isPending={isPendingUpdateGroupContent}
             />
-          </DndContext>
-          <ErrorText error={error} />
-        </Col>
-      </Row>
+            <ErrorText error={error} />
+          </Col>
+        </Row>
+      </DndContext>
     </>
   );
 };

@@ -1,17 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { PAGE_SIZE_POSTS, useGetPosts } from '../../api/posts/useGetPosts';
-import PostsTable from './PostsTable';
+import PostsTable, { EntityTableType } from './PostsTable';
 import { selectPostsByIds } from '../../adapters/PostAdapter';
 import { ReduxState } from '../../store';
 import { PbPost } from '../../generated/api-types/data-contracts';
 import { useSelector } from 'react-redux';
 
 interface PostListProps {
+  tableType?: EntityTableType;
   canEdit?: boolean;
   moduleId?: number;
 }
 
-const PostList: React.FC<PostListProps> = ({ canEdit, moduleId }) => {
+const PostList: React.FC<PostListProps> = ({
+  tableType = EntityTableType.LIST,
+  canEdit,
+  moduleId,
+}) => {
   const [openedPage, setOpenedPage] = useState(1);
 
   const {
@@ -39,6 +44,7 @@ const PostList: React.FC<PostListProps> = ({ canEdit, moduleId }) => {
       postsData.length > 0 &&
       postsData.length <= PAGE_SIZE_POSTS * (openedPage - 1)
     ) {
+      console.log('Fetching page...', postsData.length);
       fetchNextPage();
     }
   }, [hasNextPage, postsData.length, openedPage, fetchNextPage]);
@@ -53,6 +59,7 @@ const PostList: React.FC<PostListProps> = ({ canEdit, moduleId }) => {
 
   return (
     <PostsTable
+      tableType={tableType}
       totalCount={totalPostCount}
       loading={isFetchingPosts}
       data={postsData}

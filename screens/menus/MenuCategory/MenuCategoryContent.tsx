@@ -7,6 +7,7 @@ import MenuItemContentElementEntityGroup from './MenuItemContentElementEntityGro
 import { useGetMenuItemContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 import EditEntityGroupModal from './EditEntityGroupModal';
 import CreateEntityGroupModal from './CreateEntityGroupModal';
+import AvatarById from '../../../components/AvatarById/AvatarById';
 
 interface MenuCategoryContentProps {
   menuItemId: number;
@@ -38,7 +39,12 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({
       )}
       {editMode && (
         <DragOverlay>
-          {draggingData ? (
+          {draggingData?.type === 'NEW_ENTITY' && (
+            <>
+              <AvatarById imageId={draggingData.imageId} />
+            </>
+          )}
+          {(draggingData?.type === 'ENTITY' || draggingData?.type === 'GROUP') && (
             <div style={{ width: '500px', opacity: 0.5 }}>
               <MenuItemContentElement
                 showHandles={false}
@@ -46,7 +52,7 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({
                 entityGroupObject={menuItemContent.entityGroups}
               />
             </div>
-          ) : null}
+          )}
         </DragOverlay>
       )}
       <EditEntityGroupModal

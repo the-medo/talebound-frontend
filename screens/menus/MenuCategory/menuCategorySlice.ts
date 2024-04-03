@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { PbEntityType } from '../../../generated/api-types/data-contracts';
 
 export type NewEntityGroupData =
   | {
@@ -11,9 +12,21 @@ export type NewEntityGroupData =
     }
   | undefined;
 
+export type NewEntityDraggingData = {
+  type: 'NEW_ENTITY';
+  entityType: PbEntityType;
+  entityId: number;
+  imageId?: number;
+};
+
+export type MenuCategoryDraggingData =
+  | EntityGroupContentHierarchy
+  | NewEntityDraggingData
+  | undefined;
+
 export interface MenuCategoryState {
   editMode: boolean;
-  draggingData: EntityGroupContentHierarchy | undefined;
+  draggingData: MenuCategoryDraggingData;
   menuId: number;
   menuItemId: number;
   editEntityGroupId: number | undefined;

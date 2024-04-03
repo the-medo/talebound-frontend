@@ -1,19 +1,25 @@
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import { ColumnType } from 'antd/es/table';
-import Avatar from '../../components/Avatar/Avatar';
 import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdEdit, MdOpenInNew } from 'react-icons/md';
-import { PbPost } from '../../generated/api-types/data-contracts';
+import { PbEntityType, PbPost } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
 import PostFormModal from './PostFormModal';
 import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPosts';
 import { formatDate } from '../../utils/functions/formatDate';
 import PostDetailModal from './PostDetailModal';
 import AvatarById from '../../components/AvatarById/AvatarById';
+import EntityTableDragHandle from '../../screens/menus/MenuCategory/EntityComponent/EntityTableDragHandle';
+
+export enum EntityTableType {
+  LIST = 0,
+  DRAG = 1,
+}
 
 interface PostsTableProps {
+  tableType?: EntityTableType;
   data: PbPost[];
   totalCount: number;
   canEdit?: boolean;
@@ -24,6 +30,7 @@ interface PostsTableProps {
 }
 
 const PostsTable: React.FC<PostsTableProps> = ({
+  tableType = EntityTableType.LIST,
   data,
   totalCount,
   canEdit,
@@ -48,14 +55,14 @@ const PostsTable: React.FC<PostsTableProps> = ({
 
   const rowSelection: TableProps<PbPost>['rowSelection'] = useMemo(
     () =>
-      canEdit || isSelectionTable
+      (canEdit || isSelectionTable) && tableType === EntityTableType.LIST
         ? {
             selectedRowKeys,
             onChange: onSelectChange,
             type: isSelectionTable ? (isSelectionMultiple ? 'checkbox' : 'radio') : 'checkbox',
           }
         : undefined,
-    [canEdit, selectedRowKeys, onSelectChange, isSelectionTable, isSelectionMultiple],
+    [tableType, canEdit, selectedRowKeys, onSelectChange, isSelectionTable, isSelectionMultiple],
   );
 
   const openEditModal = useCallback((record: PbPost) => setUpdatePost(record), []);
@@ -63,6 +70,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
   const actionButtons = useCallback(
     (record: PbPost) => {
       const updateHandler = () => openEditModal(record);
+
+      if (tableType === EntityTableType.DRAG) return null;
 
       return (
         <Row gap="xs">
@@ -72,7 +81,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
         </Row>
       );
     },
-    [openEditModal],
+    [openEditModal, tableType],
   );
 
   const openPostModalButtons = useCallback((record: PbPost) => {
@@ -86,6 +95,50 @@ const PostsTable: React.FC<PostsTableProps> = ({
   }, []);
 
   const columns: ColumnType<PbPost>[] = useMemo(() => {
+    if (tableType === EntityTableType.DRAG) {
+      const cols: ColumnType<PbPost>[] = [
+        {
+          title: '',
+          key: 'imageThumbnailId',
+          dataIndex: 'imageThumbnailId',
+          render: (value: number) => (
+            <Suspense fallback={null}>
+              <AvatarById size="md" imageId={value} />
+            </Suspense>
+          ),
+          width: '40px',
+        },
+        {
+          title: 'Title',
+          key: 'title',
+          dataIndex: 'title',
+          render: (value: string) => <b>{value}</b>,
+          sorter: (a, b) => (a.title ?? '').localeCompare(b.title ?? ''),
+        },
+        {
+          title: '',
+          key: 'action-buttons',
+          render: (_, record) => openPostModalButtons(record),
+          width: '40px',
+        },
+        {
+          title: '',
+          key: 'drag-handle',
+          render: (_, record) =>
+            record.id ? (
+              <EntityTableDragHandle
+                entityType={PbEntityType.ENTITY_TYPE_POST}
+                entityId={record.id}
+                imageId={record.imageThumbnailId}
+              />
+            ) : null,
+          width: '40px',
+        },
+      ];
+
+      return cols;
+    }
+
     const cols: ColumnType<PbPost>[] = [
       {
         title: '',
@@ -147,7 +200,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
     });
 
     return cols;
-  }, [canEdit, actionButtons, openPostModalButtons]);
+  }, [tableType, canEdit, actionButtons, openPostModalButtons]);
 
   const onRow: TableProps<PbPost>['onRow'] = useCallback(
     (record: PbPost) => {
