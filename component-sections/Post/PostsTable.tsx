@@ -71,8 +71,6 @@ const PostsTable: React.FC<PostsTableProps> = ({
     (record: PbPost) => {
       const updateHandler = () => openEditModal(record);
 
-      if (tableType === EntityTableType.DRAG) return null;
-
       return (
         <Row gap="xs">
           <Button icon onClick={updateHandler} size="md" color="primaryOutline">
@@ -95,50 +93,6 @@ const PostsTable: React.FC<PostsTableProps> = ({
   }, []);
 
   const columns: ColumnType<PbPost>[] = useMemo(() => {
-    if (tableType === EntityTableType.DRAG) {
-      const cols: ColumnType<PbPost>[] = [
-        {
-          title: '',
-          key: 'imageThumbnailId',
-          dataIndex: 'imageThumbnailId',
-          render: (value: number) => (
-            <Suspense fallback={null}>
-              <AvatarById size="md" imageId={value} />
-            </Suspense>
-          ),
-          width: '40px',
-        },
-        {
-          title: 'Title',
-          key: 'title',
-          dataIndex: 'title',
-          render: (value: string) => <b>{value}</b>,
-          sorter: (a, b) => (a.title ?? '').localeCompare(b.title ?? ''),
-        },
-        {
-          title: '',
-          key: 'action-buttons',
-          render: (_, record) => openPostModalButtons(record),
-          width: '40px',
-        },
-        {
-          title: '',
-          key: 'drag-handle',
-          render: (_, record) =>
-            record.id ? (
-              <EntityTableDragHandle
-                entityType={PbEntityType.ENTITY_TYPE_POST}
-                entityId={record.id}
-                imageId={record.imageThumbnailId}
-              />
-            ) : null,
-          width: '40px',
-        },
-      ];
-
-      return cols;
-    }
-
     const cols: ColumnType<PbPost>[] = [
       {
         title: '',
@@ -198,6 +152,22 @@ const PostsTable: React.FC<PostsTableProps> = ({
       render: (_, record) => openPostModalButtons(record),
       width: '40px',
     });
+
+    if (tableType === EntityTableType.DRAG) {
+      cols.push({
+        title: '',
+        key: 'drag-handle',
+        render: (_, record) =>
+          record.id ? (
+            <EntityTableDragHandle
+              entityType={PbEntityType.ENTITY_TYPE_POST}
+              entityId={record.id}
+              imageId={record.imageThumbnailId}
+            />
+          ) : null,
+        width: '40px',
+      });
+    }
 
     return cols;
   }, [tableType, canEdit, actionButtons, openPostModalButtons]);

@@ -25,6 +25,7 @@ import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEnti
 import PostList from '../../../component-sections/Post/PostList';
 import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
 import { EntityTableType } from '../../../component-sections/Post/PostsTable';
+import EntityChoice from './EntityComponent/EntityChoice';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -47,7 +48,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 }) => {
   const dispatch = useDispatch();
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
-  const moduleId = useUrlModuleId();
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
 
   const {
@@ -166,9 +166,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         <Row gap="md" alignItems="start" wrap>
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             {editMode && (
-              <>
-                <PostList tableType={EntityTableType.DRAG} canEdit={canEdit} moduleId={moduleId} />
-              </>
+              <EntityChoice worldImageThumbnail={worldImageThumbnail} canEdit={canEdit} />
             )}
             {!editMode && (
               <>
