@@ -16,6 +16,7 @@ import {
   PbEntityGroupContent,
   PbEntityGroupDirection,
   PbEntityGroupStyle,
+  PbEntityType,
   PbViewEntity,
   RpcStatus,
 } from './data-contracts';
@@ -94,6 +95,9 @@ export class Entities<SecurityDataType = unknown> {
       contentEntityGroupId?: number;
       /** @format int32 */
       position?: number;
+      entityType?: PbEntityType;
+      /** @format int32 */
+      entityIdOfType?: number;
     },
     params: RequestParams = {},
   ) =>
