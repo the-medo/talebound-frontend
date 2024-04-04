@@ -22,10 +22,32 @@ export const useCreateEntityGroupContent = createMutation({
       if (entityGroupContent) {
         queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
           getMenuItemContentQueryKey,
-          (oldData) => ({
-            ...oldData,
-            contents: [...(oldData?.contents ?? []), entityGroupContent],
-          }),
+          (oldData) => {
+            const cachedData = oldData?.contents ?? [];
+
+            return {
+              ...oldData,
+              contents: [
+                ...cachedData.map((c) => {
+                  if (!c.position) return c;
+
+                  let position = c.position;
+                  if (
+                    c.entityGroupId === entityGroupContent.entityGroupId &&
+                    c.position >= entityGroupContent.position
+                  ) {
+                    position++;
+                  }
+
+                  return {
+                    ...c,
+                    position,
+                  };
+                }),
+                entityGroupContent,
+              ],
+            };
+          },
         );
       }
     }
