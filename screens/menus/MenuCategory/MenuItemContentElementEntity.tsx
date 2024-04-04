@@ -6,7 +6,7 @@ import { MdClose, MdDragIndicator } from 'react-icons/md';
 import { DragHandle } from '../MenuAdministration/menuAdministrationComponents';
 import { Col, Row } from '../../../components/Flex/Flex';
 import MenuCategoryEntityDropArea from './MenuCategoryEntityDropArea';
-import { isOverCheck } from './menuCategoryUtils';
+import { DropType, isOverCheck } from './menuCategoryUtils';
 import { EntityGroupContentHierarchyEntity } from '../../../hooks/useGetMenuItemContentHierarchy';
 import { Button } from '../../../components/Button/Button';
 import { useGetMenuItemContent } from '../../../api/menus/useGetMenuItemContent';
@@ -44,7 +44,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     active,
   } = useDroppable({
     id: content.hierarchyId + '-drop_move',
-    data: content,
+    data: { ...content, dropType: DropType.MOVE },
   });
   const canDropHere =
     !content.hierarchyId.startsWith(`${active?.id}-`) && content.hierarchyId !== active?.id;

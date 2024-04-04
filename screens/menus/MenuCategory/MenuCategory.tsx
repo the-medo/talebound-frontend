@@ -5,7 +5,6 @@ import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
 import LoadingText from '../../../components/Loading/LoadingText';
 import { TitleH2 } from '../../../components/Typography/Title';
-import Link from 'next/link';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
@@ -22,10 +21,8 @@ import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
 import { MdEdit } from 'react-icons/md';
 import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
-import PostList from '../../../component-sections/Post/PostList';
-import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
-import { EntityTableType } from '../../../component-sections/Post/PostsTable';
 import EntityChoice from './EntityComponent/EntityChoice';
+import { useCreateEntityGroupContent } from '../../../api/entities/useCreateEntityGroupContent';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
@@ -49,6 +46,13 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   const dispatch = useDispatch();
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
   const { data: menuItemsData = [] } = useGetMenuItems({ variables: menuId });
+
+  const {
+    mutate: createEntityGroupContent,
+    isPending: isPendingCreateGroupContent,
+    // isError: isErrorUpdate,
+    error: errorCreateGroupContent,
+  } = useCreateEntityGroupContent();
 
   const {
     mutate: updateEntityGroupContent,
@@ -77,7 +81,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   }, [dispatch, editMode]);
 
   //====================================================================================================
-  const error = errorUpdateGroupContent;
+  const error = errorUpdateGroupContent ?? errorCreateGroupContent;
   //====================================================================================================
 
   const handleDragStart = useCallback(
@@ -106,6 +110,10 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
 
       if (end === null) return;
 
+      /*
+        -2 => incorrect value
+        -1 => doesn't have parent (going to be new entity)
+       */
       const getParentId = (x: EntityGroupContentHierarchy, startOrEnd: 'start' | 'end'): number => {
         const hierarchyIdSplit = (
           startOrEnd === 'end' && x.type === 'GROUP'
@@ -116,40 +124,62 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         return parseInt(hierarchyIdSplit[hierarchyIdSplit.length - 1]);
       };
 
-      const s = start.data.current as EntityGroupContentHierarchy;
+      const s = start.data.current as MenuCategoryDraggingData; // EntityGroupContentHierarchy;
       const e = end.data.current as EntityGroupContentHierarchy & { dropType: DropType };
 
-      const sParentId = getParentId(s, 'start');
       const eParentId = getParentId(e, 'end');
-
       let ePosition = e.type === 'GROUP' ? 1 : e.position + 1;
-      if (sParentId === eParentId && e.type !== 'GROUP' && s.position <= e.position) ePosition--;
 
-      if (e.dropType === DropType.NEW_GROUP) {
-        dispatch(
-          setNewEntityGroupData({
-            // entityContentId: oldData.contents.find()
-            contentId: s.id,
-            startEntityGroupId: sParentId,
-            startPosition: s.position,
-            targetEntityGroupId: eParentId,
-            targetPosition: ePosition,
-          }),
-        );
-        return;
+      console.log('s', s, 'e', e, ePosition);
+
+      if (!s) return;
+      if (s.type === 'NEW_ENTITY') {
+        console.log("inside of s.type === 'NEW_ENTITY'");
+        if (e.dropType === DropType.NEW_GROUP) {
+          //TODO - new group
+        } else if (e.dropType === DropType.MOVE) {
+          console.log('e.dropType === DropType.MOVE');
+          createEntityGroupContent({
+            menuItemId: menuItem?.id ?? 0,
+            entityGroupId: eParentId,
+            body: {
+              position: ePosition,
+              entityType: s.entityType,
+              entityIdOfType: s.entityId,
+            },
+          });
+        }
       } else {
-        updateEntityGroupContent({
-          menuItemId: menuItem?.id ?? 0,
-          entityGroupId: sParentId,
-          contentId: s.id,
-          body: {
-            newEntityGroupId: eParentId,
-            position: ePosition,
-          },
-        });
+        const sParentId = getParentId(s, 'start');
+
+        if (sParentId === eParentId && e.type !== 'GROUP' && s.position <= e.position) ePosition--;
+
+        if (e.dropType === DropType.NEW_GROUP) {
+          dispatch(
+            setNewEntityGroupData({
+              // entityContentId: oldData.contents.find()
+              contentId: s.id,
+              startEntityGroupId: sParentId,
+              startPosition: s.position,
+              targetEntityGroupId: eParentId,
+              targetPosition: ePosition,
+            }),
+          );
+          return;
+        } else if (e.dropType === DropType.MOVE) {
+          updateEntityGroupContent({
+            menuItemId: menuItem?.id ?? 0,
+            entityGroupId: sParentId,
+            contentId: s.id,
+            body: {
+              newEntityGroupId: eParentId,
+              position: ePosition,
+            },
+          });
+        }
       }
     },
-    [dispatch, menuItem?.id, updateEntityGroupContent],
+    [createEntityGroupContent, dispatch, menuItem?.id, updateEntityGroupContent],
   );
 
   if (!menuItem) {
@@ -203,7 +233,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             </ContentSection>*/}
             <MenuCategoryContent
               menuItemId={menuItem?.id ?? 0}
-              isPending={isPendingUpdateGroupContent}
+              isPending={isPendingUpdateGroupContent || isPendingCreateGroupContent}
             />
             <ErrorText error={error} />
             {canEdit && (
