@@ -9,6 +9,7 @@ import {
   useCreateEntityGroup,
 } from '../../../api/entities/useCreateEntityGroup';
 import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
+import { useCreateEntityGroupContent } from '../../../api/entities/useCreateEntityGroupContent';
 
 interface CreateEntityGroupModalProps {
   trigger: React.ReactNode;
@@ -17,6 +18,14 @@ interface CreateEntityGroupModalProps {
 
 const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger, menuItemId }) => {
   const dispatch = useDispatch();
+
+  const type = useSelector((state: ReduxState) => state.menuCategory.newEntityGroupData?.type);
+  const entityType = useSelector(
+    (state: ReduxState) => state.menuCategory.newEntityGroupData?.entityType,
+  );
+  const entityIdOfType = useSelector(
+    (state: ReduxState) => state.menuCategory.newEntityGroupData?.entityIdOfType,
+  );
   const contentId = useSelector(
     (state: ReduxState) => state.menuCategory.newEntityGroupData?.contentId,
   );
@@ -43,8 +52,15 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger
     error: errorUpdateContent,
   } = useUpdateEntityGroupContent();
 
-  const isPending = isPendingCreate || isPendingUpdateContent;
-  const error = errorCreate ?? errorUpdateContent;
+  const {
+    mutate: createEntityGroupContent,
+    isPending: isPendingCreateContent,
+    // isError: isErrorUpdate,
+    error: errorCreateContent,
+  } = useCreateEntityGroupContent();
+
+  const isPending = isPendingCreate || isPendingUpdateContent || isPendingCreateContent;
+  const error = errorCreate ?? errorUpdateContent ?? errorCreateContent;
 
   const closeModal = useCallback(() => dispatch(setNewEntityGroupData(undefined)), [dispatch]);
 
@@ -68,19 +84,36 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger
 
         createEntityGroup(createEntityGroupArgs, {
           onSuccess: ({ data }) => {
-            if (contentId && startEntityGroupId && data.entityGroup) {
-              const updateEntityGroupContentArgs = {
+            if (type === 'MOVE_ENTITY_CONTENT') {
+              if (contentId && startEntityGroupId && data.entityGroup) {
+                const updateEntityGroupContentArgs = {
+                  menuItemId,
+                  entityGroupId: startEntityGroupId,
+                  contentId: contentId,
+                  body: {
+                    newEntityGroupId: data.entityGroup.id,
+                    position: 1,
+                  },
+                };
+                console.log('updateEntityGroupContentArgs', updateEntityGroupContentArgs);
+
+                updateEntityGroupContent(updateEntityGroupContentArgs, {
+                  onSuccess: closeModal,
+                });
+              }
+            } else if (type === 'CREATE_ENTITY_CONTENT') {
+              const createEntityGroupContentArgs = {
                 menuItemId,
-                entityGroupId: startEntityGroupId,
-                contentId: contentId,
+                entityGroupId: data.entityGroup.id,
                 body: {
-                  newEntityGroupId: data.entityGroup.id,
                   position: 1,
+                  entityType,
+                  entityIdOfType,
                 },
               };
-              console.log('updateEntityGroupContentArgs', updateEntityGroupContentArgs);
+              console.log('createEntityGroupContentArgs', createEntityGroupContentArgs);
 
-              updateEntityGroupContent(updateEntityGroupContentArgs, {
+              createEntityGroupContent(createEntityGroupContentArgs, {
                 onSuccess: closeModal,
               });
             }
@@ -94,9 +127,13 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger
       menuItemId,
       startEntityGroupId,
       createEntityGroup,
+      type,
       contentId,
       updateEntityGroupContent,
       closeModal,
+      entityType,
+      entityIdOfType,
+      createEntityGroupContent,
     ],
   );
 

@@ -4,11 +4,26 @@ import { PbEntityType } from '../../../generated/api-types/data-contracts';
 
 export type NewEntityGroupData =
   | {
+      type: 'CREATE_ENTITY_CONTENT';
+      entityType: PbEntityType;
+      entityIdOfType: number;
+      targetEntityGroupId: number;
+      targetPosition: number;
+      //empty properties of MOVE_ENTITY_CONTENT
+      contentId?: undefined;
+      startEntityGroupId?: undefined;
+      startPosition?: undefined;
+    }
+  | {
+      type: 'MOVE_ENTITY_CONTENT';
       contentId: number;
       startEntityGroupId: number;
       startPosition: number;
       targetEntityGroupId: number;
       targetPosition: number;
+      //empty properties of CREATE_ENTITY_CONTENT
+      entityType?: undefined;
+      entityIdOfType?: undefined;
     }
   | undefined;
 

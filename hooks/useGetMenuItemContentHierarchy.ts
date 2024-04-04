@@ -89,7 +89,7 @@ export const useGetMenuItemContentHierarchy = (menuItemId: number): MenuItemCont
         groupChildren.forEach((c) => {
           if (!c.id) return;
           const cId = getId(c);
-          const cHierarchyId = `${group.hierarchyId}-${cId}`;
+          const cHierarchyId = `c${c.id}-${group.hierarchyId}-${cId}`;
           if (c.contentEntityId) {
             obj[cId] = {
               id: c.id,

@@ -136,7 +136,15 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
       if (s.type === 'NEW_ENTITY') {
         console.log("inside of s.type === 'NEW_ENTITY'");
         if (e.dropType === DropType.NEW_GROUP) {
-          //TODO - new group
+          dispatch(
+            setNewEntityGroupData({
+              type: 'CREATE_ENTITY_CONTENT',
+              entityType: s.entityType,
+              entityIdOfType: s.entityId,
+              targetEntityGroupId: eParentId,
+              targetPosition: ePosition,
+            }),
+          );
         } else if (e.dropType === DropType.MOVE) {
           console.log('e.dropType === DropType.MOVE');
           createEntityGroupContent({
@@ -157,7 +165,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         if (e.dropType === DropType.NEW_GROUP) {
           dispatch(
             setNewEntityGroupData({
-              // entityContentId: oldData.contents.find()
+              type: 'MOVE_ENTITY_CONTENT',
               contentId: s.id,
               startEntityGroupId: sParentId,
               startPosition: s.position,
@@ -224,13 +232,6 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
           </Col>
 
           <Col gap="sm" css={{ flexGrow: 0, flexBasis: '600px' }}>
-            {/*<ContentSection highlighted={descriptionPostId === displayPostId}>
-              <Row gap="md" fullWidth justifyContent="between">
-                <Link href={linkPrefix}>
-                  <TitleH2>{menuItem.name}</TitleH2>
-                </Link>
-              </Row>
-            </ContentSection>*/}
             <MenuCategoryContent
               menuItemId={menuItem?.id ?? 0}
               isPending={isPendingUpdateGroupContent || isPendingCreateGroupContent}
