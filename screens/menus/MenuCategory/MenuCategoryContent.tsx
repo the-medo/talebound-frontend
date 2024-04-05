@@ -45,7 +45,13 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({
             </div>
           )}
           {(draggingData?.type === 'ENTITY' || draggingData?.type === 'GROUP') && (
-            <div style={{ width: '500px', opacity: 0.5, cursor: 'grabbing' }}>
+            <div
+              style={{
+                width: '500px',
+                opacity: 0.5,
+                cursor: 'grabbing',
+              }}
+            >
               <MenuItemContentElement
                 showHandles={false}
                 content={draggingData}

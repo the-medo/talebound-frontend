@@ -71,6 +71,7 @@ export const DragHandle = styled('div', {
   justifyContent: 'center',
   padding: '0.25rem',
   cursor: 'grab',
+  width: '32px',
 
   variants: {
     dragging: {
