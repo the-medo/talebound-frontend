@@ -31,12 +31,14 @@ const PostList: React.FC<PostListProps> = ({
     [postsDataPages],
   );
 
-  const postsData = useSelector(
-    (state: ReduxState) => {
-      return selectPostsByIds(state, postIds).filter((post): post is PbPost => Boolean(post));
-    },
-    [postIds],
-  );
+  // const postsData = useSelector(
+  //   (state: ReduxState) => {
+  //     return selectPostsByIds(state, postIds).filter((post): post is PbPost => Boolean(post));
+  //   },
+  //   [postIds],
+  // );
+
+  const postsData = useSelector((state: ReduxState) => selectPostsByIds(state, postIds), [postIds]);
 
   useEffect(() => {
     if (

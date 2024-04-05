@@ -39,9 +39,13 @@ const MenuCategoryContent: React.FC<MenuCategoryContentProps> = ({
       )}
       {editMode && (
         <DragOverlay>
-          {draggingData?.type === 'NEW_ENTITY' && <AvatarById imageId={draggingData.imageId} />}
+          {draggingData?.type === 'NEW_ENTITY' && (
+            <div style={{ cursor: 'grabbing' }}>
+              <AvatarById imageId={draggingData.imageId} />
+            </div>
+          )}
           {(draggingData?.type === 'ENTITY' || draggingData?.type === 'GROUP') && (
-            <div style={{ width: '500px', opacity: 0.5 }}>
+            <div style={{ width: '500px', opacity: 0.5, cursor: 'grabbing' }}>
               <MenuItemContentElement
                 showHandles={false}
                 content={draggingData}

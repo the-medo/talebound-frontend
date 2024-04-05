@@ -20,7 +20,7 @@ export enum EntityTableType {
 
 interface PostsTableProps {
   tableType?: EntityTableType;
-  data: PbPost[];
+  data: (PbPost | undefined)[];
   totalCount: number;
   canEdit?: boolean;
   loading?: boolean;
@@ -79,7 +79,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
         </Row>
       );
     },
-    [openEditModal, tableType],
+    [openEditModal],
   );
 
   const openPostModalButtons = useCallback((record: PbPost) => {
@@ -187,7 +187,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
 
   const paginationConfig: TablePaginationConfig | undefined = useMemo(() => {
     return {
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`, // TODO: i18n
+      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} posts`, // TODO: i18n
       showSizeChanger: false,
       total: totalCount,
       pageSize: PAGE_SIZE_POSTS,
@@ -196,6 +196,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
       disabled: loading,
     };
   }, [totalCount, onPageChange, loading]);
+
+  const filteredData = useMemo(() => data.filter((d) => d !== undefined) as PbPost[], [data]);
 
   return (
     <>
@@ -206,7 +208,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
           pagination={paginationConfig}
           showSorterTooltip={false}
           columns={columns}
-          dataSource={data}
+          dataSource={filteredData}
           rowKey="id"
           size="small"
           onRow={onRow}

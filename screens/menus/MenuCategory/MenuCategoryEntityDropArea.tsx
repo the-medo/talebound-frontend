@@ -7,9 +7,7 @@ import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemConten
 
 export const MoveDropArea = styled(Row, {
   backgroundColor: '$white',
-  borderRadius: '50px',
-  flexBasis: '60%',
-  paddingLeft: '2rem',
+  borderRadius: '$md',
   border: '1px dashed $tertiary400',
   color: '$tertiary400',
   flexGrow: 1,
@@ -17,16 +15,20 @@ export const MoveDropArea = styled(Row, {
 
   variants: {
     isActive: {
-      true: { backgroundColor: '$tertiary100', fontWeight: 'bold' },
+      true: {
+        backgroundColor: '$white400',
+        color: '$tertiary400',
+        fontWeight: 'bold',
+        borderStyle: 'solid',
+      },
     },
   },
 });
 
 export const NewGroupArea = styled(Row, {
   backgroundColor: '$primary100',
-  borderRadius: '50px',
+  borderRadius: '$md',
   flexBasis: '30%',
-  paddingLeft: '2rem',
   border: '1px dashed $primary400',
   color: '$primary400',
   transition: 'all 0.2s ease-in-out',
@@ -34,6 +36,7 @@ export const NewGroupArea = styled(Row, {
   variants: {
     isActive: {
       true: { backgroundColor: '$primary400', color: '$primary100', fontWeight: 'bold' },
+      false: { fontWeight: 'normal' },
     },
   },
 });
@@ -50,25 +53,18 @@ const MenuCategoryEntityDropArea: React.FC<MenuCategoryEntityDropAreaProps> = ({
 
   return (
     <Row gap="sm">
-      <MoveDropArea
-        padding="md"
-        paddingLeft="lg"
-        alignItems="center"
-        justifyContent="center"
-        isActive={!isOver}
-      >
-        Move here
+      <MoveDropArea padding="xs" alignItems="center" justifyContent="around" isActive={!isOver}>
+        <span>Move here</span>
+        <NewGroupArea
+          padding="sm"
+          alignItems="center"
+          justifyContent="center"
+          ref={setDroppableRef}
+          isActive={isOver}
+        >
+          New group
+        </NewGroupArea>
       </MoveDropArea>
-      <NewGroupArea
-        padding="md"
-        paddingLeft="lg"
-        alignItems="center"
-        justifyContent="center"
-        ref={setDroppableRef}
-        isActive={isOver}
-      >
-        New group
-      </NewGroupArea>
     </Row>
   );
 };
