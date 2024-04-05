@@ -30,6 +30,7 @@ export const Flex = styled('div', {
       true: {
         '&:hover': {
           backgroundColor: '#f5f5f5',
+          cursor: 'pointer',
         },
       },
     },
@@ -98,6 +99,9 @@ export const Flex = styled('div', {
       baseline: {
         alignItems: 'baseline',
       },
+      between: {
+        alignItems: 'space-between',
+      },
     },
 
     alignSelf: {
@@ -133,6 +137,12 @@ export const Flex = styled('div', {
     wrap: {
       true: {
         flexWrap: 'wrap',
+      },
+    },
+
+    grow: {
+      true: {
+        flexGrow: 1,
       },
     },
 

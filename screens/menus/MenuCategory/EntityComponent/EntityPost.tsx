@@ -3,6 +3,9 @@ import { PbEntityGroupDirection } from '../../../../generated/api-types/data-con
 import { usePost } from '../../../../hooks/usePost';
 import AvatarById from '../../../../components/AvatarById/AvatarById';
 import { Row } from '../../../../components/Flex/Flex';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../../../../store';
+import GenericEntityRow from './GenericEntityRow';
 
 interface EntityPostProps {
   postId: number;
@@ -12,15 +15,18 @@ interface EntityPostProps {
 const EntityPost: React.FC<EntityPostProps> = ({ postId, groupDirection }) => {
   const { post: postData, isFetching: isPendingPost } = usePost(postId);
   const postImageId = postData?.imageThumbnailId ?? 0;
+  const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
 
   if (isPendingPost) return null;
 
   if (groupDirection === PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL) {
     return (
-      <Row padding="xs" gap="md" hoverHighlight>
-        <AvatarById size="md" imageId={postImageId} />
-        <b>{postData?.title}</b>
-      </Row>
+      <GenericEntityRow
+        editMode={editMode}
+        avatarImageId={postImageId}
+        title={postData?.title}
+        editModeInfo={`(Post #${postId})`}
+      />
     );
   }
 

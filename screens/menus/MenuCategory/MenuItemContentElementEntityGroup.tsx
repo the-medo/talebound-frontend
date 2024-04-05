@@ -75,10 +75,11 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       <Flex
         fullWidth
         gap="sm"
+        wrap
         direction={
-          editMode ||
+          // editMode ||
           entityGroupObject[content.entityGroupId]?.direction ===
-            PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL
+          PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL
             ? 'column'
             : 'row'
         }
@@ -95,7 +96,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
           ))}
       </Flex>
     ),
-    [editMode, entityGroupObject, content.entityGroupId, content.children, showHandles],
+    [entityGroupObject, content.entityGroupId, content.children, showHandles],
   );
 
   const dragHandle = useMemo(

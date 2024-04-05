@@ -106,18 +106,21 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
 
   return (
     <>
-      <Col gap="sm" fullWidth ref={setDroppableRef}>
+      <Col gap="sm" grow ref={setDroppableRef}>
         <Row justifyContent="between" semiTransparent={isDragging}>
-          <Row>
+          <Row grow>
             {editMode && showHandles && (
               <>
                 <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
                   <MdDragIndicator size={20} />
                 </DragHandle>{' '}
-                (#{content.entityId})
+                <EntityComponent
+                  entityId={content.entityId}
+                  groupStyle={groupStyle}
+                  groupDirection={groupDirection}
+                />
               </>
-            )}{' '}
-            Entity
+            )}
           </Row>
           {editMode && (
             <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">
