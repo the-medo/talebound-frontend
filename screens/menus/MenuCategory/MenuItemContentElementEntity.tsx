@@ -60,6 +60,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   if (!editMode) {
     return (
       <EntityComponent
+        contentId={content.id}
         entityId={content.entityId}
         groupStyle={groupStyle}
         groupDirection={groupDirection}
@@ -71,6 +72,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
     <Col gap="sm" ref={setDroppableRef}>
       <Row justifyContent="between" semiTransparent={isDragging}>
         <EntityComponent
+          contentId={content.id}
           entityId={content.entityId}
           groupStyle={groupStyle}
           groupDirection={groupDirection}

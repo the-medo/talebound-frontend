@@ -7,11 +7,12 @@ import GenericEntityRowView from './GenericEntityRowView';
 import GenericEntityAvatarView from './GenericEntityRowAvatarView';
 
 interface EntityPostProps extends PropsWithChildren {
+  contentId: number;
   postId: number;
   groupDirection: PbEntityGroupDirection;
 }
 
-const EntityPost: React.FC<EntityPostProps> = ({ children, postId, groupDirection }) => {
+const EntityPost: React.FC<EntityPostProps> = ({ children, contentId, postId, groupDirection }) => {
   const { post: postData, isFetching: isPendingPost } = usePost(postId);
   const postImageId = postData?.imageThumbnailId ?? 0;
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
@@ -21,6 +22,7 @@ const EntityPost: React.FC<EntityPostProps> = ({ children, postId, groupDirectio
   if (groupDirection === PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL) {
     return (
       <GenericEntityRowView
+        contentId={contentId}
         editMode={editMode}
         avatarImageId={postImageId}
         title={postData?.title}
@@ -33,6 +35,7 @@ const EntityPost: React.FC<EntityPostProps> = ({ children, postId, groupDirectio
 
   return (
     <GenericEntityAvatarView
+      contentId={contentId}
       editMode={editMode}
       avatarImageId={postImageId}
       title={postData?.title}

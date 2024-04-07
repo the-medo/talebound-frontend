@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import AvatarById from '../../../../components/AvatarById/AvatarById';
 import { Row } from '../../../../components/Flex/Flex';
 import { Text } from '../../../../components/Typography/Text';
-import RemoveEntityButton, { RemoveButtonWrapper } from './RemoveEntityButton';
+import RemoveEntityContentButton, { RemoveButtonWrapper } from './RemoveEntityContentButton';
 import { styled } from '../../../../styles/stitches.config';
 
 export const Wrapper = styled(Row, {
@@ -14,6 +14,7 @@ export const Wrapper = styled(Row, {
 });
 
 interface GenericEntityRowViewProps extends PropsWithChildren {
+  contentId?: number;
   title?: string;
   avatarImageId?: number;
   editModeInfo?: string;
@@ -21,6 +22,7 @@ interface GenericEntityRowViewProps extends PropsWithChildren {
 }
 
 const GenericEntityRowView: React.FC<GenericEntityRowViewProps> = ({
+  contentId,
   children,
   title,
   avatarImageId,
@@ -41,9 +43,9 @@ const GenericEntityRowView: React.FC<GenericEntityRowViewProps> = ({
               {editModeInfo}
             </Text>
           )}
-          {editMode && (
+          {editMode && contentId && (
             <RemoveButtonWrapper>
-              <RemoveEntityButton entityId={0} />
+              <RemoveEntityContentButton contentId={contentId} />
             </RemoveButtonWrapper>
           )}
         </Row>

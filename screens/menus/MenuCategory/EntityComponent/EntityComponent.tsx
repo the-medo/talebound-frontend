@@ -8,6 +8,7 @@ import { useEntity } from '../../../../hooks/useEntity';
 import EntityPost from './EntityPost';
 
 interface EntityComponentProps extends PropsWithChildren {
+  contentId: number;
   entityId: number;
   groupStyle: PbEntityGroupStyle;
   groupDirection: PbEntityGroupDirection;
@@ -15,6 +16,7 @@ interface EntityComponentProps extends PropsWithChildren {
 
 const EntityComponent: React.FC<EntityComponentProps> = ({
   children,
+  contentId,
   entityId,
   groupDirection,
 }) => {
@@ -23,7 +25,11 @@ const EntityComponent: React.FC<EntityComponentProps> = ({
   switch (entity?.type) {
     case PbEntityType.ENTITY_TYPE_POST:
       return (
-        <EntityPost postId={entity.postId ?? 0} groupDirection={groupDirection}>
+        <EntityPost
+          contentId={contentId}
+          postId={entity.postId ?? 0}
+          groupDirection={groupDirection}
+        >
           {children}
         </EntityPost>
       );

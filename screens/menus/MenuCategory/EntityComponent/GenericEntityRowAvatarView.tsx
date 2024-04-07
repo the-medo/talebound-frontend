@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import AvatarById from '../../../../components/AvatarById/AvatarById';
 import { Row } from '../../../../components/Flex/Flex';
 import { Text } from '../../../../components/Typography/Text';
-import RemoveEntityButton, { RemoveButtonWrapper } from './RemoveEntityButton';
+import RemoveEntityContentButton, { RemoveButtonWrapper } from './RemoveEntityContentButton';
 import { styled } from '../../../../styles/stitches.config';
 
 export const DragHandlerWrapper = styled('div', {
@@ -30,6 +30,7 @@ export const Wrapper = styled('div', {
 });
 
 interface GenericEntityAvatarViewProps extends PropsWithChildren {
+  contentId?: number;
   title?: string;
   avatarImageId?: number;
   editModeInfo?: string;
@@ -38,6 +39,7 @@ interface GenericEntityAvatarViewProps extends PropsWithChildren {
 
 const GenericEntityAvatarView: React.FC<GenericEntityAvatarViewProps> = ({
   children,
+  contentId,
   title,
   avatarImageId,
   editModeInfo,
@@ -47,9 +49,9 @@ const GenericEntityAvatarView: React.FC<GenericEntityAvatarViewProps> = ({
     <Wrapper>
       <AvatarById size="xl" imageId={avatarImageId} />
       {editMode && children ? <DragHandlerWrapper>{children}</DragHandlerWrapper> : null}
-      {editMode && (
+      {editMode && contentId && (
         <RemoveButtonWrapper version="top-right-corner">
-          <RemoveEntityButton entityId={0} />
+          <RemoveEntityContentButton contentId={contentId} />
         </RemoveButtonWrapper>
       )}
     </Wrapper>
