@@ -1,11 +1,20 @@
 import React from 'react';
-import { Row } from '../../../components/Flex/Flex';
+import { Col, Flex, Row } from '../../../components/Flex/Flex';
 import { styled } from '../../../styles/stitches.config';
 import { useDroppable } from '@dnd-kit/core';
 import { DropType } from './menuCategoryUtils';
 import { EntityGroupContentHierarchy } from '../../../hooks/useGetMenuItemContentHierarchy';
+import { PbEntityGroupDirection } from '../../../generated/api-types/data-contracts';
+import { Text } from '../../../components/Typography/Text';
 
-export const MoveDropArea = styled(Row, {
+export const HorizontalWrapper = styled(Col, {
+  fontSize: '12px',
+  marginTop: '-108px',
+  marginLeft: '50px',
+  width: '50px',
+  height: '100px',
+});
+export const MoveDropArea = styled(Flex, {
   backgroundColor: '$white',
   borderRadius: '$md',
   border: '1px dashed $tertiary400',
@@ -43,17 +52,53 @@ export const NewGroupArea = styled(Row, {
 
 interface MenuCategoryEntityDropAreaProps {
   content: EntityGroupContentHierarchy;
+  groupDirection: PbEntityGroupDirection;
 }
 
-const MenuCategoryEntityDropArea: React.FC<MenuCategoryEntityDropAreaProps> = ({ content }) => {
+const MenuCategoryEntityDropArea: React.FC<MenuCategoryEntityDropAreaProps> = ({
+  content,
+  groupDirection,
+}) => {
   const { isOver, setNodeRef: setDroppableRef } = useDroppable({
     id: content.hierarchyId + '-drop_new_group',
     data: { ...content, dropType: DropType.NEW_GROUP },
   });
 
+  if (groupDirection === PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_HORIZONTAL) {
+    return (
+      <HorizontalWrapper gap="sm">
+        <MoveDropArea
+          direction="column"
+          padding="xs"
+          alignItems="center"
+          justifyContent="between"
+          isActive={!isOver}
+        >
+          <Text>{/* empty, so justifyContent="between" centers it more */}</Text>
+          <Text>Move</Text>
+          <NewGroupArea
+            padding="sm"
+            alignItems="center"
+            justifyContent="center"
+            ref={setDroppableRef}
+            isActive={isOver}
+          >
+            +Group
+          </NewGroupArea>
+        </MoveDropArea>
+      </HorizontalWrapper>
+    );
+  }
+
   return (
     <Row gap="sm">
-      <MoveDropArea padding="xs" alignItems="center" justifyContent="around" isActive={!isOver}>
+      <MoveDropArea
+        direction="row"
+        padding="xs"
+        alignItems="center"
+        justifyContent="around"
+        isActive={!isOver}
+      >
         <span>Move here</span>
         <NewGroupArea
           padding="sm"

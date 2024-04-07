@@ -62,7 +62,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
   } = useDeleteEntityGroup();
 
   const canDropHere =
-    !content.hierarchyId.startsWith(`${active?.id}-`) && content.hierarchyId !== active?.id;
+    !content.hierarchyId.includes(`-${active?.id}-`) && content.hierarchyId !== active?.id;
 
   const { over, setNodeRef: setDroppableRef } = useDroppable({
     id: content.hierarchyId + '-drop_move',
@@ -155,7 +155,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       hasShadow={editMode || entityGroupStyle === PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED}
     >
       {displayGroupName && (
-        <Col gap="sm" fullWidth ref={setDroppableRef}>
+        <Col gap="sm" fullWidth ref={setDroppableRef} css={{ border: '2px solid red' }}>
           <Row justifyContent="between" semiTransparent={isDragging}>
             <Row gap="sm">
               {dragHandle}
@@ -201,7 +201,12 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
             )}
           </Row>
           <ErrorText error={errorDelete} />
-          {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
+          {canDropHere && isOver && (
+            <MenuCategoryEntityDropArea
+              content={content}
+              groupDirection={PbEntityGroupDirection.ENTITY_GROUP_DIRECTION_VERTICAL}
+            />
+          )}
         </Col>
       )}
       {children}

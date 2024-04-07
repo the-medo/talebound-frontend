@@ -42,7 +42,7 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   });
 
   const canDropHere =
-    !content.hierarchyId.startsWith(`${active?.id}-`) && content.hierarchyId !== active?.id;
+    !content.hierarchyId.includes(`-${active?.id}-`) && content.hierarchyId !== active?.id;
 
   const {
     attributes,
@@ -69,23 +69,27 @@ const MenuItemContentElementEntity: React.FC<MenuItemContentElementEntityProps> 
   }
 
   return (
-    <Col gap="sm" ref={setDroppableRef}>
-      <Row justifyContent="between" semiTransparent={isDragging}>
-        <EntityComponent
-          contentId={content.id}
-          entityId={content.entityId}
-          groupStyle={groupStyle}
-          groupDirection={groupDirection}
-        >
-          {showHandles && (
-            <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
-              <MdDragIndicator size={20} />
-            </DragHandle>
-          )}
-        </EntityComponent>
-      </Row>
-      {canDropHere && isOver && <MenuCategoryEntityDropArea content={content} />}
-    </Col>
+    <>
+      <Col gap="sm" ref={setDroppableRef}>
+        <Row justifyContent="between" semiTransparent={isDragging}>
+          <EntityComponent
+            contentId={content.id}
+            entityId={content.entityId}
+            groupStyle={groupStyle}
+            groupDirection={groupDirection}
+          >
+            {showHandles && (
+              <DragHandle ref={setDraggableRef} {...listeners} {...attributes}>
+                <MdDragIndicator size={20} />
+              </DragHandle>
+            )}
+          </EntityComponent>
+        </Row>
+        {canDropHere && isOver && (
+          <MenuCategoryEntityDropArea content={content} groupDirection={groupDirection} />
+        )}
+      </Col>
+    </>
   );
 };
 
