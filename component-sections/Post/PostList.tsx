@@ -3,8 +3,8 @@ import { PAGE_SIZE_POSTS, useGetPosts } from '../../api/posts/useGetPosts';
 import PostsTable, { EntityTableType } from './PostsTable';
 import { selectPostsByIds } from '../../adapters/PostAdapter';
 import { ReduxState } from '../../store';
-import { PbPost } from '../../generated/api-types/data-contracts';
 import { useSelector } from 'react-redux';
+import { Tables } from '../../utils/types/tables';
 
 interface PostListProps {
   tableType?: EntityTableType;
@@ -18,25 +18,22 @@ const PostList: React.FC<PostListProps> = ({
   moduleId,
 }) => {
   const [openedPage, setOpenedPage] = useState(1);
+  const [sorting, setSorting] = useState<Tables>({
+    orderBy: 'created_at',
+    orderDirection: 'desc',
+  });
 
   const {
     data: postsDataPages,
     isFetching: isFetchingPosts,
     fetchNextPage,
     hasNextPage,
-  } = useGetPosts({ variables: { moduleId } });
+  } = useGetPosts({ variables: { moduleId, ...sorting } });
 
   const postIds = useMemo(
     () => postsDataPages?.pages?.map((page) => page.postIds ?? []).flat() ?? [],
     [postsDataPages],
   );
-
-  // const postsData = useSelector(
-  //   (state: ReduxState) => {
-  //     return selectPostsByIds(state, postIds).filter((post): post is PbPost => Boolean(post));
-  //   },
-  //   [postIds],
-  // );
 
   const postsData = useSelector((state: ReduxState) => selectPostsByIds(state, postIds), [postIds]);
 
@@ -67,6 +64,7 @@ const PostList: React.FC<PostListProps> = ({
       data={postsData}
       canEdit={canEdit}
       onPageChange={onPageChange}
+      setSorting={setSorting}
     />
   );
 };

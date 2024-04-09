@@ -1,5 +1,4 @@
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
-import { ColumnType } from 'antd/es/table';
 import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
@@ -12,6 +11,7 @@ import { formatDate } from '../../utils/functions/formatDate';
 import PostDetailModal from './PostDetailModal';
 import AvatarById from '../../components/AvatarById/AvatarById';
 import EntityTableDragHandle from '../../screens/menus/MenuCategory/EntityComponent/EntityTableDragHandle';
+import { Tables, tableSorter, TaleboundColumnType } from '../../utils/types/tables';
 
 export enum EntityTableType {
   LIST = 0,
@@ -27,6 +27,7 @@ interface PostsTableProps {
   isSelectionTable?: boolean;
   isSelectionMultiple?: boolean;
   onPageChange: (page: number, pageSize: number) => void;
+  setSorting: React.Dispatch<React.SetStateAction<Tables>>;
 }
 
 const PostsTable: React.FC<PostsTableProps> = ({
@@ -38,6 +39,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
   isSelectionTable = false,
   isSelectionMultiple = false,
   onPageChange,
+  setSorting,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [updatePost, setUpdatePost] = useState<PbPost>();
@@ -92,8 +94,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
     );
   }, []);
 
-  const columns: ColumnType<PbPost>[] = useMemo(() => {
-    const cols: ColumnType<PbPost>[] = [
+  const columns: TaleboundColumnType<PbPost>[] = useMemo(() => {
+    const cols: TaleboundColumnType<PbPost>[] = [
       {
         title: '',
         key: 'imageThumbnailId',
@@ -110,30 +112,27 @@ const PostsTable: React.FC<PostsTableProps> = ({
         key: 'title',
         dataIndex: 'title',
         render: (value: string) => <b>{value}</b>,
-        sorter: (a, b) => (a.title ?? '').localeCompare(b.title ?? ''),
+        sorter: true,
+        sort_field: 'title',
       },
       {
         title: 'Created at',
         key: 'createdAt',
         dataIndex: 'createdAt',
+        width: 140,
         render: (value: string) => formatDate(value, false, 'week'),
         defaultSortOrder: 'descend',
-        sorter: (a, b) => {
-          if (!a.createdAt) return -1;
-          if (!b.createdAt) return 1;
-          return a.createdAt < b.createdAt ? -1 : 1;
-        },
+        sorter: true,
+        sort_field: 'created_at',
       },
       {
-        title: 'Last update at',
+        title: 'Last updated at',
         key: 'lastUpdatedAt',
         dataIndex: 'lastUpdatedAt',
+        width: 140,
         render: (value: string) => formatDate(value, false, 'week'),
-        sorter: (a, b) => {
-          if (!a.lastUpdatedAt) return -1;
-          if (!b.lastUpdatedAt) return 1;
-          return a.lastUpdatedAt < b.lastUpdatedAt ? -1 : 1;
-        },
+        sorter: true,
+        sort_field: 'last_updated_at',
       },
     ];
 
@@ -199,6 +198,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
 
   const filteredData = useMemo(() => data.filter((d) => d !== undefined) as PbPost[], [data]);
 
+  const onChangeHandler = useMemo(() => tableSorter<PbPost>(setSorting), [setSorting]);
+
   return (
     <>
       <Col fullWidth>
@@ -209,6 +210,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
           showSorterTooltip={false}
           columns={columns}
           dataSource={filteredData}
+          onChange={onChangeHandler}
           rowKey="id"
           size="small"
           onRow={onRow}

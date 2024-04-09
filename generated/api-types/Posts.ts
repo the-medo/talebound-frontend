@@ -45,6 +45,7 @@ export class Posts<SecurityDataType = unknown> {
       userId?: number;
       tags?: number[];
       orderBy?: string;
+      orderDirection?: string;
       isDraft?: boolean;
       isPrivate?: boolean;
       /** @format int32 */
