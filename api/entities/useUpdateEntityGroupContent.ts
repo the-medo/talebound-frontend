@@ -18,9 +18,9 @@ export const useUpdateEntityGroupContent = createMutation({
       variables.body,
     ),
   onSuccess: (data, variables) => {
-    const newData = data.data;
+    const newContent = data.data;
     const { contentId } = variables;
-    if (newData) {
+    if (newContent) {
       const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
         menuItemId: variables.menuItemId,
       });
@@ -28,29 +28,41 @@ export const useUpdateEntityGroupContent = createMutation({
       queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
         getMenuItemContentQueryKey,
         (oldData) => {
-          const cachedData = oldData?.contents ?? [];
-          const oldContent = cachedData.find((c) => c.id === contentId);
+          const cachedContents = oldData?.contents ?? [];
+          const oldContent = cachedContents.find((c) => c.id === contentId);
           if (!oldContent) return oldData;
 
           return {
             ...oldData,
             contents: [
-              ...cachedData.map((c) => {
-                if (c.id === contentId) return newData;
+              ...cachedContents.map((c) => {
+                if (c.id === contentId) return newContent;
                 if (!c.position) return c;
 
-                let newPosition = c.position;
+                let positionToSave = c.position;
+                const newDataPosition = newContent.position ?? 0;
+                const oldDataPosition = oldContent.position ?? 0;
+                const isTheSameGroup =
+                  c.entityGroupId === newContent.entityGroupId &&
+                  oldContent.entityGroupId === newContent.entityGroupId;
 
                 if (c.entityGroupId === oldContent.entityGroupId) {
-                  if (c.position > (oldContent.position ?? 0)) newPosition--;
+                  if (c.position > oldDataPosition) positionToSave--;
                 }
-                if (c.entityGroupId === newData.entityGroupId) {
-                  if (c.position >= (newData.position ?? 0)) newPosition++;
+                if (c.entityGroupId === newContent.entityGroupId) {
+                  if (c.position >= newDataPosition) positionToSave++;
+                }
+
+                //if the movement was in the same group, we need to make some adjustments to the position
+                if (isTheSameGroup) {
+                  if (oldDataPosition < newDataPosition && c.position === newDataPosition) {
+                    positionToSave--;
+                  }
                 }
 
                 return {
                   ...c,
-                  position: newPosition,
+                  position: positionToSave,
                 };
               }),
             ],

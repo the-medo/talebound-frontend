@@ -155,7 +155,7 @@ const MenuItemContentElementEntityGroup: React.FC<MenuItemContentElementEntityGr
       hasShadow={editMode || entityGroupStyle === PbEntityGroupStyle.ENTITY_GROUP_STYLE_FRAMED}
     >
       {displayGroupName && (
-        <Col gap="sm" fullWidth ref={setDroppableRef} css={{ border: '2px solid red' }}>
+        <Col gap="sm" fullWidth ref={setDroppableRef}>
           <Row justifyContent="between" semiTransparent={isDragging}>
             <Row gap="sm">
               {dragHandle}
