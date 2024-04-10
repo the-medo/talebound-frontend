@@ -105,6 +105,8 @@ export interface PbCreateOrUpdateEvaluationVoteResponse {
 }
 
 export interface PbCreatePostRequest {
+  /** @format int32 */
+  moduleId?: number;
   title?: string;
   content?: string;
   isDraft?: boolean;
@@ -481,14 +483,22 @@ export interface PbPost {
   id?: number;
   /** @format int32 */
   userId?: number;
+  /** field is sortable */
   title?: string;
   content?: string;
+  /** field is sortable */
   description?: string;
-  /** @format date-time */
+  /**
+   * field is sortable
+   * @format date-time
+   */
   createdAt?: string;
   /** @format date-time */
   deletedAt?: string;
-  /** @format date-time */
+  /**
+   * field is sortable
+   * @format date-time
+   */
   lastUpdatedAt?: string;
   /** @format int32 */
   lastUpdatedUserId?: number;
@@ -695,7 +705,8 @@ export interface PbViewMapLayer {
   imageUrl?: string;
   isMain?: boolean;
   enabled?: boolean;
-  sublayer?: boolean;
+  /** @format int32 */
+  position?: number;
 }
 
 export interface PbViewMapPin {

@@ -180,7 +180,8 @@ export class Maps<SecurityDataType = unknown> {
       imageId?: number;
       isMain?: boolean;
       enabled?: boolean;
-      sublayer?: boolean;
+      /** @format int32 */
+      position?: number;
     },
     params: RequestParams = {},
   ) =>
@@ -227,7 +228,8 @@ export class Maps<SecurityDataType = unknown> {
       imageId?: number;
       isMain?: boolean;
       enabled?: boolean;
-      sublayer?: boolean;
+      /** @format int32 */
+      position?: number;
     },
     params: RequestParams = {},
   ) =>
