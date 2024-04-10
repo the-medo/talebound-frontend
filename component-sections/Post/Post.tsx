@@ -8,7 +8,7 @@ import LoadingText from '../../components/Loading/LoadingText';
 import { TitleH2 } from '../../components/Typography/Title';
 import { Button } from '../../components/Button/Button';
 import { TbAlignBoxLeftTop, TbPencil } from 'react-icons/tb';
-import PostEditMode from './PostEditMode';
+import PostForm from './PostForm';
 import ContentSection from '../../components/ContentSection/ContentSection';
 import { imageModifyVariant, ImageVariant } from '../../utils/images/imageUtils';
 import { usePost } from '../../hooks/usePost';
@@ -135,7 +135,7 @@ const Post: React.FC<PostProps> = ({
               </Row>
               {editModeDetails && (
                 <ContentSection flexWrap="wrap" direction="column">
-                  <PostEditMode
+                  <PostForm
                     key={`post-edit-mode-${postId}`}
                     postId={postId}
                     canChangeTitle={canChangeTitle}

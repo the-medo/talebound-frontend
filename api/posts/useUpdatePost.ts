@@ -5,11 +5,6 @@ import { useGetPostById } from './useGetPostById';
 import { store } from '../../store';
 import { postAdapterSlice } from '../../adapters/PostAdapter';
 
-export interface UpdatePostCacheHelper {
-  menuId: number;
-  menuItemId: number;
-}
-
 export interface UpdatePostRequest {
   postId: number;
   body: Parameters<typeof PostsCollection.postsUpdatePost>[1];

@@ -1,17 +1,17 @@
 import React, { Suspense, useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
-import PostForm from './PostForm';
+import { PbMap } from '../../generated/api-types/data-contracts';
+import MapForm from './MapForm';
 import { useUrlModuleId } from '../../hooks/useUrlModuleId';
-import { PbPost } from '../../generated/api-types/data-contracts';
 
-interface PostFormModalProps {
-  post?: PbPost;
+interface MapFormModalProps {
+  map?: PbMap;
   trigger: React.ReactNode;
   open?: boolean;
   setOpen: (v: boolean) => void;
 }
 
-const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setOpen }) => {
+const MapFormModal: React.FC<MapFormModalProps> = ({ map, trigger, open, setOpen }) => {
   const onFinishCallback = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
@@ -20,17 +20,17 @@ const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setO
   const content = useMemo(
     () => (
       <Suspense fallback={null}>
-        <PostForm moduleId={moduleId} postId={post?.id} onFinishCallback={onFinishCallback} />
+        <MapForm mapId={map?.id} moduleId={moduleId} onFinishCallback={onFinishCallback} />
       </Suspense>
     ),
-    [moduleId, post, onFinishCallback],
+    [map?.id, moduleId, onFinishCallback],
   );
 
   return (
     <Modal
       trigger={trigger}
       open={open}
-      title={post ? 'Update post' : 'Create post'}
+      title={map ? 'Update map' : 'Create map'}
       content={content}
       onOpenChange={setOpen}
       size="sm"
@@ -38,4 +38,4 @@ const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setO
   );
 };
 
-export default PostFormModal;
+export default MapFormModal;

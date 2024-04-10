@@ -4,47 +4,47 @@ import { useInput } from '../../hooks/useInput';
 import Input from '../../components/Input/Input';
 import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
-import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { useUpdatePost } from '../../api/posts/useUpdatePost';
-import ErrorText from '../../components/ErrorText/ErrorText';
-import { Button } from '../../components/Button/Button';
-import { usePost } from '../../hooks/usePost';
-import { useImage } from '../../hooks/useImage';
-import { useCreatePost } from '../../api/posts/useCreatePost';
 import { PbImage } from '../../generated/api-types/data-contracts';
+import { Button } from '../../components/Button/Button';
+import { useImage } from '../../hooks/useImage';
+import ErrorText from '../../components/ErrorText/ErrorText';
+import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
+import { useMap } from '../../hooks/useMap';
+import { useCreateMap } from '../../api/maps/useCreateMap';
+import { useUpdateMap } from '../../api/maps/useUpdateMap';
 
 const textareaPlaceholder =
-  'Short description of the post. What information does this post contain?';
+  'Short description of the map. What information does this post contain?';
 
-interface PostEditModeProps {
+interface MapFormProps {
   moduleId?: number;
-  postId?: number;
+  mapId?: number;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
   onFinishCallback?: () => void;
 }
 
-const PostEditMode: React.FC<PostEditModeProps> = ({
+const MapForm: React.FC<MapFormProps> = ({
   moduleId,
-  postId,
+  mapId,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
   onFinishCallback,
 }) => {
-  const { mutate: createPost, isPending: isPendingCreate, error: errorCreate } = useCreatePost();
-  const { mutate: updatePost, isPending: isPendingUpdate, error: errorUpdate } = useUpdatePost();
+  const { mutate: createMap, isPending: isPendingCreate, error: errorCreate } = useCreateMap();
+  const { mutate: updateMap, isPending: isPendingUpdate, error: errorUpdate } = useUpdateMap();
   const [showImageModal, setShowImageModal] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState<PbImage>();
-  const { post: postData, isFetching: isPendingPost } = usePost(postId);
-  const { image: imageThumbnail } = useImage(postData?.imageThumbnailId ?? 0);
+  const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
+  const { image: imageThumbnail } = useImage(mapData?.thumbnailImageId ?? 0);
 
-  const { value: title, onChange: onChangeTitle } = useInput<string>(postData?.title ?? '');
+  const { value: name, onChange: onChangeName } = useInput<string>(mapData?.name ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
-    postData?.description ?? '',
+    mapData?.description ?? '',
   );
 
   const toggleImageModal = useCallback(() => {
@@ -57,27 +57,26 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
     }
   }, [onFinishCallback]);
 
-  const submitPostHandler = useCallback(() => {
-    if (postId) {
-      updatePost(
+  const submitMapHandler = useCallback(() => {
+    if (mapId) {
+      updateMap(
         {
-          postId,
+          mapId,
           body: {
-            title: canChangeTitle ? title : undefined,
+            name: canChangeTitle ? name : undefined,
             description: canChangeDescription ? description : undefined,
-            imageThumbnailId: thumbnailImage?.id,
+            thumbnailImageId: thumbnailImage?.id,
           },
         },
         { onSuccess },
       );
     } else {
-      createPost(
+      createMap(
         {
           moduleId,
-          title: canChangeTitle ? title : undefined,
+          name: canChangeTitle ? name : undefined,
           description: canChangeDescription ? description : undefined,
-          imageThumbnailId: thumbnailImage?.id,
-          isDraft: true,
+          thumbnailImageId: thumbnailImage?.id,
         },
         { onSuccess },
       );
@@ -85,17 +84,17 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
   }, [
     canChangeDescription,
     canChangeTitle,
-    createPost,
+    createMap,
     description,
+    mapId,
     moduleId,
     onSuccess,
-    postId,
     thumbnailImage?.id,
-    title,
-    updatePost,
+    name,
+    updateMap,
   ]);
 
-  const loading = isPendingPost || isPendingCreate || isPendingUpdate;
+  const loading = isPendingMap || isPendingCreate || isPendingUpdate;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -104,14 +103,7 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
       <Row fullWidth gap="md" alignItems="start">
         <Col fullWidth gap="md">
           {canChangeTitle && (
-            <Input
-              id="title"
-              label="Title"
-              onChange={onChangeTitle}
-              value={title}
-              required
-              fullWidth
-            />
+            <Input id="name" label="Name" onChange={onChangeName} value={name} required fullWidth />
           )}
           {canChangeDescription && (
             <Textarea
@@ -123,8 +115,8 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
               onChange={onChange}
             />
           )}
-          <Button onClick={submitPostHandler} loading={loading}>
-            {postId ? 'Save' : 'Create'}
+          <Button onClick={submitMapHandler} loading={loading}>
+            {mapId ? 'Save' : 'Create'}
           </Button>
           <ErrorText error={errorCreate ?? errorUpdate} />
         </Col>
@@ -145,7 +137,7 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
         setOpen={setShowImageModal}
         trigger={null}
         onSubmit={setThumbnailImage}
-        uploadedFilename={`post-thumbnail-${postId}`}
+        uploadedFilename={`map-thumbnail-${mapId}`}
         uploadedImageTypeId={100}
         isNullable={true}
       />
@@ -153,4 +145,4 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
   );
 };
 
-export default PostEditMode;
+export default MapForm;

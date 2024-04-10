@@ -4,17 +4,23 @@ import { useInput } from '../../hooks/useInput';
 import Input from '../../components/Input/Input';
 import { Col, Row } from '../../components/Flex/Flex';
 import Avatar from '../../components/Avatar/Avatar';
+import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbPost } from '../../generated/api-types/data-contracts';
+import { useUpdatePost } from '../../api/posts/useUpdatePost';
+import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
+import { usePost } from '../../hooks/usePost';
 import { useImage } from '../../hooks/useImage';
+import { useCreatePost } from '../../api/posts/useCreatePost';
+import { PbImage } from '../../generated/api-types/data-contracts';
 
 const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
 interface PostFormProps {
-  post?: PbPost;
+  moduleId?: number;
+  postId?: number;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
@@ -22,29 +28,74 @@ interface PostFormProps {
 }
 
 const PostForm: React.FC<PostFormProps> = ({
-  post,
+  moduleId,
+  postId,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
+  onFinishCallback,
 }) => {
-  // const { mutate: createMenuItemPost, isPending, error } = useCreateMenuItemPost();
-
+  const { mutate: createPost, isPending: isPendingCreate, error: errorCreate } = useCreatePost();
+  const { mutate: updatePost, isPending: isPendingUpdate, error: errorUpdate } = useUpdatePost();
   const [showImageModal, setShowImageModal] = useState(false);
+  const [thumbnailImage, setThumbnailImage] = useState<PbImage>();
+  const { post: postData, isFetching: isPendingPost } = usePost(postId);
+  const { image: imageThumbnail } = useImage(postData?.imageThumbnailId ?? 0);
 
-  const { image: thumbnailImage } = useImage(post?.imageThumbnailId);
-  const { value: title, onChange: onChangeTitle } = useInput<string>(post?.title ?? '');
+  const { value: title, onChange: onChangeTitle } = useInput<string>(postData?.title ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
-    post?.description ?? '',
+    postData?.description ?? '',
   );
 
   const toggleImageModal = useCallback(() => {
     setShowImageModal((p) => !p);
   }, []);
 
-  const createPostHandler = useCallback(() => {}, []);
+  const onSuccess = useCallback(() => {
+    if (onFinishCallback) {
+      onFinishCallback();
+    }
+  }, [onFinishCallback]);
 
-  // const pending = isPending;
-  const pending = false;
+  const submitPostHandler = useCallback(() => {
+    if (postId) {
+      updatePost(
+        {
+          postId,
+          body: {
+            title: canChangeTitle ? title : undefined,
+            description: canChangeDescription ? description : undefined,
+            imageThumbnailId: thumbnailImage?.id,
+          },
+        },
+        { onSuccess },
+      );
+    } else {
+      createPost(
+        {
+          moduleId,
+          title: canChangeTitle ? title : undefined,
+          description: canChangeDescription ? description : undefined,
+          imageThumbnailId: thumbnailImage?.id,
+          isDraft: true,
+        },
+        { onSuccess },
+      );
+    }
+  }, [
+    canChangeDescription,
+    canChangeTitle,
+    createPost,
+    description,
+    moduleId,
+    onSuccess,
+    postId,
+    thumbnailImage?.id,
+    title,
+    updatePost,
+  ]);
+
+  const loading = isPendingPost || isPendingCreate || isPendingUpdate;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -72,19 +123,19 @@ const PostForm: React.FC<PostFormProps> = ({
               onChange={onChange}
             />
           )}
-          <Button onClick={createPostHandler} loading={pending}>
-            {post ? 'Update' : 'Create'}
+          <Button onClick={submitPostHandler} loading={loading}>
+            {postId ? 'Save' : 'Create'}
           </Button>
-          {/*<ErrorText error={error} />*/}
+          <ErrorText error={errorCreate ?? errorUpdate} />
         </Col>
         {canChangeThumbnail && (
           <Col gap="md" alignItems="center" padding="xl">
             <Label css={{ width: 'auto' }}>Thumbnail</Label>
             <Avatar
-              loading={pending}
+              loading={loading}
               onClick={toggleImageModal}
               size="xl"
-              url={thumbnailImage?.url}
+              url={thumbnailImage?.url ?? imageThumbnail?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
             />
           </Col>
         )}
@@ -93,9 +144,10 @@ const PostForm: React.FC<PostFormProps> = ({
         open={showImageModal}
         setOpen={setShowImageModal}
         trigger={null}
-        onSubmit={() => {}}
-        uploadedFilename={`post-thumbnail`}
+        onSubmit={setThumbnailImage}
+        uploadedFilename={`post-thumbnail-${postId}`}
         uploadedImageTypeId={100}
+        isNullable={true}
       />
     </>
   );
