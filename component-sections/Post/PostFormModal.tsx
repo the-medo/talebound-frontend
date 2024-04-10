@@ -1,7 +1,8 @@
 import React, { Suspense, useCallback, useMemo } from 'react';
 import Modal from '../../components/Modal/Modal';
+import PostEditMode from './PostEditMode';
+import { useUrlModuleId } from '../../hooks/useUrlModuleId';
 import { PbPost } from '../../generated/api-types/data-contracts';
-import PostForm from './PostForm';
 
 interface PostFormModalProps {
   post?: PbPost;
@@ -14,14 +15,15 @@ const PostFormModal: React.FC<PostFormModalProps> = ({ post, trigger, open, setO
   const onFinishCallback = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
+  const moduleId = useUrlModuleId();
 
   const content = useMemo(
     () => (
       <Suspense fallback={null}>
-        <PostForm post={post} onFinishCallback={onFinishCallback} />
+        <PostEditMode moduleId={moduleId} postId={post?.id} onFinishCallback={onFinishCallback} />
       </Suspense>
     ),
-    [post, onFinishCallback],
+    [moduleId, post, onFinishCallback],
   );
 
   return (

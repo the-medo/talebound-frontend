@@ -134,13 +134,15 @@ const Post: React.FC<PostProps> = ({
                 )}
               </Row>
               {editModeDetails && (
-                <PostEditMode
-                  key={`post-edit-mode-${postId}`}
-                  postId={postId}
-                  canChangeTitle={canChangeTitle}
-                  canChangeDescription={canChangeDescription}
-                  canChangeThumbnail={canChangeThumbnail}
-                />
+                <ContentSection flexWrap="wrap" direction="column">
+                  <PostEditMode
+                    key={`post-edit-mode-${postId}`}
+                    postId={postId}
+                    canChangeTitle={canChangeTitle}
+                    canChangeDescription={canChangeDescription}
+                    canChangeThumbnail={canChangeThumbnail}
+                  />
+                </ContentSection>
               )}
             </>
           )}

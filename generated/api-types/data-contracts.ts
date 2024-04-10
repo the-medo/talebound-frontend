@@ -108,9 +108,12 @@ export interface PbCreatePostRequest {
   /** @format int32 */
   moduleId?: number;
   title?: string;
+  description?: string;
   content?: string;
   isDraft?: boolean;
   isPrivate?: boolean;
+  /** @format int32 */
+  imageThumbnailId?: number;
 }
 
 export interface PbCreateUserRequest {

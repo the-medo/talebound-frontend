@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import ContentSection from '../../components/ContentSection/ContentSection';
 import Textarea from '../../components/Textarea/Textarea';
 import { useInput } from '../../hooks/useInput';
 import Input from '../../components/Input/Input';
@@ -8,31 +7,38 @@ import Avatar from '../../components/Avatar/Avatar';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { Label } from '../../components/Typography/Label';
 import ImageModal from '../../components/ImageModal/ImageModal';
-import { PbImage } from '../../generated/api-types/data-contracts';
 import { useUpdatePost } from '../../api/posts/useUpdatePost';
 import ErrorText from '../../components/ErrorText/ErrorText';
 import { Button } from '../../components/Button/Button';
 import { usePost } from '../../hooks/usePost';
 import { useImage } from '../../hooks/useImage';
+import { useCreatePost } from '../../api/posts/useCreatePost';
+import { PbImage } from '../../generated/api-types/data-contracts';
 
 const textareaPlaceholder =
   'Short description of the post. What information does this post contain?';
 
 interface PostEditModeProps {
-  postId: number;
+  moduleId?: number;
+  postId?: number;
   canChangeTitle?: boolean;
   canChangeDescription?: boolean;
   canChangeThumbnail?: boolean;
+  onFinishCallback?: () => void;
 }
 
 const PostEditMode: React.FC<PostEditModeProps> = ({
+  moduleId,
   postId,
   canChangeTitle = true,
   canChangeDescription = true,
   canChangeThumbnail = true,
+  onFinishCallback,
 }) => {
-  const { mutate: updatePost, isPending, error } = useUpdatePost();
+  const { mutate: createPost, isPending: isPendingCreate, error: errorCreate } = useCreatePost();
+  const { mutate: updatePost, isPending: isPendingUpdate, error: errorUpdate } = useUpdatePost();
   const [showImageModal, setShowImageModal] = useState(false);
+  const [thumbnailImage, setThumbnailImage] = useState<PbImage>();
   const { post: postData, isFetching: isPendingPost } = usePost(postId);
   const { image: imageThumbnail } = useImage(postData?.imageThumbnailId ?? 0);
 
@@ -45,36 +51,56 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
     setShowImageModal((p) => !p);
   }, []);
 
-  const changeThumbnailImage = useCallback(
-    (image: PbImage | undefined) => {
-      if (canChangeThumbnail) {
-        updatePost({
+  const onSuccess = useCallback(() => {
+    if (onFinishCallback) {
+      onFinishCallback();
+    }
+  }, [onFinishCallback]);
+
+  const submitPostHandler = useCallback(() => {
+    if (postId) {
+      updatePost(
+        {
           postId,
           body: {
-            imageThumbnailId: image?.id ?? 0,
+            title: canChangeTitle ? title : undefined,
+            description: canChangeDescription ? description : undefined,
+            imageThumbnailId: thumbnailImage?.id,
           },
-        });
-      }
-    },
-    [canChangeThumbnail, postId, updatePost],
-  );
+        },
+        { onSuccess },
+      );
+    } else {
+      createPost(
+        {
+          moduleId,
+          title: canChangeTitle ? title : undefined,
+          description: canChangeDescription ? description : undefined,
+          imageThumbnailId: thumbnailImage?.id,
+          isDraft: true,
+        },
+        { onSuccess },
+      );
+    }
+  }, [
+    canChangeDescription,
+    canChangeTitle,
+    createPost,
+    description,
+    moduleId,
+    onSuccess,
+    postId,
+    thumbnailImage?.id,
+    title,
+    updatePost,
+  ]);
 
-  const updatePostHandler = useCallback(() => {
-    updatePost({
-      postId,
-      body: {
-        title: canChangeTitle ? title : undefined,
-        description: canChangeDescription ? description : undefined,
-      },
-    });
-  }, [canChangeDescription, canChangeTitle, description, postId, title, updatePost]);
-
-  const loading = isPendingPost || isPending;
+  const loading = isPendingPost || isPendingCreate || isPendingUpdate;
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
   return (
-    <ContentSection flexWrap="wrap" direction="column">
+    <>
       <Row fullWidth gap="md" alignItems="start">
         <Col fullWidth gap="md">
           {canChangeTitle && (
@@ -97,10 +123,10 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
               onChange={onChange}
             />
           )}
-          <Button onClick={updatePostHandler} loading={loading}>
-            Save
+          <Button onClick={submitPostHandler} loading={loading}>
+            {postId ? 'Save' : 'Create'}
           </Button>
-          <ErrorText error={error} />
+          <ErrorText error={errorCreate ?? errorUpdate} />
         </Col>
         {canChangeThumbnail && (
           <Col gap="md" alignItems="center" padding="xl">
@@ -109,7 +135,7 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
               loading={loading}
               onClick={toggleImageModal}
               size="xl"
-              url={imageThumbnail?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
+              url={thumbnailImage?.url ?? imageThumbnail?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
             />
           </Col>
         )}
@@ -118,12 +144,12 @@ const PostEditMode: React.FC<PostEditModeProps> = ({
         open={showImageModal}
         setOpen={setShowImageModal}
         trigger={null}
-        onSubmit={changeThumbnailImage}
+        onSubmit={setThumbnailImage}
         uploadedFilename={`post-thumbnail-${postId}`}
         uploadedImageTypeId={100}
         isNullable={true}
       />
-    </ContentSection>
+    </>
   );
 };
 

@@ -104,7 +104,7 @@ const CreateEntityGroupModal: React.FC<CreateEntityGroupModalProps> = ({ trigger
             } else if (type === 'CREATE_ENTITY_CONTENT') {
               const createEntityGroupContentArgs = {
                 menuItemId,
-                entityGroupId: data.entityGroup.id,
+                entityGroupId: data.entityGroup?.id,
                 body: {
                   position: 1,
                   entityType,

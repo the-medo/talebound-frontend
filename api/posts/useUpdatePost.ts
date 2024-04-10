@@ -2,7 +2,6 @@ import { createMutation, inferData } from 'react-query-kit';
 import { PostsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
 import { useGetPostById } from './useGetPostById';
-import { useGetMenuItemPosts } from '../menus/useGetMenuItemPosts';
 import { store } from '../../store';
 import { postAdapterSlice } from '../../adapters/PostAdapter';
 
