@@ -14,6 +14,7 @@ import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUr
 import { useMap } from '../../hooks/useMap';
 import { useCreateMap } from '../../api/maps/useCreateMap';
 import { useUpdateMap } from '../../api/maps/useUpdateMap';
+import MapLayerPlaceholder from './MapLayer/MapLayerPlaceholder';
 
 const textareaPlaceholder =
   'Short description of the map. What information does this post contain?';
@@ -38,7 +39,9 @@ const MapForm: React.FC<MapFormProps> = ({
   const { mutate: createMap, isPending: isPendingCreate, error: errorCreate } = useCreateMap();
   const { mutate: updateMap, isPending: isPendingUpdate, error: errorUpdate } = useUpdateMap();
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showMainLayerModal, setShowMainLayerModal] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState<PbImage>();
+  const [mainLayerImage, setMainLayerImage] = useState<PbImage>();
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
   const { image: imageThumbnail } = useImage(mapData?.thumbnailImageId ?? 0);
 
@@ -95,6 +98,7 @@ const MapForm: React.FC<MapFormProps> = ({
   ]);
 
   const loading = isPendingMap || isPendingCreate || isPendingUpdate;
+  const openMapLayerModal = () => setShowMainLayerModal(true);
 
   if (!canChangeTitle && !canChangeDescription && !canChangeThumbnail) return null;
 
@@ -113,6 +117,14 @@ const MapForm: React.FC<MapFormProps> = ({
               rows={5}
               value={description}
               onChange={onChange}
+            />
+          )}
+          {!mapId && (
+            <MapLayerPlaceholder
+              image={mainLayerImage}
+              onClick={openMapLayerModal}
+              titleSelected="change"
+              titleNotSelected="+ base map image"
             />
           )}
           <Button onClick={submitMapHandler} loading={loading}>
@@ -138,6 +150,15 @@ const MapForm: React.FC<MapFormProps> = ({
         trigger={null}
         onSubmit={setThumbnailImage}
         uploadedFilename={`map-thumbnail-${mapId}`}
+        uploadedImageTypeId={100}
+        isNullable={true}
+      />
+      <ImageModal
+        open={showMainLayerModal}
+        setOpen={setShowMainLayerModal}
+        trigger={null}
+        onSubmit={setMainLayerImage}
+        uploadedFilename={`map-layer-${mapId}`}
         uploadedImageTypeId={100}
         isNullable={true}
       />
