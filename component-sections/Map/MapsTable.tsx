@@ -3,12 +3,9 @@ import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdEdit, MdOpenInNew } from 'react-icons/md';
-import { PbEntityType, PbPost } from '../../generated/api-types/data-contracts';
+import { PbEntityType, PbMap } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
-import PostFormModal from './PostFormModal';
-import { PAGE_SIZE_POSTS } from '../../api/posts/useGetPosts';
 import { formatDate } from '../../utils/functions/formatDate';
-import PostDetailModal from './PostDetailModal';
 import AvatarById from '../../components/AvatarById/AvatarById';
 import EntityTableDragHandle from '../../screens/menus/MenuCategory/EntityComponent/EntityTableDragHandle';
 import {
@@ -17,10 +14,13 @@ import {
   tableSorter,
   TaleboundColumnType,
 } from '../../utils/types/tables';
+import { PAGE_SIZE_MAPS } from '../../api/maps/useGetMaps';
+import MapFormModal from './MapFormModal';
+import MapDetailModal from './MapDetailModal';
 
-interface PostsTableProps {
+interface MapsTableProps {
   tableType?: EntityTableType;
-  data: (PbPost | undefined)[];
+  data: (PbMap | undefined)[];
   totalCount: number;
   canEdit?: boolean;
   loading?: boolean;
@@ -30,7 +30,7 @@ interface PostsTableProps {
   setSorting: React.Dispatch<React.SetStateAction<Tables>>;
 }
 
-const PostsTable: React.FC<PostsTableProps> = ({
+const MapsTable: React.FC<MapsTableProps> = ({
   tableType = EntityTableType.LIST,
   data,
   totalCount,
@@ -42,20 +42,19 @@ const PostsTable: React.FC<PostsTableProps> = ({
   setSorting,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [updatePost, setUpdatePost] = useState<PbPost>();
-  const [detailModalPostId, setDetailModalPostId] = useState<number>();
+  const [updateMap, setUpdateMap] = useState<PbMap>();
+  const [detailModalMapId, setDetailModalMapId] = useState<number>();
 
   canEdit = canEdit && !isSelectionTable;
 
-  const handleCloseUpdatePostModal = useCallback(() => setUpdatePost(undefined), []);
-  const handleClosePostDetailModal = useCallback(() => setDetailModalPostId(undefined), []);
+  const handleCloseUpdateMapModal = useCallback(() => setUpdateMap(undefined), []);
+  const handleCloseMapDetailModal = useCallback(() => setDetailModalMapId(undefined), []);
 
   const onSelectChange = useCallback((newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   }, []);
 
-  const rowSelection: TableProps<PbPost>['rowSelection'] = useMemo(
+  const rowSelection: TableProps<PbMap>['rowSelection'] = useMemo(
     () =>
       (canEdit || isSelectionTable) && tableType === EntityTableType.LIST
         ? {
@@ -67,10 +66,10 @@ const PostsTable: React.FC<PostsTableProps> = ({
     [tableType, canEdit, selectedRowKeys, onSelectChange, isSelectionTable, isSelectionMultiple],
   );
 
-  const openEditModal = useCallback((record: PbPost) => setUpdatePost(record), []);
+  const openEditModal = useCallback((record: PbMap) => setUpdateMap(record), []);
 
   const actionButtons = useCallback(
-    (record: PbPost) => {
+    (record: PbMap) => {
       const updateHandler = () => openEditModal(record);
 
       return (
@@ -84,8 +83,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
     [openEditModal],
   );
 
-  const openPostModalButtons = useCallback((record: PbPost) => {
-    const openHandler = () => setDetailModalPostId(record.id!);
+  const openMapModalButtons = useCallback((record: PbMap) => {
+    const openHandler = () => setDetailModalMapId(record.id!);
 
     return (
       <Button icon onClick={openHandler} size="md" color="primaryOutline">
@@ -94,12 +93,12 @@ const PostsTable: React.FC<PostsTableProps> = ({
     );
   }, []);
 
-  const columns: TaleboundColumnType<PbPost>[] = useMemo(() => {
-    const cols: TaleboundColumnType<PbPost>[] = [
+  const columns: TaleboundColumnType<PbMap>[] = useMemo(() => {
+    const cols: TaleboundColumnType<PbMap>[] = [
       {
         title: '',
-        key: 'imageThumbnailId',
-        dataIndex: 'imageThumbnailId',
+        key: 'thumbnailImageId',
+        dataIndex: 'thumbnailImageId',
         render: (value: number) => (
           <Suspense fallback={null}>
             <AvatarById size="md" imageId={value} />
@@ -109,30 +108,29 @@ const PostsTable: React.FC<PostsTableProps> = ({
       },
       {
         title: 'Title',
-        key: 'title',
-        dataIndex: 'title',
+        key: 'name',
+        dataIndex: 'name',
         render: (value: string) => <b>{value}</b>,
         sorter: true,
-        sort_field: 'title',
+        sort_field: 'name',
       },
       {
-        title: 'Created at',
-        key: 'createdAt',
-        dataIndex: 'createdAt',
-        width: 140,
-        render: (value: string) => formatDate(value, false, 'week'),
-        defaultSortOrder: 'descend',
+        title: 'W',
+        key: 'width',
+        dataIndex: 'width',
+        width: 50,
+        render: (value) => value,
         sorter: true,
-        sort_field: 'created_at',
+        sort_field: 'width',
       },
       {
-        title: 'Last updated at',
-        key: 'lastUpdatedAt',
-        dataIndex: 'lastUpdatedAt',
-        width: 140,
-        render: (value: string) => formatDate(value, false, 'week'),
+        title: 'H',
+        key: 'height',
+        dataIndex: 'height',
+        width: 50,
+        render: (value) => value,
         sorter: true,
-        sort_field: 'last_updated_at',
+        sort_field: 'height',
       },
     ];
 
@@ -148,7 +146,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
     cols.push({
       title: '',
       key: 'action-buttons',
-      render: (_, record) => openPostModalButtons(record),
+      render: (_, record) => openMapModalButtons(record),
       width: '40px',
     });
 
@@ -159,9 +157,9 @@ const PostsTable: React.FC<PostsTableProps> = ({
         render: (_, record) =>
           record.id ? (
             <EntityTableDragHandle
-              entityType={PbEntityType.ENTITY_TYPE_POST}
+              entityType={PbEntityType.ENTITY_TYPE_MAP}
               entityId={record.id}
-              imageId={record.imageThumbnailId}
+              imageId={record.thumbnailImageId}
             />
           ) : null,
         width: '40px',
@@ -169,10 +167,10 @@ const PostsTable: React.FC<PostsTableProps> = ({
     }
 
     return cols;
-  }, [tableType, canEdit, actionButtons, openPostModalButtons]);
+  }, [tableType, canEdit, actionButtons, openMapModalButtons]);
 
-  const onRow: TableProps<PbPost>['onRow'] = useCallback(
-    (record: PbPost) => {
+  const onRow: TableProps<PbMap>['onRow'] = useCallback(
+    (record: PbMap) => {
       if (!isSelectionTable) return {};
 
       return {
@@ -186,24 +184,24 @@ const PostsTable: React.FC<PostsTableProps> = ({
 
   const paginationConfig: TablePaginationConfig | undefined = useMemo(() => {
     return {
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} posts`, // TODO: i18n
+      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} maps`, // TODO: i18n
       showSizeChanger: false,
       total: totalCount,
-      pageSize: PAGE_SIZE_POSTS,
+      pageSize: PAGE_SIZE_MAPS,
       size: 'default',
       onChange: onPageChange,
       disabled: loading,
     };
   }, [totalCount, onPageChange, loading]);
 
-  const filteredData = useMemo(() => data.filter((d) => d !== undefined) as PbPost[], [data]);
+  const filteredData = useMemo(() => data.filter((d) => d !== undefined) as PbMap[], [data]);
 
-  const onChangeHandler = useMemo(() => tableSorter<PbPost>(setSorting), [setSorting]);
+  const onChangeHandler = useMemo(() => tableSorter<PbMap>(setSorting), [setSorting]);
 
   return (
     <>
       <Col fullWidth>
-        <Table<PbPost>
+        <Table<PbMap>
           loading={loading}
           rowSelection={rowSelection}
           pagination={paginationConfig}
@@ -217,21 +215,21 @@ const PostsTable: React.FC<PostsTableProps> = ({
         />
       </Col>
       {/*<ErrorText error={errorDelete} />*/}
-      <PostFormModal
+      <MapFormModal
         trigger={undefined}
-        post={updatePost}
-        open={!!updatePost}
-        setOpen={handleCloseUpdatePostModal}
+        map={updateMap}
+        open={!!updateMap}
+        setOpen={handleCloseUpdateMapModal}
       />
-      <PostDetailModal
-        postId={detailModalPostId}
+      <MapDetailModal
+        mapId={detailModalMapId}
         canEdit={canEdit}
         trigger={undefined}
-        open={!!detailModalPostId}
-        setOpen={handleClosePostDetailModal}
+        open={!!detailModalMapId}
+        setOpen={handleCloseMapDetailModal}
       />
     </>
   );
 };
 
-export default PostsTable;
+export default MapsTable;

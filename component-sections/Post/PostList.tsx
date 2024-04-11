@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { PAGE_SIZE_POSTS, useGetPosts } from '../../api/posts/useGetPosts';
-import PostsTable, { EntityTableType } from './PostsTable';
+import PostsTable from './PostsTable';
 import { selectPostsByIds } from '../../adapters/PostAdapter';
 import { ReduxState } from '../../store';
 import { useSelector } from 'react-redux';
-import { Tables } from '../../utils/types/tables';
+import { EntityTableType, Tables } from '../../utils/types/tables';
 
 interface PostListProps {
   tableType?: EntityTableType;

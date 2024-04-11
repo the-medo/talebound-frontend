@@ -4,8 +4,8 @@ import { TbPlus } from 'react-icons/tb';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ContentSection from '../../../components/ContentSection/ContentSection';
 import { TitleH2 } from '../../../components/Typography/Title';
-import PostFormModal from '../../../component-sections/Post/PostFormModal';
 import MapFormModal from '../../../component-sections/Map/MapFormModal';
+import MapList from '../../../component-sections/Map/MapList';
 
 interface MapsScreenProps {
   canEdit?: boolean;
@@ -43,7 +43,7 @@ const MapsScreen: React.FC<MapsScreenProps> = ({ canEdit, moduleId }) => {
               </Row>
             )}
           </Row>
-          {/*<PostList canEdit={canEdit} moduleId={moduleId} />*/}
+          <MapList canEdit={canEdit} moduleId={moduleId} />
         </ContentSection>
       </Col>
       <Col css={{ flexGrow: 0, flexBasis: '600px' }}></Col>

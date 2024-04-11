@@ -28,3 +28,8 @@ export const tableSorter =
       });
     }
   };
+
+export enum EntityTableType {
+  LIST = 0,
+  DRAG = 1,
+}

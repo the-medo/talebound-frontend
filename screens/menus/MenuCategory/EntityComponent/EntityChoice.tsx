@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import PostList from '../../../../component-sections/Post/PostList';
-import { EntityTableType } from '../../../../component-sections/Post/PostsTable';
 import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
 import { PbEntityType } from '../../../../generated/api-types/data-contracts';
 import { MessageBox } from '../../../../components/MessageBox/MessageBox';
 import { Row } from '../../../../components/Flex/Flex';
 import ImageButton from '../../../../components/ImageButton/ImageButton';
+import { EntityTableType } from '../../../../utils/types/tables';
 
 interface EntityChoiceProps {
   canEdit?: boolean;

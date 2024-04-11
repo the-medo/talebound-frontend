@@ -80,21 +80,23 @@ const MapForm: React.FC<MapFormProps> = ({
           name: canChangeTitle ? name : undefined,
           description: canChangeDescription ? description : undefined,
           thumbnailImageId: thumbnailImage?.id,
+          layerImageId: mainLayerImage?.id,
         },
         { onSuccess },
       );
     }
   }, [
-    canChangeDescription,
-    canChangeTitle,
-    createMap,
-    description,
     mapId,
-    moduleId,
-    onSuccess,
-    thumbnailImage?.id,
-    name,
     updateMap,
+    canChangeTitle,
+    name,
+    canChangeDescription,
+    description,
+    thumbnailImage?.id,
+    onSuccess,
+    createMap,
+    moduleId,
+    mainLayerImage?.id,
   ]);
 
   const loading = isPendingMap || isPendingCreate || isPendingUpdate;

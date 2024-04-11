@@ -4,7 +4,7 @@ import { expandDataForInfiniteQuery, InfiniteResponse } from '../apiLib';
 import { store } from '../../store';
 import { mapAdapterSlice } from '../../adapters/MapAdapter';
 
-export const PAGE_SIZE_POSTS = 3;
+export const PAGE_SIZE_MAPS = 3;
 
 type GetMapsParams = NonNullable<Parameters<typeof MapsCollection.mapsGetMaps>[0]>;
 
@@ -23,7 +23,7 @@ export const useGetMaps = createInfiniteQuery<
   queryFn: async ({ queryKey: [_primaryKey, variables], pageParam: offset }) => {
     const { data } = await MapsCollection.mapsGetMaps({
       ...variables,
-      limit: PAGE_SIZE_POSTS,
+      limit: PAGE_SIZE_MAPS,
       offset,
     });
 
@@ -37,7 +37,7 @@ export const useGetMaps = createInfiniteQuery<
         totalCount: data.totalCount ?? 0,
       },
       offset,
-      PAGE_SIZE_POSTS,
+      PAGE_SIZE_MAPS,
       data.totalCount,
     );
   },
