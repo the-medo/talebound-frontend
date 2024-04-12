@@ -41,13 +41,17 @@ const RemoveEntityContentButton: React.FC<RemoveEntityButtonProps> = ({ contentI
     error: errorDelete,
   } = useDeleteEntityGroupContent();
 
-  const handleRemoveEntity = useCallback(() => {
-    deleteEntityGroupContent({
-      menuItemId,
-      entityGroupId: mainEntityGroupId,
-      contentId,
-    });
-  }, [contentId, deleteEntityGroupContent, mainEntityGroupId, menuItemId]);
+  const handleRemoveEntity = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      deleteEntityGroupContent({
+        menuItemId,
+        entityGroupId: mainEntityGroupId,
+        contentId,
+      });
+      e.stopPropagation();
+    },
+    [contentId, deleteEntityGroupContent, mainEntityGroupId, menuItemId],
+  );
 
   return (
     <Button icon onClick={handleRemoveEntity} size="sm" color="dangerOutline">

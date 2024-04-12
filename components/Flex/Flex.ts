@@ -30,6 +30,13 @@ export const Flex = styled('div', {
       true: {
         '&:hover': {
           backgroundColor: '#f5f5f5',
+        },
+      },
+    },
+
+    hoverPointer: {
+      true: {
+        '&:hover': {
           cursor: 'pointer',
         },
       },

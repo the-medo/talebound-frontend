@@ -46,6 +46,7 @@ export interface MenuCategoryState {
   menuItemId: number;
   editEntityGroupId: number | undefined;
   newEntityGroupData: NewEntityGroupData;
+  openedUrlPrefix: string;
 }
 
 const initialState: MenuCategoryState = {
@@ -55,6 +56,7 @@ const initialState: MenuCategoryState = {
   menuItemId: 0,
   editEntityGroupId: undefined,
   newEntityGroupData: undefined,
+  openedUrlPrefix: '',
 };
 
 export const menuCategorySlice = createSlice({
@@ -77,6 +79,9 @@ export const menuCategorySlice = createSlice({
     setNewEntityGroupData: (state, action: PayloadAction<NewEntityGroupData>) => {
       state.newEntityGroupData = action.payload;
     },
+    setOpenedUrlPrefix: (state, action: PayloadAction<string>) => {
+      state.openedUrlPrefix = action.payload;
+    },
   },
 });
 
@@ -86,6 +91,7 @@ export const {
   setMenuData,
   setEditEntityGroupId,
   setNewEntityGroupData,
+  setOpenedUrlPrefix,
 } = menuCategorySlice.actions;
 
 export const menuCategoryReducer = menuCategorySlice.reducer;

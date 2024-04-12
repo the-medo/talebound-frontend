@@ -8,11 +8,18 @@ import { useMap } from '../../../../hooks/useMap';
 
 interface EntityMapProps extends PropsWithChildren {
   contentId: number;
+  entityId: number;
   mapId: number;
   groupDirection: PbEntityGroupDirection;
 }
 
-const EntityMap: React.FC<EntityMapProps> = ({ children, contentId, mapId, groupDirection }) => {
+const EntityMap: React.FC<EntityMapProps> = ({
+  children,
+  contentId,
+  entityId,
+  mapId,
+  groupDirection,
+}) => {
   const { map: mapData, isFetching: isPendingPost } = useMap(mapId);
   const mapImageId = mapData?.thumbnailImageId ?? 0;
   const editMode = useSelector((state: ReduxState) => state.menuCategory.editMode);
@@ -23,6 +30,7 @@ const EntityMap: React.FC<EntityMapProps> = ({ children, contentId, mapId, group
     return (
       <GenericEntityRowView
         contentId={contentId}
+        entityId={entityId}
         editMode={editMode}
         avatarImageId={mapImageId}
         title={mapData?.title}
@@ -36,6 +44,7 @@ const EntityMap: React.FC<EntityMapProps> = ({ children, contentId, mapId, group
   return (
     <GenericEntityAvatarView
       contentId={contentId}
+      entityId={entityId}
       editMode={editMode}
       avatarImageId={mapImageId}
       title={mapData?.title}

@@ -1,15 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import MenuCategory from '../../screens/menus/MenuCategory/MenuCategory';
+import { useDispatch } from 'react-redux';
+import { setOpenedUrlPrefix } from '../../screens/menus/MenuCategory/menuCategorySlice';
 
 interface MenuCategoryProps {
   menuId: number;
-  postId?: number;
+  entityId?: number;
   linkPrefix: string;
   canEdit?: boolean;
 }
 
-const MenuCategoryPage: React.FC<MenuCategoryProps> = ({ postId, linkPrefix, menuId, canEdit }) => {
+const MenuCategoryPage: React.FC<MenuCategoryProps> = ({
+  entityId,
+  linkPrefix,
+  menuId,
+  canEdit,
+}) => {
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const m = router.query['menuCategory'];
@@ -18,12 +26,15 @@ const MenuCategoryPage: React.FC<MenuCategoryProps> = ({ postId, linkPrefix, men
     return typeof m === 'string' ? m : '';
   }, [m]);
 
+  useEffect(() => {
+    dispatch(setOpenedUrlPrefix(`${linkPrefix}/c/${menuItemCode}`));
+  }, [dispatch, linkPrefix, menuItemCode]);
+
   return (
     <MenuCategory
       menuItemCode={menuItemCode}
       menuId={menuId}
-      postId={postId}
-      linkPrefix={`${linkPrefix}/c/${menuItemCode}`}
+      entityId={entityId}
       canEdit={canEdit}
     />
   );

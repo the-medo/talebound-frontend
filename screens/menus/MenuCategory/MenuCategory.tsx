@@ -4,7 +4,6 @@ import ContentSection from '../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { Button } from '../../../components/Button/Button';
 import LoadingText from '../../../components/Loading/LoadingText';
-import { TitleH2 } from '../../../components/Typography/Title';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import MenuCategoryContent from './MenuCategoryContent';
 import { DndContext, DragEndEvent, DragStartEvent, pointerWithin } from '@dnd-kit/core';
@@ -23,14 +22,14 @@ import { MdEdit } from 'react-icons/md';
 import { useUpdateEntityGroupContent } from '../../../api/entities/useUpdateEntityGroupContent';
 import EntityChoice from './EntityComponent/EntityChoice';
 import { useCreateEntityGroupContent } from '../../../api/entities/useCreateEntityGroupContent';
+import Entity from '../../../component-sections/Entity/Entity';
 
 const Post = React.lazy(() => import('../../../component-sections/Post/Post'));
 
 interface MenuCategoryProps {
   menuItemCode: string;
   menuId: number;
-  postId?: number;
-  linkPrefix: string;
+  entityId?: number;
   worldImageThumbnail?: string;
   canEdit?: boolean;
 }
@@ -38,8 +37,7 @@ interface MenuCategoryProps {
 const MenuCategory: React.FC<MenuCategoryProps> = ({
   menuItemCode,
   menuId,
-  postId,
-  linkPrefix,
+  entityId,
   worldImageThumbnail,
   canEdit = false,
 }) => {
@@ -70,9 +68,9 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   }, [menuItem?.descriptionPostId]);
 
   const displayPostId = useMemo(() => {
-    if (postId === descriptionPostId || !postId) return descriptionPostId;
+    if (!entityId) return descriptionPostId;
     return 0;
-  }, [descriptionPostId, postId]);
+  }, [descriptionPostId, entityId]);
 
   const createDescriptionPostHandler = useCallback(() => {}, []);
 
@@ -191,7 +189,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
   );
 
   if (!menuItem) {
-    return <div>404 - not found!</div>;
+    return (
+      <div>
+        {JSON.stringify(menuItemsData)} {menuId} 404 - not found!
+      </div>
+    );
   }
 
   return (
@@ -217,7 +219,11 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
                     <Button onClick={createDescriptionPostHandler}>Create description post</Button>
                   </ContentSection>
                 )}
-                {displayPostId === 0 && <TitleH2>404 - not found</TitleH2>}
+                {displayPostId === 0 && entityId && (
+                  <Suspense fallback={<LoadingText />}>
+                    <Entity entityId={entityId} canEdit={canEdit} />
+                  </Suspense>
+                )}
                 {displayPostId > 0 && (
                   <Suspense fallback={<LoadingText />}>
                     <Post

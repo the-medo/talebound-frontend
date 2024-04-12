@@ -5,11 +5,11 @@ import ModuleCategory from '../../../../../component-sections/Module/ModuleCateg
 interface MenuItemPostProps {}
 
 const MenuItemPostPageWorlds: React.FC<MenuItemPostProps> = () => {
-  const postId = useNumericParam('postId') ?? 0;
+  const entityId = useNumericParam('entityId') ?? 0;
 
   return (
     <Suspense fallback={null}>
-      <ModuleCategory postId={postId} />
+      <ModuleCategory entityId={entityId} />
     </Suspense>
   );
 };

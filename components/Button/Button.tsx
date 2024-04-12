@@ -273,7 +273,7 @@ export type ButtonVariants = Stitches.VariantProps<typeof StyledButton>;
 export interface ButtonProps extends PropsWithChildren, ButtonVariants {
   loading?: boolean;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   css?: Stitches.CSS;
   title?: string;
 }

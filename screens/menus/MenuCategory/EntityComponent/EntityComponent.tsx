@@ -28,6 +28,7 @@ const EntityComponent: React.FC<EntityComponentProps> = ({
       return (
         <EntityPost
           contentId={contentId}
+          entityId={entityId}
           postId={entity.postId ?? 0}
           groupDirection={groupDirection}
         >
@@ -36,7 +37,12 @@ const EntityComponent: React.FC<EntityComponentProps> = ({
       );
     case PbEntityType.ENTITY_TYPE_MAP:
       return (
-        <EntityMap contentId={contentId} mapId={entity.mapId ?? 0} groupDirection={groupDirection}>
+        <EntityMap
+          contentId={contentId}
+          entityId={entityId}
+          mapId={entity.mapId ?? 0}
+          groupDirection={groupDirection}
+        >
           {children}
         </EntityMap>
       );

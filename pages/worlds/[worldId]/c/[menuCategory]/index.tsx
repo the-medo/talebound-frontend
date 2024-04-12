@@ -1,14 +1,12 @@
 import React, { Suspense } from 'react';
 import ModuleCategory from '../../../../../component-sections/Module/ModuleCategory';
 
-interface MenuCategoryProps {
-  postId?: number;
-}
+interface MenuCategoryProps {}
 
-const MenuCategoryPageWorlds: React.FC<MenuCategoryProps> = ({ postId }) => {
+const MenuCategoryPageWorlds: React.FC<MenuCategoryProps> = () => {
   return (
     <Suspense fallback={null}>
-      <ModuleCategory postId={postId} />
+      <ModuleCategory />
     </Suspense>
   );
 };
