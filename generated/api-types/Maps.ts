@@ -129,11 +129,12 @@ export class Maps<SecurityDataType = unknown> {
   mapsUpdateMap = (
     mapId: number,
     body: {
-      name?: string;
+      title?: string;
       type?: string;
       description?: string;
       /** @format int32 */
       thumbnailImageId?: number;
+      isPrivate?: boolean;
     },
     params: RequestParams = {},
   ) =>

@@ -3,9 +3,7 @@ import { Table } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib';
 import { Button } from '../../components/Button/Button';
 import { MdEdit, MdOpenInNew } from 'react-icons/md';
-import { PbEntityType, PbMap } from '../../generated/api-types/data-contracts';
 import { Col, Row } from '../../components/Flex/Flex';
-import { formatDate } from '../../utils/functions/formatDate';
 import AvatarById from '../../components/AvatarById/AvatarById';
 import EntityTableDragHandle from '../../screens/menus/MenuCategory/EntityComponent/EntityTableDragHandle';
 import {
@@ -17,6 +15,8 @@ import {
 import { PAGE_SIZE_MAPS } from '../../api/maps/useGetMaps';
 import MapFormModal from './MapFormModal';
 import MapDetailModal from './MapDetailModal';
+import { PbEntityType, PbMap } from '../../generated/api-types/data-contracts';
+import { formatDate } from '../../utils/functions/formatDate';
 
 interface MapsTableProps {
   tableType?: EntityTableType;
@@ -108,11 +108,30 @@ const MapsTable: React.FC<MapsTableProps> = ({
       },
       {
         title: 'Title',
-        key: 'name',
-        dataIndex: 'name',
+        key: 'title',
+        dataIndex: 'title',
         render: (value: string) => <b>{value}</b>,
         sorter: true,
-        sort_field: 'name',
+        sort_field: 'title',
+      },
+      {
+        title: 'Created at',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
+        width: 140,
+        render: (value: string) => formatDate(value, false, 'week'),
+        defaultSortOrder: 'descend',
+        sorter: true,
+        sort_field: 'created_at',
+      },
+      {
+        title: 'Last updated at',
+        key: 'lastUpdatedAt',
+        dataIndex: 'lastUpdatedAt',
+        width: 140,
+        render: (value: string) => formatDate(value, false, 'week'),
+        sorter: true,
+        sort_field: 'last_updated_at',
       },
       {
         title: 'W',

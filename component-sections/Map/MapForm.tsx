@@ -45,7 +45,7 @@ const MapForm: React.FC<MapFormProps> = ({
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
   const { image: imageThumbnail } = useImage(mapData?.thumbnailImageId ?? 0);
 
-  const { value: name, onChange: onChangeName } = useInput<string>(mapData?.name ?? '');
+  const { value: title, onChange: onChangeName } = useInput<string>(mapData?.title ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
     mapData?.description ?? '',
   );
@@ -66,7 +66,7 @@ const MapForm: React.FC<MapFormProps> = ({
         {
           mapId,
           body: {
-            name: canChangeTitle ? name : undefined,
+            title: canChangeTitle ? title : undefined,
             description: canChangeDescription ? description : undefined,
             thumbnailImageId: thumbnailImage?.id,
           },
@@ -77,7 +77,7 @@ const MapForm: React.FC<MapFormProps> = ({
       createMap(
         {
           moduleId,
-          name: canChangeTitle ? name : undefined,
+          title: canChangeTitle ? title : undefined,
           description: canChangeDescription ? description : undefined,
           thumbnailImageId: thumbnailImage?.id,
           layerImageId: mainLayerImage?.id,
@@ -89,7 +89,7 @@ const MapForm: React.FC<MapFormProps> = ({
     mapId,
     updateMap,
     canChangeTitle,
-    name,
+    title,
     canChangeDescription,
     description,
     thumbnailImage?.id,
@@ -109,7 +109,14 @@ const MapForm: React.FC<MapFormProps> = ({
       <Row fullWidth gap="md" alignItems="start">
         <Col fullWidth gap="md">
           {canChangeTitle && (
-            <Input id="name" label="Name" onChange={onChangeName} value={name} required fullWidth />
+            <Input
+              id="title"
+              label="Title"
+              onChange={onChangeName}
+              value={title}
+              required
+              fullWidth
+            />
           )}
           {canChangeDescription && (
             <Textarea

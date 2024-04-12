@@ -19,7 +19,7 @@ const MapList: React.FC<MapListProps> = ({
 }) => {
   const [openedPage, setOpenedPage] = useState(1);
   const [sorting, setSorting] = useState<Tables>({
-    orderBy: 'name',
+    orderBy: 'created_at',
     orderDirection: 'desc',
   });
 

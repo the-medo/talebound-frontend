@@ -7,6 +7,7 @@ import { MessageBox } from '../../../../components/MessageBox/MessageBox';
 import { Row } from '../../../../components/Flex/Flex';
 import ImageButton from '../../../../components/ImageButton/ImageButton';
 import { EntityTableType } from '../../../../utils/types/tables';
+import MapList from '../../../../component-sections/Map/MapList';
 
 interface EntityChoiceProps {
   canEdit?: boolean;
@@ -51,7 +52,9 @@ const EntityChoice: React.FC<EntityChoiceProps> = ({ canEdit, worldImageThumbnai
       {selectedEntityType === PbEntityType.ENTITY_TYPE_POST && (
         <PostList tableType={EntityTableType.DRAG} canEdit={canEdit} moduleId={moduleId} />
       )}
-      {selectedEntityType === PbEntityType.ENTITY_TYPE_MAP && `Map selection`}
+      {selectedEntityType === PbEntityType.ENTITY_TYPE_MAP && (
+        <MapList tableType={EntityTableType.DRAG} canEdit={canEdit} moduleId={moduleId} />
+      )}
       {selectedEntityType === PbEntityType.ENTITY_TYPE_LOCATION && `Location selection`}
       {selectedEntityType === PbEntityType.ENTITY_TYPE_IMAGE && `Image selection`}
     </ContentSection>

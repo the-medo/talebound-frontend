@@ -68,11 +68,12 @@ export interface PbCreateLocationRequest {
 export interface PbCreateMapRequest {
   /** @format int32 */
   moduleId?: number;
-  name?: string;
+  title?: string;
   type?: string;
   description?: string;
   /** @format int32 */
   thumbnailImageId?: number;
+  isPrivate?: boolean;
   /** @format int32 */
   layerImageId?: number;
 }
@@ -397,15 +398,39 @@ export interface PbLoginUserResponse {
 export interface PbMap {
   /** @format int32 */
   id?: number;
-  name?: string;
+  /** field is sortable */
+  title?: string;
+  /** field is sortable */
   type?: string;
   description?: string;
-  /** @format int32 */
+  /**
+   * field is sortable
+   * @format int32
+   */
   width?: number;
-  /** @format int32 */
+  /**
+   * field is sortable
+   * @format int32
+   */
   height?: number;
   /** @format int32 */
   thumbnailImageId?: number;
+  /**
+   * field is sortable
+   * @format date-time
+   */
+  createdAt?: string;
+  /**
+   * field is sortable
+   * @format date-time
+   */
+  lastUpdatedAt?: string;
+  /**
+   * field is sortable
+   * @format int32
+   */
+  lastUpdatedUserId?: number;
+  isPrivate?: boolean;
 }
 
 export interface PbMapPinType {
