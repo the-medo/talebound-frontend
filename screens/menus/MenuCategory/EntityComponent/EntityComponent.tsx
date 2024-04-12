@@ -6,6 +6,7 @@ import {
 } from '../../../../generated/api-types/data-contracts';
 import { useEntity } from '../../../../hooks/useEntity';
 import EntityPost from './EntityPost';
+import EntityMap from './EntityMap';
 
 interface EntityComponentProps extends PropsWithChildren {
   contentId: number;
@@ -32,6 +33,12 @@ const EntityComponent: React.FC<EntityComponentProps> = ({
         >
           {children}
         </EntityPost>
+      );
+    case PbEntityType.ENTITY_TYPE_MAP:
+      return (
+        <EntityMap contentId={contentId} mapId={entity.mapId ?? 0} groupDirection={groupDirection}>
+          {children}
+        </EntityMap>
       );
   }
 
