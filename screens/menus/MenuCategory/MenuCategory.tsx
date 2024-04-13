@@ -203,7 +203,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         onDragEnd={handleDragEnd}
         collisionDetection={pointerWithin}
       >
-        <Row gap="md" alignItems="start" wrap>
+        <Row gap="md" alignItems="start" wrap id="content">
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             {editMode && (
               <EntityChoice worldImageThumbnail={worldImageThumbnail} canEdit={canEdit} />
