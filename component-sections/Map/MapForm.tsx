@@ -15,6 +15,9 @@ import { useMap } from '../../hooks/useMap';
 import { useCreateMap } from '../../api/maps/useCreateMap';
 import { useUpdateMap } from '../../api/maps/useUpdateMap';
 import MapLayerPlaceholder from './MapLayer/MapLayerPlaceholder';
+import SelectMapType from './SelectMapType/SelectMapType';
+import Checkbox from '../../components/Checkbox/Checkbox';
+import { CheckedState } from '@radix-ui/react-checkbox';
 
 const textareaPlaceholder =
   'Short description of the map. What information does this post contain?';
@@ -43,12 +46,18 @@ const MapForm: React.FC<MapFormProps> = ({
   const [thumbnailImage, setThumbnailImage] = useState<PbImage>();
   const [mainLayerImage, setMainLayerImage] = useState<PbImage>();
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
+  const [mapType, setMapType] = useState(mapData?.type);
+  const [isPrivate, setIsPrivate] = useState<CheckedState | undefined>(mapData?.isPrivate);
   const { image: imageThumbnail } = useImage(mapData?.thumbnailImageId ?? 0);
 
   const { value: title, onChange: onChangeName } = useInput<string>(mapData?.title ?? '');
   const { value: description, onChange } = useInput<string, HTMLTextAreaElement>(
     mapData?.description ?? '',
   );
+
+  // const setIsPrivate = useCallback((v: boolean) => {
+  //   setChecked(v);
+  // }, []);
 
   const toggleImageModal = useCallback(() => {
     setShowImageModal((p) => !p);
@@ -67,8 +76,10 @@ const MapForm: React.FC<MapFormProps> = ({
           mapId,
           body: {
             title: canChangeTitle ? title : undefined,
+            type: mapType,
             description: canChangeDescription ? description : undefined,
             thumbnailImageId: thumbnailImage?.id,
+            isPrivate: isPrivate === 'indeterminate' ? false : isPrivate,
           },
         },
         { onSuccess },
@@ -78,9 +89,11 @@ const MapForm: React.FC<MapFormProps> = ({
         {
           moduleId,
           title: canChangeTitle ? title : undefined,
+          type: mapType,
           description: canChangeDescription ? description : undefined,
           thumbnailImageId: thumbnailImage?.id,
           layerImageId: mainLayerImage?.id,
+          isPrivate: isPrivate === 'indeterminate' ? false : isPrivate,
         },
         { onSuccess },
       );
@@ -90,9 +103,11 @@ const MapForm: React.FC<MapFormProps> = ({
     updateMap,
     canChangeTitle,
     title,
+    mapType,
     canChangeDescription,
     description,
     thumbnailImage?.id,
+    isPrivate,
     onSuccess,
     createMap,
     moduleId,
@@ -118,6 +133,7 @@ const MapForm: React.FC<MapFormProps> = ({
               fullWidth
             />
           )}
+          {!isPendingMap && <SelectMapType defaultValue={mapData?.type} onChange={setMapType} />}
           {canChangeDescription && (
             <Textarea
               id="description"
@@ -135,6 +151,11 @@ const MapForm: React.FC<MapFormProps> = ({
               titleSelected="change"
               titleNotSelected="+ base map image"
             />
+          )}
+          {!isPendingMap && (
+            <Checkbox id="is-private" checked={isPrivate} onCheckedChange={setIsPrivate}>
+              Is private
+            </Checkbox>
           )}
           <Button onClick={submitMapHandler} loading={loading}>
             {mapId ? 'Save' : 'Create'}
