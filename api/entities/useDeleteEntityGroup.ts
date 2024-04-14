@@ -92,22 +92,5 @@ export const useDeleteEntityGroup = createMutation({
         return { ...oldData, contents: sortGetMenuItemContent(contents) };
       },
     );
-
-    // const newData = data.data;
-    // if (newData) {
-    //   const getMenuItemContentQueryKey = useGetMenuItemContent.getKey({
-    //     menuItemId: variables.menuItemId,
-    //   });
-    //
-    //   queryClient.setQueryData<inferData<typeof useGetMenuItemContent>>(
-    //     getMenuItemContentQueryKey,
-    //     (oldData) => ({
-    //       ...oldData,
-    //       groups: (oldData?.groups ?? []).map((g) =>
-    //         g.id === variables.entityGroupId ? newData : g,
-    //       ),
-    //     }),
-    //   );
-    // }
   },
 });

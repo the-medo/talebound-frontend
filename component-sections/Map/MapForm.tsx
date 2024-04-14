@@ -19,8 +19,7 @@ import SelectMapType from './SelectMapType/SelectMapType';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import { CheckedState } from '@radix-ui/react-checkbox';
 
-const textareaPlaceholder =
-  'Short description of the map. What information does this post contain?';
+const textareaPlaceholder = 'Short description of the map. What area does this map cover?';
 
 interface MapFormProps {
   moduleId?: number;
