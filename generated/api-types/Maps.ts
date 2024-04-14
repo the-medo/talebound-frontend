@@ -13,11 +13,12 @@ import {
   PbCreateMapRequest,
   PbCreateMapResponse,
   PbGetMapLayersResponse,
-  PbGetMapPinTypesResponse,
   PbGetMapPinsResponse,
   PbGetMapsResponse,
+  PbGetModuleMapPinTypesResponse,
   PbMap,
   PbMapPinType,
+  PbMapPinTypeGroup,
   PbPinShape,
   PbUpdateMapPinTypeResponse,
   PbViewMapLayer,
@@ -79,6 +80,93 @@ export class Maps<SecurityDataType = unknown> {
       method: 'POST',
       body: body,
       type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description creates a new map pin type group for the module
+   *
+   * @tags Maps
+   * @name MapsCreateMapPinTypeGroup
+   * @summary Create map pin type group
+   * @request POST:/maps/modules/{moduleId}/pin_type_groups
+   * @response `200` `PbMapPinTypeGroup` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsCreateMapPinTypeGroup = (
+    moduleId: number,
+    body: {
+      name?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbMapPinTypeGroup, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_type_groups`,
+      method: 'POST',
+      body: body,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description deletes a map pin type group from the module
+   *
+   * @tags Maps
+   * @name MapsDeleteMapPinTypeGroup
+   * @summary Delete map pin type group
+   * @request DELETE:/maps/modules/{moduleId}/pin_type_groups/{mapPinTypeGroupId}
+   * @response `200` `object` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsDeleteMapPinTypeGroup = (
+    moduleId: number,
+    mapPinTypeGroupId: number,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<object, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_type_groups/${mapPinTypeGroupId}`,
+      method: 'DELETE',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description updates map pin type group properties
+   *
+   * @tags Maps
+   * @name MapsUpdateMapPinTypeGroup
+   * @summary Update map pin type group
+   * @request PATCH:/maps/modules/{moduleId}/pin_type_groups/{mapPinTypeGroupId}
+   * @response `200` `PbMapPinTypeGroup` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsUpdateMapPinTypeGroup = (
+    moduleId: number,
+    mapPinTypeGroupId: number,
+    body: {
+      name?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbMapPinTypeGroup, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_type_groups/${mapPinTypeGroupId}`,
+      method: 'PATCH',
+      body: body,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * @description returns pin types of the module
+   *
+   * @tags Maps
+   * @name MapsGetModuleMapPinTypes
+   * @summary Get module map pin types
+   * @request GET:/maps/modules/{moduleId}/pin_types
+   * @response `200` `PbGetModuleMapPinTypesResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsGetModuleMapPinTypes = (moduleId: number, params: RequestParams = {}) =>
+    this.http.request<PbGetModuleMapPinTypesResponse, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_types`,
+      method: 'GET',
       format: 'json',
       ...params,
     });
@@ -179,7 +267,6 @@ export class Maps<SecurityDataType = unknown> {
       name?: string;
       /** @format int32 */
       imageId?: number;
-      isMain?: boolean;
       enabled?: boolean;
       /** @format int32 */
       position?: number;
@@ -227,7 +314,6 @@ export class Maps<SecurityDataType = unknown> {
       name?: string;
       /** @format int32 */
       imageId?: number;
-      isMain?: boolean;
       enabled?: boolean;
       /** @format int32 */
       position?: number;
@@ -238,23 +324,6 @@ export class Maps<SecurityDataType = unknown> {
       path: `/maps/${mapId}/layers/${layerId}`,
       method: 'PATCH',
       body: body,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description returns pin types of the map
-   *
-   * @tags Maps
-   * @name MapsGetMapPinTypes
-   * @summary Get map pin types
-   * @request GET:/maps/{mapId}/pin_types
-   * @response `200` `PbGetMapPinTypesResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsGetMapPinTypes = (mapId: number, params: RequestParams = {}) =>
-    this.http.request<PbGetMapPinTypesResponse, RpcStatus>({
-      path: `/maps/${mapId}/pin_types`,
-      method: 'GET',
       format: 'json',
       ...params,
     });
@@ -280,7 +349,6 @@ export class Maps<SecurityDataType = unknown> {
       iconSize?: number;
       /** @format int32 */
       width?: number;
-      section?: string;
     },
     params: RequestParams = {},
   ) =>
@@ -288,6 +356,7 @@ export class Maps<SecurityDataType = unknown> {
       path: `/maps/${mapId}/pin_types`,
       method: 'POST',
       body: body,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });
@@ -331,7 +400,7 @@ export class Maps<SecurityDataType = unknown> {
       iconSize?: number;
       /** @format int32 */
       width?: number;
-      section?: string;
+      isDefault?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -339,6 +408,7 @@ export class Maps<SecurityDataType = unknown> {
       path: `/maps/${mapId}/pin_types/${pinTypeId}`,
       method: 'PATCH',
       body: body,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });

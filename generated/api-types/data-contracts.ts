@@ -276,10 +276,6 @@ export interface PbGetMapLayersResponse {
   layers?: PbViewMapLayer[];
 }
 
-export interface PbGetMapPinTypesResponse {
-  pinTypes?: PbMapPinType[];
-}
-
 export interface PbGetMapPinsResponse {
   pins?: PbViewMapPin[];
 }
@@ -313,6 +309,11 @@ export interface PbGetModuleIdResponse {
   /** @format int32 */
   moduleId?: number;
   moduleType?: PbModuleType;
+}
+
+export interface PbGetModuleMapPinTypesResponse {
+  pinTypes?: PbMapPinType[];
+  pinTypeGroups?: PbMapPinTypeGroup[];
 }
 
 export interface PbGetModuleTypeAvailableTagsResponse {
@@ -398,37 +399,20 @@ export interface PbLoginUserResponse {
 export interface PbMap {
   /** @format int32 */
   id?: number;
-  /** field is sortable */
   title?: string;
-  /** field is sortable */
   type?: string;
   description?: string;
-  /**
-   * field is sortable
-   * @format int32
-   */
+  /** @format int32 */
   width?: number;
-  /**
-   * field is sortable
-   * @format int32
-   */
+  /** @format int32 */
   height?: number;
   /** @format int32 */
   thumbnailImageId?: number;
-  /**
-   * field is sortable
-   * @format date-time
-   */
+  /** @format date-time */
   createdAt?: string;
-  /**
-   * field is sortable
-   * @format date-time
-   */
+  /** @format date-time */
   lastUpdatedAt?: string;
-  /**
-   * field is sortable
-   * @format int32
-   */
+  /** @format int32 */
   lastUpdatedUserId?: number;
   isPrivate?: boolean;
 }
@@ -447,7 +431,13 @@ export interface PbMapPinType {
   iconSize?: number;
   /** @format int32 */
   width?: number;
-  section?: string;
+  isDefault?: boolean;
+}
+
+export interface PbMapPinTypeGroup {
+  /** @format int32 */
+  id?: number;
+  name?: string;
 }
 
 export interface PbMenuItem {
@@ -731,7 +721,6 @@ export interface PbViewMapLayer {
   /** @format int32 */
   imageId?: number;
   imageUrl?: string;
-  isMain?: boolean;
   enabled?: boolean;
   /** @format int32 */
   position?: number;
