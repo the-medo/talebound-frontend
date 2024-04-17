@@ -10,6 +10,7 @@ export const useCreateMapPinType = createMutation({
   mutationFn: async (variables: CreateMapPinTypeRequest) =>
     MapsCollection.mapsCreateMapPinType(variables.mapId, variables.body),
   onSuccess: (data, variables) => {
+    // TODO: add to useGetMapPinTypes
     console.log('New map pin type created', data, variables);
   },
 });

@@ -1,7 +1,7 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { MapsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
-import { useGetMapPinTypes } from './useGetMapPinTypes';
+import { useGetMapPinTypesAndGroups } from './useGetMapPinTypesAndGroups';
 
 export interface UpdateMapPinTypeRequest {
   mapId: number;
@@ -16,10 +16,17 @@ export const useUpdateMapPinType = createMutation({
     const { mapId, pinTypeId } = variables;
     const newData = data.data.pinType;
     if (mapId && newData) {
-      const mapPinTypesQueryKey = useGetMapPinTypes.getKey(mapId);
-      queryClient.setQueryData<inferData<typeof useGetMapPinTypes>>(
-        mapPinTypesQueryKey,
-        (oldData) => (oldData ?? []).map((c) => (c.id === pinTypeId ? newData : c)),
+      const queryKey = useGetMapPinTypesAndGroups.getKey(mapId);
+      queryClient.setQueryData<inferData<typeof useGetMapPinTypesAndGroups>>(
+        queryKey,
+        (oldData) => {
+          return {
+            ...oldData,
+            pinTypes: {
+              ...(oldData?.pinTypes ?? []).map((g) => (g.id === pinTypeId ? { ...newData } : g)),
+            },
+          };
+        },
       );
     }
   },

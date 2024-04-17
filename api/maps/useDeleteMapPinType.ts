@@ -1,7 +1,7 @@
 import { createMutation, inferData } from 'react-query-kit';
 import { MapsCollection } from '../collections';
 import { queryClient } from '../../pages/_app';
-import { useGetMapPinTypes } from './useGetMapPinTypes';
+import { useGetMapPinTypesAndGroups } from './useGetMapPinTypesAndGroups';
 
 interface DeleteMapPinTypeParams {
   mapId: number;
@@ -14,10 +14,17 @@ export const useDeleteMapPinType = createMutation({
   onSuccess: (_, variables) => {
     const { mapId, pinTypeId } = variables;
     if (mapId && pinTypeId) {
-      const mapPinTypesQueryKey = useGetMapPinTypes.getKey(mapId);
-      queryClient.setQueryData<inferData<typeof useGetMapPinTypes>>(
+      const mapPinTypesQueryKey = useGetMapPinTypesAndGroups.getKey(mapId);
+      queryClient.setQueryData<inferData<typeof useGetMapPinTypesAndGroups>>(
         mapPinTypesQueryKey,
-        (oldData) => oldData?.filter((d) => d.id !== pinTypeId) ?? [],
+        (oldData) => {
+          return {
+            ...oldData,
+            pinTypes: {
+              ...(oldData?.pinTypes ?? []).filter((g) => g.id !== pinTypeId),
+            },
+          };
+        },
       );
     }
   },
