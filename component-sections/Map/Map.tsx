@@ -8,6 +8,7 @@ import { Button } from '../../components/Button/Button';
 import { TbPencil } from 'react-icons/tb';
 import MapForm from './MapForm';
 import LoadingText from '../../components/Loading/LoadingText';
+import MapLayout from './MapLayout/MapLayout';
 
 interface MapProps {
   mapId: number;
@@ -60,7 +61,7 @@ const Map: React.FC<MapProps> = ({ mapId, canEdit, showTitle = true, isModal = f
           </>
         )}
       </Col>
-      Map {mapId} {canEdit} {isModal}
+      <MapLayout mapId={mapId} canEdit={canEdit} />
     </ContentSection>
   );
 };
