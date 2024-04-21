@@ -15,8 +15,8 @@ const globalStyles = globalCss({
   },
   body: {
     fontFamily: '$text',
-    scrollbarWidth: 'thin' /* Adjust the width of the scrollbar */,
-    scrollbarColor: '#888 #f5f5f5' /* Format: scrollbar-color: thumb track */,
+    // scrollbarWidth: 'thin' /* Adjust the width of the scrollbar */,
+    // scrollbarColor: '#888 #f5f5f5' /* Format: scrollbar-color: thumb track */,
     height: '100%',
   },
   'h1,h2,h3,h4,h5,h6': {

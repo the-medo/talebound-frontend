@@ -1,4 +1,5 @@
 import { styled } from '../../../styles/stitches.config';
+import { Col } from '../../../components/Flex/Flex';
 
 export const MapWrapper = styled('div', {
   width: '100%',
@@ -27,10 +28,19 @@ export const MapLayerImage = styled('img', {
   transition: '0.3s all',
 });
 
-export const MapSidebarSolid = styled('div', {
+export const MapSidebarSolid = styled(Col, {
   height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
   transition: '0.3s all',
   border: '2px solid green',
+  backgroundColor: '$white',
+});
+
+export const MapSidebarSection = styled(Col, {
+  flexGrow: 1,
+  minHeight: '75px',
+  // flexBasis: '25%',
+  transition: '0.3s all',
+  border: '2px solid blue',
+  backgroundColor: '$white',
+  overflowY: 'auto',
 });
