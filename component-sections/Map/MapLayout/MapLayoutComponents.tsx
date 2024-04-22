@@ -1,11 +1,10 @@
 import { styled } from '../../../styles/stitches.config';
-import { Col } from '../../../components/Flex/Flex';
+import { Col, Row } from '../../../components/Flex/Flex';
 
 export const MapWrapper = styled('div', {
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
-  border: '2px solid red',
   transition: '0.3s all',
 });
 
@@ -14,7 +13,6 @@ export const MapLayerContainer = styled('div', {
   display: 'flex',
   flexGrow: 1,
   position: 'relative',
-  border: '2px solid blue',
   transition: '0.3s all',
 });
 
@@ -24,15 +22,37 @@ export const MapLayerImage = styled('img', {
   height: '100%',
   top: 0,
   left: 0,
-  border: '2px dashed yellow',
   transition: '0.3s all',
+});
+
+export const MapLayerOverlay = styled('div', {
+  boxSizing: 'border-box',
+  position: 'absolute',
+  width: '250px',
+  maxHeight: 'calc(100% - 2 * $sm)',
+  top: 0,
+  right: 0,
+  margin: '$sm',
+  padding: '$sm',
+  paddingTop: '$xl',
+  transition: '0.3s all',
+  backgroundColor: '$white',
+  opacity: 0.8,
+  borderRadius: '$md',
+});
+
+export const MapLayerOverlayButtons = styled(Row, {
+  boxSizing: 'border-box',
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  margin: 'calc(2 * $sm)',
 });
 
 export const MapSidebarSolid = styled(Col, {
   height: '100%',
   transition: '0.3s all',
-  border: '2px solid green',
-  backgroundColor: '$white',
+  // backgroundColor: '$white',
 });
 
 export const MapSidebarSection = styled(Col, {
@@ -40,7 +60,6 @@ export const MapSidebarSection = styled(Col, {
   minHeight: '75px',
   // flexBasis: '25%',
   transition: '0.3s all',
-  border: '2px solid blue',
   backgroundColor: '$white',
   overflowY: 'auto',
 });

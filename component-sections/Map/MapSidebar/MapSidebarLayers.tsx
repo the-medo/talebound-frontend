@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { MapSidebarProps } from './MapSidebar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { BiLayer } from 'react-icons/bi';
 import { TitleH4 } from '../../../components/Typography/Title';
@@ -10,8 +9,14 @@ import Loading from '../../../components/Loading/Loading';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/Button/Button';
 import { MapSidebarSection } from '../MapLayout/MapLayoutComponents';
+import { DisplayedLayers } from '../mapUtils';
 
-interface MapSidebarLayersProps extends MapSidebarProps {}
+interface MapSidebarLayersProps {
+  mapId: number;
+  canEdit: boolean;
+  displayedLayers: DisplayedLayers;
+  setDisplayedLayers: React.Dispatch<React.SetStateAction<DisplayedLayers>>;
+}
 
 const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
   mapId,

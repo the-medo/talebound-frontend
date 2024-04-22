@@ -1,5 +1,4 @@
 import React from 'react';
-import { MapSidebarProps } from './MapSidebar';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { TitleH4 } from '../../../components/Typography/Title';
 import { VscLocation } from 'react-icons/vsc';
@@ -8,8 +7,13 @@ import Loading from '../../../components/Loading/Loading';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/Button/Button';
 import { MapSidebarSection } from '../MapLayout/MapLayoutComponents';
+import { DisplayedLayers } from '../mapUtils';
 
-interface MapSidebarPinsProps extends Omit<MapSidebarProps, 'setDisplayedLayers'> {}
+interface MapSidebarPinsProps {
+  mapId: number;
+  canEdit: boolean;
+  displayedLayers: DisplayedLayers;
+}
 
 const MapSidebarPins: React.FC<MapSidebarPinsProps> = ({ mapId, canEdit, displayedLayers }) => {
   const { data: mapPins, isFetching: isPendingMapPins } = useGetMapPins({ variables: mapId });

@@ -1,8 +1,7 @@
 import React from 'react';
-import { DisplayedLayers } from '../MapLayout/MapLayout';
 import MapSidebarLayers from './MapSidebarLayers';
 import MapSidebarPins from './MapSidebarPins';
-import { MapSidebarSection } from '../MapLayout/MapLayoutComponents';
+import { DisplayedLayers } from '../mapUtils';
 
 export interface MapSidebarProps {
   mapId: number;
