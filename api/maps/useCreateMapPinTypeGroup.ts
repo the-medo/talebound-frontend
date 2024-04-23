@@ -1,5 +1,7 @@
-import { createMutation } from 'react-query-kit';
+import { createMutation, inferData } from 'react-query-kit';
 import { MapsCollection } from '../collections';
+import { useGetMapPinTypesAndGroups } from './useGetMapPinTypesAndGroups';
+import { queryClient } from '../../pages/_app';
 
 export interface CreateMapPinTypeRequest {
   moduleId: number;
@@ -10,7 +12,16 @@ export const useCreateMapPinTypeGroup = createMutation({
   mutationFn: async (variables: CreateMapPinTypeRequest) =>
     MapsCollection.mapsCreateMapPinTypeGroup(variables.moduleId, variables.body),
   onSuccess: (data, variables) => {
-    // TODO: add to useGetMapPinTypes
-    console.log('New map pin type group created', data, variables);
+    const { moduleId } = variables;
+    if (moduleId) {
+      const queryKey = useGetMapPinTypesAndGroups.getKey(moduleId);
+      queryClient.setQueryData<inferData<typeof useGetMapPinTypesAndGroups>>(
+        queryKey,
+        (oldData) => ({
+          ...oldData,
+          pinTypeGroups: [...(oldData?.pinTypeGroups ?? []), data.data],
+        }),
+      );
+    }
   },
 });
