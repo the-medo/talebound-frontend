@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '../../../styles/stitches.config';
 import { TitleH4 } from '../../../components/Typography/Title';
 import { PbImage } from '../../../generated/api-types/data-contracts';
+import { Text } from '../../../components/Typography/Text';
 
 const BackgroundImage = styled('img', {
   display: 'block',
@@ -58,6 +59,11 @@ const Wrapper = styled('div', {
         },
       },
     },
+    error: {
+      true: {
+        border: '2px solid red',
+      },
+    },
   },
 });
 
@@ -65,6 +71,8 @@ interface MapLayerPlaceholderProps {
   image?: PbImage;
   titleSelected?: string;
   titleNotSelected?: string;
+  moreInfo?: string;
+  error?: boolean;
   onClick?: () => void;
 }
 
@@ -72,15 +80,20 @@ const MapLayerPlaceholder: React.FC<MapLayerPlaceholderProps> = ({
   image,
   titleSelected,
   titleNotSelected,
+  moreInfo,
   onClick,
+  error,
 }) => {
   const selected = !!image;
 
   return (
-    <Wrapper onClick={onClick} selected={selected}>
+    <Wrapper onClick={onClick} selected={selected} error={error}>
       <BackgroundImage src={`${image?.baseUrl}/original`} selected={selected} />
       <Header>
-        <TitleH4>{selected ? titleSelected : titleNotSelected}</TitleH4>
+        <TitleH4 color={error ? 'danger' : undefined}>
+          {selected ? titleSelected : titleNotSelected}
+        </TitleH4>
+        {moreInfo && <Text size="sm">({moreInfo})</Text>}
       </Header>
     </Wrapper>
   );

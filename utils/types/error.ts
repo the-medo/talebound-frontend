@@ -24,6 +24,9 @@ export const parseError = (error: unknown): string | undefined => {
   if (error === undefined || error === null) {
     return undefined;
   }
+  if (typeof error === 'string') {
+    return upperFirst(error);
+  }
   if (isTaleboundError(error)) {
     return upperFirst(error.response.data.message);
   }

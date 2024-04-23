@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { BiLayer } from 'react-icons/bi';
 import { TitleH4 } from '../../../components/Typography/Title';
@@ -10,6 +10,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/Button/Button';
 import { MapSidebarSection } from '../MapLayout/MapLayoutComponents';
 import { DisplayedLayers } from '../mapUtils';
+import MapLayerAdministrationModal from '../MapAdministrationModals/MapLayerAdministrationModal/MapLayerAdministrationModal';
 
 interface MapSidebarLayersProps {
   mapId: number;
@@ -26,6 +27,7 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
 }) => {
   const { data: mapLayers, isFetching: isPendingMapLayers } = useGetMapLayers({ variables: mapId });
   const hasLayers = (mapLayers ?? []).length > 1; //main layer doesn't count
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChecked = useCallback(
     (checkState: CheckedState) => (id: number) => {
@@ -50,7 +52,9 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
         {!hasLayers && (
           <Col fullWidth alignItems="center" gap="sm">
             <Text>No layers yet</Text>
-            <Button size="sm">Create</Button>
+            <Button size="sm" onClick={() => setModalOpen(true)}>
+              Create
+            </Button>
           </Col>
         )}
         {hasLayers &&
@@ -71,6 +75,9 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
             );
           })}
       </MapSidebarSection>
+      {canEdit && (
+        <MapLayerAdministrationModal open={modalOpen} setOpen={setModalOpen} mapId={mapId} />
+      )}
     </>
   );
 };
