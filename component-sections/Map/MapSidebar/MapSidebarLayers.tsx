@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Col, Row } from '../../../components/Flex/Flex';
 import { BiLayer } from 'react-icons/bi';
 import { TitleH4 } from '../../../components/Typography/Title';
@@ -11,6 +11,7 @@ import { Button } from '../../../components/Button/Button';
 import { MapSidebarSection } from '../MapLayout/MapLayoutComponents';
 import { DisplayedLayers } from '../mapUtils';
 import MapLayerAdministrationModal from '../MapAdministrationModals/MapLayerAdministrationModal/MapLayerAdministrationModal';
+import { sortByPositionDesc } from '../../../utils/functions/sortByPosition';
 
 interface MapSidebarLayersProps {
   mapId: number;
@@ -39,14 +40,23 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
     [setDisplayedLayers],
   );
 
+  const deSortedLayers = useMemo(() => (mapLayers ?? []).sort(sortByPositionDesc), [mapLayers]);
+
   if (isPendingMapLayers) return <Loading />;
   if (!hasLayers && !canEdit) return null;
 
   return (
     <>
-      <Row gap="sm">
-        <BiLayer />
-        <TitleH4> Layers</TitleH4>
+      <Row gap="sm" justifyContent="between">
+        <Row gap="sm">
+          <BiLayer />
+          <TitleH4> Layers</TitleH4>
+        </Row>
+        {canEdit && (
+          <Button size="sm" color="primaryOutline" onClick={() => setModalOpen(true)}>
+            Change layers
+          </Button>
+        )}
       </Row>
       <MapSidebarSection gap="sm">
         {!hasLayers && (
@@ -58,7 +68,7 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
           </Col>
         )}
         {hasLayers &&
-          (mapLayers ?? []).map((ml) => {
+          deSortedLayers.map((ml) => {
             const layerId = ml.id!;
             if (ml.position === 1) return null;
 

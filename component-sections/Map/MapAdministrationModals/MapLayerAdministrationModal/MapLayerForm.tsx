@@ -30,17 +30,21 @@ const MapLayerForm: React.FC<MapLayerFormProps> = ({ mapId, onFinishCallback }) 
 
   const [isEnabled, setIsEnabled] = useState<CheckedState | undefined>(true);
 
-  const { value: name, onChange: onChangeName } = useInput<string>('');
+  const { value: name, onChange: onChangeName, setValue: setName } = useInput<string>('');
 
   const toggleImageModal = useCallback(() => {
     setShowImageModal((p) => !p);
   }, []);
 
   const onSuccess = useCallback(() => {
+    setLayerImage(undefined);
+    setIsEnabled(true);
+    setName('');
+
     if (onFinishCallback) {
       onFinishCallback();
     }
-  }, [onFinishCallback]);
+  }, [onFinishCallback, setName]);
 
   const submitMapHandler = useCallback(() => {
     if (!mapId || !layerImage) return;
@@ -82,11 +86,13 @@ const MapLayerForm: React.FC<MapLayerFormProps> = ({ mapId, onFinishCallback }) 
             moreInfo={dimensionText}
             error={!correctDimensions}
           />
-          {!correctDimensions && <ErrorText error={`Dimensions ${dimensionText}`} />}
           {!correctDimensions && (
-            <Text>
-              Current dimensions: {layerImage?.width} x {layerImage?.height}
-            </Text>
+            <>
+              <ErrorText error={`Dimensions ${dimensionText}`} />
+              <Text>
+                Current dimensions: {layerImage?.width} x {layerImage?.height}
+              </Text>
+            </>
           )}
           {!isPendingMap && (
             <Checkbox id="is-enabled" checked={isEnabled} onCheckedChange={setIsEnabled}>
@@ -100,7 +106,11 @@ const MapLayerForm: React.FC<MapLayerFormProps> = ({ mapId, onFinishCallback }) 
             Layer will be automatically created on the top of the map. You can change order of
             layers on the right.
           </Text>
-          <Button onClick={submitMapHandler} loading={loading}>
+          <Button
+            disabled={!correctDimensions || loading}
+            onClick={submitMapHandler}
+            loading={loading}
+          >
             Create
           </Button>
           <ErrorText error={errorCreate} />
@@ -111,7 +121,7 @@ const MapLayerForm: React.FC<MapLayerFormProps> = ({ mapId, onFinishCallback }) 
         setOpen={setShowImageModal}
         trigger={null}
         onSubmit={setLayerImage}
-        uploadedFilename={`map-thumbnail-${mapId}`}
+        uploadedFilename={`map-${mapId}-layer`}
         uploadedImageTypeId={100}
         isNullable={true}
       />

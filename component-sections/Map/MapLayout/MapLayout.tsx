@@ -16,6 +16,7 @@ import { Button } from '../../../components/Button/Button';
 import { BiLayer } from 'react-icons/bi';
 import { TbArrowBarToLeft, TbArrowBarToRight } from 'react-icons/tb';
 import { MdClose } from 'react-icons/md';
+import { sortByPosition } from '../../../utils/functions/sortByPosition';
 
 interface MapLayoutProps {
   mapId: number;
@@ -66,7 +67,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit }) => {
   );
 
   const handleClose = useCallback(() => setMapLayoutType(MapLayoutType.HIDDEN), []);
-
+  const sortedLayers = useMemo(() => (mapLayers ?? []).sort(sortByPosition), [mapLayers]);
   let dlCount = 0;
 
   return (
@@ -77,13 +78,18 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit }) => {
       ref={layoutRef}
     >
       <MapLayerContainer>
-        {(mapLayers ?? []).map((ml) => {
+        {sortedLayers.map((ml) => {
           const layerId = ml.id;
           if (!ml.enabled || !layerId) return null;
           if (!displayedLayers[layerId] && (ml.position ?? 0) > 1) return null;
           dlCount++;
           return (
-            <MapLayerImage key={layerId} src={ml.imageUrl} alt={`Map layer - ${ml.position}`} />
+            <MapLayerImage
+              css={{ zIndex: ml.position ?? 0 }}
+              key={layerId}
+              src={ml.imageUrl}
+              alt={`Map layer - ${ml.position}`}
+            />
           );
         })}
         {mapLayoutType === MapLayoutType.OVERLAY && (

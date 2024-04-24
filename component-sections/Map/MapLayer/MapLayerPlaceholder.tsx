@@ -18,6 +18,7 @@ const BackgroundImage = styled('img', {
     selected: {
       true: {
         opacity: 1,
+        background: 'none',
       },
     },
   },

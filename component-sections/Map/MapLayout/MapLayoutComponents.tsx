@@ -26,6 +26,7 @@ export const MapLayerImage = styled('img', {
 });
 
 export const MapLayerOverlay = styled('div', {
+  zIndex: 100,
   boxSizing: 'border-box',
   position: 'absolute',
   width: '250px',
@@ -34,7 +35,7 @@ export const MapLayerOverlay = styled('div', {
   right: 0,
   margin: '$sm',
   padding: '$sm',
-  paddingTop: '$xl',
+  paddingTop: 'calc($xl + $sm)',
   transition: '0.3s all',
   backgroundColor: '$white',
   opacity: 0.8,
@@ -42,6 +43,7 @@ export const MapLayerOverlay = styled('div', {
 });
 
 export const MapLayerOverlayButtons = styled(Row, {
+  zIndex: 200,
   boxSizing: 'border-box',
   position: 'absolute',
   top: 0,
