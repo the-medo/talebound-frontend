@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useGetMapLayers } from '../../../../api/maps/useGetMapLayers';
-import { Row } from '../../../../components/Flex/Flex';
-import ContentSection from '../../../../components/ContentSection/ContentSection';
+import { styled } from '../../../../styles/stitches.config';
+import { Reorder } from 'framer-motion';
+import { PbViewMapLayer } from '../../../../generated/api-types/data-contracts';
+import MapLayerSectionDraggable from './MapLayerSectionDraggable';
+import ErrorText from '../../../../components/ErrorText/ErrorText';
+
+const ReorderGroupWrapper = styled('div', {
+  transition: 'opacity 0.2s ease-in-out',
+
+  variants: {
+    loading: {
+      true: {
+        opacity: 0.5,
+      },
+    },
+  },
+});
 
 interface MapLayerReorderProps {
   mapId?: number;
@@ -9,20 +24,43 @@ interface MapLayerReorderProps {
 
 const MapLayerReorder: React.FC<MapLayerReorderProps> = ({ mapId }) => {
   const { data: mapLayers, isFetching: isPendingMapLayers } = useGetMapLayers({ variables: mapId });
-  const hasLayers = (mapLayers ?? []).length > 0; //main layer doesn't count
+  const layerCount = (mapLayers ?? []).length; //main layer doesn't count
+
+  const [items, setItems] = useState<PbViewMapLayer[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<unknown>();
+
+  useEffect(() => {
+    setItems(mapLayers ?? []);
+  }, [mapLayers]);
+
+  const onReorder = useCallback((x: PbViewMapLayer[]) => {
+    setItems(x);
+    console.log('ON REORDER: ', x);
+  }, []);
+
+  const busy = isPendingMapLayers || loading;
 
   return (
     <>
-      {hasLayers &&
-        (mapLayers ?? [])
-          .sort((ml1, ml2) => ml2.position! - ml1.position!)
-          .map((ml) => {
-            return (
-              <ContentSection key={ml.id} fullWidth>
-                <Row gap="sm">{ml.name}</Row>
-              </ContentSection>
-            );
-          })}
+      {layerCount > 1 && (
+        <ReorderGroupWrapper loading={busy}>
+          <Reorder.Group as="div" axis="y" values={items} onReorder={onReorder}>
+            {(items ?? []).map((ml, i) => {
+              return (
+                <MapLayerSectionDraggable
+                  key={ml.id}
+                  newPosition={layerCount - i}
+                  mapLayer={ml}
+                  setLoading={setLoading}
+                  setError={setError}
+                />
+              );
+            })}
+          </Reorder.Group>
+        </ReorderGroupWrapper>
+      )}
+      <ErrorText error={error} />
     </>
   );
 };
