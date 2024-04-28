@@ -3,6 +3,7 @@ import { styled } from '../../../styles/stitches.config';
 import { TitleH4 } from '../../../components/Typography/Title';
 import { PbImage } from '../../../generated/api-types/data-contracts';
 import { Text } from '../../../components/Typography/Text';
+import Stitches from '@stitches/react';
 
 const BackgroundImage = styled('img', {
   display: 'block',
@@ -39,8 +40,6 @@ const Wrapper = styled('div', {
   position: 'relative',
   borderRadius: '$md',
   border: '1px solid $primary',
-  width: '100%',
-  minHeight: '75px',
   cursor: 'pointer',
 
   '&:hover': {
@@ -65,8 +64,25 @@ const Wrapper = styled('div', {
         border: '2px solid red',
       },
     },
+    size: {
+      fullWidth: {
+        width: '100%',
+        minHeight: '75px',
+      },
+      xs: {
+        width: '100px',
+      },
+      sm: {
+        width: '200px',
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: 'fullWidth',
   },
 });
+export type MapLayerPlaceholderVariants = Stitches.VariantProps<typeof Wrapper>;
 
 interface MapLayerPlaceholderProps {
   image?: PbImage;
@@ -75,6 +91,7 @@ interface MapLayerPlaceholderProps {
   moreInfo?: string;
   error?: boolean;
   onClick?: () => void;
+  size: MapLayerPlaceholderVariants['size'];
 }
 
 const MapLayerPlaceholder: React.FC<MapLayerPlaceholderProps> = ({
@@ -84,12 +101,16 @@ const MapLayerPlaceholder: React.FC<MapLayerPlaceholderProps> = ({
   moreInfo,
   onClick,
   error,
+  size,
 }) => {
   const selected = !!image;
 
   return (
-    <Wrapper onClick={onClick} selected={selected} error={error}>
-      <BackgroundImage src={`${image?.baseUrl}/original`} selected={selected} />
+    <Wrapper onClick={onClick} selected={selected} error={error} size={size}>
+      <BackgroundImage
+        src={image?.baseUrl ? `${image?.baseUrl}/original` : undefined}
+        selected={selected}
+      />
       <Header>
         <TitleH4 color={error ? 'danger' : undefined}>
           {selected ? titleSelected : titleNotSelected}

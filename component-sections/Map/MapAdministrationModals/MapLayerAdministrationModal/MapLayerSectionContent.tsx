@@ -9,6 +9,7 @@ import debounce from 'lodash.debounce';
 import { UpdateMapRequest, useUpdateMapLayer } from '../../../../api/maps/useUpdateMapLayer';
 import Checkbox from '../../../../components/Checkbox/Checkbox';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
+import MapLayerImage from './MapLayerImage';
 
 interface MapLayerSectionContentProps {
   mapLayer: PbViewMapLayer;
@@ -62,6 +63,7 @@ const MapLayerSectionContent: React.FC<MapLayerSectionContentProps> = ({ mapLaye
   return (
     <ContentSection key={mapLayer.id} fullWidth loading={isPendingUpdate}>
       <Row gap="sm">
+        <MapLayerImage mapLayer={mapLayer} />
         <Input
           id={`map-layer-title-${mapLayer.id}`}
           value={titleValue}
