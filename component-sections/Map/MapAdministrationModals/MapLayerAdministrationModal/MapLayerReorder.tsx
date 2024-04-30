@@ -5,6 +5,7 @@ import { Reorder } from 'framer-motion';
 import { PbViewMapLayer } from '../../../../generated/api-types/data-contracts';
 import MapLayerSectionDraggable from './MapLayerSectionDraggable';
 import ErrorText from '../../../../components/ErrorText/ErrorText';
+import { sortByPositionDesc } from '../../../../utils/functions/sortByPosition';
 
 const ReorderGroupWrapper = styled('div', {
   transition: 'opacity 0.2s ease-in-out',
@@ -31,7 +32,7 @@ const MapLayerReorder: React.FC<MapLayerReorderProps> = ({ mapId }) => {
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
-    setItems(mapLayers ?? []);
+    setItems((mapLayers ?? []).sort(sortByPositionDesc));
   }, [mapLayers]);
 
   const onReorder = useCallback((x: PbViewMapLayer[]) => {

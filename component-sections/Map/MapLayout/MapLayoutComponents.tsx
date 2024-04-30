@@ -6,6 +6,7 @@ export const MapWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   transition: '0.3s all',
+  minWidth: '300px',
 });
 
 export const MapLayerContainer = styled('div', {

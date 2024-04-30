@@ -91,7 +91,7 @@ interface MapLayerPlaceholderProps {
   moreInfo?: string;
   error?: boolean;
   onClick?: () => void;
-  size: MapLayerPlaceholderVariants['size'];
+  size?: MapLayerPlaceholderVariants['size'];
 }
 
 const MapLayerPlaceholder: React.FC<MapLayerPlaceholderProps> = ({

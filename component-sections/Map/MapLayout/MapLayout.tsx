@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMap } from '../../../hooks/useMap';
 import {
   MapLayerContainer,
@@ -21,9 +21,10 @@ import { sortByPosition } from '../../../utils/functions/sortByPosition';
 interface MapLayoutProps {
   mapId: number;
   canEdit: boolean;
+  allLayersByDefault: boolean;
 }
 
-const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit }) => {
+const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefault = false }) => {
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
   const { data: mapLayers, isFetching: isPendingMapLayers } = useGetMapLayers({ variables: mapId });
   const layoutRef = useRef<HTMLDivElement>(null);
@@ -67,8 +68,23 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit }) => {
   );
 
   const handleClose = useCallback(() => setMapLayoutType(MapLayoutType.HIDDEN), []);
-  const sortedLayers = useMemo(() => (mapLayers ?? []).sort(sortByPosition), [mapLayers]);
+  const sortedLayers = useMemo(() => (mapLayers ?? []).toSorted(sortByPosition), [mapLayers]);
   let dlCount = 0;
+
+  useEffect(() => {
+    if (allLayersByDefault) {
+      setDisplayedLayers((dl) => ({
+        ...(mapLayers ?? []).reduce<DisplayedLayers>(
+          (p, c) => ({
+            ...p,
+            [c.id ?? 0]: true,
+          }),
+          {},
+        ),
+        ...dl,
+      }));
+    }
+  }, [allLayersByDefault, mapLayers]);
 
   return (
     <MapWrapper
