@@ -7,23 +7,28 @@ export const MapWrapper = styled('div', {
   flexDirection: 'row',
   transition: '0.3s all',
   minWidth: '300px',
+  overflow: 'hidden',
 });
 
 export const MapLayerContainer = styled('div', {
   height: '100%',
+  maxHeight: '100%',
   display: 'flex',
   flexGrow: 1,
   position: 'relative',
+  transition: '0.3s all',
+  overflow: 'hidden',
+});
+
+export const MapLayers = styled('div', {
+  height: '100%',
   transition: '0.3s all',
 });
 
 export const MapLayerImage = styled('img', {
   position: 'absolute',
-  width: '100%',
-  height: '100%',
-  top: 0,
-  left: 0,
   transition: '0.3s all',
+  top: 0,
 });
 
 export const MapLayerOverlay = styled('div', {

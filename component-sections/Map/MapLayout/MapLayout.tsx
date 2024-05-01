@@ -5,6 +5,7 @@ import {
   MapLayerImage,
   MapLayerOverlay,
   MapLayerOverlayButtons,
+  MapLayers,
   MapSidebarSolid,
   MapWrapper,
 } from './MapLayoutComponents';
@@ -17,6 +18,7 @@ import { BiLayer } from 'react-icons/bi';
 import { TbArrowBarToLeft, TbArrowBarToRight } from 'react-icons/tb';
 import { MdClose } from 'react-icons/md';
 import { sortByPosition } from '../../../utils/functions/sortByPosition';
+import { imageModifyVariant, ImageVariant } from '../../../utils/images/imageUtils';
 
 interface MapLayoutProps {
   mapId: number;
@@ -43,7 +45,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
     return 0;
   }, [mapLayoutType]);
 
-  const size = useAspectRatioResizer({
+  const resizer = useAspectRatioResizer({
     ref: layoutRef,
     baseWidth: mapData?.width,
     offset,
@@ -89,25 +91,37 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
   return (
     <MapWrapper
       css={{
-        height: size.height + 'px',
+        height: resizer.height + 'px',
       }}
+      onWheel={resizer.onWheel}
       ref={layoutRef}
     >
       <MapLayerContainer>
-        {sortedLayers.map((ml) => {
-          const layerId = ml.id;
-          if (!ml.enabled || !layerId) return null;
-          if (!displayedLayers[layerId] && (ml.position ?? 0) > 1) return null;
-          dlCount++;
-          return (
-            <MapLayerImage
-              css={{ zIndex: ml.position ?? 0 }}
-              key={layerId}
-              src={ml.imageUrl}
-              alt={`Map layer - ${ml.position}`}
-            />
-          );
-        })}
+        <MapLayers
+          css={{
+            scale: resizer.zoomRatio,
+            transformOrigin: 'left top',
+          }}
+        >
+          {sortedLayers.map((ml) => {
+            const layerId = ml.id;
+            if (!ml.enabled || !layerId || !ml.imageUrl) return null;
+            if (!displayedLayers[layerId] && (ml.position ?? 0) > 1) return null;
+            dlCount++;
+            return (
+              <MapLayerImage
+                css={{
+                  zIndex: ml.position ?? 0,
+                  width: mapData?.width,
+                  height: mapData?.height,
+                }}
+                key={layerId}
+                src={imageModifyVariant(ml.imageUrl, ImageVariant.original)}
+                alt={`Map layer - ${ml.position}`}
+              />
+            );
+          })}
+        </MapLayers>
         {mapLayoutType === MapLayoutType.OVERLAY && (
           <MapLayerOverlay>
             <MapSidebar
@@ -145,7 +159,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
           padding="sm"
           gap="xs"
           css={{
-            width: size.finalOffset + 'px',
+            width: resizer.finalOffset + 'px',
           }}
         >
           <MapSidebar
