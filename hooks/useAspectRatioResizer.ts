@@ -11,15 +11,15 @@ export type AspectRatioOffset =
 export interface AspectRatioResizerProps {
   ref: React.RefObject<HTMLDivElement>;
   baseWidth?: number;
-  offset?: AspectRatioOffset;
   baseHeight?: number;
+  offset?: AspectRatioOffset;
+  zoomable?: boolean;
 }
 
 export interface AspectRatioResizerResponse {
   width: number;
   height: number;
   finalOffset: number;
-  onWheel: WheelEventHandler<HTMLDivElement>;
   zoomRatio: number;
 }
 
@@ -41,8 +41,9 @@ export interface AspectRatioResizerResponse {
 export const useAspectRatioResizer = ({
   ref,
   baseWidth = 1,
-  offset = 0,
   baseHeight = 1,
+  offset = 0,
+  zoomable = false,
 }: AspectRatioResizerProps): AspectRatioResizerResponse => {
   const computeOffset = useCallback(
     (width: number): number => {
@@ -97,34 +98,43 @@ export const useAspectRatioResizer = ({
     };
   }, [computeOffset, ref]);
 
-  const onWheel: WheelEventHandler<HTMLDivElement> = useCallback(
-    (e) => {
+  useEffect(() => {
+    if (!zoomable) return;
+    const handleWheel = (e: WheelEvent) => {
       console.log(e);
       e.preventDefault();
       const scaleIncrement = 0.1;
       setZoomRatio((p) => {
         if (e.deltaY < 0) {
-          // Scrolling up - zoom in
           p = Math.min(1, p + scaleIncrement);
         } else {
-          // Scrolling down - zoom out
           p = Math.max(minZoomRatio, p - scaleIncrement); // Don't scale below 1 (initial size)
         }
         console.log('New ratio: ', p, minZoomRatio);
         return p;
       });
-    },
-    [minZoomRatio],
-  );
+    };
+
+    const layoutElement = ref.current;
+    if (layoutElement) {
+      layoutElement.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      if (layoutElement) {
+        layoutElement.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [zoomable, minZoomRatio, ref]);
 
   return useMemo(
     () => ({
       width,
       height: Math.round(width / aspectRatio),
       finalOffset,
-      onWheel,
       zoomRatio,
     }),
-    [width, aspectRatio, finalOffset, onWheel, zoomRatio],
+    [width, aspectRatio, finalOffset, zoomRatio],
   );
 };

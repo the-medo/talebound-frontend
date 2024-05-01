@@ -50,6 +50,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
     baseWidth: mapData?.width,
     offset,
     baseHeight: mapData?.height,
+    zoomable: true,
   });
 
   const handleOverlay = useCallback(
@@ -93,7 +94,6 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
       css={{
         height: resizer.height + 'px',
       }}
-      onWheel={resizer.onWheel}
       ref={layoutRef}
     >
       <MapLayerContainer>
