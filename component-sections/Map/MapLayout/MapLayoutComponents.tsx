@@ -18,11 +18,12 @@ export const MapLayerContainer = styled('div', {
   position: 'relative',
   transition: '0.3s all',
   overflow: 'hidden',
+  userSelect: 'none',
 });
 
 export const MapLayers = styled('div', {
   height: '100%',
-  transition: '0.3s all',
+  transition: '0.2s all',
 });
 
 export const MapLayerImage = styled('img', {
@@ -53,6 +54,15 @@ export const MapLayerOverlayButtons = styled(Row, {
   boxSizing: 'border-box',
   position: 'absolute',
   top: 0,
+  right: 0,
+  margin: 'calc(2 * $sm)',
+});
+
+export const MapLayerOverlayPositioningInfo = styled(Row, {
+  zIndex: 9,
+  boxSizing: 'border-box',
+  position: 'absolute',
+  bottom: 0,
   right: 0,
   margin: 'calc(2 * $sm)',
 });

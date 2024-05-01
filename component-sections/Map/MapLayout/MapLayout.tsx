@@ -5,6 +5,7 @@ import {
   MapLayerImage,
   MapLayerOverlay,
   MapLayerOverlayButtons,
+  MapLayerOverlayPositioningInfo,
   MapLayers,
   MapSidebarSolid,
   MapWrapper,
@@ -23,13 +24,13 @@ import { imageModifyVariant, ImageVariant } from '../../../utils/images/imageUti
 interface MapLayoutProps {
   mapId: number;
   canEdit: boolean;
-  allLayersByDefault: boolean;
+  allLayersByDefault?: boolean;
 }
 
 const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefault = false }) => {
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
   const { data: mapLayers, isFetching: isPendingMapLayers } = useGetMapLayers({ variables: mapId });
-  const layoutRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [displayedLayers, setDisplayedLayers] = useState<DisplayedLayers>({});
   const [mapLayoutType, setMapLayoutType] = useState<MapLayoutType>(MapLayoutType.HIDDEN);
@@ -46,11 +47,12 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
   }, [mapLayoutType]);
 
   const resizer = useAspectRatioResizer({
-    ref: layoutRef,
+    ref: wrapperRef,
     baseWidth: mapData?.width,
     offset,
     baseHeight: mapData?.height,
     zoomable: true,
+    movable: true,
   });
 
   const handleOverlay = useCallback(
@@ -94,13 +96,21 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
       css={{
         height: resizer.height + 'px',
       }}
-      ref={layoutRef}
+      ref={wrapperRef}
     >
+      <div
+        id="mouse-info"
+        style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'white', zIndex: 100 }}
+      >
+        asdf
+      </div>
       <MapLayerContainer>
         <MapLayers
+          className="pannable"
           css={{
             scale: resizer.zoomRatio,
             transformOrigin: 'left top',
+            // translate: `${resizer.xOffset}px ${resizer.yOffset}px`,
           }}
         >
           {sortedLayers.map((ml) => {
@@ -153,6 +163,10 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
             )}
           </Button>
         </MapLayerOverlayButtons>
+
+        <MapLayerOverlayPositioningInfo gap="sm">
+          {resizer.xOffset} : {resizer.yOffset}
+        </MapLayerOverlayPositioningInfo>
       </MapLayerContainer>
       {mapLayoutType === MapLayoutType.SIDEBAR && (
         <MapSidebarSolid

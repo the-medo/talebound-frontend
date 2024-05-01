@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, WheelEventHandler } from 'react';
+import { usePanning } from './usePanning';
 
 export type AspectRatioOffset =
   | number
@@ -14,6 +15,7 @@ export interface AspectRatioResizerProps {
   baseHeight?: number;
   offset?: AspectRatioOffset;
   zoomable?: boolean;
+  movable?: boolean;
 }
 
 export interface AspectRatioResizerResponse {
@@ -21,6 +23,8 @@ export interface AspectRatioResizerResponse {
   height: number;
   finalOffset: number;
   zoomRatio: number;
+  xOffset: number;
+  yOffset: number;
 }
 
 /**
@@ -36,7 +40,6 @@ export interface AspectRatioResizerResponse {
  * @property {number} width - The current width of the element. It contains offset!
  * @property {number} height - The calculated height based on the element width. Important to note, with offset, the aspect ratio won't be the same.
  * @property {number} finalOffset - The final offset value.
- * @property {function} onWheel - The wheel event handler function.
  */
 export const useAspectRatioResizer = ({
   ref,
@@ -44,6 +47,7 @@ export const useAspectRatioResizer = ({
   baseHeight = 1,
   offset = 0,
   zoomable = false,
+  movable = false,
 }: AspectRatioResizerProps): AspectRatioResizerResponse => {
   const computeOffset = useCallback(
     (width: number): number => {
@@ -63,10 +67,10 @@ export const useAspectRatioResizer = ({
   const aspectRatio = baseHeight != 0 ? Math.round((baseWidth / baseHeight) * 1000) / 1000 : 1;
   const [width, setWidth] = useState(ref.current?.offsetWidth ?? 0);
   const [finalOffset, setFinalOffset] = useState(computeOffset(width));
-  // const mapWidth = width - finalOffset;
 
   const minZoomRatio = width / baseWidth;
   const [zoomRatio, setZoomRatio] = useState(minZoomRatio);
+  const panningRef = usePanning({ ref, zoomRatio: zoomRatio });
 
   useEffect(() => {
     setZoomRatio((p) => {
@@ -75,6 +79,7 @@ export const useAspectRatioResizer = ({
     });
   }, [minZoomRatio]);
 
+  // RESIZE OBSERVER
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -98,10 +103,10 @@ export const useAspectRatioResizer = ({
     };
   }, [computeOffset, ref]);
 
+  // WHEEL ZOOM
   useEffect(() => {
     if (!zoomable) return;
     const handleWheel = (e: WheelEvent) => {
-      console.log(e);
       e.preventDefault();
       const scaleIncrement = 0.1;
       setZoomRatio((p) => {
@@ -110,7 +115,6 @@ export const useAspectRatioResizer = ({
         } else {
           p = Math.max(minZoomRatio, p - scaleIncrement); // Don't scale below 1 (initial size)
         }
-        console.log('New ratio: ', p, minZoomRatio);
         return p;
       });
     };
@@ -134,7 +138,16 @@ export const useAspectRatioResizer = ({
       height: Math.round(width / aspectRatio),
       finalOffset,
       zoomRatio,
+      xOffset: panningRef.current.xOffset,
+      yOffset: panningRef.current.yOffset,
     }),
-    [width, aspectRatio, finalOffset, zoomRatio],
+    [
+      width,
+      aspectRatio,
+      finalOffset,
+      zoomRatio,
+      panningRef.current.xOffset,
+      panningRef.current.yOffset,
+    ],
   );
 };
