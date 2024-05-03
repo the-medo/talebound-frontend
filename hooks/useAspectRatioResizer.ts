@@ -70,7 +70,7 @@ export const useAspectRatioResizer = ({
 
   const minZoomRatio = width / baseWidth;
   const [zoomRatio, setZoomRatio] = useState(minZoomRatio);
-  const panningRef = usePanning({ ref, zoomRatio: zoomRatio });
+  const panningRef = usePanning({ ref, zoomRatio: zoomRatio, baseWidth, baseHeight });
 
   useEffect(() => {
     setZoomRatio((p) => {

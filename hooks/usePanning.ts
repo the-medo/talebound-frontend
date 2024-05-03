@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { base } from 'next/dist/build/webpack/config/blocks/base';
 
 export interface UsePanningProps {
   ref: React.RefObject<HTMLDivElement>;
   zoomRatio?: number;
+  baseWidth: number;
+  baseHeight: number;
 }
 
 export interface UsePanningResponse {
@@ -13,12 +16,16 @@ export interface UsePanningResponse {
   yStartOffset: number;
   xStart: number;
   yStart: number;
+  baseWidth: number;
+  baseHeight: number;
   zoomRatio: number;
 }
 
 export const usePanning = ({
   ref,
   zoomRatio,
+  baseWidth,
+  baseHeight,
 }: UsePanningProps): React.MutableRefObject<UsePanningResponse> => {
   const data = useRef<UsePanningResponse>({
     isPanning: false,
@@ -28,69 +35,58 @@ export const usePanning = ({
     yStartOffset: 0,
     xStart: 0,
     yStart: 0,
+    baseWidth,
+    baseHeight,
     zoomRatio: zoomRatio ?? 1,
   });
 
   const pannableElement = useRef<HTMLDivElement | null>(null); // Dependent ref
-  const mouseInfoElement = useRef<HTMLDivElement | null>(null); // Dependent ref
 
   useEffect(() => {
     if (ref.current) {
       pannableElement.current = ref.current.querySelector('.pannable') as HTMLDivElement;
     }
-    mouseInfoElement.current = document.querySelector('#mouse-info') as HTMLDivElement;
   }, [ref]);
 
   useEffect(() => {
     data.current.zoomRatio = zoomRatio ?? 1;
-  }, [zoomRatio]);
+    data.current.baseWidth = baseWidth;
+    data.current.baseHeight = baseHeight;
+  }, [zoomRatio, baseWidth, baseHeight]);
 
-  const handleMouseDown = useCallback(
-    (e) => {
-      // console.log('handleMouseDown', e);
-      if (ref.current) {
-        const { left, top } = ref.current.getClientRects()[0];
-        console.log(ref.current.getClientRects(), 'bond', ref.current.getBoundingClientRect());
-        data.current.isPanning = true;
-        data.current.xStart = e.clientX;
-        data.current.yStart = e.clientY;
-        e.preventDefault();
-      }
-    },
-    [ref],
-  );
+  const handleMouseDown = useCallback((e: PointerEvent) => {
+    data.current.isPanning = true;
+    data.current.xStart = e.clientX;
+    data.current.yStart = e.clientY;
+    e.preventDefault();
+  }, []);
 
   const handleMouseMove = useCallback(
-    (e) => {
-      if (mouseInfoElement.current) {
-        mouseInfoElement.current.innerHTML = `xStartOffset: ${
-          data.current.xStartOffset
-        } yStartOffset: ${data.current.yStartOffset} <br/>xStart: ${data.current.xStart} yStart: ${
-          data.current.yStart
-        } <br/>xOffset: ${data.current.xOffset} yOffset: ${data.current.yOffset} <br/>clientX: ${
-          e.clientX
-        } clientY: ${e.clientY} <br/> zoomRatio: ${data.current.zoomRatio}<br/> ${JSON.stringify(
-          ref.current.getClientRects()[0],
-        )}`;
-      }
-      const { left, top } = ref.current.getClientRects()[0];
-      if (!data.current.isPanning) return;
+    (e: PointerEvent) => {
+      if (!ref.current || !data.current.isPanning) return;
+      const { width, height } = ref.current.getClientRects()[0];
       data.current.xOffset =
         data.current.xStartOffset + (e.clientX - data.current.xStart) / data.current.zoomRatio;
       data.current.yOffset =
         data.current.yStartOffset + (e.clientY - data.current.yStart) / data.current.zoomRatio;
+
+      const xLimit = -data.current.baseWidth + width / data.current.zoomRatio;
+      const yLimit = -data.current.baseHeight + height / data.current.zoomRatio;
+      if (data.current.xOffset > 0) data.current.xOffset = 0;
+      if (data.current.yOffset > 0) data.current.yOffset = 0;
+      if (data.current.xOffset < xLimit) data.current.xOffset = xLimit;
+      if (data.current.yOffset < yLimit) data.current.yOffset = yLimit;
 
       if (ref.current && pannableElement.current) {
         pannableElement.current.style.transform = `translate(${data.current.xOffset}px, ${data.current.yOffset}px)`;
       }
       e.preventDefault();
     },
-    [ref, pannableElement],
+    [ref],
   );
 
-  const handleMouseUp = useCallback((e) => {
-    // if (!isPanning.current) return;
-    console.log('handleMouseUp', e);
+  const handleMouseUp = useCallback((e: PointerEvent) => {
+    if (!data.current.isPanning) return;
     data.current.isPanning = false;
     data.current.xStartOffset = data.current.xOffset;
     data.current.yStartOffset = data.current.yOffset;

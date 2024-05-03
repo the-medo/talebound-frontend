@@ -98,19 +98,12 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
       }}
       ref={wrapperRef}
     >
-      <div
-        id="mouse-info"
-        style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'white', zIndex: 100 }}
-      >
-        asdf
-      </div>
       <MapLayerContainer>
         <MapLayers
           className="pannable"
           css={{
             scale: resizer.zoomRatio,
             transformOrigin: 'left top',
-            // translate: `${resizer.xOffset}px ${resizer.yOffset}px`,
           }}
         >
           {sortedLayers.map((ml) => {
