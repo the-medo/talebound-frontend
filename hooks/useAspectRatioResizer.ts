@@ -11,11 +11,10 @@ export type AspectRatioOffset =
 
 export interface AspectRatioResizerProps {
   ref: React.RefObject<HTMLDivElement>;
-  baseWidth?: number;
-  baseHeight?: number;
+  baseWidth: number;
+  baseHeight: number;
   offset?: AspectRatioOffset;
   zoomable?: boolean;
-  movable?: boolean;
 }
 
 export interface AspectRatioResizerResponse {
@@ -43,11 +42,10 @@ export interface AspectRatioResizerResponse {
  */
 export const useAspectRatioResizer = ({
   ref,
-  baseWidth = 1,
-  baseHeight = 1,
+  baseWidth,
+  baseHeight,
   offset = 0,
   zoomable = false,
-  movable = false,
 }: AspectRatioResizerProps): AspectRatioResizerResponse => {
   const computeOffset = useCallback(
     (width: number): number => {
@@ -66,11 +64,19 @@ export const useAspectRatioResizer = ({
 
   const aspectRatio = baseHeight != 0 ? Math.round((baseWidth / baseHeight) * 1000) / 1000 : 1;
   const [width, setWidth] = useState(ref.current?.offsetWidth ?? 0);
+  const height = useMemo(() => width / aspectRatio, [width, aspectRatio]);
   const [finalOffset, setFinalOffset] = useState(computeOffset(width));
 
-  const minZoomRatio = width / baseWidth;
+  const minZoomRatio = baseWidth > 0 ? width / baseWidth : 1;
   const [zoomRatio, setZoomRatio] = useState(minZoomRatio);
-  const panningRef = usePanning({ ref, zoomRatio: zoomRatio, baseWidth, baseHeight });
+  const panningRef = usePanning({
+    ref,
+    zoomRatio: zoomRatio,
+    baseWidth,
+    baseHeight,
+    width,
+    height,
+  });
 
   useEffect(() => {
     setZoomRatio((p) => {
@@ -141,13 +147,6 @@ export const useAspectRatioResizer = ({
       xOffset: panningRef.current.xOffset,
       yOffset: panningRef.current.yOffset,
     }),
-    [
-      width,
-      aspectRatio,
-      finalOffset,
-      zoomRatio,
-      panningRef.current.xOffset,
-      panningRef.current.yOffset,
-    ],
+    [width, aspectRatio, finalOffset, zoomRatio, panningRef],
   );
 };

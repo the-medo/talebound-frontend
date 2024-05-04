@@ -48,11 +48,10 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
 
   const resizer = useAspectRatioResizer({
     ref: wrapperRef,
-    baseWidth: mapData?.width,
+    baseWidth: mapData?.width ?? 0,
     offset,
-    baseHeight: mapData?.height,
+    baseHeight: mapData?.height ?? 0,
     zoomable: true,
-    movable: true,
   });
 
   const handleOverlay = useCallback(

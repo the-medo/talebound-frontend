@@ -23,7 +23,6 @@ export const MapLayerContainer = styled('div', {
 
 export const MapLayers = styled('div', {
   height: '100%',
-  transition: '0.2s all',
 });
 
 export const MapLayerImage = styled('img', {
