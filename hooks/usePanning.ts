@@ -1,5 +1,45 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
+interface DimensionData {
+  client: number;
+  offset: number;
+  startOffset: number;
+  start: number;
+  size: number;
+  baseSize: number;
+}
+
+const checkLimits = (d: DimensionData, zoomRatio: number) => {
+  const limit = -d.baseSize + d.size / zoomRatio;
+  if (d.offset > 0) d.offset = 0;
+  if (d.offset < limit) d.offset = limit;
+};
+
+const computeZoomPanOffsets = (
+  d: DimensionData,
+  x: number,
+  newZoomRatio: number,
+  oldZoomRatio: number,
+) => {
+  const pX = (d.client - x) / d.size;
+  const widthDiff = d.size / newZoomRatio - d.size / oldZoomRatio;
+  d.offset += widthDiff * pX;
+  d.startOffset = d.offset;
+};
+
+const computeNewOffset = (d: DimensionData, zoomRatio: number) => {
+  d.offset = d.startOffset + (d.client - d.start) / zoomRatio;
+};
+
+const hasSizes = (d: UsePanningResponse) => d.x.baseSize && d.y.baseSize && d.x.size && d.y.size;
+
+export interface UsePanningResponse {
+  isPanning: boolean;
+  x: DimensionData;
+  y: DimensionData;
+  zoomRatio: number;
+}
+
 export interface UsePanningProps {
   ref: React.RefObject<HTMLDivElement>;
   zoomRatio?: number;
@@ -7,23 +47,6 @@ export interface UsePanningProps {
   baseHeight: number;
   width: number;
   height: number;
-}
-
-export interface UsePanningResponse {
-  isPanning: boolean;
-  xClient: number;
-  yClient: number;
-  xOffset: number;
-  yOffset: number;
-  xStartOffset: number;
-  yStartOffset: number;
-  xStart: number;
-  yStart: number;
-  baseWidth: number;
-  baseHeight: number;
-  width: number;
-  height: number;
-  zoomRatio: number;
 }
 
 export const usePanning = ({
@@ -36,18 +59,22 @@ export const usePanning = ({
 }: UsePanningProps): React.MutableRefObject<UsePanningResponse> => {
   const data = useRef<UsePanningResponse>({
     isPanning: false,
-    xClient: 0,
-    yClient: 0,
-    xOffset: 0,
-    yOffset: 0,
-    xStartOffset: 0,
-    yStartOffset: 0,
-    xStart: 0,
-    yStart: 0,
-    baseWidth,
-    baseHeight,
-    width,
-    height,
+    x: {
+      client: 0,
+      offset: 0,
+      startOffset: 0,
+      start: 0,
+      size: width,
+      baseSize: baseWidth,
+    },
+    y: {
+      client: 0,
+      offset: 0,
+      startOffset: 0,
+      start: 0,
+      size: height,
+      baseSize: baseHeight,
+    },
     zoomRatio: zoomRatio ?? 1,
   });
 
@@ -59,114 +86,75 @@ export const usePanning = ({
     }
   }, [ref]);
 
-  useEffect(() => {
-    if (!width || !height) return;
-    data.current.width = width;
-    data.current.height = height;
-  }, [width, height]);
+  const checkEdgesAndMove = useCallback(() => {
+    if (!ref.current || !data.current || !hasSizes(data.current)) return;
 
-  const checkEdges = useCallback(() => {
-    if (!ref.current || !data.current) return;
-    if (!data.current.baseWidth || !data.current.baseHeight) return;
-    const xLimit = -data.current.baseWidth + data.current.width / data.current.zoomRatio;
-    const yLimit = -data.current.baseHeight + data.current.height / data.current.zoomRatio;
-    if (data.current.xOffset > 0) data.current.xOffset = 0;
-    if (data.current.yOffset > 0) data.current.yOffset = 0;
-    if (data.current.xOffset < xLimit) data.current.xOffset = xLimit;
-    if (data.current.yOffset < yLimit) data.current.yOffset = yLimit;
-    console.log('Checked', data.current.xOffset, xLimit, data.current.yOffset, yLimit);
+    checkLimits(data.current.x, data.current.zoomRatio);
+    checkLimits(data.current.y, data.current.zoomRatio);
+
+    if (pannableElement.current) {
+      pannableElement.current.style.transform = `translate(${data.current.x.offset}px, ${data.current.y.offset}px)`;
+    }
   }, [ref]);
 
   useEffect(() => {
-    if (!ref.current || !data.current) return;
-    if (
-      !data.current.baseWidth ||
-      !data.current.baseHeight ||
-      !data.current.width ||
-      !data.current.height
-    )
-      return;
-    console.log('==========================');
-    console.log('starting data.current.yOffset: ', data.current.yOffset);
+    if (!ref.current || !data.current || !hasSizes(data.current)) return;
+
     const { left, top } = ref.current.getClientRects()[0];
-
-    const pX = (data.current.xClient - left) / data.current.width;
-    const pY = (data.current.yClient - top) / data.current.height;
     const zr = zoomRatio ?? 1;
-
-    const widthDiff = data.current.width / zr - data.current.width / data.current.zoomRatio;
-    const heightDiff = data.current.height / zr - data.current.height / data.current.zoomRatio;
-    const offsetDiffX = widthDiff * pX;
-    const offsetDiffY = heightDiff * pY;
-
-    data.current.xOffset += offsetDiffX;
-    data.current.yOffset += offsetDiffY;
-    data.current.xStartOffset = data.current.xOffset;
-    data.current.yStartOffset = data.current.yOffset;
-
+    computeZoomPanOffsets(data.current.x, left, zr, data.current.zoomRatio);
+    computeZoomPanOffsets(data.current.y, top, zr, data.current.zoomRatio);
     data.current.zoomRatio = zr;
-    checkEdges();
 
-    if (pannableElement.current) {
-      pannableElement.current.style.transform = `translate(${data.current.xOffset}px, ${data.current.yOffset}px)`;
-    }
-  }, [zoomRatio, checkEdges, ref]);
+    checkEdgesAndMove();
+  }, [zoomRatio, checkEdgesAndMove, ref]);
 
   useEffect(() => {
-    if (!baseWidth || !baseHeight) return;
-    data.current.baseWidth = baseWidth;
-    data.current.baseHeight = baseHeight;
-
-    checkEdges();
-  }, [baseWidth, baseHeight, checkEdges]);
+    if (width) data.current.x.size = width;
+    if (height) data.current.y.size = height;
+    if (baseWidth) data.current.x.baseSize = baseWidth;
+    if (baseHeight) data.current.y.baseSize = baseHeight;
+    checkEdgesAndMove();
+  }, [baseWidth, baseHeight, checkEdgesAndMove, width, height]);
 
   const handleMouseDown = useCallback((e: PointerEvent) => {
     data.current.isPanning = true;
-    data.current.xStart = e.clientX;
-    data.current.yStart = e.clientY;
+    data.current.x.start = e.clientX;
+    data.current.y.start = e.clientY;
     e.preventDefault();
   }, []);
 
   const handleMouseMove = useCallback(
     (e: PointerEvent) => {
-      data.current.xClient = e.clientX;
-      data.current.yClient = e.clientY;
+      data.current.x.client = e.clientX;
+      data.current.y.client = e.clientY;
 
       if (!data.current.isPanning) return;
-      data.current.xOffset =
-        data.current.xStartOffset + (e.clientX - data.current.xStart) / data.current.zoomRatio;
-      data.current.yOffset =
-        data.current.yStartOffset + (e.clientY - data.current.yStart) / data.current.zoomRatio;
-
-      checkEdges();
-
-      if (pannableElement.current) {
-        pannableElement.current.style.transform = `translate(${data.current.xOffset}px, ${data.current.yOffset}px)`;
-      }
+      computeNewOffset(data.current.x, data.current.zoomRatio);
+      computeNewOffset(data.current.y, data.current.zoomRatio);
+      checkEdgesAndMove();
       e.preventDefault();
     },
-    [checkEdges],
+    [checkEdgesAndMove],
   );
 
   const handleMouseUp = useCallback((e: PointerEvent) => {
     if (!data.current.isPanning) return;
     data.current.isPanning = false;
-    data.current.xStartOffset = data.current.xOffset;
-    data.current.yStartOffset = data.current.yOffset;
+    data.current.x.startOffset = data.current.x.offset;
+    data.current.y.startOffset = data.current.y.offset;
     e.preventDefault();
   }, []);
 
   useEffect(() => {
     const layoutElement = ref.current;
 
-    // Attach event listeners
     if (layoutElement) {
       layoutElement.addEventListener('pointerdown', handleMouseDown);
       window.addEventListener('pointermove', handleMouseMove);
       window.addEventListener('pointerup', handleMouseUp);
     }
 
-    // Cleanup function
     return () => {
       if (layoutElement) {
         layoutElement.removeEventListener('pointerdown', handleMouseDown);

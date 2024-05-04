@@ -144,8 +144,8 @@ export const useAspectRatioResizer = ({
       height: Math.round(width / aspectRatio),
       finalOffset,
       zoomRatio,
-      xOffset: panningRef.current.xOffset,
-      yOffset: panningRef.current.yOffset,
+      xOffset: panningRef.current.x.offset,
+      yOffset: panningRef.current.y.offset,
     }),
     [width, aspectRatio, finalOffset, zoomRatio, panningRef],
   );
