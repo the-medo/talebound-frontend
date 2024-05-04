@@ -42,6 +42,7 @@ export interface UsePanningResponse {
 
 export interface UsePanningProps {
   ref: React.RefObject<HTMLDivElement>;
+  contentRef: React.RefObject<HTMLDivElement>;
   zoomRatio?: number;
   baseWidth: number;
   baseHeight: number;
@@ -51,6 +52,7 @@ export interface UsePanningProps {
 
 export const usePanning = ({
   ref,
+  contentRef,
   zoomRatio,
   baseWidth,
   baseHeight,
@@ -78,24 +80,16 @@ export const usePanning = ({
     zoomRatio: zoomRatio ?? 1,
   });
 
-  const pannableElement = useRef<HTMLDivElement | null>(null); // Dependent ref
-
-  useEffect(() => {
-    if (ref.current) {
-      pannableElement.current = ref.current.querySelector('.pannable') as HTMLDivElement;
-    }
-  }, [ref]);
-
   const checkEdgesAndMove = useCallback(() => {
-    if (!ref.current || !data.current || !hasSizes(data.current)) return;
+    if (!contentRef.current || !data.current || !hasSizes(data.current)) return;
 
     checkLimits(data.current.x, data.current.zoomRatio);
     checkLimits(data.current.y, data.current.zoomRatio);
 
-    if (pannableElement.current) {
-      pannableElement.current.style.transform = `translate(${data.current.x.offset}px, ${data.current.y.offset}px)`;
+    if (contentRef.current) {
+      contentRef.current.style.transform = `translate(${data.current.x.offset}px, ${data.current.y.offset}px)`;
     }
-  }, [ref]);
+  }, [contentRef]);
 
   useEffect(() => {
     if (!ref.current || !data.current || !hasSizes(data.current)) return;

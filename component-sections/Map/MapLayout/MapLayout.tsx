@@ -5,7 +5,6 @@ import {
   MapLayerImage,
   MapLayerOverlay,
   MapLayerOverlayButtons,
-  MapLayerOverlayPositioningInfo,
   MapLayers,
   MapSidebarSolid,
   MapWrapper,
@@ -92,10 +91,10 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
 
   return (
     <MapWrapper
+      ref={wrapperRef}
       css={{
         height: resizer.height + 'px',
       }}
-      ref={wrapperRef}
     >
       <MapLayerContainer>
         <MapLayers
@@ -147,18 +146,9 @@ const MapLayout: React.FC<MapLayoutProps> = ({ mapId, canEdit, allLayersByDefaul
             </Button>
           )}
           <Button icon color="primaryOutline" onClick={handleSidebar} size="sm">
-            {mapLayoutType === MapLayoutType.SIDEBAR ? (
-              <TbArrowBarToLeft />
-            ) : (
-              <TbArrowBarToRight />
-              // <VscLayoutSidebarRight />
-            )}
+            {mapLayoutType === MapLayoutType.SIDEBAR ? <TbArrowBarToLeft /> : <TbArrowBarToRight />}
           </Button>
         </MapLayerOverlayButtons>
-
-        <MapLayerOverlayPositioningInfo gap="sm">
-          {resizer.xOffset} : {resizer.yOffset}
-        </MapLayerOverlayPositioningInfo>
       </MapLayerContainer>
       {mapLayoutType === MapLayoutType.SIDEBAR && (
         <MapSidebarSolid

@@ -57,15 +57,6 @@ export const MapLayerOverlayButtons = styled(Row, {
   margin: 'calc(2 * $sm)',
 });
 
-export const MapLayerOverlayPositioningInfo = styled(Row, {
-  zIndex: 9,
-  boxSizing: 'border-box',
-  position: 'absolute',
-  bottom: 0,
-  right: 0,
-  margin: 'calc(2 * $sm)',
-});
-
 export const MapSidebarSolid = styled(Col, {
   height: '100%',
   transition: '0.3s all',

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState, WheelEventHandler } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState, WheelEventHandler } from 'react';
 import { usePanning } from './usePanning';
 
 export type AspectRatioOffset =
@@ -47,6 +47,8 @@ export const useAspectRatioResizer = ({
   offset = 0,
   zoomable = false,
 }: AspectRatioResizerProps): AspectRatioResizerResponse => {
+  const pannableElement = useRef<HTMLDivElement | null>(null); // Dependent ref
+
   const computeOffset = useCallback(
     (width: number): number => {
       if (!offset) return 0;
@@ -69,8 +71,16 @@ export const useAspectRatioResizer = ({
 
   const minZoomRatio = baseWidth > 0 ? width / baseWidth : 1;
   const [zoomRatio, setZoomRatio] = useState(minZoomRatio);
+
+  useEffect(() => {
+    if (ref.current) {
+      pannableElement.current = ref.current.querySelector('.pannable') as HTMLDivElement;
+    }
+  }, [ref]);
+
   const panningRef = usePanning({
     ref,
+    contentRef: pannableElement,
     zoomRatio: zoomRatio,
     baseWidth,
     baseHeight,
@@ -115,17 +125,12 @@ export const useAspectRatioResizer = ({
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const scaleIncrement = 0.1;
-      setZoomRatio((p) => {
-        if (e.deltaY < 0) {
-          p = Math.min(1, p + scaleIncrement);
-        } else {
-          p = Math.max(minZoomRatio, p - scaleIncrement); // Don't scale below 1 (initial size)
-        }
-        return p;
-      });
+      setZoomRatio((p) =>
+        e.deltaY < 0 ? Math.min(1, p + scaleIncrement) : Math.max(minZoomRatio, p - scaleIncrement),
+      );
     };
 
-    const layoutElement = ref.current;
+    const layoutElement = pannableElement.current;
     if (layoutElement) {
       layoutElement.addEventListener('wheel', handleWheel, { passive: false });
     }
