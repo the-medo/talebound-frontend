@@ -9,6 +9,7 @@ import { TbPencil } from 'react-icons/tb';
 import MapForm from './MapForm';
 import LoadingText from '../../components/Loading/LoadingText';
 import MapLayout from './MapLayout/MapLayout';
+import MapPinTypeAdministrationModal from './MapAdministrationModals/MapPinTypeAdministrationModal/MapPinTypeAdministrationModal';
 
 interface MapProps {
   mapId: number;
@@ -21,6 +22,7 @@ const Map: React.FC<MapProps> = ({ mapId, canEdit, showTitle = true, isModal = f
   const { map: mapData, isFetching: isPendingMap } = useMap(mapId);
   const [editModeDetails, setEditModeDetails] = useState(false);
   const { image: imageThumbnail } = useImage(mapData?.thumbnailImageId ?? 0);
+  const [modalOpenPinTypes, setModalOpenPinTypes] = useState(true);
 
   const toggleEditModeDetails = useCallback(() => {
     setEditModeDetails((p) => !p);
@@ -62,6 +64,11 @@ const Map: React.FC<MapProps> = ({ mapId, canEdit, showTitle = true, isModal = f
         )}
       </Col>
       <MapLayout mapId={mapId} canEdit={canEdit} />
+      <MapPinTypeAdministrationModal
+        mapId={mapId}
+        open={modalOpenPinTypes}
+        setOpen={setModalOpenPinTypes}
+      />
     </ContentSection>
   );
 };
