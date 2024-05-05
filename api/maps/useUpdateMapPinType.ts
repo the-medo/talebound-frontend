@@ -23,9 +23,9 @@ export const useUpdateMapPinType = createMutation({
         (oldData) => {
           return {
             ...oldData,
-            pinTypes: {
+            pinTypes: [
               ...(oldData?.pinTypes ?? []).map((g) => (g.id === pinTypeId ? { ...newData } : g)),
-            },
+            ],
           };
         },
       );

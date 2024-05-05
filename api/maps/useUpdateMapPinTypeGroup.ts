@@ -19,6 +19,7 @@ export const useUpdateMapPinTypeGroup = createMutation({
   onSuccess: (data, variables) => {
     const { moduleId, mapPinTypeGroupId } = variables;
     const newData = data.data;
+    console.log('NEW DATA: ', newData, moduleId, mapPinTypeGroupId);
     if (moduleId && newData) {
       const queryKey = useGetMapPinTypesAndGroups.getKey(moduleId);
       queryClient.setQueryData<inferData<typeof useGetMapPinTypesAndGroups>>(
@@ -26,11 +27,11 @@ export const useUpdateMapPinTypeGroup = createMutation({
         (oldData) => {
           return {
             ...oldData,
-            pinTypeGroups: {
+            pinTypeGroups: [
               ...(oldData?.pinTypeGroups ?? []).map((g) =>
                 g.id === mapPinTypeGroupId ? { ...newData } : g,
               ),
-            },
+            ],
           };
         },
       );

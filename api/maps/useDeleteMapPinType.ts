@@ -20,9 +20,7 @@ export const useDeleteMapPinType = createMutation({
         (oldData) => {
           return {
             ...oldData,
-            pinTypes: {
-              ...(oldData?.pinTypes ?? []).filter((g) => g.id !== pinTypeId),
-            },
+            pinTypes: [...(oldData?.pinTypes ?? []).filter((g) => g.id !== pinTypeId)],
           };
         },
       );

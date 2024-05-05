@@ -20,9 +20,9 @@ export const useDeleteMapPinTypeGroup = createMutation({
         (oldData) => {
           return {
             ...oldData,
-            pinTypeGroups: {
+            pinTypeGroups: [
               ...(oldData?.pinTypeGroups ?? []).filter((g) => g.id !== mapPinTypeGroupId),
-            },
+            ],
           };
         },
       );
