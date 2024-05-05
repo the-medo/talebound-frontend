@@ -3,6 +3,7 @@ import { useCreateMapPinType } from '../../../../../api/maps/useCreateMapPinType
 import { Button } from '../../../../../components/Button/Button';
 import ErrorText from '../../../../../components/ErrorText/ErrorText';
 import { PbPinShape } from '../../../../../generated/api-types/data-contracts';
+import { TbPlus } from 'react-icons/tb';
 
 interface NewPinTypeButtonProps {
   moduleId: number;
@@ -32,6 +33,7 @@ const NewPinTypeButton: React.FC<NewPinTypeButtonProps> = ({ moduleId, mapPinTyp
   return (
     <>
       <Button size="sm" loading={isPendingCreate} onClick={newPinTypeHandler}>
+        <TbPlus />
         New pin type
       </Button>
       <ErrorText error={errorCreate} />

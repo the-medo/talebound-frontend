@@ -10,6 +10,7 @@ import {
   mapPinTypeAdministrationInitialState,
   mapPinTypeAdministrationReducer,
 } from './mapPinTypeAdministrationReducer';
+import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -40,6 +41,7 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
             {(mapPinTypesAndGroups?.pinTypeGroups ?? []).map((x) => (
               <MapPinTypeGroup key={x.id} data={x} />
             ))}
+            <NewPinTypeGroupButton moduleId={moduleId} />
           </ContentSection>
         </ContentWrapper>
       </Row>

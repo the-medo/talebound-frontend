@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useCallback } from 'react';
+import React, { ChangeEventHandler, useCallback, useMemo } from 'react';
 import { PbMapPinTypeGroup } from '../../../../../generated/api-types/data-contracts';
 import { useUrlModuleId } from '../../../../../hooks/useUrlModuleId';
 import { useGetMapPinTypesAndGroups } from '../../../../../api/maps/useGetMapPinTypesAndGroups';
@@ -9,8 +9,6 @@ import { Col, Row } from '../../../../../components/Flex/Flex';
 import { useUpdateMapPinTypeGroup } from '../../../../../api/maps/useUpdateMapPinTypeGroup';
 import ErrorText from '../../../../../components/ErrorText/ErrorText';
 import debounce from 'lodash.debounce';
-import { Button } from '../../../../../components/Button/Button';
-import { useCreateMapPinType } from '../../../../../api/maps/useCreateMapPinType';
 import NewPinTypeButton from './NewPinTypeButton';
 
 interface MapPinTypeGroupProps {
@@ -55,10 +53,15 @@ const MapPinTypeGroup: React.FC<MapPinTypeGroupProps> = ({ data }) => {
     [data.id, onChangeHandlerDebounced, setTitleValue],
   );
 
+  const pinTypes = useMemo(
+    () => (mapPinTypesAndGroups?.pinTypes ?? []).filter((pt) => pt.mapPinTypeGroupId === data.id),
+    [data.id, mapPinTypesAndGroups?.pinTypes],
+  );
+
   const loading = isPending || isPendingUpdate;
 
   return (
-    <Col gap="sm" padding="md" loading={loading} fullWidth>
+    <Col gap="sm" loading={loading} fullWidth>
       <Row fullWidth gap="sm">
         <Input
           fullWidth
@@ -71,13 +74,13 @@ const MapPinTypeGroup: React.FC<MapPinTypeGroupProps> = ({ data }) => {
           disabled={loading}
           displayHelpers={false}
         />
+        {data.id && <NewPinTypeButton moduleId={moduleId} mapPinTypeGroupId={data.id} />}
       </Row>
       <ErrorText error={errorUpdate} />
       <Row fullWidth gap="sm">
-        {(mapPinTypesAndGroups?.pinTypes ?? []).map((t) => (
+        {pinTypes.map((t) => (
           <MapPinType key={t.id} data={t} />
         ))}
-        {data.id && <NewPinTypeButton moduleId={moduleId} mapPinTypeGroupId={data.id} />}
       </Row>
     </Col>
   );
