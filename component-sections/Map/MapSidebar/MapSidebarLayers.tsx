@@ -28,7 +28,7 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
 }) => {
   const { data: mapLayers, isFetching: isPendingMapLayers } = useGetMapLayers({ variables: mapId });
   const hasLayers = (mapLayers ?? []).length > 1; //main layer doesn't count
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenLayers, setModalOpenLayers] = useState(false);
 
   const handleChecked = useCallback(
     (checkState: CheckedState) => (id: number) => {
@@ -53,7 +53,7 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
           <TitleH4> Layers</TitleH4>
         </Row>
         {canEdit && (
-          <Button size="sm" color="primaryOutline" onClick={() => setModalOpen(true)}>
+          <Button size="sm" color="primaryOutline" onClick={() => setModalOpenLayers(true)}>
             Change layers
           </Button>
         )}
@@ -62,7 +62,7 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
         {!hasLayers && (
           <Col fullWidth alignItems="center" gap="sm">
             <Text>No layers yet</Text>
-            <Button size="sm" onClick={() => setModalOpen(true)}>
+            <Button size="sm" onClick={() => setModalOpenLayers(true)}>
               Create
             </Button>
           </Col>
@@ -86,7 +86,11 @@ const MapSidebarLayers: React.FC<MapSidebarLayersProps> = ({
           })}
       </MapSidebarSection>
       {canEdit && (
-        <MapLayerAdministrationModal open={modalOpen} setOpen={setModalOpen} mapId={mapId} />
+        <MapLayerAdministrationModal
+          open={modalOpenLayers}
+          setOpen={setModalOpenLayers}
+          mapId={mapId}
+        />
       )}
     </>
   );
