@@ -1,12 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { ChangeEventHandler, useCallback } from 'react';
 import { PbMapPinTypeGroup } from '../../../../../generated/api-types/data-contracts';
 import { useUrlModuleId } from '../../../../../hooks/useUrlModuleId';
 import { useGetMapPinTypesAndGroups } from '../../../../../api/maps/useGetMapPinTypesAndGroups';
 import MapPinType from './MapPinType';
-import {
-  MapPinTypeAdministrationActionType,
-  useMapPinTypeAdministrationContext,
-} from '../mapPinTypeAdministrationReducer';
+import { useInput } from '../../../../../hooks/useInput';
+import Input from '../../../../../components/Input/Input';
+import { Col, Row } from '../../../../../components/Flex/Flex';
+import { useUpdateMapPinTypeGroup } from '../../../../../api/maps/useUpdateMapPinTypeGroup';
+import ErrorText from '../../../../../components/ErrorText/ErrorText';
+import debounce from 'lodash.debounce';
+import { Button } from '../../../../../components/Button/Button';
+import { useCreateMapPinType } from '../../../../../api/maps/useCreateMapPinType';
+import NewPinTypeButton from './NewPinTypeButton';
 
 interface MapPinTypeGroupProps {
   data: PbMapPinTypeGroup;
@@ -14,36 +19,67 @@ interface MapPinTypeGroupProps {
 
 const MapPinTypeGroup: React.FC<MapPinTypeGroupProps> = ({ data }) => {
   const moduleId = useUrlModuleId();
-  const { state, dispatch } = useMapPinTypeAdministrationContext();
   const { data: mapPinTypesAndGroups, isFetching: isPending } = useGetMapPinTypesAndGroups({
     variables: moduleId,
   });
 
-  const handleSelect = useCallback(
-    () =>
-      dispatch({
-        type: MapPinTypeAdministrationActionType.SET_SELECTED_PIN_TYPE_GROUP_ID,
-        selectedPinTypeGroupId: data.id ?? 0,
-      }),
-    [data.id, dispatch],
+  const {
+    mutate: updateMapPinTypeGroup,
+    isPending: isPendingUpdate,
+    error: errorUpdate,
+  } = useUpdateMapPinTypeGroup();
+
+  const { value: titleValue, setValue: setTitleValue } = useInput(data.name ?? '');
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onChangeHandlerDebounced = useCallback(
+    debounce((id: number, newName: string) => {
+      updateMapPinTypeGroup({
+        moduleId,
+        mapPinTypeGroupId: id,
+        body: {
+          name: newName,
+        },
+      });
+    }, 1000),
+    [],
   );
 
-  if (isPending) return null;
+  const handleNameChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      if (!data.id) return;
+      const newTitle = e.target.value;
+      setTitleValue(newTitle);
+      onChangeHandlerDebounced(data.id, newTitle);
+    },
+    [data.id, onChangeHandlerDebounced, setTitleValue],
+  );
+
+  const loading = isPending || isPendingUpdate;
+
   return (
-    <div
-      style={{
-        border: `2px solid ${state.selectedPinTypeGroupId === data.id ? 'green' : 'transparent'}`,
-      }}
-    >
-      <span onClick={handleSelect}>
-        #{data.id} {data.name}
-      </span>
-      <ul>
+    <Col gap="sm" padding="md" loading={loading} fullWidth>
+      <Row fullWidth gap="sm">
+        <Input
+          fullWidth
+          id={`map-pin-type-group-${data.id}`}
+          value={titleValue}
+          onChange={handleNameChange}
+          aria-labelledby="Group name"
+          placeholder="Group name"
+          required
+          disabled={loading}
+          displayHelpers={false}
+        />
+      </Row>
+      <ErrorText error={errorUpdate} />
+      <Row fullWidth gap="sm">
         {(mapPinTypesAndGroups?.pinTypes ?? []).map((t) => (
           <MapPinType key={t.id} data={t} />
         ))}
-      </ul>
-    </div>
+        {data.id && <NewPinTypeButton moduleId={moduleId} mapPinTypeGroupId={data.id} />}
+      </Row>
+    </Col>
   );
 };
 

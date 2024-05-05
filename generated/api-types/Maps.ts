@@ -171,6 +171,41 @@ export class Maps<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description creates a new pin type for the map
+   *
+   * @tags Maps
+   * @name MapsCreateMapPinType
+   * @summary Create map pin type
+   * @request POST:/maps/modules/{moduleId}/pin_types
+   * @response `200` `PbMapPinType` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsCreateMapPinType = (
+    moduleId: number,
+    body: {
+      /** @format int32 */
+      mapPinTypeGroupId?: number;
+      shape?: PbPinShape;
+      backgroundColor?: string;
+      borderColor?: string;
+      iconColor?: string;
+      icon?: string;
+      /** @format int32 */
+      iconSize?: number;
+      /** @format int32 */
+      width?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbMapPinType, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_types`,
+      method: 'POST',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description get map by id
    *
    * @tags Maps
@@ -324,39 +359,6 @@ export class Maps<SecurityDataType = unknown> {
       path: `/maps/${mapId}/layers/${layerId}`,
       method: 'PATCH',
       body: body,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description creates a new pin type for the map
-   *
-   * @tags Maps
-   * @name MapsCreateMapPinType
-   * @summary Create map pin type
-   * @request POST:/maps/{mapId}/pin_types
-   * @response `200` `PbMapPinType` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsCreateMapPinType = (
-    mapId: number,
-    body: {
-      shape?: PbPinShape;
-      backgroundColor?: string;
-      borderColor?: string;
-      iconColor?: string;
-      icon?: string;
-      /** @format int32 */
-      iconSize?: number;
-      /** @format int32 */
-      width?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbMapPinType, RpcStatus>({
-      path: `/maps/${mapId}/pin_types`,
-      method: 'POST',
-      body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });
