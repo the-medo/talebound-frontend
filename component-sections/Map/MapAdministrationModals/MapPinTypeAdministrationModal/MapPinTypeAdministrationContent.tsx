@@ -11,6 +11,8 @@ import {
   mapPinTypeAdministrationReducer,
 } from './mapPinTypeAdministrationReducer';
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
+import MapPinBackground from './PinBackgroundShape/MapPinBackground';
+import { iterablePbPinShapes } from './PinBackgroundShape/pinBackgroundShapeLib';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -44,6 +46,15 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
             <NewPinTypeGroupButton moduleId={moduleId} />
           </ContentSection>
         </ContentWrapper>
+        {iterablePbPinShapes.map((x) => (
+          <MapPinBackground
+            backgroundColor="#d9d9d9"
+            borderColor="black"
+            shape={x}
+            key={x}
+            width={20}
+          />
+        ))}
       </Row>
     </MapPinTypeAdministrationContext.Provider>
   );
