@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { Row } from '../../../../components/Flex/Flex';
 import { styled } from '../../../../styles/stitches.config';
@@ -11,8 +11,8 @@ import {
   mapPinTypeAdministrationReducer,
 } from './mapPinTypeAdministrationReducer';
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
-import MapPinBackground from './PinBackgroundShape/MapPinBackground';
-import { iterablePbPinShapes } from './PinBackgroundShape/pinBackgroundShapeLib';
+import PinBackgroundShapeSelector from './PinBackgroundShape/PinBackgroundShapeSelector';
+import { PbPinShape } from '../../../../generated/api-types/data-contracts';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -35,6 +35,8 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
     variables: moduleId,
   });
 
+  const [s, setS] = useState<PbPinShape | undefined>(undefined);
+
   return (
     <MapPinTypeAdministrationContext.Provider value={{ state, dispatch }}>
       <Row alignItems="start" gap="md" wrap>
@@ -46,16 +48,8 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
             <NewPinTypeGroupButton moduleId={moduleId} />
           </ContentSection>
         </ContentWrapper>
-        {iterablePbPinShapes.map((x) => (
-          <MapPinBackground
-            backgroundColor="#d9d9d9"
-            borderColor="black"
-            shape={x}
-            key={x}
-            width={20}
-          />
-        ))}
       </Row>
+      <PinBackgroundShapeSelector selected={s} onChange={setS} />
     </MapPinTypeAdministrationContext.Provider>
   );
 };
