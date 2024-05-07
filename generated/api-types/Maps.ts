@@ -206,6 +206,41 @@ export class Maps<SecurityDataType = unknown> {
       ...params,
     });
   /**
+   * @description updates pin type properties
+   *
+   * @tags Maps
+   * @name MapsUpdateMapPinType
+   * @summary Update map pin type
+   * @request PATCH:/maps/modules/{moduleId}/pin_types/{pinTypeId}
+   * @response `200` `PbUpdateMapPinTypeResponse` A successful response.
+   * @response `default` `RpcStatus` An unexpected error response.
+   */
+  mapsUpdateMapPinType = (
+    moduleId: number,
+    pinTypeId: number,
+    body: {
+      shape?: PbPinShape;
+      backgroundColor?: string;
+      borderColor?: string;
+      iconColor?: string;
+      icon?: string;
+      /** @format int32 */
+      iconSize?: number;
+      /** @format int32 */
+      width?: number;
+      isDefault?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<PbUpdateMapPinTypeResponse, RpcStatus>({
+      path: `/maps/modules/${moduleId}/pin_types/${pinTypeId}`,
+      method: 'PATCH',
+      body: body,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
    * @description get map by id
    *
    * @tags Maps
@@ -376,41 +411,6 @@ export class Maps<SecurityDataType = unknown> {
     this.http.request<object, RpcStatus>({
       path: `/maps/${mapId}/pin_types/${pinTypeId}`,
       method: 'DELETE',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * @description updates pin type properties
-   *
-   * @tags Maps
-   * @name MapsUpdateMapPinType
-   * @summary Update map pin type
-   * @request PATCH:/maps/{mapId}/pin_types/{pinTypeId}
-   * @response `200` `PbUpdateMapPinTypeResponse` A successful response.
-   * @response `default` `RpcStatus` An unexpected error response.
-   */
-  mapsUpdateMapPinType = (
-    mapId: number,
-    pinTypeId: number,
-    body: {
-      shape?: PbPinShape;
-      backgroundColor?: string;
-      borderColor?: string;
-      iconColor?: string;
-      icon?: string;
-      /** @format int32 */
-      iconSize?: number;
-      /** @format int32 */
-      width?: number;
-      isDefault?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<PbUpdateMapPinTypeResponse, RpcStatus>({
-      path: `/maps/${mapId}/pin_types/${pinTypeId}`,
-      method: 'PATCH',
-      body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });
