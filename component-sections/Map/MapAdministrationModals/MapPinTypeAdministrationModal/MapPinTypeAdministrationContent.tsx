@@ -13,6 +13,7 @@ import {
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
 import PinBackgroundShapeSelector from './PinBackgroundShape/PinBackgroundShapeSelector';
 import { PbPinShape } from '../../../../generated/api-types/data-contracts';
+import Slider from '../../../../components/Slider/Slider';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -48,8 +49,13 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
             <NewPinTypeGroupButton moduleId={moduleId} />
           </ContentSection>
         </ContentWrapper>
+        <ContentWrapper>
+          <ContentSection header="Pin detail" fullWidth loading={isPending}>
+            <PinBackgroundShapeSelector selected={s} onChange={setS} />
+            <Slider />
+          </ContentSection>
+        </ContentWrapper>
       </Row>
-      <PinBackgroundShapeSelector selected={s} onChange={setS} />
     </MapPinTypeAdministrationContext.Provider>
   );
 };

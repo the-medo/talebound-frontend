@@ -13,6 +13,7 @@ const PinWrapper = styled('div', {
     selected: {
       true: {
         border: '2px solid $primary',
+        backgroundColor: '2px solid $primary200',
       },
     },
     optionNone: {
