@@ -7,6 +7,6 @@ export const SliderRoot = styled(Slider.Root, {
   alignItems: 'center',
   userSelect: 'none',
   touchAction: 'none',
-  width: 200,
+  width: '100%',
   height: 20,
 });

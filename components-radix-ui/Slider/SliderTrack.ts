@@ -7,5 +7,5 @@ export const SliderTrack = styled(Slider.Track, {
   flexGrow: 1,
   borderRadius: '9999px',
   border: '1px solid $primary',
-  height: 7,
+  height: 10,
 });

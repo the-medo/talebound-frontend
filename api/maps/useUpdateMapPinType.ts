@@ -5,14 +5,13 @@ import { useGetMapPinTypesAndGroups } from './useGetMapPinTypesAndGroups';
 
 export interface UpdateMapPinTypeRequest {
   moduleId: number;
-  mapId: number;
   pinTypeId: number;
   body: Parameters<typeof MapsCollection.mapsUpdateMapPinType>[2];
 }
 
 export const useUpdateMapPinType = createMutation({
   mutationFn: async (variables: UpdateMapPinTypeRequest) =>
-    MapsCollection.mapsUpdateMapPinType(variables.mapId, variables.pinTypeId, variables.body),
+    MapsCollection.mapsUpdateMapPinType(variables.moduleId, variables.pinTypeId, variables.body),
   onSuccess: (data, variables) => {
     const { moduleId, pinTypeId } = variables;
     const newData = data.data.pinType;

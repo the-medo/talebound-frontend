@@ -11,9 +11,7 @@ import {
   mapPinTypeAdministrationReducer,
 } from './mapPinTypeAdministrationReducer';
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
-import PinBackgroundShapeSelector from './PinBackgroundShape/PinBackgroundShapeSelector';
-import { PbPinShape } from '../../../../generated/api-types/data-contracts';
-import Slider from '../../../../components/Slider/Slider';
+import PinTypeEditor from './PinEditor/PinTypeEditor';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -36,8 +34,6 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
     variables: moduleId,
   });
 
-  const [s, setS] = useState<PbPinShape | undefined>(undefined);
-
   return (
     <MapPinTypeAdministrationContext.Provider value={{ state, dispatch }}>
       <Row alignItems="start" gap="md" wrap>
@@ -51,8 +47,7 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
         </ContentWrapper>
         <ContentWrapper>
           <ContentSection header="Pin detail" fullWidth loading={isPending}>
-            <PinBackgroundShapeSelector selected={s} onChange={setS} />
-            <Slider />
+            <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
           </ContentSection>
         </ContentWrapper>
       </Row>
