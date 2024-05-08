@@ -6,7 +6,6 @@ import { useUpdateMapPinType } from '../../../../../api/maps/useUpdateMapPinType
 import ErrorText from '../../../../../components/ErrorText/ErrorText';
 import { useUrlModuleId } from '../../../../../hooks/useUrlModuleId';
 import { useGetMapPinTypesAndGroups } from '../../../../../api/maps/useGetMapPinTypesAndGroups';
-import Loading from '../../../../../components/Loading/Loading';
 import { Col, Row } from '../../../../../components/Flex/Flex';
 import { Label } from '../../../../../components/Typography/Label';
 
@@ -24,6 +23,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
     () => (mapPinTypesAndGroups?.pinTypes ?? []).find((x) => x.id === pinTypeId),
     [mapPinTypesAndGroups, pinTypeId],
   );
+  const pinShape = pinData?.shape ?? PbPinShape.NONE;
 
   const {
     mutate: updateMapPinType,
@@ -45,7 +45,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
   );
 
   const onChangePinShape = useCallback(
-    (shape: PbPinShape | undefined) => onChangeHandler({ shape }),
+    (shape: PbPinShape) => onChangeHandler({ shape }),
     [onChangeHandler],
   );
 
@@ -58,8 +58,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
 
   return (
     <>
-      {loading && <Loading />}
-      <PinBackgroundShapeSelector selected={pinData?.shape} onChange={onChangePinShape} />
+      <PinBackgroundShapeSelector selected={pinShape} onChange={onChangePinShape} />
       <Col gap="sm" fullWidth>
         <Row gap="md" alignItems="center" fullWidth>
           <Row css={{ width: 150 }}>
@@ -71,6 +70,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
               max={50}
               defaultValue={[pinData?.width ?? 30]}
               onValueCommit={onChangeBackgroundWidth}
+              disabled={loading}
             />
           </Row>
           <Row css={{ width: 70 }}>{pinData?.width ?? 0}px</Row>
@@ -80,7 +80,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
             <Label>Icon</Label>
           </Row>
           <Row grow alignItems="center" justifyContent="center">
-            <Slider min={10} max={50} defaultValue={[pinData?.iconSize ?? 30]} />
+            <Slider min={10} max={50} defaultValue={[pinData?.iconSize ?? 30]} disabled={loading} />
           </Row>
           <Row css={{ width: 70 }}>{pinData?.iconSize ?? 0}px</Row>
         </Row>

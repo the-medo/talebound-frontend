@@ -25,8 +25,8 @@ const PinWrapper = styled('div', {
 });
 
 interface PinBackgroundShapeSelectorProps {
-  selected: PbPinShape | undefined;
-  onChange: (shape: PbPinShape | undefined) => void;
+  selected: PbPinShape;
+  onChange: (shape: PbPinShape) => void;
 }
 
 const PinBackgroundShapeSelector: React.FC<PinBackgroundShapeSelectorProps> = ({
@@ -35,16 +35,18 @@ const PinBackgroundShapeSelector: React.FC<PinBackgroundShapeSelectorProps> = ({
 }) => {
   return (
     <Row gap="sm" fullWidth wrap>
-      <PinWrapper
-        onClick={() => onChange(undefined)}
-        selected={selected === undefined}
-        optionNone={selected !== undefined}
-      >
-        no shape
-      </PinWrapper>
       {iterablePbPinShapes.map((x) => (
-        <PinWrapper key={x} onClick={() => onChange(x)} selected={selected === x}>
-          <MapPinBackground backgroundColor="#d9d9d9" borderColor="black" shape={x} width={20} />
+        <PinWrapper
+          key={x}
+          onClick={() => onChange(x)}
+          selected={selected === x}
+          optionNone={x === PbPinShape.NONE && selected !== x}
+        >
+          {x === PbPinShape.NONE ? (
+            'no background'
+          ) : (
+            <MapPinBackground backgroundColor="#d9d9d9" borderColor="black" shape={x} width={20} />
+          )}
         </PinWrapper>
       ))}
     </Row>

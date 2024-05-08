@@ -45,11 +45,13 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
             <NewPinTypeGroupButton moduleId={moduleId} />
           </ContentSection>
         </ContentWrapper>
-        <ContentWrapper>
-          <ContentSection header="Pin detail" fullWidth loading={isPending}>
-            <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
-          </ContentSection>
-        </ContentWrapper>
+        {state.selectedPinTypeId && (
+          <ContentWrapper>
+            <ContentSection header="Pin detail" fullWidth loading={isPending}>
+              <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
+            </ContentSection>
+          </ContentWrapper>
+        )}
       </Row>
     </MapPinTypeAdministrationContext.Provider>
   );

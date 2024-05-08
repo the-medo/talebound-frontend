@@ -481,8 +481,9 @@ export enum PbModuleType {
   MODULE_TYPE_CHARACTER = 'MODULE_TYPE_CHARACTER',
 }
 
-/** @default "SQUARE" */
+/** @default "NONE" */
 export enum PbPinShape {
+  NONE = 'NONE',
   SQUARE = 'SQUARE',
   TRIANGLE = 'TRIANGLE',
   PIN = 'PIN',
