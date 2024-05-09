@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { PbMapPinType, PbPinShape } from '../../../../../generated/api-types/data-contracts';
-import PinBackgroundShapeSelector from '../PinBackgroundShape/PinBackgroundShapeSelector';
+import PinBackgroundShapeSelect from '../PinBackgroundShape/PinBackgroundShapeSelect';
 import Slider from '../../../../../components/Slider/Slider';
 import { useUpdateMapPinType } from '../../../../../api/maps/useUpdateMapPinType';
 import ErrorText from '../../../../../components/ErrorText/ErrorText';
@@ -58,7 +58,8 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
 
   return (
     <>
-      <PinBackgroundShapeSelector selected={pinShape} onChange={onChangePinShape} />
+      <PinBackgroundShapeSelect selected={pinShape} onChange={onChangePinShape} />
+      <PinIconSelect selected={pinIcon} onChange={onChangePinIcon} />
       <Col gap="sm" fullWidth>
         <Row gap="md" alignItems="center" fullWidth>
           <Row css={{ width: 150 }}>

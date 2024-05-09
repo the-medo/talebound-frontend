@@ -1,7 +1,7 @@
 import React from 'react';
-import { MapPinBackgroundProps } from './MapPinBackground';
+import { MapPinBackgroundProps } from '../MapPinBackground';
 
-export const SvgHexagon: React.FC<Omit<MapPinBackgroundProps, 'shape'>> = ({
+export const SvgTriangle: React.FC<Omit<MapPinBackgroundProps, 'shape'>> = ({
   width = 30,
   backgroundColor = 'white',
   borderColor = 'black',
@@ -10,12 +10,12 @@ export const SvgHexagon: React.FC<Omit<MapPinBackgroundProps, 'shape'>> = ({
   <svg
     overflow="visible"
     width={width}
-    viewBox="0 0 32 28"
+    viewBox="0 0 26 23"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M23.5 1H8.5L1 14L8.5 27.5H23.5L31 14L23.5 1Z"
+      d="M0.875644 22L13 1L25.1244 22H0.875644Z"
       style={{ fill: backgroundColor, stroke: borderColor, strokeWidth: borderWidth }}
     />
   </svg>

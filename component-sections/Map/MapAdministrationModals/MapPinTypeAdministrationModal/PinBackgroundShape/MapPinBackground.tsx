@@ -1,16 +1,16 @@
 import React from 'react';
 import { PbPinShape } from '../../../../../generated/api-types/data-contracts';
-import { SvgCloud } from './SvgCloud';
-import { SvgCircle } from './SvgCircle';
-import { SvgSquare } from './SvgSquare';
-import { SvgTriangle } from './SvgTriangle';
-import { SvgPin } from './SvgPin';
-import { SvgHexagon } from './SvgHexagon';
-import { SvgOctagon } from './SvgOctagon';
-import { SvgStar } from './SvgStar';
-import { SvgDiamond } from './SvgDiamond';
-import { SvgPentagon } from './SvgPentagon';
-import { SvgHeart } from './SvgHeart';
+import { SvgCloud } from './shapes/SvgCloud';
+import { SvgCircle } from './shapes/SvgCircle';
+import { SvgSquare } from './shapes/SvgSquare';
+import { SvgTriangle } from './shapes/SvgTriangle';
+import { SvgPin } from './shapes/SvgPin';
+import { SvgHexagon } from './shapes/SvgHexagon';
+import { SvgOctagon } from './shapes/SvgOctagon';
+import { SvgStar } from './shapes/SvgStar';
+import { SvgDiamond } from './shapes/SvgDiamond';
+import { SvgPentagon } from './shapes/SvgPentagon';
+import { SvgHeart } from './shapes/SvgHeart';
 
 export interface MapPinBackgroundProps {
   shape: PbPinShape;

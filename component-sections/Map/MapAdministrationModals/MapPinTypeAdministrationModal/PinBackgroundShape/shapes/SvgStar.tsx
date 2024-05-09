@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPinBackgroundProps } from './MapPinBackground';
+import { MapPinBackgroundProps } from '../MapPinBackground';
 
 export const SvgStar: React.FC<Omit<MapPinBackgroundProps, 'shape'>> = ({
   width = 30,

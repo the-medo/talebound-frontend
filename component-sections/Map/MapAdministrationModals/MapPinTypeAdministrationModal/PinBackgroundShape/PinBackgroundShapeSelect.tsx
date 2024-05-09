@@ -24,12 +24,12 @@ const PinWrapper = styled('div', {
   },
 });
 
-interface PinBackgroundShapeSelectorProps {
+interface PinBackgroundShapeSelectProps {
   selected: PbPinShape;
   onChange: (shape: PbPinShape) => void;
 }
 
-const PinBackgroundShapeSelector: React.FC<PinBackgroundShapeSelectorProps> = ({
+const PinBackgroundShapeSelect: React.FC<PinBackgroundShapeSelectProps> = ({
   selected,
   onChange,
 }) => {
@@ -53,4 +53,4 @@ const PinBackgroundShapeSelector: React.FC<PinBackgroundShapeSelectorProps> = ({
   );
 };
 
-export default PinBackgroundShapeSelector;
+export default PinBackgroundShapeSelect;
