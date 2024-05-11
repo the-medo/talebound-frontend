@@ -64,6 +64,11 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
     [onChangeHandler],
   );
 
+  const onChangeIconSize = useCallback(
+    (value: number[]) => onChangeHandler({ iconSize: value[0] }),
+    [onChangeHandler],
+  );
+
   const onChangeIconColor = useCallback(
     (value: string | undefined) => onChangeHandler({ iconColor: value ?? 'transparent' }),
     [onChangeHandler],
@@ -92,43 +97,48 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
             <PinBackgroundShapeSelect selected={pinShape} onChange={onChangePinShape} />
           </Row>
         </Row>
-        <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 100 }}>
-            <Label>Background</Label>
-          </Row>
-          <Row grow alignItems="center">
-            <ColorPicker
-              value={pinData?.backgroundColor ?? 'transparent'}
-              onChange={onChangeBackgroundColor}
-            />
-          </Row>
-        </Row>
-        <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 100 }}>
-            <Label>Border</Label>
-          </Row>
-          <Row grow alignItems="center">
-            <ColorPicker
-              value={pinData?.borderColor ?? 'transparent'}
-              onChange={onChangeBorderColor}
-            />
-          </Row>
-        </Row>
-        <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 100 }}>
-            <Label>Size</Label>
-          </Row>
-          <Row grow alignItems="center" justifyContent="center">
-            <Slider
-              min={10}
-              max={50}
-              defaultValue={[pinData?.width ?? 30]}
-              onValueCommit={onChangeBackgroundWidth}
-              disabled={loading}
-            />
-          </Row>
-          <Row css={{ width: 70 }}>{pinData?.width ?? 0}px</Row>
-        </Row>
+        {pinShape !== PbPinShape.NONE && (
+          <>
+            <Row gap="md" alignItems="center" fullWidth>
+              <Row css={{ width: 100 }}>
+                <Label>Background</Label>
+              </Row>
+              <Row grow alignItems="center">
+                <ColorPicker
+                  value={pinData?.backgroundColor ?? 'transparent'}
+                  onChange={onChangeBackgroundColor}
+                />
+              </Row>
+            </Row>
+            <Row gap="md" alignItems="center" fullWidth>
+              <Row css={{ width: 100 }}>
+                <Label>Border</Label>
+              </Row>
+              <Row grow alignItems="center">
+                <ColorPicker
+                  value={pinData?.borderColor ?? 'transparent'}
+                  onChange={onChangeBorderColor}
+                />
+              </Row>
+            </Row>
+            <Row gap="md" alignItems="center" fullWidth>
+              <Row css={{ width: 100 }}>
+                <Label>Size</Label>
+              </Row>
+              <Row grow alignItems="center" justifyContent="center">
+                <Slider
+                  min={10}
+                  max={50}
+                  defaultValue={[pinData?.width ?? 30]}
+                  onValueCommit={onChangeBackgroundWidth}
+                  disabled={loading}
+                  showValue
+                  suffix="px"
+                />
+              </Row>
+            </Row>
+          </>
+        )}
         <Row>&nbsp;</Row>
         <Row gap="md" alignItems="start" fullWidth>
           <Row css={{ width: 100, minWidth: 100 }}>
@@ -138,23 +148,37 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
             <PinIconSelect selected={pinIcon} onChange={onChangePinIcon} />
           </Row>
         </Row>
-        <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 100 }}>
-            <Label>Color</Label>
-          </Row>
-          <Row grow alignItems="center">
-            <ColorPicker value={pinData?.iconColor ?? 'transparent'} onChange={onChangeIconColor} />
-          </Row>
-        </Row>
-        <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 100 }}>
-            <Label>Size</Label>
-          </Row>
-          <Row grow alignItems="center" justifyContent="center">
-            <Slider min={10} max={50} defaultValue={[pinData?.iconSize ?? 30]} disabled={loading} />
-          </Row>
-          <Row css={{ width: 70 }}>{pinData?.iconSize ?? 0}px</Row>
-        </Row>
+        {pinIcon !== '' && (
+          <>
+            <Row gap="md" alignItems="center" fullWidth>
+              <Row css={{ width: 100 }}>
+                <Label>Color</Label>
+              </Row>
+              <Row grow alignItems="center">
+                <ColorPicker
+                  value={pinData?.iconColor ?? 'transparent'}
+                  onChange={onChangeIconColor}
+                />
+              </Row>
+            </Row>
+            <Row gap="md" alignItems="center" fullWidth>
+              <Row css={{ width: 100 }}>
+                <Label>Size</Label>
+              </Row>
+              <Row grow alignItems="center" justifyContent="center">
+                <Slider
+                  min={10}
+                  max={30}
+                  defaultValue={[pinData?.iconSize ?? 30]}
+                  onValueCommit={onChangeIconSize}
+                  disabled={loading}
+                  showValue
+                  suffix="px"
+                />
+              </Row>
+            </Row>
+          </>
+        )}
       </Col>
       <ErrorText error={errorUpdate} />
     </>
