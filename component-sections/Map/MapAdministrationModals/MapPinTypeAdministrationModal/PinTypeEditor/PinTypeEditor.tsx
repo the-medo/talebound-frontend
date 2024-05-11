@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { PbMapPinType, PbPinShape } from '../../../../../generated/api-types/data-contracts';
 import PinBackgroundShapeSelect from '../PinBackgroundShape/PinBackgroundShapeSelect';
 import Slider from '../../../../../components/Slider/Slider';
@@ -12,8 +12,6 @@ import PinIconSelect from '../PinIconSelector/PinIconSelect';
 import { PinIconType } from '../PinIconSelector/pinIconLib';
 import ColorPicker from '../../../../../components/ColorPicker/ColorPicker';
 import { TitleH2 } from '../../../../../components/Typography/Title';
-
-type PinColorType = Pick<PbMapPinType, 'iconColor' | 'borderColor' | 'backgroundColor'> | undefined;
 
 interface PinTypeEditorProps {
   pinTypeId: number;

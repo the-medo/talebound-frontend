@@ -4,6 +4,7 @@ import {
   MapPinTypeAdministrationActionType,
   useMapPinTypeAdministrationContext,
 } from '../mapPinTypeAdministrationReducer';
+import MapPin from '../../../MapPin/MapPin';
 
 interface MapPinTypeProps {
   data: PbMapPinType;
@@ -22,14 +23,15 @@ const MapPinType: React.FC<MapPinTypeProps> = ({ data }) => {
   );
 
   return (
-    <li
+    <span
       onClick={handleSelect}
       style={{
         border: `2px solid ${state.selectedPinTypeId === data.id ? 'green' : 'transparent'}`,
+        padding: '4px',
       }}
     >
-      {data.id} {data.icon}
-    </li>
+      <MapPin data={data} />
+    </span>
   );
 };
 
