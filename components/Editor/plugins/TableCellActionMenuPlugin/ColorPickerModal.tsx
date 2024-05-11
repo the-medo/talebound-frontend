@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Modal from '../../../Modal/Modal';
-import ColorPicker from '../../ui/ColorPicker';
+import ColorPickerContent from '../../../ColorPicker/ColorPickerContent';
 import { Row } from '../../../Flex/Flex';
 
 interface ColorPickerModalProps {
@@ -23,7 +23,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   const content = useMemo(
     () => (
       <Row fullWidth justifyContent="center">
-        <ColorPicker color={backgroundColor} onChange={onChange} />
+        <ColorPickerContent color={backgroundColor} onChange={onChange} />
       </Row>
     ),
     [backgroundColor, onChange],

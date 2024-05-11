@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { Row } from '../../../../components/Flex/Flex';
 import { styled } from '../../../../styles/stitches.config';
@@ -11,7 +11,7 @@ import {
   mapPinTypeAdministrationReducer,
 } from './mapPinTypeAdministrationReducer';
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
-import PinTypeEditor from './PinEditor/PinTypeEditor';
+import PinTypeEditor from './PinTypeEditor/PinTypeEditor';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -47,7 +47,7 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
         </ContentWrapper>
         {state.selectedPinTypeId && (
           <ContentWrapper>
-            <ContentSection header="Pin detail" fullWidth loading={isPending}>
+            <ContentSection fullWidth loading={isPending}>
               <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
             </ContentSection>
           </ContentWrapper>

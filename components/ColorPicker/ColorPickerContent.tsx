@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { styled } from '../../../styles/stitches.config';
-import Input from '../../Input/Input';
+import { styled } from '../../styles/stitches.config';
+import Input from '../Input/Input';
 
-interface ColorPickerProps {
+interface ColorPickerContentProps {
   color: string;
   onChange?: (color: string) => void;
 }
@@ -64,7 +64,10 @@ const ColorPickerColor = styled('div', {
   height: '20px',
 });
 
-export default function ColorPicker({ color, onChange }: Readonly<ColorPickerProps>): JSX.Element {
+export default function ColorPickerContent({
+  color,
+  onChange,
+}: Readonly<ColorPickerContentProps>): JSX.Element {
   const [selfColor, setSelfColor] = useState(transformColor('hex', color));
   const [inputColor, setInputColor] = useState(color);
   const innerDivRef = useRef(null);

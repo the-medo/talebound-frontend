@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { PbMapPinType, PbPinShape } from '../../../../../generated/api-types/data-contracts';
 import PinBackgroundShapeSelect from '../PinBackgroundShape/PinBackgroundShapeSelect';
 import Slider from '../../../../../components/Slider/Slider';
@@ -8,6 +8,12 @@ import { useUrlModuleId } from '../../../../../hooks/useUrlModuleId';
 import { useGetMapPinTypesAndGroups } from '../../../../../api/maps/useGetMapPinTypesAndGroups';
 import { Col, Row } from '../../../../../components/Flex/Flex';
 import { Label } from '../../../../../components/Typography/Label';
+import PinIconSelect from '../PinIconSelector/PinIconSelect';
+import { PinIconType } from '../PinIconSelector/pinIconLib';
+import ColorPicker from '../../../../../components/ColorPicker/ColorPicker';
+import { TitleH2 } from '../../../../../components/Typography/Title';
+
+type PinColorType = Pick<PbMapPinType, 'iconColor' | 'borderColor' | 'backgroundColor'> | undefined;
 
 interface PinTypeEditorProps {
   pinTypeId: number;
@@ -24,6 +30,7 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
     [mapPinTypesAndGroups, pinTypeId],
   );
   const pinShape = pinData?.shape ?? PbPinShape.NONE;
+  const pinIcon = pinData?.icon ?? '';
 
   const {
     mutate: updateMapPinType,
@@ -49,8 +56,28 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
     [onChangeHandler],
   );
 
+  const onChangePinIcon = useCallback(
+    (icon: PinIconType) => onChangeHandler({ icon }),
+    [onChangeHandler],
+  );
+
   const onChangeBackgroundWidth = useCallback(
     (value: number[]) => onChangeHandler({ width: value[0] }),
+    [onChangeHandler],
+  );
+
+  const onChangeIconColor = useCallback(
+    (value: string | undefined) => onChangeHandler({ iconColor: value ?? 'transparent' }),
+    [onChangeHandler],
+  );
+
+  const onChangeBorderColor = useCallback(
+    (value: string | undefined) => onChangeHandler({ borderColor: value ?? 'transparent' }),
+    [onChangeHandler],
+  );
+
+  const onChangeBackgroundColor = useCallback(
+    (value: string | undefined) => onChangeHandler({ backgroundColor: value ?? 'transparent' }),
     [onChangeHandler],
   );
 
@@ -58,12 +85,40 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
 
   return (
     <>
-      <PinBackgroundShapeSelect selected={pinShape} onChange={onChangePinShape} />
-      <PinIconSelect selected={pinIcon} onChange={onChangePinIcon} />
       <Col gap="sm" fullWidth>
+        <Row gap="md" alignItems="start" fullWidth>
+          <Row css={{ width: 100, minWidth: 100 }}>
+            <TitleH2>Shape</TitleH2>
+          </Row>
+          <Row grow alignItems="center">
+            <PinBackgroundShapeSelect selected={pinShape} onChange={onChangePinShape} />
+          </Row>
+        </Row>
         <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 150 }}>
+          <Row css={{ width: 100 }}>
             <Label>Background</Label>
+          </Row>
+          <Row grow alignItems="center">
+            <ColorPicker
+              value={pinData?.backgroundColor ?? 'transparent'}
+              onChange={onChangeBackgroundColor}
+            />
+          </Row>
+        </Row>
+        <Row gap="md" alignItems="center" fullWidth>
+          <Row css={{ width: 100 }}>
+            <Label>Border</Label>
+          </Row>
+          <Row grow alignItems="center">
+            <ColorPicker
+              value={pinData?.borderColor ?? 'transparent'}
+              onChange={onChangeBorderColor}
+            />
+          </Row>
+        </Row>
+        <Row gap="md" alignItems="center" fullWidth>
+          <Row css={{ width: 100 }}>
+            <Label>Size</Label>
           </Row>
           <Row grow alignItems="center" justifyContent="center">
             <Slider
@@ -76,9 +131,26 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
           </Row>
           <Row css={{ width: 70 }}>{pinData?.width ?? 0}px</Row>
         </Row>
+        <Row>&nbsp;</Row>
+        <Row gap="md" alignItems="start" fullWidth>
+          <Row css={{ width: 100, minWidth: 100 }}>
+            <TitleH2>Icon</TitleH2>
+          </Row>
+          <Row grow alignItems="center">
+            <PinIconSelect selected={pinIcon} onChange={onChangePinIcon} />
+          </Row>
+        </Row>
         <Row gap="md" alignItems="center" fullWidth>
-          <Row css={{ width: 150 }}>
-            <Label>Icon</Label>
+          <Row css={{ width: 100 }}>
+            <Label>Color</Label>
+          </Row>
+          <Row grow alignItems="center">
+            <ColorPicker value={pinData?.iconColor ?? 'transparent'} onChange={onChangeIconColor} />
+          </Row>
+        </Row>
+        <Row gap="md" alignItems="center" fullWidth>
+          <Row css={{ width: 100 }}>
+            <Label>Size</Label>
           </Row>
           <Row grow alignItems="center" justifyContent="center">
             <Slider min={10} max={50} defaultValue={[pinData?.iconSize ?? 30]} disabled={loading} />
