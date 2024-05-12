@@ -12,6 +12,7 @@ import {
 } from './mapPinTypeAdministrationReducer';
 import NewPinTypeGroupButton from './GroupAdministration/NewPinTypeGroupButton';
 import PinTypeEditor from './PinTypeEditor/PinTypeEditor';
+import PinTypeActions from './PinTypeActions/PinTypeActions';
 
 const ContentWrapper = styled('div', {
   width: 'calc(33% - $md/2)', //amazing computation, just saying
@@ -46,11 +47,18 @@ const MapPinTypeAdministrationContent: React.FC<MapPinTypeAdministrationContentP
           </ContentSection>
         </ContentWrapper>
         {state.selectedPinTypeId && (
-          <ContentWrapper>
-            <ContentSection fullWidth loading={isPending}>
-              <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
-            </ContentSection>
-          </ContentWrapper>
+          <>
+            <ContentWrapper>
+              <ContentSection fullWidth loading={isPending}>
+                <PinTypeEditor pinTypeId={state.selectedPinTypeId} />
+              </ContentSection>
+            </ContentWrapper>
+            <ContentWrapper>
+              <ContentSection fullWidth loading={isPending}>
+                <PinTypeActions pinTypeId={state.selectedPinTypeId} />
+              </ContentSection>
+            </ContentWrapper>
+          </>
         )}
       </Row>
     </MapPinTypeAdministrationContext.Provider>
