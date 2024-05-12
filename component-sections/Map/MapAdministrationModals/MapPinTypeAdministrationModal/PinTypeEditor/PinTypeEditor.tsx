@@ -12,6 +12,7 @@ import PinIconSelect from '../PinIconSelector/PinIconSelect';
 import { PinIconType } from '../PinIconSelector/pinIconLib';
 import ColorPicker from '../../../../../components/ColorPicker/ColorPicker';
 import { TitleH2 } from '../../../../../components/Typography/Title';
+import MapPin from '../../../MapPin/MapPin';
 
 interface PinTypeEditorProps {
   pinTypeId: number;
@@ -179,6 +180,16 @@ const PinTypeEditor: React.FC<PinTypeEditorProps> = ({ pinTypeId }) => {
             </Row>
           </>
         )}
+
+        <Row>&nbsp;</Row>
+        <Row gap="md" alignItems="start" fullWidth>
+          <Row css={{ width: 100, minWidth: 100 }}>
+            <TitleH2>Preview</TitleH2>
+          </Row>
+          <Row grow alignItems="center">
+            {pinData && <MapPin data={pinData} />}
+          </Row>
+        </Row>
       </Col>
       <ErrorText error={errorUpdate} />
     </>
