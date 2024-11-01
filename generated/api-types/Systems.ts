@@ -10,16 +10,16 @@
  */
 
 import {
-  PbCreateWorldRequest,
-  PbCreateWorldResponse,
-  PbGetWorldsResponse,
+  PbCreateSystemRequest,
+  PbCreateSystemResponse,
+  PbGetSystemsResponse,
   PbImage,
-  PbWorld,
+  PbSystem,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
-export class Worlds<SecurityDataType = unknown> {
+export class Systems<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
 
   constructor(http: HttpClient<SecurityDataType>) {
@@ -27,16 +27,16 @@ export class Worlds<SecurityDataType = unknown> {
   }
 
   /**
-   * @description gets list of worlds
+   * @description gets list of systems
    *
-   * @tags Worlds
-   * @name WorldsGetWorlds
-   * @summary Get worlds
-   * @request GET:/worlds
-   * @response `200` `PbGetWorldsResponse` A successful response.
+   * @tags Systems
+   * @name SystemsGetSystems
+   * @summary Get systems
+   * @request GET:/systems
+   * @response `200` `PbGetSystemsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsGetWorlds = (
+  systemsGetSystems = (
     query?: {
       public?: boolean;
       tags?: number[];
@@ -48,26 +48,26 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbGetWorldsResponse, RpcStatus>({
-      path: `/worlds`,
+    this.http.request<PbGetSystemsResponse, RpcStatus>({
+      path: `/systems`,
       method: 'GET',
       query: query,
       format: 'json',
       ...params,
     });
   /**
-   * @description creates completely new world
+   * @description creates completely new system
    *
-   * @tags Worlds
-   * @name WorldsCreateWorld
-   * @summary Create world
-   * @request POST:/worlds
-   * @response `200` `PbCreateWorldResponse` A successful response.
+   * @tags Systems
+   * @name SystemsCreateSystem
+   * @summary Create system
+   * @request POST:/systems
+   * @response `200` `PbCreateSystemResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsCreateWorld = (body: PbCreateWorldRequest, params: RequestParams = {}) =>
-    this.http.request<PbCreateWorldResponse, RpcStatus>({
-      path: `/worlds`,
+  systemsCreateSystem = (body: PbCreateSystemRequest, params: RequestParams = {}) =>
+    this.http.request<PbCreateSystemResponse, RpcStatus>({
+      path: `/systems`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
@@ -75,34 +75,34 @@ export class Worlds<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description gets world by ID
+   * @description gets system by ID
    *
-   * @tags Worlds
-   * @name WorldsGetWorldById
-   * @summary Get world by ID
-   * @request GET:/worlds/{worldId}
-   * @response `200` `PbWorld` A successful response.
+   * @tags Systems
+   * @name SystemsGetSystemById
+   * @summary Get system by ID
+   * @request GET:/systems/{systemId}
+   * @response `200` `PbSystem` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsGetWorldById = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbWorld, RpcStatus>({
-      path: `/worlds/${worldId}`,
+  systemsGetSystemById = (systemId: number, params: RequestParams = {}) =>
+    this.http.request<PbSystem, RpcStatus>({
+      path: `/systems/${systemId}`,
       method: 'GET',
       format: 'json',
       ...params,
     });
   /**
-   * @description updates world properties (NO images or stats!)
+   * @description updates system properties (NO images or stats!)
    *
-   * @tags Worlds
-   * @name WorldsUpdateWorld
-   * @summary Update world
-   * @request PATCH:/worlds/{worldId}
-   * @response `200` `PbWorld` A successful response.
+   * @tags Systems
+   * @name SystemsUpdateSystem
+   * @summary Update system
+   * @request PATCH:/systems/{systemId}
+   * @response `200` `PbSystem` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsUpdateWorld = (
-    worldId: number,
+  systemsUpdateSystem = (
+    systemId: number,
     body: {
       name?: string;
       shortDescription?: string;
@@ -111,25 +111,25 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbWorld, RpcStatus>({
-      path: `/worlds/${worldId}`,
+    this.http.request<PbSystem, RpcStatus>({
+      path: `/systems/${systemId}`,
       method: 'PATCH',
       body: body,
       format: 'json',
       ...params,
     });
   /**
-   * @description uploads and sets new image for given world
+   * @description uploads and sets new image for given system
    *
-   * @tags Worlds
-   * @name WorldsUploadWorldImage
-   * @summary Upload image for world
-   * @request POST:/worlds/{worldId}/images
+   * @tags Systems
+   * @name SystemsUploadSystemImage
+   * @summary Upload image for system
+   * @request POST:/systems/{systemId}/images
    * @response `200` `PbImage` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsUploadWorldImage = (
-    worldId: number,
+  systemsUploadSystemImage = (
+    systemId: number,
     body: {
       /** @format byte */
       data?: string;
@@ -139,7 +139,7 @@ export class Worlds<SecurityDataType = unknown> {
     params: RequestParams = {},
   ) =>
     this.http.request<PbImage, RpcStatus>({
-      path: `/worlds/${worldId}/images`,
+      path: `/systems/${systemId}/images`,
       method: 'POST',
       body: body,
       format: 'json',

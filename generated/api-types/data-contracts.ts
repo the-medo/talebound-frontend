@@ -33,6 +33,34 @@ export interface PbAverageEvaluationVote {
   average?: number;
 }
 
+export interface PbCharacter {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  public?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  shortDescription?: string;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  systemId?: number;
+}
+
+export interface PbCreateCharacterRequest {
+  name?: string;
+  shortDescription?: string;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  systemId?: number;
+}
+
+export interface PbCreateCharacterResponse {
+  character?: PbCharacter;
+  module?: PbViewModule;
+}
+
 export interface PbCreateEntityGroupRequest {
   /** @format int32 */
   parentEntityGroupId?: number;
@@ -115,6 +143,31 @@ export interface PbCreatePostRequest {
   isPrivate?: boolean;
   /** @format int32 */
   imageThumbnailId?: number;
+}
+
+export interface PbCreateQuestRequest {
+  name?: string;
+  shortDescription?: string;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  systemId?: number;
+}
+
+export interface PbCreateQuestResponse {
+  quest?: PbQuest;
+  module?: PbViewModule;
+}
+
+export interface PbCreateSystemRequest {
+  name?: string;
+  shortDescription?: string;
+  basedOn?: string;
+}
+
+export interface PbCreateSystemResponse {
+  system?: PbSystem;
+  module?: PbViewModule;
 }
 
 export interface PbCreateUserRequest {
@@ -244,6 +297,12 @@ export interface PbGetAverageUserEvaluationsByTypeResponse {
   averageEvaluationVote?: PbAverageEvaluationVote[];
 }
 
+export interface PbGetCharactersResponse {
+  characterIds?: number[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
 export interface PbGetEvaluationByIdResponse {
   evaluation?: PbEvaluation;
 }
@@ -326,6 +385,18 @@ export interface PbGetPostHistoryResponse {
 
 export interface PbGetPostsResponse {
   posts?: PbPost[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
+export interface PbGetQuestsResponse {
+  questIds?: number[];
+  /** @format int32 */
+  totalCount?: number;
+}
+
+export interface PbGetSystemsResponse {
+  systemIds?: number[];
   /** @format int32 */
   totalCount?: number;
 }
@@ -551,6 +622,20 @@ export interface PbPostHistory {
   imageThumbnailId?: number;
 }
 
+export interface PbQuest {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  public?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  shortDescription?: string;
+  /** @format int32 */
+  worldId?: number;
+  /** @format int32 */
+  systemId?: number;
+}
+
 export interface PbRemoveRoleFromUserResponse {
   success?: boolean;
   message?: string;
@@ -610,6 +695,17 @@ export interface PbRunFetcherResponse {
   maps?: PbMap[];
   locations?: PbLocation[];
   users?: PbUser[];
+}
+
+export interface PbSystem {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+  public?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  basedOn?: string;
+  shortDescription?: string;
 }
 
 export interface PbTag {

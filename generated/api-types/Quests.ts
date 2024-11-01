@@ -10,16 +10,16 @@
  */
 
 import {
-  PbCreateWorldRequest,
-  PbCreateWorldResponse,
-  PbGetWorldsResponse,
+  PbCreateQuestRequest,
+  PbCreateQuestResponse,
+  PbGetQuestsResponse,
   PbImage,
-  PbWorld,
+  PbQuest,
   RpcStatus,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
-export class Worlds<SecurityDataType = unknown> {
+export class Quests<SecurityDataType = unknown> {
   http: HttpClient<SecurityDataType>;
 
   constructor(http: HttpClient<SecurityDataType>) {
@@ -27,19 +27,23 @@ export class Worlds<SecurityDataType = unknown> {
   }
 
   /**
-   * @description gets list of worlds
+   * @description gets list of quests
    *
-   * @tags Worlds
-   * @name WorldsGetWorlds
-   * @summary Get worlds
-   * @request GET:/worlds
-   * @response `200` `PbGetWorldsResponse` A successful response.
+   * @tags Quests
+   * @name QuestsGetQuests
+   * @summary Get quests
+   * @request GET:/quests
+   * @response `200` `PbGetQuestsResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsGetWorlds = (
+  questsGetQuests = (
     query?: {
       public?: boolean;
       tags?: number[];
+      /** @format int32 */
+      worldId?: number;
+      /** @format int32 */
+      systemId?: number;
       orderBy?: string;
       /** @format int32 */
       limit?: number;
@@ -48,26 +52,26 @@ export class Worlds<SecurityDataType = unknown> {
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbGetWorldsResponse, RpcStatus>({
-      path: `/worlds`,
+    this.http.request<PbGetQuestsResponse, RpcStatus>({
+      path: `/quests`,
       method: 'GET',
       query: query,
       format: 'json',
       ...params,
     });
   /**
-   * @description creates completely new world
+   * @description creates completely new quest
    *
-   * @tags Worlds
-   * @name WorldsCreateWorld
-   * @summary Create world
-   * @request POST:/worlds
-   * @response `200` `PbCreateWorldResponse` A successful response.
+   * @tags Quests
+   * @name QuestsCreateQuest
+   * @summary Create quest
+   * @request POST:/quests
+   * @response `200` `PbCreateQuestResponse` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsCreateWorld = (body: PbCreateWorldRequest, params: RequestParams = {}) =>
-    this.http.request<PbCreateWorldResponse, RpcStatus>({
-      path: `/worlds`,
+  questsCreateQuest = (body: PbCreateQuestRequest, params: RequestParams = {}) =>
+    this.http.request<PbCreateQuestResponse, RpcStatus>({
+      path: `/quests`,
       method: 'POST',
       body: body,
       type: ContentType.Json,
@@ -75,61 +79,64 @@ export class Worlds<SecurityDataType = unknown> {
       ...params,
     });
   /**
-   * @description gets world by ID
+   * @description gets quest by ID
    *
-   * @tags Worlds
-   * @name WorldsGetWorldById
-   * @summary Get world by ID
-   * @request GET:/worlds/{worldId}
-   * @response `200` `PbWorld` A successful response.
+   * @tags Quests
+   * @name QuestsGetQuestById
+   * @summary Get quest by ID
+   * @request GET:/quests/{questId}
+   * @response `200` `PbQuest` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsGetWorldById = (worldId: number, params: RequestParams = {}) =>
-    this.http.request<PbWorld, RpcStatus>({
-      path: `/worlds/${worldId}`,
+  questsGetQuestById = (questId: number, params: RequestParams = {}) =>
+    this.http.request<PbQuest, RpcStatus>({
+      path: `/quests/${questId}`,
       method: 'GET',
       format: 'json',
       ...params,
     });
   /**
-   * @description updates world properties (NO images or stats!)
+   * @description updates quest properties (NO images or stats!)
    *
-   * @tags Worlds
-   * @name WorldsUpdateWorld
-   * @summary Update world
-   * @request PATCH:/worlds/{worldId}
-   * @response `200` `PbWorld` A successful response.
+   * @tags Quests
+   * @name QuestsUpdateQuest
+   * @summary Update quest
+   * @request PATCH:/quests/{questId}
+   * @response `200` `PbQuest` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsUpdateWorld = (
-    worldId: number,
+  questsUpdateQuest = (
+    questId: number,
     body: {
       name?: string;
       shortDescription?: string;
       public?: boolean;
-      basedOn?: string;
+      /** @format int32 */
+      worldId?: number;
+      /** @format int32 */
+      systemId?: number;
     },
     params: RequestParams = {},
   ) =>
-    this.http.request<PbWorld, RpcStatus>({
-      path: `/worlds/${worldId}`,
+    this.http.request<PbQuest, RpcStatus>({
+      path: `/quests/${questId}`,
       method: 'PATCH',
       body: body,
       format: 'json',
       ...params,
     });
   /**
-   * @description uploads and sets new image for given world
+   * @description uploads and sets new image for given quest
    *
-   * @tags Worlds
-   * @name WorldsUploadWorldImage
-   * @summary Upload image for world
-   * @request POST:/worlds/{worldId}/images
+   * @tags Quests
+   * @name QuestsUploadQuestImage
+   * @summary Upload image for quest
+   * @request POST:/quests/{questId}/images
    * @response `200` `PbImage` A successful response.
    * @response `default` `RpcStatus` An unexpected error response.
    */
-  worldsUploadWorldImage = (
-    worldId: number,
+  questsUploadQuestImage = (
+    questId: number,
     body: {
       /** @format byte */
       data?: string;
@@ -139,7 +146,7 @@ export class Worlds<SecurityDataType = unknown> {
     params: RequestParams = {},
   ) =>
     this.http.request<PbImage, RpcStatus>({
-      path: `/worlds/${worldId}/images`,
+      path: `/quests/${questId}/images`,
       method: 'POST',
       body: body,
       format: 'json',
