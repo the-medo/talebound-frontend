@@ -12,10 +12,10 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
-import ModuleImages from './ModuleImages';
-import ModuleTags from './ModuleTags';
+import ModuleImages from '../../modules/Edit/ModuleImages';
+import ModuleTags from '../../modules/Edit/ModuleTags';
 import Loading from '../../../components/Loading/Loading';
-import ActionBoxModule from '../ActionBoxModule';
+import ActionBoxModule from '../../modules/ActionBoxModule';
 import { useMyModuleRole, ModuleAdminRole } from '../../../hooks/useModuleAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
@@ -24,7 +24,9 @@ import ModuleEntityTagAdministration from '../../../component-sections/Module/Mo
 import { useWorld } from '../../../hooks/useWorld';
 import { useImage } from '../../../hooks/useImage';
 
-const ModuleIntroduction = React.lazy(() => import('../ModuleIntroduction/ModuleIntroduction'));
+const ModuleIntroduction = React.lazy(
+  () => import('../../modules/ModuleIntroduction/ModuleIntroduction'),
+);
 
 interface EditWorldProps {
   worldId: number;
