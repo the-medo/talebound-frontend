@@ -27,8 +27,8 @@ export type OmitLimitOffset<T extends (...args: any) => any> = Omit<
 
 /** snippet - how to change cached data in multiple queries
 
- queryClient.setQueriesData<inferData<typeof useGetWorlds>>(
- { queryKey: ['useGetWorlds'] },
+ queryClient.setQueriesData<inferData<typeof useGetSystems>>(
+ { queryKey: ['useGetSystems'] },
  (oldData) => {
  console.log('queryClient.setQueriesData', oldData);
 
