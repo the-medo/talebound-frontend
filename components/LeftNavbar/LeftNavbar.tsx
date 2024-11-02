@@ -12,8 +12,14 @@ const LeftNavbar: React.FC = () => {
       <NavbarItem href="/worlds">
         Worlds <NavbarSquare />
       </NavbarItem>
+      <NavbarItem href="/systems">
+        System <NavbarSquare />
+      </NavbarItem>
       <NavbarItem href="/quests">
         Quests <NavbarSquare />
+      </NavbarItem>
+      <NavbarItem href="/characters">
+        Characters <NavbarSquare />
       </NavbarItem>
 
       <NavbarHeader title="content" />
