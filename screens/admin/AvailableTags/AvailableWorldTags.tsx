@@ -1,8 +1,8 @@
 import React from 'react';
 import { Col, Row } from '../../../components/Flex/Flex';
 import ArticleAvailableWorldTags from '../../../articles/Admin/ArticleAvailableWorldTags';
-import SectionNewTag from './SectionNewTag';
-import SectionAvailableModuleTags from './SectionAvailableModuleTags';
+import SectionNewTag from '../../modules/AvailableTags/SectionNewTag';
+import SectionAvailableModuleTags from '../../modules/AvailableTags/SectionAvailableModuleTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
 
 const AvailableWorldTags: React.FC = () => {

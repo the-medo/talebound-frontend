@@ -1,19 +1,19 @@
 import React from 'react';
 import Head from 'next/head';
 import AdminLayout from '../../components/Layout/AdminLayout';
-import AvailableWorldTags from '../../screens/admin/AvailableTags/AvailableWorldTags';
+import AvailableSystemTags from '../../screens/admin/AvailableTags/AvailableSystemTags';
 
-const PageAdminWorldTags: React.FC = () => {
+const PageAdminSystemTags: React.FC = () => {
   return (
     <>
       <Head>
         <title>Admin</title>
       </Head>
       <AdminLayout>
-        <AvailableWorldTags />
+        <AvailableSystemTags />
       </AdminLayout>
     </>
   );
 };
 
-export default PageAdminWorldTags;
+export default PageAdminSystemTags;

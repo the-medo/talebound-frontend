@@ -13,6 +13,15 @@ const LeftNavbarAdmin: React.FC = () => {
       <NavbarItem href="/admin/world-tags">
         World tags <NavbarSquare />
       </NavbarItem>
+      <NavbarItem href="/admin/system-tags">
+        System tags <NavbarSquare />
+      </NavbarItem>
+      <NavbarItem href="/admin/character-tags">
+        Character tags <NavbarSquare />
+      </NavbarItem>
+      <NavbarItem href="/admin/quest-tags">
+        Quest tags <NavbarSquare />
+      </NavbarItem>
     </NavbarWrapper>
   );
 };

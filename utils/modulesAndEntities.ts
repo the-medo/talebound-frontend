@@ -37,6 +37,14 @@ for (const entityType in modulesOfEntities) {
   });
 }
 
+export const moduleTypeTitles: Record<PbModuleType, string> = {
+  [PbModuleType.MODULE_TYPE_UNKNOWN]: '- Unknown -',
+  [PbModuleType.MODULE_TYPE_WORLD]: 'World',
+  [PbModuleType.MODULE_TYPE_SYSTEM]: 'System',
+  [PbModuleType.MODULE_TYPE_CHARACTER]: 'Character',
+  [PbModuleType.MODULE_TYPE_QUEST]: 'Quest',
+};
+
 export const entityTypeTitles: Record<PbEntityType, string> = {
   [PbEntityType.ENTITY_TYPE_UNKNOWN]: '- Unknown -',
   [PbEntityType.ENTITY_TYPE_LOCATION]: 'Location',

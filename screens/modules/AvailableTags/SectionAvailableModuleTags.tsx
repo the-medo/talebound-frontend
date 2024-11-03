@@ -12,6 +12,7 @@ import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useDeleteModuleTypeAvailableTag } from '../../../api/tags/useDeleteModuleTypeAvailableTag';
 import { Text } from '../../../components/Typography/Text';
 import AlertDialog from '../../../components/AlertDialog/AlertDialog';
+import { moduleTypeTitles } from '../../../utils/modulesAndEntities';
 
 interface SectionAvailableModuleTagsProps {
   moduleType: PbModuleType;
@@ -93,7 +94,11 @@ const SectionAvailableModuleTags: React.FC<SectionAvailableModuleTagsProps> = ({
   );
 
   return (
-    <ContentSection flexWrap="wrap" direction="column" header="World tag administration">
+    <ContentSection
+      flexWrap="wrap"
+      direction="column"
+      header={`Tag administration - ${moduleTypeTitles[moduleType]}s`}
+    >
       <Row alignItems="start" wrap css={{ width: '100%' }} gap="sm">
         <Row wrap css={{ width: 'max(calc(100% - 400px), 300px)' }} gap="sm">
           {tag.map((t) => (
