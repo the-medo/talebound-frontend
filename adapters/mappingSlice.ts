@@ -31,9 +31,15 @@ export const mappingSlice = createSlice({
   reducers: {
     mapModules: (state, action: PayloadAction<PbViewModule[]>) => {
       action.payload.forEach((module) => {
-        const { worldId } = module;
+        const { worldId, systemId, characterId, questId } = module;
         if (worldId && module.id) {
           state.worldsModule[worldId] = module.id;
+        } else if (systemId && module.id) {
+          state.systemsModule[systemId] = module.id;
+        } else if (characterId && module.id) {
+          state.charactersModule[characterId] = module.id;
+        } else if (questId && module.id) {
+          state.questsModule[questId] = module.id;
         }
       });
     },

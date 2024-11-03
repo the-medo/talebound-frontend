@@ -12,6 +12,9 @@ import { excludeExistingIds, isFetcherKey, useRunFetcher } from './fetcher/useRu
 import { queryClient } from '../pages/_app';
 import { AxiosResponse } from 'axios';
 import { mappingSlice } from '../adapters/mappingSlice';
+import { systemAdapterSlice } from '../adapters/SystemAdapter';
+import { characterAdapterSlice } from '../adapters/CharacterAdapter';
+import { questAdapterSlice } from '../adapters/QuestAdapter';
 
 export const fetcherInterceptor = async (response: AxiosResponse) => {
   console.log('INTERCEPTED');
@@ -31,14 +34,24 @@ export const fetcherInterceptor = async (response: AxiosResponse) => {
     }
     if (fetcherData.modules) {
       console.log('Saving modules to store ', fetcherData.modules);
-      // ModuleAdapter.upsertMany(store.getState().modules, fetcherData.modules);
       store.dispatch(moduleAdapterSlice.actions.upsertModules(fetcherData.modules));
       store.dispatch(mappingSlice.actions.mapModules(fetcherData.modules));
     }
     if (fetcherData.worlds) {
       console.log('Saving worlds to store ', fetcherData.worlds);
-      // WorldAdapter.upsertMany(store.getState().worlds, fetcherData.worlds);
       store.dispatch(worldAdapterSlice.actions.upsertWorlds(fetcherData.worlds));
+    }
+    if (fetcherData.systems) {
+      console.log('Saving systems to store ', fetcherData.systems);
+      store.dispatch(systemAdapterSlice.actions.upsertSystems(fetcherData.systems));
+    }
+    if (fetcherData.characters) {
+      console.log('Saving characters to store ', fetcherData.characters);
+      store.dispatch(characterAdapterSlice.actions.upsertCharacters(fetcherData.characters));
+    }
+    if (fetcherData.quests) {
+      console.log('Saving quests to store ', fetcherData.quests);
+      store.dispatch(questAdapterSlice.actions.upsertQuests(fetcherData.quests));
     }
     if (fetcherData.entities) {
       console.log('Saving entities to store ', fetcherData.entities);

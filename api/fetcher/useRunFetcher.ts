@@ -27,6 +27,12 @@ export function excludeExistingIds(key: RunFetcherRequestKey, ids: number[]): nu
       return ids.filter((id) => !store.getState().modules.entities[id]);
     case 'worldIds':
       return ids.filter((id) => !store.getState().worlds.entities[id]);
+    case 'systemIds':
+      return ids.filter((id) => !store.getState().systems.entities[id]);
+    case 'characterIds':
+      return ids.filter((id) => !store.getState().characters.entities[id]);
+    case 'questIds':
+      return ids.filter((id) => !store.getState().quests.entities[id]);
     case 'entityIds':
       return ids.filter((id) => !store.getState().entities.entities[id]);
     case 'postIds':
