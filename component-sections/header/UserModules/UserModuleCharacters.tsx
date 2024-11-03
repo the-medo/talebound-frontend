@@ -1,40 +1,46 @@
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
 import { AspectBoxIcon } from '../ControlPanel/AspectBoxIcon';
-import { ModuleData, generateModuleData } from '../ControlPanel/utilsAspectBox';
 import { LuUsers } from 'react-icons/lu';
 import AspectDiamond from '../ControlPanel/AspectDiamond';
 import { AspectBox } from '../ControlPanel/AspectBox';
+import { PbUserModule } from '../../../generated/api-types/data-contracts';
+import ModuleAspectDiamond from './ModuleAspectDiamond';
 
-interface UserModuleCharactersProps {}
+interface UserModuleCharactersProps {
+  modules: PbUserModule[];
+}
 
-const UserModuleCharacters: React.FC<UserModuleCharactersProps> = () => {
-  const [characterData, setCharacterData] = useState<ModuleData>({ marker: [] });
+const UserModuleCharacters: React.FC<UserModuleCharactersProps> = ({ modules }) => {
+  const moduleIds = (modules ?? []).map((m) => m.moduleId!);
+
+  const x = 'left',
+    y = 'bottom';
 
   return (
-    <AspectBox x="left" y="bottom">
-      <AspectBoxIcon x="left" y="bottom" onClick={() => setCharacterData(generateModuleData())}>
+    <AspectBox x={x} y={y}>
+      <AspectBoxIcon x={x} y={y}>
         <LuUsers size={20} />
       </AspectBoxIcon>
-      {characterData.marker.length === 0 && (
-        <AspectDiamond
-          imgIdx={0}
-          totalCount={0}
-          index={0}
-          x="left"
-          y="bottom"
-          text={'No characters'}
-        />
+      {moduleIds.length === 0 && (
+        <AspectDiamond imgIdx={0} totalCount={0} index={0} x={x} y={y} text={'No characters'} />
       )}
-      {characterData.marker.map((marker, idx) => (
-        <AspectDiamond
-          key={idx}
-          imgIdx={marker.imgIdx}
-          totalCount={characterData.marker.length}
-          index={idx + 1}
-          x="left"
-          y="bottom"
-        />
-      ))}
+      <Suspense
+        fallback={<AspectDiamond imgIdx={0} totalCount={0} index={0} x={x} y={y} text={'...'} />}
+      >
+        {moduleIds.map(
+          (wid, idx) =>
+            wid && (
+              <ModuleAspectDiamond
+                key={wid}
+                moduleId={wid}
+                totalCount={moduleIds.length}
+                index={idx + 1}
+                x={x}
+                y={y}
+              />
+            ),
+        )}
+      </Suspense>
     </AspectBox>
   );
 };
