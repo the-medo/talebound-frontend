@@ -11,17 +11,17 @@ import MapList from '../../../../component-sections/Map/MapList';
 
 interface EntityChoiceProps {
   canEdit?: boolean;
-  worldImageThumbnail?: string;
+  moduleImageThumbnail?: string;
 }
 
-const EntityChoice: React.FC<EntityChoiceProps> = ({ canEdit, worldImageThumbnail }) => {
+const EntityChoice: React.FC<EntityChoiceProps> = ({ canEdit, moduleImageThumbnail }) => {
   const [selectedEntityType, setSelectedEntityType] = useState<PbEntityType>(
     PbEntityType.ENTITY_TYPE_POST,
   );
   const moduleId = useUrlModuleId();
 
   return (
-    <ContentSection flexWrap="wrap" direction="column" cornerImage={worldImageThumbnail}>
+    <ContentSection flexWrap="wrap" direction="column" cornerImage={moduleImageThumbnail}>
       <Row gap="sm" fullWidth wrap>
         <ImageButton
           title={'Posts'}

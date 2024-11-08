@@ -35,14 +35,17 @@ const ImageBackground = styled(Col, {
   },
 });
 
+export interface ImageCardStatSection {
+  label: string;
+  value: number;
+}
+
 interface ImageCardProps {
   imgSrc: string;
   href: string;
   title: string;
   basedOn: string;
-  playModeCount: number;
-  questCount: number;
-  activityCount: number;
+  statSections: ImageCardStatSection[];
   availableTags: PbViewTag[];
   tags: number[];
 }
@@ -52,9 +55,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   href,
   title,
   basedOn,
-  playModeCount,
-  questCount,
-  activityCount,
+  statSections,
   availableTags,
   tags,
 }) => {
@@ -83,9 +84,9 @@ const ImageCard: React.FC<ImageCardProps> = ({
       </Col>
       <div style={{ height: '100px' }}></div>
       <Row gap="sm" justifyContent="around">
-        <MiniStatistic title="Play modes" value={playModeCount} />
-        <MiniStatistic title="Quests" value={questCount} />
-        <MiniStatistic title="Activity" value={activityCount} />
+        {statSections.map((ss) => (
+          <MiniStatistic key={ss.label} title={ss.label} value={ss.value} />
+        ))}
       </Row>
       <div style={{ height: '0px' }}></div>
       <TagRow availableTags={availableTags} tagIds={tags} width={330} />

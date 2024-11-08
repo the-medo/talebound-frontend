@@ -96,9 +96,7 @@ const CreateQuest: React.FC = () => {
                 <ImageCard
                   title={nameValue ?? 'Quest name'}
                   basedOn=""
-                  questCount={3}
-                  activityCount={12}
-                  playModeCount={2}
+                  statSections={[]}
                   imgSrc={IMAGE_DEFAULT_QUEST_THUMBNAIL}
                   availableTags={availableTags}
                   tags={[]}

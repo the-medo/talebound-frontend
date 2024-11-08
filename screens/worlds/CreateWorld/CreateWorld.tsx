@@ -19,6 +19,7 @@ import ArticleJourneyOfWorldCrafting from '../../../articles/Worlds/ArticleJourn
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
+import { getWorldStatSections } from '../../../components/WorldCard/WorldCard';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -66,6 +67,8 @@ const CreateWorld: React.FC = () => {
       // },
     );
   }, [nameValue, basedOnValue, shortDescriptionValue, createWorldMutation]);
+
+  const statSetcions = useMemo(() => getWorldStatSections(3, 12, 4), []);
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -148,9 +151,7 @@ const CreateWorld: React.FC = () => {
                 <ImageCard
                   title={nameValue ?? 'World name'}
                   basedOn={basedOnValue}
-                  questCount={3}
-                  activityCount={12}
-                  playModeCount={2}
+                  statSections={statSetcions}
                   imgSrc={IMAGE_DEFAULT_WORLD_THUMBNAIL}
                   availableTags={availableTags}
                   tags={[]}

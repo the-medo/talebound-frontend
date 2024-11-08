@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
-import ImageCard from '../ImageCard/ImageCard';
+import ImageCard, { ImageCardStatSection } from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 import { store } from '../../store';
 import { imageSelectors } from '../../adapters/ImageAdapter';
 import { useWorld } from '../../hooks/useWorld';
+
+export const getWorldStatSections = (
+  playModeCount: number,
+  questCount: number,
+  activityCount: number,
+): ImageCardStatSection[] => [
+  { label: 'Play Modes', value: playModeCount },
+  { label: 'Quests', value: questCount },
+  { label: 'Activity', value: activityCount },
+];
 
 interface WorldCardProps {
   worldId: number;
@@ -19,6 +29,8 @@ const WorldCard: React.FC<WorldCardProps> = ({ worldId }) => {
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
 
+  const statSetcions = useMemo(() => getWorldStatSections(0, 0, 0), []);
+
   if (!world) return null;
 
   return (
@@ -26,9 +38,7 @@ const WorldCard: React.FC<WorldCardProps> = ({ worldId }) => {
       key={world.id}
       title={world.name ?? '- Unknown -'}
       basedOn={world.basedOn ?? ''}
-      questCount={0}
-      activityCount={0}
-      playModeCount={0}
+      statSections={statSetcions}
       imgSrc={imageThumbnail?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
       href={`/worlds/${world.id}/detail`}
       availableTags={availableTags}

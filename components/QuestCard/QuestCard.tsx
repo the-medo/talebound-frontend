@@ -1,11 +1,19 @@
 import React from 'react';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
-import ImageCard from '../ImageCard/ImageCard';
+import ImageCard, { ImageCardStatSection } from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_QUEST_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 import { store } from '../../store';
 import { imageSelectors } from '../../adapters/ImageAdapter';
 import { useQuest } from '../../hooks/useQuest';
+
+export const getQuestStatSections = (
+  postCount: number,
+  activityCount: number,
+): ImageCardStatSection[] => [
+  { label: 'Posts', value: postCount },
+  { label: 'Activity', value: activityCount },
+];
 
 interface QuestCardProps {
   questId: number;
@@ -26,9 +34,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ questId }) => {
       key={quest.id}
       title={quest.name ?? '- Unknown -'}
       basedOn={''}
-      questCount={0}
-      activityCount={0}
-      playModeCount={0}
+      statSections={[]}
       imgSrc={imageThumbnail?.url ?? IMAGE_DEFAULT_QUEST_THUMBNAIL}
       href={`/quests/${quest.id}/detail`}
       availableTags={availableTags}

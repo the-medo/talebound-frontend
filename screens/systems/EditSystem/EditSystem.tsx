@@ -161,9 +161,7 @@ const EditSystem: React.FC<EditSystemProps> = ({ systemId }) => {
                       <ImageCard
                         title={nameValue ?? 'System name'}
                         basedOn={basedOnValue}
-                        questCount={3}
-                        activityCount={12}
-                        playModeCount={2}
+                        statSections={[]}
                         imgSrc={
                           thumbnailImg?.url ??
                           'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'

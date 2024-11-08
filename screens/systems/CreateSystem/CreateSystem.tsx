@@ -130,9 +130,7 @@ const CreateSystem: React.FC = () => {
                 <ImageCard
                   title={nameValue ?? 'System name'}
                   basedOn={basedOnValue}
-                  questCount={3}
-                  activityCount={12}
-                  playModeCount={2}
+                  statSections={[]}
                   imgSrc={IMAGE_DEFAULT_SYSTEM_THUMBNAIL}
                   availableTags={availableTags}
                   tags={[]}

@@ -206,7 +206,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
         <Row gap="md" alignItems="start" wrap id="content">
           <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
             {editMode && (
-              <EntityChoice worldImageThumbnail={worldImageThumbnail} canEdit={canEdit} />
+              <EntityChoice moduleImageThumbnail={worldImageThumbnail} canEdit={canEdit} />
             )}
             {!editMode && (
               <>
