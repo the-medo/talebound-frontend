@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '../../styles/stitches.config';
-import { TitleH2 } from '../Typography/Title';
+import { TitleH2, TitleH3 } from '../Typography/Title';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import TagRow from '../TagRow/TagRow';
@@ -33,6 +33,14 @@ const ImageBackground = styled(Col, {
     zIndex: 0,
     borderRadius: '$lg',
   },
+
+  variants: {
+    compact: {
+      true: {
+        flexBasis: '200px',
+      },
+    },
+  },
 });
 
 export interface ImageCardStatSection {
@@ -40,7 +48,11 @@ export interface ImageCardStatSection {
   value: number;
 }
 
-interface ImageCardProps {
+export interface ImageCardPropsExtended {
+  compact?: boolean;
+}
+
+interface ImageCardProps extends ImageCardPropsExtended {
   imgSrc: string;
   href: string;
   title: string;
@@ -58,7 +70,10 @@ const ImageCard: React.FC<ImageCardProps> = ({
   statSections,
   availableTags,
   tags,
+  compact = false,
 }) => {
+  const displayedTitle = title === '' || !title ? ' * empty * ' : title;
+
   return (
     <ImageBackground
       gap="sm"
@@ -73,23 +88,28 @@ const ImageCard: React.FC<ImageCardProps> = ({
             ), url(${imgSrc})`,
         },
       }}
+      compact={compact}
     >
       <Col gap="xs" alignItems="center">
         <Link href={href}>
-          <TitleH2>{title === '' || !title ? ' * empty * ' : title}</TitleH2>
+          {compact ? <TitleH3>{displayedTitle}</TitleH3> : <TitleH2>{displayedTitle}</TitleH2>}
         </Link>
         <Text size="sm" i>
           {basedOn.length > 0 ? `(based on ${basedOn})` : 'original'}
         </Text>
       </Col>
-      <div style={{ height: '100px' }}></div>
+      <div style={{ height: compact ? '50px' : '100px' }}></div>
       <Row gap="sm" justifyContent="around">
         {statSections.map((ss) => (
-          <MiniStatistic key={ss.label} title={ss.label} value={ss.value} />
+          <MiniStatistic key={ss.label} title={ss.label} value={ss.value} compact={compact} />
         ))}
       </Row>
-      <div style={{ height: '0px' }}></div>
-      <TagRow availableTags={availableTags} tagIds={tags} width={330} />
+      {!compact && (
+        <>
+          <div style={{ height: '0px' }}></div>
+          <TagRow availableTags={availableTags} tagIds={tags} width={330} />
+        </>
+      )}
     </ImageBackground>
   );
 };

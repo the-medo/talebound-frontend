@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
-import ImageCard, { ImageCardStatSection } from '../ImageCard/ImageCard';
+import ImageCard, { ImageCardPropsExtended, ImageCardStatSection } from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 import { store } from '../../store';
@@ -12,16 +12,16 @@ export const getWorldStatSections = (
   questCount: number,
   activityCount: number,
 ): ImageCardStatSection[] => [
-  { label: 'Play Modes', value: playModeCount },
+  { label: 'Systems', value: playModeCount },
   { label: 'Quests', value: questCount },
   { label: 'Activity', value: activityCount },
 ];
 
-interface WorldCardProps {
+interface WorldCardProps extends ImageCardPropsExtended {
   worldId: number;
 }
 
-const WorldCard: React.FC<WorldCardProps> = ({ worldId }) => {
+const WorldCard: React.FC<WorldCardProps> = ({ worldId, ...extended }) => {
   const { world, module } = useWorld(worldId);
   const imageThumbnail = imageSelectors.selectById(store.getState(), module?.thumbnailImgId ?? 0);
 
@@ -43,6 +43,7 @@ const WorldCard: React.FC<WorldCardProps> = ({ worldId }) => {
       href={`/worlds/${world.id}/detail`}
       availableTags={availableTags}
       tags={[]} //module.tags ??
+      {...extended}
     />
   );
 };
