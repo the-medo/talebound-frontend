@@ -40,6 +40,11 @@ const ImageBackground = styled(Col, {
         flexBasis: '200px',
       },
     },
+    selected: {
+      true: {
+        outline: '3px solid $primary200',
+      },
+    },
   },
 });
 
@@ -50,6 +55,8 @@ export interface ImageCardStatSection {
 
 export interface ImageCardPropsExtended {
   compact?: boolean;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
 interface ImageCardProps extends ImageCardPropsExtended {
@@ -71,6 +78,8 @@ const ImageCard: React.FC<ImageCardProps> = ({
   availableTags,
   tags,
   compact = false,
+  selected = false,
+  onClick,
 }) => {
   const displayedTitle = title === '' || !title ? ' * empty * ' : title;
 
@@ -89,6 +98,8 @@ const ImageCard: React.FC<ImageCardProps> = ({
         },
       }}
       compact={compact}
+      selected={selected}
+      onClick={onClick}
     >
       <Col gap="xs" alignItems="center">
         <Link href={href}>

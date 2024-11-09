@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Flex, Row } from '../../../components/Flex/Flex';
@@ -19,6 +19,9 @@ import ArticleQuestCreation from '../../../articles/Quests/ArticleQuestCreation'
 import { IMAGE_DEFAULT_QUEST_THUMBNAIL } from '../../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
+import ModuleSelectModal from '../../../component-sections/Module/ModuleSelectModal/ModuleSelectModal';
+import WorldCard from '../../../components/WorldCard/WorldCard';
+import SystemCard from '../../../components/SystemCard/SystemCard';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -35,6 +38,9 @@ const InputDescription = styled('div', {
 
 const CreateQuest: React.FC = () => {
   const createQuestMutation = useCreateQuest();
+  const [selectedWorldId, setSelectedWorldId] = useState(1);
+  const [selectedSystemId, setSelectedSystemId] = useState(1);
+
   const { value: nameValue, onChange: onChangeName } = useInput<string>('');
   const { value: shortDescriptionValue, onChange: onChangeShortDescription } = useInput<string>('');
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
@@ -59,6 +65,16 @@ const CreateQuest: React.FC = () => {
       shortDescription: shortDescriptionValue,
     });
   }, [nameValue, shortDescriptionValue, createQuestMutation]);
+
+  const worldSelectTrigger = useMemo(
+    () => <WorldCard worldId={selectedWorldId} compact />,
+    [selectedWorldId],
+  );
+
+  // const systemSelectTrigger = useMemo(
+  //   () => <SystemCard systemId={selectedSystemId} compact />,
+  //   [selectedSystemId],
+  // );
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -89,6 +105,14 @@ const CreateQuest: React.FC = () => {
                   helperText="(up to 1000 characters)"
                 />
               </Flex>
+              <Row>
+                <ModuleSelectModal
+                  trigger={worldSelectTrigger}
+                  moduleType={PbModuleType.MODULE_TYPE_WORLD}
+                  moduleTypeId={selectedWorldId}
+                  setModuleTypeId={setSelectedWorldId}
+                />
+              </Row>
             </Col>
             <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
               <Col gap="md" alignItems="center">

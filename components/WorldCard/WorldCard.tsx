@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
 import ImageCard, { ImageCardPropsExtended, ImageCardStatSection } from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_WORLD_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
@@ -19,9 +19,15 @@ export const getWorldStatSections = (
 
 interface WorldCardProps extends ImageCardPropsExtended {
   worldId: number;
+  onWorldSelected?: (id: number) => void;
 }
 
-const WorldCard: React.FC<WorldCardProps> = ({ worldId, ...extended }) => {
+const WorldCard: React.FC<WorldCardProps> = ({
+  worldId,
+  onWorldSelected,
+  onClick,
+  ...extended
+}) => {
   const { world, module } = useWorld(worldId);
   const imageThumbnail = imageSelectors.selectById(store.getState(), module?.thumbnailImgId ?? 0);
 
@@ -30,6 +36,10 @@ const WorldCard: React.FC<WorldCardProps> = ({ worldId, ...extended }) => {
   });
 
   const statSetcions = useMemo(() => getWorldStatSections(0, 0, 0), []);
+  const onSelected = useCallback(
+    () => (onWorldSelected ? onWorldSelected(worldId) : undefined),
+    [onWorldSelected, worldId],
+  );
 
   if (!world) return null;
 
@@ -43,6 +53,7 @@ const WorldCard: React.FC<WorldCardProps> = ({ worldId, ...extended }) => {
       href={`/worlds/${world.id}/detail`}
       availableTags={availableTags}
       tags={[]} //module.tags ??
+      onClick={onClick ?? onSelected}
       {...extended}
     />
   );
