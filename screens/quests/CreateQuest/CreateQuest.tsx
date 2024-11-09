@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import LeftNavbar from '../../../components/LeftNavbar/LeftNavbar';
 import { Col, Flex, Row } from '../../../components/Flex/Flex';
@@ -22,6 +22,8 @@ import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import ModuleSelectModal from '../../../component-sections/Module/ModuleSelectModal/ModuleSelectModal';
 import WorldCard from '../../../components/WorldCard/WorldCard';
 import SystemCard from '../../../components/SystemCard/SystemCard';
+import { getQuestStatSections } from '../../../components/QuestCard/QuestCard';
+import LoadingText from '../../../components/Loading/LoadingText';
 
 const InputDescription = styled('div', {
   borderRadius: '$md',
@@ -38,6 +40,8 @@ const InputDescription = styled('div', {
 
 const CreateQuest: React.FC = () => {
   const createQuestMutation = useCreateQuest();
+  const [worldSelectorOpen, setWorldSelectorOpen] = useState(false);
+  const [systemSelectorOpen, setSystemSelectorOpen] = useState(false);
   const [selectedWorldId, setSelectedWorldId] = useState(1);
   const [selectedSystemId, setSelectedSystemId] = useState(1);
 
@@ -66,15 +70,11 @@ const CreateQuest: React.FC = () => {
     });
   }, [nameValue, shortDescriptionValue, createQuestMutation]);
 
-  const worldSelectTrigger = useMemo(
-    () => <WorldCard worldId={selectedWorldId} compact />,
-    [selectedWorldId],
+  const openWorldSelector = useCallback(() => setWorldSelectorOpen(true), [setWorldSelectorOpen]);
+  const openSystemSelector = useCallback(
+    () => setSystemSelectorOpen(true),
+    [setSystemSelectorOpen],
   );
-
-  // const systemSelectTrigger = useMemo(
-  //   () => <SystemCard systemId={selectedSystemId} compact />,
-  //   [selectedSystemId],
-  // );
 
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
@@ -105,13 +105,11 @@ const CreateQuest: React.FC = () => {
                   helperText="(up to 1000 characters)"
                 />
               </Flex>
-              <Row>
-                <ModuleSelectModal
-                  trigger={worldSelectTrigger}
-                  moduleType={PbModuleType.MODULE_TYPE_WORLD}
-                  moduleTypeId={selectedWorldId}
-                  setModuleTypeId={setSelectedWorldId}
-                />
+              <Row gap="md" wrap>
+                <Suspense fallback={<LoadingText />}>
+                  <WorldCard worldId={selectedWorldId} onClick={openWorldSelector} compact />
+                  <SystemCard systemId={selectedSystemId} onClick={openSystemSelector} compact />
+                </Suspense>
               </Row>
             </Col>
             <Col alignSelf="stretch" css={{ flexGrow: 1, flexBasis: '25rem' }}>
@@ -120,7 +118,7 @@ const CreateQuest: React.FC = () => {
                 <ImageCard
                   title={nameValue ?? 'Quest name'}
                   basedOn=""
-                  statSections={[]}
+                  statSections={getQuestStatSections(0, 0)}
                   imgSrc={IMAGE_DEFAULT_QUEST_THUMBNAIL}
                   availableTags={availableTags}
                   tags={[]}
@@ -149,6 +147,20 @@ const CreateQuest: React.FC = () => {
           <ArticleQuestCreation />
         </Col>
       </Row>
+      <ModuleSelectModal
+        moduleType={PbModuleType.MODULE_TYPE_WORLD}
+        moduleTypeId={selectedWorldId}
+        setModuleTypeId={setSelectedWorldId}
+        open={worldSelectorOpen}
+        setOpen={setWorldSelectorOpen}
+      />
+      <ModuleSelectModal
+        moduleType={PbModuleType.MODULE_TYPE_SYSTEM}
+        moduleTypeId={selectedSystemId}
+        setModuleTypeId={setSelectedSystemId}
+        open={systemSelectorOpen}
+        setOpen={setSystemSelectorOpen}
+      />
     </Layout>
   );
 };

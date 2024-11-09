@@ -31,7 +31,7 @@ export const useModule = (moduleId: number): UseModuleResponse => {
       default:
         throw new Error(`Module type ${module?.moduleType} not implemented yet`);
     }
-  }, [module?.moduleType, module?.worldId]);
+  }, [module?.characterId, module?.moduleType, module?.questId, module?.systemId, module?.worldId]);
 
   const linkPrefix = useMemo(() => {
     if (!module?.moduleType) return undefined;
