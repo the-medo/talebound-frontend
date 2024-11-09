@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '../Typography/Text';
 import { styled } from '../../styles/stitches.config';
 import { Col } from '../Flex/Flex';
+import Tooltip from '../Tooltip/Tooltip';
 
 const MiniStatisticWrapper = styled(Col, {
   padding: '$sm',
@@ -11,15 +12,6 @@ const MiniStatisticWrapper = styled(Col, {
   width: '100px',
   alignItems: 'center',
   justifyContent: 'center',
-
-  variants: {
-    compact: {
-      true: {
-        fontSize: '$2xs',
-        width: '60px',
-      },
-    },
-  },
 });
 
 const MiniStatisticNumber = styled(Col, {
@@ -34,9 +26,9 @@ const MiniStatisticNumber = styled(Col, {
   variants: {
     compact: {
       true: {
-        fontSize: '$sm',
-        width: '25px',
-        height: '25px',
+        fontSize: '$lg',
+        width: '40px',
+        height: '40px',
       },
     },
   },
@@ -49,12 +41,20 @@ interface MiniStatisticProps {
 }
 
 const MiniStatistic: React.FC<MiniStatisticProps> = ({ title, value, compact }) => {
+  if (compact) {
+    return (
+      <Tooltip content={title}>
+        <MiniStatisticNumber circle compact={compact}>
+          {value}
+        </MiniStatisticNumber>
+      </Tooltip>
+    );
+  }
+
   return (
-    <MiniStatisticWrapper gap="sm" compact={compact}>
+    <MiniStatisticWrapper gap="sm">
       <Text>{title}</Text>
-      <MiniStatisticNumber circle compact={compact}>
-        {value}
-      </MiniStatisticNumber>
+      <MiniStatisticNumber circle>{value}</MiniStatisticNumber>
     </MiniStatisticWrapper>
   );
 };

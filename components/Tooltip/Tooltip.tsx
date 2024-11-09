@@ -4,6 +4,7 @@ import { TooltipProps as TooltipPrimitiveProps } from '@radix-ui/react-tooltip';
 import { TooltipRoot } from '../../components-radix-ui/Tooltip/TooltipRoot';
 import { TooltipContent } from '../../components-radix-ui/Tooltip/TooltipContent';
 import { TooltipArrow } from '../../components-radix-ui/Tooltip/TooltipArrow';
+import { TooltipProvider } from '../../components-radix-ui/Tooltip/TooltipProvider';
 
 interface TooltipProps extends TooltipPrimitiveProps {
   content: React.ReactNode;
@@ -11,7 +12,7 @@ interface TooltipProps extends TooltipPrimitiveProps {
 
 /** https://www.radix-ui.com/primitives/docs/components/tooltip */
 const Tooltip: React.FC<TooltipProps> = ({ children, content }) => (
-  <TooltipPrimitive.Provider>
+  <TooltipProvider delayDuration={0} skipDelayDuration={800}>
     <TooltipRoot>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
@@ -21,7 +22,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => (
         </TooltipContent>
       </TooltipPrimitive.Portal>
     </TooltipRoot>
-  </TooltipPrimitive.Provider>
+  </TooltipProvider>
 );
 
 export default Tooltip;

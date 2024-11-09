@@ -3,10 +3,11 @@ import React from 'react';
 import { TooltipRoot } from './TooltipRoot';
 import { TooltipArrow } from './TooltipArrow';
 import { TooltipContent } from './TooltipContent';
+import { TooltipProvider } from './TooltipProvider';
 
 /** https://www.radix-ui.com/primitives/docs/components/tooltip */
 const TooltipDemo = () => (
-  <Tooltip.Provider>
+  <TooltipProvider>
     <TooltipRoot>
       <Tooltip.Trigger>
         <button>Button with tooltip</button>
@@ -18,7 +19,7 @@ const TooltipDemo = () => (
         </TooltipContent>
       </Tooltip.Portal>
     </TooltipRoot>
-  </Tooltip.Provider>
+  </TooltipProvider>
 );
 
 export default TooltipDemo;

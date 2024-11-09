@@ -47,6 +47,11 @@ const ImageBackground = styled(Col, {
         outline: '3px solid $primary200',
       },
     },
+    grow: {
+      false: {
+        flexGrow: 0,
+      },
+    },
   },
 });
 
@@ -83,7 +88,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   compact = false,
   selected = false,
   onClick,
-  grow,
+  grow = true,
 }) => {
   const displayedTitle = title === '' || !title ? ' * empty * ' : title;
 

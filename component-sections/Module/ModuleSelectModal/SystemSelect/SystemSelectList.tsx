@@ -77,6 +77,7 @@ const SystemSelectList: React.FC<SystemSelectListProps> = ({
                       systemId={systemId}
                       onSystemSelected={setSelectedSystemId}
                       selected={systemId === selectedSystemId}
+                      grow={false}
                       compact
                     />
                   </Suspense>

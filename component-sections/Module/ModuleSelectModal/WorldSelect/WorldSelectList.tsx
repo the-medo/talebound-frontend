@@ -77,6 +77,7 @@ const WorldSelectList: React.FC<WorldSelectListProps> = ({
                       worldId={worldId}
                       onWorldSelected={setSelectedWorldId}
                       selected={worldId === selectedWorldId}
+                      grow={false}
                       compact
                     />
                   </Suspense>
