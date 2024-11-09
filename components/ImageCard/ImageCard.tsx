@@ -15,6 +15,7 @@ const ImageBackground = styled(Col, {
   paddingRight: '$sm',
   border: '1px solid $primary200',
   flexGrow: 1,
+  minWidth: '350px',
   flexBasis: '350px',
 
   borderRadius: '$lg',
@@ -37,7 +38,8 @@ const ImageBackground = styled(Col, {
   variants: {
     compact: {
       true: {
-        flexBasis: '200px',
+        minWidth: '185px',
+        flexBasis: '185px',
       },
     },
     selected: {
@@ -56,6 +58,7 @@ export interface ImageCardStatSection {
 export interface ImageCardPropsExtended {
   compact?: boolean;
   selected?: boolean;
+  grow?: boolean;
   onClick?: () => void;
 }
 
@@ -80,6 +83,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   compact = false,
   selected = false,
   onClick,
+  grow,
 }) => {
   const displayedTitle = title === '' || !title ? ' * empty * ' : title;
 
@@ -100,6 +104,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
       compact={compact}
       selected={selected}
       onClick={onClick}
+      grow={grow}
     >
       <Col gap="xs" alignItems="center">
         <Link href={href}>
@@ -110,7 +115,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         </Text>
       </Col>
       <div style={{ height: compact ? '50px' : '100px' }}></div>
-      <Row gap="sm" justifyContent="around">
+      <Row gap={compact ? 'xs' : 'sm'} justifyContent="around">
         {statSections.map((ss) => (
           <MiniStatistic key={ss.label} title={ss.label} value={ss.value} compact={compact} />
         ))}
@@ -124,5 +129,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
     </ImageBackground>
   );
 };
+
+ImageCard.displayName = 'ImageCard';
 
 export default ImageCard;

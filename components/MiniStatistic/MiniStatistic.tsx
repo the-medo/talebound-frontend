@@ -15,8 +15,8 @@ const MiniStatisticWrapper = styled(Col, {
   variants: {
     compact: {
       true: {
-        fontSize: '$xs',
-        width: '65px',
+        fontSize: '$2xs',
+        width: '60px',
       },
     },
   },
@@ -34,9 +34,9 @@ const MiniStatisticNumber = styled(Col, {
   variants: {
     compact: {
       true: {
-        fontSize: '$md',
-        width: '30px',
-        height: '30px',
+        fontSize: '$sm',
+        width: '25px',
+        height: '25px',
       },
     },
   },

@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import Modal from '../../../components/Modal/Modal';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
-import WorldSelectList from './WorldSelect/WorldSelectList';
 import { moduleTypeTitles } from '../../../utils/modulesAndEntities';
+import WorldSelectList from './WorldSelect/WorldSelectList';
+import SystemSelectList from './SystemSelect/SystemSelectList';
 
 interface ModuleSelectModalProps {
   trigger?: React.ReactNode;
@@ -26,6 +27,11 @@ const ModuleSelectModal: React.FC<ModuleSelectModalProps> = ({
       case PbModuleType.MODULE_TYPE_WORLD: {
         return (
           <WorldSelectList selectedWorldId={moduleTypeId} setSelectedWorldId={setModuleTypeId} />
+        );
+      }
+      case PbModuleType.MODULE_TYPE_SYSTEM: {
+        return (
+          <SystemSelectList selectedSystemId={moduleTypeId} setSelectedSystemId={setModuleTypeId} />
         );
       }
       default: {

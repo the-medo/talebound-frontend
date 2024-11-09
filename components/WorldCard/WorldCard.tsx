@@ -35,7 +35,7 @@ const WorldCard: React.FC<WorldCardProps> = ({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
 
-  const statSetcions = useMemo(() => getWorldStatSections(0, 0, 0), []);
+  const statSections = useMemo(() => getWorldStatSections(0, 0, 0), []);
   const onSelected = useCallback(
     () => (onWorldSelected ? onWorldSelected(worldId) : undefined),
     [onWorldSelected, worldId],
@@ -48,7 +48,7 @@ const WorldCard: React.FC<WorldCardProps> = ({
       key={world.id}
       title={world.name ?? '- Unknown -'}
       basedOn={world.basedOn ?? ''}
-      statSections={statSetcions}
+      statSections={statSections}
       imgSrc={imageThumbnail?.url ?? IMAGE_DEFAULT_WORLD_THUMBNAIL}
       href={`/worlds/${world.id}/detail`}
       availableTags={availableTags}
@@ -58,5 +58,7 @@ const WorldCard: React.FC<WorldCardProps> = ({
     />
   );
 };
+
+WorldCard.displayName = 'WorldCard';
 
 export default WorldCard;

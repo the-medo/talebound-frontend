@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
-import ImageCard, { ImageCardStatSection } from '../ImageCard/ImageCard';
+import ImageCard, { ImageCardPropsExtended, ImageCardStatSection } from '../ImageCard/ImageCard';
 import { IMAGE_DEFAULT_SYSTEM_THUMBNAIL } from '../../utils/images/imageDefaultUrls';
 import { useGetModuleTypeAvailableTags } from '../../api/tags/useGetModuleTypeAvailableTags';
 import { store } from '../../store';
@@ -17,17 +17,29 @@ export const getSystemStatSections = (
   { label: 'Activity', value: activityCount },
 ];
 
-interface SystemCardProps {
+interface SystemCardProps extends ImageCardPropsExtended {
   systemId: number;
+  onSystemSelected?: (id: number) => void;
 }
 
-const SystemCard: React.FC<SystemCardProps> = ({ systemId }) => {
+const SystemCard: React.FC<SystemCardProps> = ({
+  systemId,
+  onSystemSelected,
+  onClick,
+  ...extended
+}) => {
   const { system, module } = useSystem(systemId);
   const imageThumbnail = imageSelectors.selectById(store.getState(), module?.thumbnailImgId ?? 0);
 
   const { data: availableTags = [] } = useGetModuleTypeAvailableTags({
     variables: PbModuleType.MODULE_TYPE_SYSTEM,
   });
+
+  const statSections = useMemo(() => getSystemStatSections(0, 0, 0), []);
+  const onSelected = useCallback(
+    () => (onSystemSelected ? onSystemSelected(systemId) : undefined),
+    [onSystemSelected, systemId],
+  );
 
   if (!system) return null;
 
@@ -36,11 +48,13 @@ const SystemCard: React.FC<SystemCardProps> = ({ systemId }) => {
       key={system.id}
       title={system.name ?? '- Unknown -'}
       basedOn={system.basedOn ?? ''}
-      statSections={[]}
+      statSections={statSections}
       imgSrc={imageThumbnail?.url ?? IMAGE_DEFAULT_SYSTEM_THUMBNAIL}
       href={`/systems/${system.id}/detail`}
       availableTags={availableTags}
       tags={[]} //module.tags ??
+      onClick={onClick ?? onSelected}
+      {...extended}
     />
   );
 };
