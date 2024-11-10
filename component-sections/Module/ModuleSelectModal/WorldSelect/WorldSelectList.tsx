@@ -1,15 +1,16 @@
 import { useGetModuleTypeAvailableTags } from '../../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType, PbViewTag } from '../../../../generated/api-types/data-contracts';
-import React, { Suspense, useCallback } from 'react';
+import React, { Suspense } from 'react';
 import { useGetWorlds } from '../../../../api/worlds/useGetWorlds';
-import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../../components/Flex/Flex';
 import LoadingText from '../../../../components/Loading/LoadingText';
 import InfiniteScrollObserver from '../../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
 import WorldCard from '../../../../components/WorldCard/WorldCard';
-import { TitleH3 } from '../../../../components/Typography/Title';
-import Checkbox from '../../../../components/Checkbox/Checkbox';
+import { TitleH2, TitleH3 } from '../../../../components/Typography/Title';
 import TagButtonBox from '../../../../components/TagButtonBox/TagButtonBox';
+import Loading from '../../../../components/Loading/Loading';
+import ModuleIntroduction from '../../../../screens/modules/ModuleIntroduction/ModuleIntroduction';
+import { useWorld } from '../../../../hooks/useWorld';
 
 interface WorldSelectListProps {
   selectedWorldId?: number;
@@ -24,7 +25,6 @@ const WorldSelectList: React.FC<WorldSelectListProps> = ({
     variables: PbModuleType.MODULE_TYPE_WORLD,
   });
   const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
-  const [showOnlyPublic, setShowOnlyPublic] = React.useState<boolean>(false);
 
   const {
     data: worldsData,
@@ -33,31 +33,19 @@ const WorldSelectList: React.FC<WorldSelectListProps> = ({
     hasNextPage,
   } = useGetWorlds({
     variables: {
-      public: showOnlyPublic,
       tags: selectedTags.map((t) => t.id ?? 0),
     },
   });
 
-  const onChangeShowOnlyPublic = useCallback((value: boolean) => {
-    setShowOnlyPublic(value);
-  }, []);
+  const { world: selectedWorld, module: selectedModule } = useWorld(selectedWorldId ?? 0);
 
   return (
     <>
       <Row gap="md" alignItems="start" wrap>
-        <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection loading={isPendingGet} flexWrap="wrap" direction="column">
+        <Col gap="md" css={{ flexGrow: 5, flexBasis: '10rem' }}>
+          <Col loading={isPendingGet} wrap>
             <Row gap="md" fullWidth justifyContent="between">
               <TitleH3>Filters</TitleH3>
-              <Row>
-                <Checkbox
-                  id="show-only-public"
-                  defaultChecked={showOnlyPublic}
-                  onCheckedChange={onChangeShowOnlyPublic}
-                >
-                  Show only public
-                </Checkbox>
-              </Row>
             </Row>
             <TagButtonBox
               tags={tags}
@@ -66,7 +54,7 @@ const WorldSelectList: React.FC<WorldSelectListProps> = ({
               displayCount={true}
               showZeroCountToggle={true}
             />
-          </ContentSection>
+          </Col>
 
           <Row gap="md" alignItems="start" wrap>
             {worldsData?.pages.map(
@@ -88,7 +76,14 @@ const WorldSelectList: React.FC<WorldSelectListProps> = ({
           {isFetching && <LoadingText />}
         </Col>
 
-        <Col css={{ flexGrow: 0, flexBasis: '400px' }}>Detail</Col>
+        <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
+          <TitleH2>{selectedWorld?.name}</TitleH2>
+          {selectedModule && (
+            <Suspense fallback={<Loading />}>
+              <ModuleIntroduction moduleId={selectedModule.id!} postViewOnly={false} />
+            </Suspense>
+          )}
+        </Col>
       </Row>
     </>
   );

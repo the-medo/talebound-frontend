@@ -1,15 +1,16 @@
 import { useGetModuleTypeAvailableTags } from '../../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType, PbViewTag } from '../../../../generated/api-types/data-contracts';
-import React, { Suspense, useCallback } from 'react';
+import React, { Suspense } from 'react';
 import { useGetSystems } from '../../../../api/systems/useGetSystems';
-import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { Col, Row } from '../../../../components/Flex/Flex';
 import LoadingText from '../../../../components/Loading/LoadingText';
 import InfiniteScrollObserver from '../../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
 import SystemCard from '../../../../components/SystemCard/SystemCard';
-import { TitleH3 } from '../../../../components/Typography/Title';
-import Checkbox from '../../../../components/Checkbox/Checkbox';
+import { TitleH2, TitleH3 } from '../../../../components/Typography/Title';
 import TagButtonBox from '../../../../components/TagButtonBox/TagButtonBox';
+import Loading from '../../../../components/Loading/Loading';
+import ModuleIntroduction from '../../../../screens/modules/ModuleIntroduction/ModuleIntroduction';
+import { useSystem } from '../../../../hooks/useSystem';
 
 interface SystemSelectListProps {
   selectedSystemId?: number;
@@ -24,7 +25,6 @@ const SystemSelectList: React.FC<SystemSelectListProps> = ({
     variables: PbModuleType.MODULE_TYPE_SYSTEM,
   });
   const [selectedTags, setSelectedTags] = React.useState<PbViewTag[]>([]);
-  const [showOnlyPublic, setShowOnlyPublic] = React.useState<boolean>(false);
 
   const {
     data: systemsData,
@@ -33,31 +33,19 @@ const SystemSelectList: React.FC<SystemSelectListProps> = ({
     hasNextPage,
   } = useGetSystems({
     variables: {
-      public: showOnlyPublic,
       tags: selectedTags.map((t) => t.id ?? 0),
     },
   });
 
-  const onChangeShowOnlyPublic = useCallback((value: boolean) => {
-    setShowOnlyPublic(value);
-  }, []);
+  const { system: selectedSystem, module: selectedModule } = useSystem(selectedSystemId ?? 0);
 
   return (
     <>
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection loading={isPendingGet} flexWrap="wrap" direction="column">
+          <Col loading={isPendingGet} wrap>
             <Row gap="md" fullWidth justifyContent="between">
               <TitleH3>Filters</TitleH3>
-              <Row>
-                <Checkbox
-                  id="show-only-public"
-                  defaultChecked={showOnlyPublic}
-                  onCheckedChange={onChangeShowOnlyPublic}
-                >
-                  Show only public
-                </Checkbox>
-              </Row>
             </Row>
             <TagButtonBox
               tags={tags}
@@ -66,7 +54,7 @@ const SystemSelectList: React.FC<SystemSelectListProps> = ({
               displayCount={true}
               showZeroCountToggle={true}
             />
-          </ContentSection>
+          </Col>
 
           <Row gap="md" alignItems="start" wrap>
             {systemsData?.pages.map(
@@ -88,7 +76,14 @@ const SystemSelectList: React.FC<SystemSelectListProps> = ({
           {isFetching && <LoadingText />}
         </Col>
 
-        <Col css={{ flexGrow: 0, flexBasis: '400px' }}>Detail</Col>
+        <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
+          <TitleH2>{selectedSystem?.name}</TitleH2>
+          {selectedModule && (
+            <Suspense fallback={<Loading />}>
+              <ModuleIntroduction moduleId={selectedModule.id!} postViewOnly={false} />
+            </Suspense>
+          )}
+        </Col>
       </Row>
     </>
   );

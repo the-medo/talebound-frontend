@@ -51,6 +51,7 @@ export const modalContentStyles = css({
       full: {
         width: '90vw',
         minWidth: '450px',
+        height: '85vh',
       },
       xs: {
         width: '20vw',
