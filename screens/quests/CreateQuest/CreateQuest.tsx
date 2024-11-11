@@ -67,8 +67,10 @@ const CreateQuest: React.FC = () => {
     createQuestMutation.mutate({
       name: nameValue,
       shortDescription: shortDescriptionValue,
+      worldId: selectedWorldId,
+      systemId: selectedSystemId,
     });
-  }, [nameValue, shortDescriptionValue, createQuestMutation]);
+  }, [nameValue, shortDescriptionValue, createQuestMutation, selectedWorldId, selectedSystemId]);
 
   const openWorldSelector = useCallback(() => setWorldSelectorOpen(true), [setWorldSelectorOpen]);
   const openSystemSelector = useCallback(
