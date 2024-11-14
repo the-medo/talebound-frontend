@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
-import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
+import ModuleOpened from '../../../../screens/modules/ModuleOpened';
 import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
-import EditModuleMenu from '../../../../screens/worlds/EditModuleMenu/EditModuleMenu';
+import EditModuleMenu from '../../../../screens/modules/EditModuleMenu/EditModuleMenu';
 
 const Worlds: React.FC = () => {
   const moduleId = useUrlModuleId();

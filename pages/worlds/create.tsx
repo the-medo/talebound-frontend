@@ -6,7 +6,7 @@ const Worlds: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Worlds</title>
+        <title>Create world</title>
       </Head>
       <CreateWorld />
     </>

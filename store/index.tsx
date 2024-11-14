@@ -12,6 +12,9 @@ import { locationAdapterSlice } from '../adapters/LocationAdapter';
 import { userAdapterSlice } from '../adapters/UserAdapter';
 import { moduleAdapterSlice } from '../adapters/ModuleAdapter';
 import { worldAdapterSlice } from '../adapters/WorldAdapter';
+import { systemAdapterSlice } from '../adapters/SystemAdapter';
+import { characterAdapterSlice } from '../adapters/CharacterAdapter';
+import { questAdapterSlice } from '../adapters/QuestAdapter';
 import { entityAdapterSlice } from '../adapters/EntityAdapter';
 import { imageAdapterSlice } from '../adapters/ImageAdapter';
 import { postAdapterSlice } from '../adapters/PostAdapter';
@@ -36,6 +39,9 @@ export const store = configureStore({
     [userAdapterSlice.name]: userAdapterSlice.reducer,
     [moduleAdapterSlice.name]: moduleAdapterSlice.reducer,
     [worldAdapterSlice.name]: worldAdapterSlice.reducer,
+    [systemAdapterSlice.name]: systemAdapterSlice.reducer,
+    [characterAdapterSlice.name]: characterAdapterSlice.reducer,
+    [questAdapterSlice.name]: questAdapterSlice.reducer,
 
     [entityAdapterSlice.name]: entityAdapterSlice.reducer,
     [imageAdapterSlice.name]: imageAdapterSlice.reducer,

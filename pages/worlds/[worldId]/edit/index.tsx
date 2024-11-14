@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import Head from 'next/head';
 import EditWorld from '../../../../screens/worlds/EditWorld/EditWorld';
 import useNumericParam from '../../../../hooks/useNumericParam';
-import ModuleOpened from '../../../../screens/worlds/ModuleOpened';
+import ModuleOpened from '../../../../screens/modules/ModuleOpened';
 import { useUrlModuleId } from '../../../../hooks/useUrlModuleId';
 
 const Worlds: React.FC = () => {

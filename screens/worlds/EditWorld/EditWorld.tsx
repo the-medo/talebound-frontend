@@ -12,10 +12,10 @@ import { TitleH2 } from '../../../components/Typography/Title';
 import { Button } from '../../../components/Button/Button';
 import ErrorText from '../../../components/ErrorText/ErrorText';
 import { useUpdateWorld } from '../../../api/worlds/useUpdateWorld';
-import ModuleImages from './ModuleImages';
-import ModuleTags from './ModuleTags';
+import ModuleImages from '../../modules/Edit/ModuleImages';
+import ModuleTags from '../../modules/Edit/ModuleTags';
 import Loading from '../../../components/Loading/Loading';
-import ActionBoxModule from '../ActionBoxModule';
+import ActionBoxModule from '../../modules/ActionBoxModule';
 import { useMyModuleRole, ModuleAdminRole } from '../../../hooks/useModuleAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
@@ -23,8 +23,11 @@ import { Text } from '../../../components/Typography/Text';
 import ModuleEntityTagAdministration from '../../../component-sections/Module/ModuleEntityTagAdministration/ModuleEntityTagAdministration';
 import { useWorld } from '../../../hooks/useWorld';
 import { useImage } from '../../../hooks/useImage';
+import { getWorldStatSections } from '../../../components/WorldCard/WorldCard';
 
-const ModuleIntroduction = React.lazy(() => import('../ModuleIntroduction/ModuleIntroduction'));
+const ModuleIntroduction = React.lazy(
+  () => import('../../modules/ModuleIntroduction/ModuleIntroduction'),
+);
 
 interface EditWorldProps {
   worldId: number;
@@ -89,6 +92,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   }, [nameValue, basedOnValue, shortDescriptionValue, updateWorldMutation, worldId]);
 
   const tags = useMemo(() => module?.tags ?? [], [module?.tags]);
+  const statSetcions = useMemo(() => getWorldStatSections(3, 12, 4), []);
 
   return (
     <>
@@ -158,9 +162,7 @@ const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
                       <ImageCard
                         title={nameValue ?? 'World name'}
                         basedOn={basedOnValue}
-                        questCount={3}
-                        activityCount={12}
-                        playModeCount={2}
+                        statSections={statSetcions}
                         imgSrc={
                           thumbnailImg?.url ??
                           'https://imagedelivery.net/zchNIWFramhipgMjPiGPQQ/766aced8-ab7c-4288-5b83-6339c21e0800/600x400'

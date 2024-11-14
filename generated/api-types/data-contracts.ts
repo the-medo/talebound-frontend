@@ -689,6 +689,9 @@ export interface PbRunFetcherRequest {
 export interface PbRunFetcherResponse {
   modules?: PbViewModule[];
   worlds?: PbWorld[];
+  systems?: PbSystem[];
+  characters?: PbCharacter[];
+  quests?: PbQuest[];
   entities?: PbViewEntity[];
   posts?: PbPost[];
   images?: PbImage[];

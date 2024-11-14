@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '../../styles/stitches.config';
-import { TitleH2 } from '../Typography/Title';
+import { TitleH2, TitleH3 } from '../Typography/Title';
 import { Col, Row } from '../Flex/Flex';
 import { Text } from '../Typography/Text';
 import TagRow from '../TagRow/TagRow';
@@ -15,6 +15,7 @@ const ImageBackground = styled(Col, {
   paddingRight: '$sm',
   border: '1px solid $primary200',
   flexGrow: 1,
+  minWidth: '350px',
   flexBasis: '350px',
 
   borderRadius: '$lg',
@@ -33,16 +34,45 @@ const ImageBackground = styled(Col, {
     zIndex: 0,
     borderRadius: '$lg',
   },
+
+  variants: {
+    compact: {
+      true: {
+        minWidth: '185px',
+        flexBasis: '185px',
+      },
+    },
+    selected: {
+      true: {
+        outline: '3px solid $primary200',
+      },
+    },
+    grow: {
+      false: {
+        flexGrow: 0,
+      },
+    },
+  },
 });
 
-interface ImageCardProps {
+export interface ImageCardStatSection {
+  label: string;
+  value: number;
+}
+
+export interface ImageCardPropsExtended {
+  compact?: boolean;
+  selected?: boolean;
+  grow?: boolean;
+  onClick?: () => void;
+}
+
+interface ImageCardProps extends ImageCardPropsExtended {
   imgSrc: string;
   href: string;
   title: string;
   basedOn: string;
-  playModeCount: number;
-  questCount: number;
-  activityCount: number;
+  statSections: ImageCardStatSection[];
   availableTags: PbViewTag[];
   tags: number[];
 }
@@ -52,12 +82,16 @@ const ImageCard: React.FC<ImageCardProps> = ({
   href,
   title,
   basedOn,
-  playModeCount,
-  questCount,
-  activityCount,
+  statSections,
   availableTags,
   tags,
+  compact = false,
+  selected = false,
+  onClick,
+  grow = true,
 }) => {
+  const displayedTitle = title === '' || !title ? ' * empty * ' : title;
+
   return (
     <ImageBackground
       gap="sm"
@@ -72,25 +106,35 @@ const ImageCard: React.FC<ImageCardProps> = ({
             ), url(${imgSrc})`,
         },
       }}
+      compact={compact}
+      selected={selected}
+      onClick={onClick}
+      grow={grow}
     >
       <Col gap="xs" alignItems="center">
         <Link href={href}>
-          <TitleH2>{title === '' || !title ? ' * empty * ' : title}</TitleH2>
+          {compact ? <TitleH3>{displayedTitle}</TitleH3> : <TitleH2>{displayedTitle}</TitleH2>}
         </Link>
         <Text size="sm" i>
           {basedOn.length > 0 ? `(based on ${basedOn})` : 'original'}
         </Text>
       </Col>
-      <div style={{ height: '100px' }}></div>
-      <Row gap="sm" justifyContent="around">
-        <MiniStatistic title="Play modes" value={playModeCount} />
-        <MiniStatistic title="Quests" value={questCount} />
-        <MiniStatistic title="Activity" value={activityCount} />
+      <div style={{ height: compact ? '50px' : '100px' }}></div>
+      <Row gap={compact ? 'xs' : 'sm'} justifyContent="around">
+        {statSections.map((ss) => (
+          <MiniStatistic key={ss.label} title={ss.label} value={ss.value} compact={compact} />
+        ))}
       </Row>
-      <div style={{ height: '0px' }}></div>
-      <TagRow availableTags={availableTags} tagIds={tags} width={330} />
+      {!compact && (
+        <>
+          <div style={{ height: '0px' }}></div>
+          <TagRow availableTags={availableTags} tagIds={tags} width={330} />
+        </>
+      )}
     </ImageBackground>
   );
 };
+
+ImageCard.displayName = 'ImageCard';
 
 export default ImageCard;

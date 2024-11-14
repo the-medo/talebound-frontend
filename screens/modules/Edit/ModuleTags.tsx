@@ -4,8 +4,9 @@ import { useCreateModuleTag } from '../../../api/tags/useCreateModuleTag';
 import { useDeleteModuleTag } from '../../../api/tags/useDeleteModuleTag';
 import { Row } from '../../../components/Flex/Flex';
 import TagButton from '../../../components/TagButton/TagButton';
-import { PbModuleType, PbViewTag } from '../../../generated/api-types/data-contracts';
+import { PbViewTag } from '../../../generated/api-types/data-contracts';
 import ErrorText from '../../../components/ErrorText/ErrorText';
+import { useModule } from '../../../hooks/useModule';
 
 interface ModuleTagsProps {
   moduleId: number;
@@ -14,8 +15,9 @@ interface ModuleTagsProps {
 }
 
 const ModuleTags: React.FC<ModuleTagsProps> = ({ moduleId, disabled, tags }) => {
+  const { module } = useModule(moduleId);
   const { data: availableTags = [], isPending: isPendingGet } = useGetModuleTypeAvailableTags({
-    variables: PbModuleType.MODULE_TYPE_WORLD,
+    variables: module?.moduleType,
   });
 
   const { mutate: createTag, isPending: isPendingAdd, error: errorAdd } = useCreateModuleTag();

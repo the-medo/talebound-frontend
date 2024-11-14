@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import AdminLayout from '../../components/Layout/AdminLayout';
-import AvailableWorldTags from '../../screens/admin/AvailableWorldTags/AvailableWorldTags';
+import AvailableWorldTags from '../../screens/admin/AvailableTags/AvailableWorldTags';
 
 const PageAdminWorldTags: React.FC = () => {
   return (

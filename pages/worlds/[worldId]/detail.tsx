@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import Head from 'next/head';
 import useNumericParam from '../../../hooks/useNumericParam';
-import ModuleOpened from '../../../screens/worlds/ModuleOpened';
+import ModuleOpened from '../../../screens/modules/ModuleOpened';
 import DetailWorld from '../../../screens/worlds/DetailWorld/DetailWorld';
 import { useUrlModuleId } from '../../../hooks/useUrlModuleId';
 

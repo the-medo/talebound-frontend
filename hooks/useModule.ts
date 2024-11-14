@@ -22,16 +22,28 @@ export const useModule = (moduleId: number): UseModuleResponse => {
     switch (module?.moduleType) {
       case PbModuleType.MODULE_TYPE_WORLD:
         return module?.worldId ?? 0;
+      case PbModuleType.MODULE_TYPE_SYSTEM:
+        return module?.systemId ?? 0;
+      case PbModuleType.MODULE_TYPE_CHARACTER:
+        return module?.characterId ?? 0;
+      case PbModuleType.MODULE_TYPE_QUEST:
+        return module?.questId ?? 0;
       default:
         throw new Error(`Module type ${module?.moduleType} not implemented yet`);
     }
-  }, [module?.moduleType, module?.worldId]);
+  }, [module?.characterId, module?.moduleType, module?.questId, module?.systemId, module?.worldId]);
 
   const linkPrefix = useMemo(() => {
     if (!module?.moduleType) return undefined;
     switch (module?.moduleType) {
       case PbModuleType.MODULE_TYPE_WORLD:
         return 'worlds';
+      case PbModuleType.MODULE_TYPE_SYSTEM:
+        return 'systems';
+      case PbModuleType.MODULE_TYPE_CHARACTER:
+        return 'characters';
+      case PbModuleType.MODULE_TYPE_QUEST:
+        return 'quests';
       default:
         throw new Error(`Module type ${module?.moduleType} not implemented yet`);
     }

@@ -17,6 +17,9 @@ import { Auth } from '../generated/api-types/Auth';
 import { Fetcher } from '../generated/api-types/Fetcher';
 import { fetcherInterceptor } from './fetcherInterceptor';
 import { UserRoles } from '../generated/api-types/UserRoles';
+import { Systems } from '../generated/api-types/Systems';
+import { Characters } from '../generated/api-types/Characters';
+import { Quests } from '../generated/api-types/Quests';
 
 export const API = new HttpClient({
   baseURL: getApiUrl(),
@@ -47,3 +50,6 @@ export const TagsCollection = new Tags(API);
 export const UsersCollection = new Users(API);
 export const UserRolesCollection = new UserRoles(API);
 export const WorldsCollection = new Worlds(API);
+export const SystemsCollection = new Systems(API);
+export const CharactersCollection = new Characters(API);
+export const QuestsCollection = new Quests(API);

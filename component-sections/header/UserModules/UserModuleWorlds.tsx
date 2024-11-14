@@ -3,36 +3,30 @@ import { AspectBoxIcon } from '../ControlPanel/AspectBoxIcon';
 import { LuGlobe2 } from 'react-icons/lu';
 import AspectDiamond from '../ControlPanel/AspectDiamond';
 import { AspectBox } from '../ControlPanel/AspectBox';
-import { useSelector } from 'react-redux';
-import { useGetUserModules } from '../../../api/users/useGetUserModules';
+import { PbUserModule } from '../../../generated/api-types/data-contracts';
 
 const ModuleAspectDiamond = React.lazy(() => import('./ModuleAspectDiamond'));
 
-interface UserModuleWorldsProps {}
+interface UserModuleWorldsProps {
+  modules: PbUserModule[];
+}
 
-const UserModuleWorlds: React.FC<UserModuleWorldsProps> = () => {
-  const userId = useSelector((state) => state.auth.user?.id);
+const UserModuleWorlds: React.FC<UserModuleWorldsProps> = ({ modules }) => {
+  const moduleIds = (modules ?? []).map((m) => m.moduleId!);
 
-  const { data: moduleData } = useGetUserModules({
-    variables: userId ?? 0,
-  });
-
-  const moduleIds = (moduleData?.userModules ?? []).map((m) => m.moduleId!);
-
-  // const worlds = worldSelectors.selectById(store.getState(), user?.imgId ?? 0);
+  const x = 'right',
+    y = 'top';
 
   return (
-    <AspectBox x="right" y="top">
-      <AspectBoxIcon x="right" y="top">
+    <AspectBox x={x} y={y}>
+      <AspectBoxIcon x={x} y={y}>
         <LuGlobe2 size={20} />
       </AspectBoxIcon>
       {moduleIds.length === 0 && (
-        <AspectDiamond imgIdx={0} totalCount={0} index={0} x="right" y="top" text={'No worlds'} />
+        <AspectDiamond imgIdx={0} totalCount={0} index={0} x={x} y={y} text={'No worlds'} />
       )}
       <Suspense
-        fallback={
-          <AspectDiamond imgIdx={0} totalCount={0} index={0} x="right" y="top" text={'...'} />
-        }
+        fallback={<AspectDiamond imgIdx={0} totalCount={0} index={0} x={x} y={y} text={'...'} />}
       >
         {moduleIds.map(
           (wid, idx) =>
@@ -42,6 +36,8 @@ const UserModuleWorlds: React.FC<UserModuleWorldsProps> = () => {
                 moduleId={wid}
                 totalCount={moduleIds.length}
                 index={idx + 1}
+                x={x}
+                y={y}
               />
             ),
         )}

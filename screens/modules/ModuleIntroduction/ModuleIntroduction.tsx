@@ -23,8 +23,8 @@ const ModuleIntroduction: React.FC<ModuleIntroductionProps> = ({
       <Suspense fallback={<LoadingText />}>
         {module?.descriptionPostId && (
           <Post
-            key={module?.descriptionPostId}
-            postId={module?.descriptionPostId}
+            key={module.descriptionPostId}
+            postId={module.descriptionPostId}
             canEdit={!postViewOnly && hasRightToEdit}
             showTitle={false}
             transparent={true}
