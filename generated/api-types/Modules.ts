@@ -168,7 +168,6 @@ export class Modules<SecurityDataType = unknown> {
       path: `/modules/${moduleId}/admin`,
       method: 'POST',
       body: body,
-      type: ContentType.Json,
       format: 'json',
       ...params,
     });

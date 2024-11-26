@@ -389,6 +389,10 @@ export interface PbGetPostsResponse {
   totalCount?: number;
 }
 
+export interface PbGetQuestCharactersResponse {
+  questCharacters?: PbQuestCharacter[];
+}
+
 export interface PbGetQuestsResponse {
   questIds?: number[];
   /** @format int32 */
@@ -634,6 +638,27 @@ export interface PbQuest {
   worldId?: number;
   /** @format int32 */
   systemId?: number;
+}
+
+export interface PbQuestCharacter {
+  /** @format int32 */
+  questId?: number;
+  /** @format int32 */
+  characterId?: number;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format int32 */
+  approved?: number;
+  motivationalLetter?: string;
+}
+
+/** @default "UNKNOWN" */
+export enum PbQuestStatus {
+  UNKNOWN = 'UNKNOWN',
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  FINISHED_COMPLETED = 'FINISHED_COMPLETED',
+  FINISHED_NOT_COMPLETED = 'FINISHED_NOT_COMPLETED',
 }
 
 export interface PbRemoveRoleFromUserResponse {
