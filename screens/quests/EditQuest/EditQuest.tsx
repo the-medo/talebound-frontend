@@ -15,7 +15,7 @@ import { useUpdateQuest } from '../../../api/quests/useUpdateQuest';
 import ModuleImages from '../../modules/Edit/ModuleImages';
 import ModuleTags from '../../modules/Edit/ModuleTags';
 import Loading from '../../../components/Loading/Loading';
-import ActionBoxModule from '../../modules/ActionBoxModule';
+import ActionBoxModule from '../../modules/ActionBox/ActionBoxModule';
 import { useMyModuleRole, ModuleAdminRole } from '../../../hooks/useModuleAdmins';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';

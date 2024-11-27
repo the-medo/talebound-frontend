@@ -1,29 +1,32 @@
 import React, { useMemo } from 'react';
-import ActionBox from '../../components/ActionBox/ActionBox';
+import ActionBox from '../../../components/ActionBox/ActionBox';
 import Link from 'next/link';
-import { Button } from '../../components/Button/Button';
-import { Col, Row } from '../../components/Flex/Flex';
+import { Col, Row } from '../../../components/Flex/Flex';
 import { TbMenuOrder, TbPencil, TbUsersGroup } from 'react-icons/tb';
 import {
   isModuleCollaborator,
   useMyModuleRole,
   ModuleAdminRole,
-} from '../../hooks/useModuleAdmins';
-import { TitleH4 } from '../../components/Typography/Title';
-import { useGetModuleAdmins } from '../../api/modules/useGetModuleAdmins';
-import Loading from '../../components/Loading/Loading';
-import { Text } from '../../components/Typography/Text';
+} from '../../../hooks/useModuleAdmins';
+import { TitleH4 } from '../../../components/Typography/Title';
+import { useGetModuleAdmins } from '../../../api/modules/useGetModuleAdmins';
+import Loading from '../../../components/Loading/Loading';
+import { Text } from '../../../components/Typography/Text';
 import { Badge } from 'antd';
-import { theme } from '../../styles/stitches.config';
-import { useModule } from '../../hooks/useModule';
-import AvatarById from '../../components/AvatarById/AvatarById';
+import { theme } from '../../../styles/stitches.config';
+import { useModule } from '../../../hooks/useModule';
+import AvatarById from '../../../components/AvatarById/AvatarById';
+import ActionBoxButton from './ActionBoxButton';
 
-interface ActionBoxModuleProps {
+interface ActionBoxCollaboratorsProps {
   moduleId: number;
   activeButton?: 'edit' | 'collaborators' | 'menu';
 }
 
-const ActionBoxModule: React.FC<ActionBoxModuleProps> = ({ moduleId, activeButton }) => {
+const ActionBoxCollaborators: React.FC<ActionBoxCollaboratorsProps> = ({
+  moduleId,
+  activeButton,
+}) => {
   const { moduleTypeId, linkPrefix } = useModule(moduleId);
   const role = useMyModuleRole(moduleId);
 
@@ -86,12 +89,14 @@ const ActionBoxModule: React.FC<ActionBoxModuleProps> = ({ moduleId, activeButto
         </Col>
         <Row gap="md" wrap={true} alignSelf="center">
           {isModuleCollaborator(role) && (
-            <Link href={`/${linkPrefix}/${moduleTypeId}/edit`}>
-              <Button size="md" color={activeButton === 'edit' ? 'primaryOutline' : 'semiGhost'}>
-                <TbPencil />
-                Edit
-              </Button>
-            </Link>
+            <ActionBoxButton
+              moduleTypeId={moduleTypeId}
+              linkPrefix={linkPrefix}
+              linkSuffix="edit"
+              active={activeButton === 'edit'}
+              icon={<TbPencil />}
+              text="Edit"
+            />
           )}
           <Badge
             color={theme.colors.primary.toString()}
@@ -101,23 +106,24 @@ const ActionBoxModule: React.FC<ActionBoxModuleProps> = ({ moduleId, activeButto
               moduleAdminRequests.length > 1 ? 's' : ''
             }`}
           >
-            <Link href={`/${linkPrefix}/${moduleTypeId}/collaborators`}>
-              <Button
-                size="md"
-                color={activeButton === 'collaborators' ? 'primaryOutline' : 'semiGhost'}
-              >
-                <TbUsersGroup />
-                Collaborators
-              </Button>
-            </Link>
+            <ActionBoxButton
+              moduleTypeId={moduleTypeId}
+              linkPrefix={linkPrefix}
+              linkSuffix="collaborators"
+              active={activeButton === 'collaborators'}
+              icon={<TbUsersGroup />}
+              text="Collaborators"
+            />
           </Badge>
           {isModuleCollaborator(role) && (
-            <Link href={`/${linkPrefix}/${moduleTypeId}/edit/menu`}>
-              <Button size="md" color={activeButton === 'menu' ? 'primaryOutline' : 'semiGhost'}>
-                <TbMenuOrder />
-                Menu administration
-              </Button>
-            </Link>
+            <ActionBoxButton
+              moduleTypeId={moduleTypeId}
+              linkPrefix={linkPrefix}
+              linkSuffix="edit/menu"
+              active={activeButton === 'menu'}
+              icon={<TbMenuOrder />}
+              text="Menu administration"
+            />
           )}
         </Row>
       </Col>
@@ -125,4 +131,4 @@ const ActionBoxModule: React.FC<ActionBoxModuleProps> = ({ moduleId, activeButto
   );
 };
 
-export default ActionBoxModule;
+export default ActionBoxCollaborators;
