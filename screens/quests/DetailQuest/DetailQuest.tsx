@@ -13,6 +13,8 @@ import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTyp
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { useQuest } from '../../../hooks/useQuest';
 import { useImage } from '../../../hooks/useImage';
+import WorldCard from '../../../components/WorldCard/WorldCard';
+import SystemCard from '../../../components/SystemCard/SystemCard';
 
 const ModuleIntroduction = React.lazy(
   () => import('../../modules/ModuleIntroduction/ModuleIntroduction'),
@@ -69,22 +71,19 @@ const DetailQuest: React.FC<DetailQuestProps> = ({ questId }) => {
         </Col>
 
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          <ContentSection
-            flexWrap="wrap"
-            direction="column"
-            header="Quests"
-            cornerImage={thumbnailImg?.url}
-          >
-            <Text>Currently no quests playing in this quest</Text>
-          </ContentSection>
-          <ContentSection
-            flexWrap="wrap"
-            direction="column"
-            header="Characters"
-            cornerImage={thumbnailImg?.url}
-          >
-            <Text>Currently no characters playing in this quest</Text>
-          </ContentSection>
+          {quest && (
+            <>
+              <ContentSection flexWrap="wrap" direction="column" header="Characters">
+                Currently no characters in this quest
+              </ContentSection>
+              <ContentSection flexWrap="wrap" direction="column" header="World and System">
+                <Row gap="md" fullWidth>
+                  <WorldCard worldId={quest.worldId ?? 0} compact />
+                  <SystemCard systemId={quest.systemId ?? 0} compact />
+                </Row>
+              </ContentSection>
+            </>
+          )}
         </Col>
       </Row>
     </Layout>
