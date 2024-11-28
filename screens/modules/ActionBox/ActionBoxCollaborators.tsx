@@ -17,10 +17,11 @@ import { theme } from '../../../styles/stitches.config';
 import { useModule } from '../../../hooks/useModule';
 import AvatarById from '../../../components/AvatarById/AvatarById';
 import ActionBoxButton from './ActionBoxButton';
+import { ActionBoxButtonType } from './actionBoxLib';
 
 interface ActionBoxCollaboratorsProps {
   moduleId: number;
-  activeButton?: 'edit' | 'collaborators' | 'menu';
+  activeButton?: ActionBoxButtonType;
 }
 
 const ActionBoxCollaborators: React.FC<ActionBoxCollaboratorsProps> = ({
