@@ -638,6 +638,8 @@ export interface PbQuest {
   worldId?: number;
   /** @format int32 */
   systemId?: number;
+  canJoin?: boolean;
+  status?: PbQuestStatus;
 }
 
 export interface PbQuestCharacter {

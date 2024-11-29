@@ -7,7 +7,6 @@ import LeftNavbarModule from '../../../components/LeftNavbar/LeftNavbarModule';
 import Loading from '../../../components/Loading/Loading';
 import MiniStatistic from '../../../components/MiniStatistic/MiniStatistic';
 import { TitleH2 } from '../../../components/Typography/Title';
-import { Text } from '../../../components/Typography/Text';
 import TagRow from '../../../components/TagRow/TagRow';
 import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTypeAvailableTags';
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
@@ -15,6 +14,7 @@ import { useCharacter } from '../../../hooks/useCharacter';
 import { useImage } from '../../../hooks/useImage';
 import WorldCard from '../../../components/WorldCard/WorldCard';
 import SystemCard from '../../../components/SystemCard/SystemCard';
+import CurrentQuestSection from './CurrentQuest/CurrentQuestSection';
 
 const ModuleIntroduction = React.lazy(
   () => import('../../modules/ModuleIntroduction/ModuleIntroduction'),
@@ -73,9 +73,7 @@ const DetailCharacter: React.FC<DetailCharacterProps> = ({ characterId }) => {
         <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
           {character && (
             <>
-              <ContentSection flexWrap="wrap" direction="column" header="Current quest">
-                This character is not on a quest right now.
-              </ContentSection>
+              <CurrentQuestSection characterId={characterId} />
               <ContentSection flexWrap="wrap" direction="column" header="World and System">
                 <Row gap="md" fullWidth>
                   <WorldCard worldId={character.worldId ?? 0} compact />
