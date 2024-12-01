@@ -29,7 +29,7 @@ const ActionBoxCollaborators: React.FC<ActionBoxCollaboratorsProps> = ({
   activeButton,
 }) => {
   const { moduleTypeId, linkPrefix } = useModule(moduleId);
-  const { role } = useMyModuleRole(moduleId);
+  const { role, roleWithoutAdmin } = useMyModuleRole(moduleId);
 
   const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
     variables: moduleId,
@@ -58,17 +58,17 @@ const ActionBoxCollaborators: React.FC<ActionBoxCollaboratorsProps> = ({
           <Row gap="md">
             <TitleH4>Collaborators</TitleH4>
             <Link href={`/${linkPrefix}/${moduleTypeId}/collaborators`}>
-              {role === ModuleAdminRole.REQUESTED && (
+              {roleWithoutAdmin === ModuleAdminRole.REQUESTED && (
                 <Text i u>
                   (collaboration requested)
                 </Text>
               )}
-              {role === ModuleAdminRole.DENIED && (
+              {roleWithoutAdmin === ModuleAdminRole.DENIED && (
                 <Text i u>
                   (collaboration denied)
                 </Text>
               )}
-              {role === ModuleAdminRole.NONE && (
+              {roleWithoutAdmin === ModuleAdminRole.NONE && (
                 <Text i u>
                   (want to collaborate?)
                 </Text>
