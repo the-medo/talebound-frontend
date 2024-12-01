@@ -18,7 +18,7 @@ interface ActionBoxCharacterProps {
 
 const ActionBoxCharacter: React.FC<ActionBoxCharacterProps> = ({ moduleId, activeButton }) => {
   const { moduleTypeId, linkPrefix } = useModule(moduleId);
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
 
   const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
     variables: moduleId,

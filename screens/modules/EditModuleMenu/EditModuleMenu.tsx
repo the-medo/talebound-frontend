@@ -14,7 +14,7 @@ interface EditModuleMenuProps {
 }
 
 const EditModuleMenu: React.FC<EditModuleMenuProps> = ({ moduleId }) => {
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const { module } = useModule(moduleId);
   const menuId = module?.menuId ?? 0;
 

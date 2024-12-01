@@ -35,7 +35,7 @@ interface EditQuestProps {
 const EditQuest: React.FC<EditQuestProps> = ({ questId }) => {
   const { quest, module, moduleId } = useQuest(questId);
   console.log({ quest, module, moduleId });
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const updateQuestMutation = useUpdateQuest();
   const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 

@@ -18,7 +18,7 @@ interface ActionBoxQuestProps {
 
 const ActionBoxQuest: React.FC<ActionBoxQuestProps> = ({ moduleId, activeButton }) => {
   const { moduleTypeId, linkPrefix } = useModule(moduleId);
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
 
   const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
     variables: moduleId,

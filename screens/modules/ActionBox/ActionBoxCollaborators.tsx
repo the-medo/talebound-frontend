@@ -29,7 +29,7 @@ const ActionBoxCollaborators: React.FC<ActionBoxCollaboratorsProps> = ({
   activeButton,
 }) => {
   const { moduleTypeId, linkPrefix } = useModule(moduleId);
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
 
   const { data: moduleAdmins = [], isPending } = useGetModuleAdmins({
     variables: moduleId,

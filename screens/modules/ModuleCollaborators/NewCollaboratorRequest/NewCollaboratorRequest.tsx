@@ -19,7 +19,7 @@ const textareaPlaceholder =
   'What would you like to do here as collaborator? How much experience do you have with this?';
 
 const NewCollaboratorRequest: React.FC<NewCollaboratorRequestProps> = ({ moduleId }) => {
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const { isLoggedIn } = useAuth();
   const { mutate: createModuleAdmin, isPending, error } = useCreateModuleAdmin();
   const { value: motivation, onChange } = useInput<string, HTMLTextAreaElement>('');

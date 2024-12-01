@@ -35,7 +35,7 @@ interface EditWorldProps {
 
 const EditWorld: React.FC<EditWorldProps> = ({ worldId }) => {
   const { world, module, moduleId } = useWorld(worldId);
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const updateWorldMutation = useUpdateWorld();
   const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 

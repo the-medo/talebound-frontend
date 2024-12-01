@@ -35,7 +35,7 @@ interface EditSystemProps {
 const EditSystem: React.FC<EditSystemProps> = ({ systemId }) => {
   const { system, module, moduleId } = useSystem(systemId);
   console.log({ system, module, moduleId });
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const updateSystemMutation = useUpdateSystem();
   const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 

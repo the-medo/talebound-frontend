@@ -35,7 +35,7 @@ interface EditCharacterProps {
 const EditCharacter: React.FC<EditCharacterProps> = ({ characterId }) => {
   const { character, module, moduleId } = useCharacter(characterId);
   console.log({ character, module, moduleId });
-  const role = useMyModuleRole(moduleId);
+  const { role } = useMyModuleRole(moduleId);
   const updateCharacterMutation = useUpdateCharacter();
   const disabled = useMemo(() => role !== ModuleAdminRole.SUPER_COLLABORATOR, [role]);
 
