@@ -12,9 +12,7 @@ import { useGetModuleTypeAvailableTags } from '../../../api/tags/useGetModuleTyp
 import { PbModuleType } from '../../../generated/api-types/data-contracts';
 import { useCharacter } from '../../../hooks/useCharacter';
 import { useImage } from '../../../hooks/useImage';
-import WorldCard from '../../../components/WorldCard/WorldCard';
-import SystemCard from '../../../components/SystemCard/SystemCard';
-import CurrentQuestSection from './CurrentQuest/CurrentQuestSection';
+import DetailCharacterRightSection from './DetailCharacterRightSection/DetailCharacterRightSection';
 
 const ModuleIntroduction = React.lazy(
   () => import('../../modules/ModuleIntroduction/ModuleIntroduction'),
@@ -69,20 +67,7 @@ const DetailCharacter: React.FC<DetailCharacterProps> = ({ characterId }) => {
             </Suspense>
           </ContentSection>
         </Col>
-
-        <Col css={{ flexGrow: 0, flexBasis: '600px' }}>
-          {character && (
-            <>
-              <CurrentQuestSection characterId={characterId} />
-              <ContentSection flexWrap="wrap" direction="column" header="World and System">
-                <Row gap="md" fullWidth>
-                  <WorldCard worldId={character.worldId ?? 0} compact />
-                  <SystemCard systemId={character.systemId ?? 0} compact />
-                </Row>
-              </ContentSection>
-            </>
-          )}
-        </Col>
+        <DetailCharacterRightSection characterId={characterId} />
       </Row>
     </Layout>
   );

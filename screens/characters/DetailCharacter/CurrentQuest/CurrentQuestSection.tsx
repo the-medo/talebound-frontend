@@ -5,13 +5,19 @@ import { useSelector } from 'react-redux';
 import { questSelectors } from '../../../../adapters/QuestAdapter';
 import QuestCard from '../../../../components/QuestCard/QuestCard';
 import { PbQuestStatus } from '../../../../generated/api-types/data-contracts';
+import { useCharacter } from '../../../../hooks/useCharacter';
+import { ModuleAdminRole, useMyModuleRole } from '../../../../hooks/useModuleAdmins';
+import { Text } from '../../../../components/Typography/Text';
+import Link from 'next/link';
 
 interface CurrentQuestSectionProps {
   characterId: number;
 }
 
 const CurrentQuestSection: React.FC<CurrentQuestSectionProps> = ({ characterId }) => {
+  const { moduleId } = useCharacter(characterId);
   const { data: characterQuests = [] } = useGetCharacterQuests({ variables: characterId });
+  const { role } = useMyModuleRole(moduleId);
 
   //sort desc by creation date and take first approved
   const currentQuestId =
@@ -27,7 +33,14 @@ const CurrentQuestSection: React.FC<CurrentQuestSectionProps> = ({ characterId }
       {isOnQuest ? (
         <QuestCard questId={currentQuestId} />
       ) : (
-        ' This character is not on a quest right now.'
+        <>
+          <Text>This character is not on a quest right now.</Text>
+          {role === ModuleAdminRole.SUPER_COLLABORATOR && (
+            <Link href={`/characters/${characterId}/detail/available-quests`}>
+              Search for a quest
+            </Link>
+          )}
+        </>
       )}
     </ContentSection>
   );
