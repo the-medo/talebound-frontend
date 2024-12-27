@@ -47,6 +47,14 @@ export class Quests<SecurityDataType = unknown> {
       worldId?: number;
       /** @format int32 */
       systemId?: number;
+      canJoin?: boolean;
+      /** @default "UNKNOWN" */
+      status?:
+        | 'UNKNOWN'
+        | 'NOT_STARTED'
+        | 'IN_PROGRESS'
+        | 'FINISHED_COMPLETED'
+        | 'FINISHED_NOT_COMPLETED';
       orderBy?: string;
       /** @format int32 */
       limit?: number;
