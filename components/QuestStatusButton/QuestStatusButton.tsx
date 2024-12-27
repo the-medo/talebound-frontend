@@ -32,11 +32,11 @@ const questStatusMap: Record<
   },
 };
 
-type QuestStatusTagProps = {
+type QuestStatusButtonProps = {
   questStatus: PbQuestStatus;
 };
 
-const QuestStatusButton = ({ questStatus }: QuestStatusTagProps) => {
+const QuestStatusButton = ({ questStatus }: QuestStatusButtonProps) => {
   const { title, buttonColor } = questStatusMap[questStatus];
 
   return (
