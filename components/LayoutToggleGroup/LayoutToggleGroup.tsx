@@ -7,14 +7,14 @@ import { ToggleGroupSingleProps } from '@radix-ui/react-toggle-group';
 
 const layoutToggleGroupItems: ToggleGroupItems<LayoutToggleGroupOption>[] = [
   {
-    label: 'Grid layout',
-    value: 'gridLayout',
-    icon: <TbLayoutGrid />,
-  },
-  {
     label: 'Row layout',
     value: 'rowLayout',
     icon: <TbLayoutRows />,
+  },
+  {
+    label: 'Grid layout',
+    value: 'gridLayout',
+    icon: <TbLayoutGrid />,
   },
 ];
 

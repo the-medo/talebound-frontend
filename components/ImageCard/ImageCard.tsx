@@ -72,7 +72,7 @@ interface ImageCardProps extends ImageCardPropsExtended {
   href: string;
   title: string;
   basedOn?: string;
-  showBasedOn: boolean;
+  showBasedOn?: boolean;
   statSections: ImageCardStatSection[];
   availableTags: PbViewTag[];
   tags: number[];

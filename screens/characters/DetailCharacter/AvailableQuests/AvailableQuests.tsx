@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 import { useGetCharacterQuests } from '../../../../api/characters/useGetCharacterQuests';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { useSelector } from 'react-redux';
@@ -10,16 +10,26 @@ import LeftNavbar from '../../../../components/LeftNavbar/LeftNavbar';
 import Layout from '../../../../components/Layout/Layout';
 import ActionBoxModule from '../../../modules/ActionBox/ActionBoxModule';
 import DetailCharacterRightSection from '../DetailCharacterRightSection/DetailCharacterRightSection';
-import { Col, Row } from '../../../../components/Flex/Flex';
+import { Col, Flex, Row } from '../../../../components/Flex/Flex';
 import { DetailCharacterPage } from '../detailCharacterLib';
+import { useGetQuests } from '../../../../api/quests/useGetQuests';
+import InfiniteScrollObserver from '../../../../components/InfiniteScrollObserver/InfiniteScrollObserver';
+import QuestCard from '../../../../components/QuestCard/QuestCard';
+import LoadingText from '../../../../components/Loading/LoadingText';
+import LayoutToggleGroup from '../../../../components/LayoutToggleGroup/LayoutToggleGroup';
+import { LayoutToggleGroupOption } from '../../../../components/LayoutToggleGroup/layoutToggleGroupLib';
+import QuestRow from '../../../../components/QuestRow/QuestRow';
 
 interface AvailableCharacterQuestsProps {
   characterId: number;
 }
 
+const defaultLayout = 'rowLayout';
+
 const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ characterId }) => {
-  const { moduleId } = useCharacter(characterId);
+  const { character, moduleId } = useCharacter(characterId);
   const { data: characterQuests = [] } = useGetCharacterQuests({ variables: characterId });
+  const [layout, setLayout] = useState<LayoutToggleGroupOption>(defaultLayout);
   const { role } = useMyModuleRole(moduleId);
 
   //sort desc by creation date and take first approved
@@ -31,13 +41,64 @@ const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ cha
   const quest = useSelector((state) => questSelectors.selectById(state, currentQuestId));
   const isOnQuest = quest?.status === PbQuestStatus.IN_PROGRESS;
 
+  const {
+    data: questData,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetQuests({
+    variables: {
+      systemId: character?.systemId ?? 0,
+      worldId: character?.worldId ?? 0,
+      canJoin: true,
+    },
+  });
+
+  const totalCount = questData?.pages[0]?.totalCount ?? 0;
+
+  const headerActions = useMemo(
+    () => <LayoutToggleGroup onValueChange={setLayout} defaultValue={defaultLayout} />,
+    [],
+  );
+
   return (
     <Layout vertical={true} navbar={<LeftNavbar />}>
-      <ActionBoxModule moduleId={moduleId} activeButton="edit" />
+      <ActionBoxModule moduleId={moduleId} />
       <Row gap="md" alignItems="start" wrap>
         <Col css={{ flexGrow: 5, flexBasis: '10rem' }}>
-          <ContentSection flexWrap="wrap" direction="column" header="Available quests">
-            asdf
+          <ContentSection
+            flexWrap="wrap"
+            direction="column"
+            header="Available quests"
+            headerActions={headerActions}
+          >
+            <Flex
+              direction={layout === 'rowLayout' ? 'column' : 'row'}
+              gap="md"
+              alignItems={layout === 'rowLayout' ? undefined : 'start'}
+              wrap={layout !== 'rowLayout'}
+              fullWidth={layout === 'rowLayout'}
+            >
+              {totalCount === 0 &&
+                !isFetching &&
+                'No quests available in this World and System combination.'}
+              {isFetching && <LoadingText />}
+              {questData?.pages.map(
+                (page) =>
+                  page.questIds?.map((questId) => (
+                    <Suspense fallback={null} key={questId}>
+                      {layout === 'rowLayout' ? (
+                        <QuestRow questId={questId} />
+                      ) : (
+                        <QuestCard questId={questId} />
+                      )}
+                    </Suspense>
+                  )),
+              )}
+              {hasNextPage && !isFetching && (
+                <InfiniteScrollObserver runOnObserve={fetchNextPage} />
+              )}
+            </Flex>
           </ContentSection>
         </Col>
         <DetailCharacterRightSection

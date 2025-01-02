@@ -158,6 +158,12 @@ export const Flex = styled('div', {
         borderRadius: '50%',
       },
     },
+
+    borderBottom: {
+      true: {
+        borderBottom: '1px solid $primary200',
+      },
+    },
   },
 
   defaultVariants: {

@@ -162,6 +162,7 @@ const StyledSectionContent = styled('div', {
 interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
   direction?: 'row' | 'column';
   header?: string;
+  headerActions?: React.ReactNode;
   alignItems?: CSSProperties['alignItems'];
   justifyContent?: CSSProperties['justifyContent'];
   flexBasis?: CSSProperties['flexBasis'];
@@ -178,6 +179,7 @@ interface ContentSectionProps extends PropsWithChildren, StyledSectionVariants {
 const ContentSection: React.FC<ContentSectionProps> = ({
   direction = 'column',
   header,
+  headerActions,
   alignItems = 'flex-start',
   justifyContent = 'flex-start',
   children,
@@ -208,7 +210,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
       css={cornerImageCss}
       {...styledSectionProps}
     >
-      <Row gap="sm">
+      <Row gap="sm" justifyContent={headerActions ? 'between' : undefined}>
         {titlePrefix}
         {header && href && (
           <Link href={href}>
@@ -216,6 +218,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
           </Link>
         )}
         {header && !href && <TitleH2 marginBottom={hasChildren ? 'md' : 'none'}>{header}</TitleH2>}
+        {headerActions}
       </Row>
       {hasChildren && (
         <StyledSectionContent
