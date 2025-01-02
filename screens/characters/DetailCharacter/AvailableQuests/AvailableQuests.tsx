@@ -3,7 +3,7 @@ import { useGetCharacterQuests } from '../../../../api/characters/useGetCharacte
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { useSelector } from 'react-redux';
 import { questSelectors } from '../../../../adapters/QuestAdapter';
-import { PbQuestStatus } from '../../../../generated/api-types/data-contracts';
+import { PbModuleType, PbQuestStatus } from '../../../../generated/api-types/data-contracts';
 import { useCharacter } from '../../../../hooks/useCharacter';
 import { useMyModuleRole } from '../../../../hooks/useModuleAdmins';
 import LeftNavbar from '../../../../components/LeftNavbar/LeftNavbar';
@@ -19,17 +19,18 @@ import LoadingText from '../../../../components/Loading/LoadingText';
 import LayoutToggleGroup from '../../../../components/LayoutToggleGroup/LayoutToggleGroup';
 import { LayoutToggleGroupOption } from '../../../../components/LayoutToggleGroup/layoutToggleGroupLib';
 import QuestRow from '../../../../components/QuestRow/QuestRow';
+import { getModuleLayoutLocalStore } from '../../../../store/moduleLayoutLocalStore';
 
 interface AvailableCharacterQuestsProps {
   characterId: number;
 }
 
-const defaultLayout = 'rowLayout';
-
 const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ characterId }) => {
   const { character, moduleId } = useCharacter(characterId);
   const { data: characterQuests = [] } = useGetCharacterQuests({ variables: characterId });
-  const [layout, setLayout] = useState<LayoutToggleGroupOption>(defaultLayout);
+  const [layout, setLayout] = useState<LayoutToggleGroupOption>(
+    getModuleLayoutLocalStore(PbModuleType.MODULE_TYPE_QUEST, 'rowLayout'),
+  );
   const { role } = useMyModuleRole(moduleId);
 
   //sort desc by creation date and take first approved
@@ -57,7 +58,9 @@ const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ cha
   const totalCount = questData?.pages[0]?.totalCount ?? 0;
 
   const headerActions = useMemo(
-    () => <LayoutToggleGroup onValueChange={setLayout} defaultValue={defaultLayout} />,
+    () => (
+      <LayoutToggleGroup onValueChange={setLayout} moduleType={PbModuleType.MODULE_TYPE_QUEST} />
+    ),
     [],
   );
 

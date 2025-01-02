@@ -1,11 +1,14 @@
-import { PbUser } from '../generated/api-types/data-contracts';
+import { PbModuleType, PbUser } from '../generated/api-types/data-contracts';
+import { LayoutToggleGroupOption } from '../components/LayoutToggleGroup/layoutToggleGroupLib';
 
 export enum LSKey {
   USER = 'user',
+  MODULE_LIST_LAYOUT = 'module-list-layout',
 }
 
 export interface LSValues {
   [LSKey.USER]?: PbUser;
+  [LSKey.MODULE_LIST_LAYOUT]?: Record<PbModuleType, LayoutToggleGroupOption | undefined>;
 }
 
 export function setItem<T extends LSKey>(key: T, value: LSValues[T]): void {
