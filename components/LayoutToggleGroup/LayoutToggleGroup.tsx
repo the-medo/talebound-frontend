@@ -5,8 +5,8 @@ import ToggleGroup from '../ToggleGroup/ToggleGroup';
 import { LayoutToggleGroupOption } from './layoutToggleGroupLib';
 import { ToggleGroupSingleProps } from '@radix-ui/react-toggle-group';
 import { PbModuleType } from '../../generated/api-types/data-contracts';
-import { getItem, LSKey } from '../../store/localStore';
-import { setModuleLayoutLocalStore } from '../../store/moduleLayoutLocalStore';
+import { setModuleListLayoutLocalStore } from '../../store/lib/ModuleListLayout/moduleLayoutLocalStore';
+import { useModuleListLayout } from '../../store/lib/ModuleListLayout/useModuleListLayout';
 
 const layoutToggleGroupItems: ToggleGroupItems<LayoutToggleGroupOption>[] = [
   {
@@ -25,28 +25,25 @@ type LayoutToggleGroupProps = Omit<
   ToggleGroupSingleProps,
   'type' | 'onValueChange' | 'defaultValue'
 > & {
-  onValueChange: (v: LayoutToggleGroupOption) => void;
   moduleType?: PbModuleType;
 };
 
 const LayoutToggleGroup: React.FC<LayoutToggleGroupProps> = ({
-  moduleType,
-  onValueChange,
+  moduleType = PbModuleType.MODULE_TYPE_UNKNOWN,
   ...toggleGroupProps
 }) => {
-  const defaultValue = useMemo(
-    () => (moduleType ? getItem(LSKey.MODULE_LIST_LAYOUT)?.[moduleType] : undefined) ?? 'rowLayout',
-    [moduleType],
-  );
+  const [layout, setLayout] = useModuleListLayout(moduleType);
+
+  const defaultValue = layout;
 
   const changeHandler = useCallback(
-    (v: LayoutToggleGroupOption) => {
-      onValueChange(v);
+    (value: LayoutToggleGroupOption) => {
+      setLayout(value);
       if (moduleType) {
-        setModuleLayoutLocalStore(moduleType, v);
+        setModuleListLayoutLocalStore(moduleType, value);
       }
     },
-    [moduleType, onValueChange],
+    [moduleType, setLayout],
   );
 
   return (

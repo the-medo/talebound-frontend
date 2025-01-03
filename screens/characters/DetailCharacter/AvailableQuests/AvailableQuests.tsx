@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { useGetCharacterQuests } from '../../../../api/characters/useGetCharacterQuests';
 import ContentSection from '../../../../components/ContentSection/ContentSection';
 import { useSelector } from 'react-redux';
@@ -17,9 +17,8 @@ import InfiniteScrollObserver from '../../../../components/InfiniteScrollObserve
 import QuestCard from '../../../../components/QuestCard/QuestCard';
 import LoadingText from '../../../../components/Loading/LoadingText';
 import LayoutToggleGroup from '../../../../components/LayoutToggleGroup/LayoutToggleGroup';
-import { LayoutToggleGroupOption } from '../../../../components/LayoutToggleGroup/layoutToggleGroupLib';
 import QuestRow from '../../../../components/QuestRow/QuestRow';
-import { getModuleLayoutLocalStore } from '../../../../store/moduleLayoutLocalStore';
+import { useModuleListLayout } from '../../../../store/lib/ModuleListLayout/useModuleListLayout';
 
 interface AvailableCharacterQuestsProps {
   characterId: number;
@@ -28,9 +27,7 @@ interface AvailableCharacterQuestsProps {
 const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ characterId }) => {
   const { character, moduleId } = useCharacter(characterId);
   const { data: characterQuests = [] } = useGetCharacterQuests({ variables: characterId });
-  const [layout, setLayout] = useState<LayoutToggleGroupOption>(
-    getModuleLayoutLocalStore(PbModuleType.MODULE_TYPE_QUEST, 'rowLayout'),
-  );
+  const [layout] = useModuleListLayout(PbModuleType.MODULE_TYPE_QUEST);
   const { role } = useMyModuleRole(moduleId);
 
   //sort desc by creation date and take first approved
@@ -58,9 +55,7 @@ const AvailableCharacterQuests: React.FC<AvailableCharacterQuestsProps> = ({ cha
   const totalCount = questData?.pages[0]?.totalCount ?? 0;
 
   const headerActions = useMemo(
-    () => (
-      <LayoutToggleGroup onValueChange={setLayout} moduleType={PbModuleType.MODULE_TYPE_QUEST} />
-    ),
+    () => <LayoutToggleGroup moduleType={PbModuleType.MODULE_TYPE_QUEST} />,
     [],
   );
 
