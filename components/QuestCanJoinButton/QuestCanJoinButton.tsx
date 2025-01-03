@@ -8,7 +8,7 @@ type QuestCanJoinButtonProps = {
 
 const QuestCanJoinButton = ({ canJoin }: QuestCanJoinButtonProps) => {
   return (
-    <Button color={canJoin ? 'primaryOutline' : 'semiGhost'} data-pressable="false" icon>
+    <Button color={canJoin ? 'primaryOutline' : 'semiGhost'} size="sm" data-pressable="false" icon>
       {canJoin ? <TbLockOpen /> : <TbLockOff />}
     </Button>
   );

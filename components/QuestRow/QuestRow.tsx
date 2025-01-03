@@ -13,6 +13,7 @@ import Image from '../Image/Image';
 import { ImageVariant } from '../../utils/images/imageUtils';
 import { TitleH3 } from '../Typography/Title';
 import { Text } from '../Typography/Text';
+import TagRow from '../TagRow/TagRow';
 
 interface QuestRowProps {
   questId: number;
@@ -38,17 +39,27 @@ const QuestRow: React.FC<QuestRowProps> = ({ questId }) => {
   if (!quest) return null;
 
   return (
-    <Row fullWidth gap="md" alignItems="start" borderBottom>
+    <Row fullWidth gap="md" alignItems="start" borderBottom fullHeight>
       {imageThumbnail && (
         <Image image={imageThumbnail} onClick={() => {}} variant={ImageVariant['300x200']} />
       )}
-      <Col gap="sm" fullWidth>
-        <Row fullWidth gap="sm" justifyContent="between">
-          <TitleH3>{quest.name}</TitleH3>
-          {statusBar}
+      <Col gap="sm" fullWidth alignSelf="stretch" justifyContent="between" paddingBottom="sm">
+        <Col gap="sm" fullWidth>
+          <Row fullWidth gap="sm" justifyContent="between">
+            <TitleH3>{quest.name}</TitleH3>
+            {statusBar}
+          </Row>
+          <Text>{quest.shortDescription}</Text>
+        </Col>
+        <Row fullWidth gap="sm">
+          <Text b>Tags:</Text>
+          <TagRow
+            availableTags={availableTags}
+            tagIds={module?.tags ?? []}
+            width={600}
+            colorNonactive={'primaryOutline'}
+          />
         </Row>
-
-        <Text>{quest.shortDescription}</Text>
       </Col>
     </Row>
   );

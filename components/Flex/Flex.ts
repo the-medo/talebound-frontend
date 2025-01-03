@@ -26,6 +26,12 @@ export const Flex = styled('div', {
       },
     },
 
+    fullHeight: {
+      true: {
+        height: '100%',
+      },
+    },
+
     hoverHighlight: {
       true: {
         '&:hover': {

@@ -40,7 +40,7 @@ const QuestStatusButton = ({ questStatus }: QuestStatusButtonProps) => {
   const { title, buttonColor } = questStatusMap[questStatus];
 
   return (
-    <Button color={buttonColor ?? 'semiGhost'} data-pressable="false">
+    <Button color={buttonColor ?? 'semiGhost'} size="sm" data-pressable="false">
       <Text b>Status: </Text>
       {title}
     </Button>

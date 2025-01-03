@@ -75,7 +75,7 @@ interface ImageCardProps extends ImageCardPropsExtended {
   showBasedOn?: boolean;
   statSections: ImageCardStatSection[];
   availableTags: PbViewTag[];
-  tags: number[];
+  tags?: number[];
   statusBar?: React.ReactNode;
 }
 
@@ -124,6 +124,12 @@ const ImageCard: React.FC<ImageCardProps> = ({
             {basedOn.length > 0 ? `(based on ${basedOn})` : 'original'}
           </Text>
         )}
+        {!compact && tags && (
+          <>
+            <div style={{ height: '0px' }}></div>
+            <TagRow availableTags={availableTags} tagIds={tags} width={330} />
+          </>
+        )}
       </Col>
       <div style={{ height: compact ? '50px' : '100px' }}></div>
       {statSections.length > 0 && (
@@ -132,12 +138,6 @@ const ImageCard: React.FC<ImageCardProps> = ({
             <MiniStatistic key={ss.label} title={ss.label} value={ss.value} compact={compact} />
           ))}
         </Row>
-      )}
-      {!compact && (
-        <>
-          <div style={{ height: '0px' }}></div>
-          <TagRow availableTags={availableTags} tagIds={tags} width={330} />
-        </>
       )}
       {statusBar}
     </ImageBackground>

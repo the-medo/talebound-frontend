@@ -32,7 +32,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ questId }) => {
 
   const statusBar = useMemo(() => {
     return (
-      <Row gap="sm">
+      <Row gap="sm" fullWidth justifyContent="center">
         {quest?.status && <QuestStatusButton questStatus={quest.status} />}
         <QuestCanJoinButton canJoin={!!quest?.canJoin} />
       </Row>
@@ -50,7 +50,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ questId }) => {
       imgSrc={imageThumbnail?.url ?? IMAGE_DEFAULT_QUEST_THUMBNAIL}
       href={`/quests/${quest.id}/detail`}
       availableTags={availableTags}
-      tags={[]} //module.tags ??
+      tags={module?.tags}
       statusBar={statusBar}
     />
   );
